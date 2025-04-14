@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('series_challenges', function (Blueprint $table) {
+        Schema::create('roadmaps' ,function(Blueprint $table){
             $table->id();
-            $table->timestamps();
-            $table->string('name');
-            $table->string('challenge');
-            $table->integer('number');
+            $table->foreignId('skill_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('candidate_id')->constrained()->cascadeOnDelete();            
         });
     }
 
@@ -25,6 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('series_challenges');
+        Schema::dropIfExists('Roadmaps');
+        
     }
 };

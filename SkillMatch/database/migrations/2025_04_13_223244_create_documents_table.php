@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('series_challenges', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("candidate_profile_id");
+            $table->foreign('candidate_profile_id')->references("id")->on('profiles_candidate')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('document_type');
+            $table->string('file_path');
             $table->timestamps();
-            $table->string('name');
-            $table->string('challenge');
-            $table->integer('number');
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('series_challenges');
+        Schema::dropIfExists('documents');
     }
 };
