@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Candidate;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Challenge extends Model
 {
@@ -22,7 +23,7 @@ class Challenge extends Model
 
     // get series defies
     public function SeriesChallenges(){
-        return $this->hasMany(SerieChallenge::class);
+        return $this->hasMany(Serie_Challenge::class);
     }
     // get the skills should be attempt while solving this challenge 
     public function Skills(){

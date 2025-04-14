@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("candidate_profile_id");
-            $table->foreign('candidate_profile_id')->references("id")->on('candidate_profile')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('candidate_profile_id')->references("id")->on('profiles_candidate')->onDelete('cascade')->onUpdate('cascade');
             $table->string('tilte');
             $table->string('company_name');
             $table->date('start_date');

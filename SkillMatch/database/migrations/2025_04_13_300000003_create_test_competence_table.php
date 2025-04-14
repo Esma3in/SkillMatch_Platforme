@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('test_competence', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('test_id');
-            $table->unsignedBigInteger('competence_id');
-            $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascadde')->onUpdate('cascade');
-            $table->foreign('competence_id')->references('id')->on('competences')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('skill_id');
+            $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('skill_id')->references('id')->on('skills')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

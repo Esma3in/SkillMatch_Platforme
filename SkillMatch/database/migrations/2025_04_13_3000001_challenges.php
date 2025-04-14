@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('figure')->nullable();
             $table->string('tags');
             $table->string('level');
-            $table->fullText('example');
+            $table->text('example');
             $table->text('inputFormat');
             $table->text('outputFormat');
             // relations
             $table->foreignId('skill_id')->constrained('Skills')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('admin_id')->constrained('Administrator')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('administrator_id')->constrained('administrators')->onDelete('cascade')->onUpdate('cascade');
             
 
         });

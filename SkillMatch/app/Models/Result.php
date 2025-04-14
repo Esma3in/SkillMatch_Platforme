@@ -18,7 +18,7 @@ class Result extends Model
     public function Candidate(){
         return $this->belongsTo(Candidate::class);
     }
-    // get the test which have this result 
+    // get the test which have this result
     public function Test(){
         return $this->belongsTo(Test::class);
     }

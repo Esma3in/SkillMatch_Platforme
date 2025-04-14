@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Test;
+use App\Models\Company;
+use App\Models\Roadmap;
+use App\Models\Candidate;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Skill extends Model
 {
@@ -16,7 +20,6 @@ class Skill extends Model
         'classement',
         'candidate_id',
         'company_id',
-        'roadmap_id',
         'test_id'
     ];
 

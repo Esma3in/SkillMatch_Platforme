@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('badges', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('roadmap_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('roadmap_id');
+            $table->foreign('roadmap_id')->references('id')->on('roadmaps')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('candidate_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('icon');

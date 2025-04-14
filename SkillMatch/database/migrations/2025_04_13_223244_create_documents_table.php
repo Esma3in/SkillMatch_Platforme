@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("candidate_profile_id");
-            $table->foreign('candidate_profile_id')->references("id")->on('candidate_profile')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('candidate_profile_id')->references("id")->on('profiles_candidate')->onDelete('cascade')->onUpdate('cascade');
             $table->string('document_type');
             $table->string('file_path');
             $table->timestamps();
