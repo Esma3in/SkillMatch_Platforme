@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Serie_Challenge;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attestation extends Model
 {
@@ -24,6 +26,6 @@ class Attestation extends Model
 
     public function seriesChallenge() : BelongsTo
     {
-        return $this->belongsTo(SeriesChallenge::class, 'series_challenge_id');
+        return $this->belongsTo(Serie_Challenge::class, 'series_challenge_id');
     }
 }
