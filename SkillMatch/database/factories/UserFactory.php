@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -22,18 +21,16 @@ class UserFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition()
-        {
-            $role=[
-                'Candidat',
-                'Company',
-                'Administrator'
-            ];
-            return [
-                'name' => fake()->name,
-                'email' => fake()->unique()->safeEmail,
-                'password' => 123456,
-                'fichiers' => fake()->word,
-                'type' => fake()->randomElement($role),
-            ];
-        }
+    {
+        $role = [
+            'candidate',
+            'company',
+            'administrator'
+        ];
+        return [
+            'email' => fake()->unique()->safeEmail,
+            'password' => Hash::make('123456'),
+            'role' => fake()->randomElement($role),
+        ];
+    }
 }

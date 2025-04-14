@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User ;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Candidate>
  */
-class CompanyFactory extends Factory
+class CandidateFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,8 @@ class CompanyFactory extends Factory
     public function definition()
     {
         return [
-            'nom' => fake()->company,
-            'secteur' => fake()->randomElement(['Technology', 'Finance', 'Healthcare', 'Manufacturing', 'Retail']),
+            'name' => fake()->name,
+            'dateInscription' => fake()->date(),
             'fichiers' => fake()->filePath(),
             'utilisateur_id' => User::factory(),
         ];
