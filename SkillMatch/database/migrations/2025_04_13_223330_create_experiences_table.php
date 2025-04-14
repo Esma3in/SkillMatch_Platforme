@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("candidate_profile_id");
             $table->foreign('candidate_profile_id')->references("id")->on('profiles_candidate')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('tilte');
+            $table->string('title');
             $table->string('company_name');
             $table->date('start_date');
             $table->date('end_date');

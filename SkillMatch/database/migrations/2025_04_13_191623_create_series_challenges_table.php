@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('challenge');
             $table->integer('number');
-            $table->foreignId('serie_challenge_id')->constrained('series_challenges')->onDelete('cascade');
         });
     }
 
