@@ -2,56 +2,77 @@
 
 namespace App\Models;
 
+use App\Models\Test;
+use App\Models\Badge;
+use App\Models\Skill;
+use App\Models\Result;
+use App\Models\Roadmap;
+use App\Models\Challenge;
+use App\Models\Attestation;
+use App\Models\Notification;
 use App\Models\Profile_candidate;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Candidate extends Model
 {
     use HasFactory ;
 
-    protected $fillable = ['name', 'dateInscription', 'fichiers', 'utilisateur_id'];
+    protected $fillable = ['id',
+    'name',
+    'dateInscription',
+    'files'
+    ];
 
-    protected $dates = ['dateInscription'];
 
-    // Relationships
-    public function user()
+
+    public function notifications(): HasMany
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Notification::class);
     }
 
-    public function profilCandidat()
+    public function profile(): HasOne
     {
-        return $this->hasOne(profile_candidate::class);
+        return $this->hasOne(Profile_candidate::class);
     }
 
-    public function resultat()
+    public function result(): HasOne
     {
         return $this->hasOne(Result::class);
     }
-    public function skill():hasMany
-    {
-        return $this->hasMany(Skill::class);
-    }
 
-    public function badge():hasMany
+    public function badges(): HasMany
     {
         return $this->hasMany(Badge::class);
     }
 
-    public function attestation():hasMany
+    public function attestations(): HasMany
     {
         return $this->hasMany(Attestation::class);
     }
 
-    public function test():hasMany
+    public function roadmaps(): HasMany
     {
-        return $this->hasMany(Test::class);
+        return $this->hasMany(Roadmap::class);
     }
 
-    public function notification():hasMany
+    public function skills(): BelongsToMany
     {
-        return $this->hasMany(Notification::class);
+        return $this->belongsToMany(Skill::class);
     }
+
+    public function tests(): BelongsToMany
+    {
+        return $this->belongsToMany(Test::class);
+    }
+
+
+    public function challenges(): BelongsToMany
+    {
+        return $this->belongsToMany(Challenge::class);
+    }
+
 }
