@@ -16,4 +16,11 @@ class Administrator extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function challenge():hasMany
+    {
+        return $this->hasMany(Challenge::class);
+    }
+
+
+
 }
