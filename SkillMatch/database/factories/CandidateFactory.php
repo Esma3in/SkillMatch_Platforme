@@ -20,8 +20,7 @@ class CandidateFactory extends Factory
         return [
             'name' => fake()->name(),
             'dateInscription' => fake()->date(),
-            'fichiers' => fake()->filePath(),
-            'utilisateur_id' => User::factory(),
+            'files' => fake()->optional()->word() . '.pdf', 
         ];
     }
 }
