@@ -22,4 +22,18 @@ class Company extends Model
     {
         return $this->hasOne(profile_company::class);
     }
+
+    public function test()
+    {
+        return $this->hasMany(Test::class);
+    }
+
+    public function skill()
+    {
+        return $this->hasMany(Skill::class);
+    }
+    public function notification()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id('id');
+            $table->string('name')->nullable();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('fichiers')->nullable();
+            $table->string('role'); // 'Candidat', 'Entreprise', 'Administrateur'
             $table->string('secteur');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

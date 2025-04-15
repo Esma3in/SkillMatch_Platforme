@@ -16,7 +16,7 @@ class Candidate extends Model
     protected $dates = ['dateInscription'];
 
     // Relationships
-    public function uset()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -24,5 +24,34 @@ class Candidate extends Model
     public function profilCandidat()
     {
         return $this->hasOne(profile_candidate::class);
+    }
+
+    public function resultat()
+    {
+        return $this->hasOne(Result::class);
+    }
+    public function skill():hasMany
+    {
+        return $this->hasMany(Skill::class);
+    }
+
+    public function badge():hasMany
+    {
+        return $this->hasMany(Badge::class);
+    }
+
+    public function attestation():hasMany
+    {
+        return $this->hasMany(Attestation::class);
+    }
+
+    public function test():hasMany
+    {
+        return $this->hasMany(Test::class);
+    }
+
+    public function notification():hasMany
+    {
+        return $this->hasMany(Notification::class);
     }
 }

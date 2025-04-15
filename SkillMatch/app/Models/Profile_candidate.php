@@ -26,4 +26,9 @@ use HasFactory ;
     {
         return $this->belongsTo(Candidate::class);
     }
+
+    public function profileCompany()
+    {
+        return $this->ManyToMany(Profile_company::class);
+    }
 }
