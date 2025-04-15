@@ -8,8 +8,7 @@ use App\Models\User ;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Candidate>
  */
-
-class Serie_ChallengeFactory extends Factory
+class CandidateFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,12 +18,10 @@ class Serie_ChallengeFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->name,
             'dateInscription' => fake()->date(),
             'fichiers' => fake()->filePath(),
             'utilisateur_id' => User::factory(),
-            'challenge' => substr(fake()->paragraph(),0,255),
-            'number' => fake()->numberBetween(1, 9999),
         ];
     }
 }
