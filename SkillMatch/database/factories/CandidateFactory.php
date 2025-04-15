@@ -18,7 +18,7 @@ class CandidateFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name,
+            'name' => fake()->name(),
             'dateInscription' => fake()->date(),
             'fichiers' => fake()->filePath(),
             'utilisateur_id' => User::factory(),
