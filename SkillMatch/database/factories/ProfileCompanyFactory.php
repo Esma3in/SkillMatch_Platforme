@@ -2,36 +2,34 @@
 
 namespace Database\Factories;
 
+use App\Models\ProfileCompany;
+use App\Models\Company;
+use App\Models\Candidate;
+use App\Models\Skill;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Company ;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Profile_company>
- */
 class ProfileCompanyFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
+    protected $model = ProfileCompany::class;
+
+    public function definition(): array
     {
         return [
-            'siret' => fake()->numberBetween(12345789,987654321),
-            'raisonSociale' => fake()->company,
-            'secteurActivite' => fake()->randomElement(['Technology', 'Finance', 'Healthcare', 'Manufacturing', 'Retail']),
-            'adresse' => fake()->address,
-            'telephone' => fake()->phoneNumber,
-            'email' => fake()->unique()->companyEmail,
-            'siteweb' => fake()->url,
-            'capital' => fake()->numberBetween(10000, 10000000),
-            'chiffreAffaires' => fake()->numberBetween(50000, 50000000),
-            'nombreEmployes' => fake()->numberBetween(10, 1000),
-            'dateCreation' => fake()->date(),
-            'statut' => fake()->randomElement(['active', 'inactive', 'pending']),
-            'competencesList' => json_encode(fake()->words(5)),
-            'entreprise_id' => Company::factory(),
+            'serieNumber'    => $this->faker->unique()->numerify('SN-#######'),
+            'reasonSocial'   => $this->faker->company,
+            'address'        => $this->faker->address,
+            'phone'          => $this->faker->phoneNumber,
+            'email'          => $this->faker->unique()->companyEmail,
+            'capital'        => $this->faker->numberBetween(10000, 1000000),
+            'salesfigures'   => $this->faker->numberBetween(50000, 5000000),
+            'nbEmployers'    => $this->faker->numberBetween(10, 500),
+            'DateCreation'   => $this->faker->date(),
+            'status'         => $this->faker->randomElement(['active', 'inactive', 'pending']),
+            
+            // Foreign Keys
+            'skill_id'       => Skill::inRandomOrder()->first()?->id ?? Skill::factory(),
+            'company_id'     => Company::inRandomOrder()->first()?->id ?? Company::factory(),
+            'candidate_id'   => Candidate::inRandomOrder()->first()?->id ?? Candidate::factory(),
         ];
     }
 }

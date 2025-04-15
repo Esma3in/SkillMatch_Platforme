@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('administrators', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('email')->unique()->nullable();
+            $table->string('password')->default("xxxxxxxxxxxxxxxxxxxxxx");
             $table->string('fichiers')->nullable();
-            $table->string('role'); // 'Candidat', 'Entreprise', 'Administrateur'
+            $table->string('role')->default('admin'); // 'Candidat', 'Entreprise', 'Administrateur'
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Challenge;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Administrator extends Model
 {
@@ -16,7 +17,7 @@ class Administrator extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function challenge():hasMany
+    public function challenge()
     {
         return $this->hasMany(Challenge::class);
     }
