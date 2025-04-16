@@ -21,7 +21,7 @@ class NotificationFactory extends Factory
         return [
             'message'=>fake()->paragraph(4),
             'dateEnvoi'=>fake()->dateTimeBetween('-1 month','now'),
-            'destinatiare'=>fake()->name(),
+            'destinataire'=>fake()->name(),
             'company_id'=>Company::factory(),
             'candidate_id'=>Candidate::factory()
         ];

@@ -12,7 +12,6 @@ class Company extends Model
         'name',
         'sector',
         'files',
-       'profileCompany_id'
     ];
 
     // get the notifications send by this company

@@ -43,7 +43,6 @@ class CompanyFactory extends Factory
             'name'=>fake()->company(),
             'sector'=>fake()->randomElement($sectors),
             'files'=>fake()->optional()->word().'pdf',
-            'profileCompany_id'=>ProfileCompany::factory()
         ];
     }
 }

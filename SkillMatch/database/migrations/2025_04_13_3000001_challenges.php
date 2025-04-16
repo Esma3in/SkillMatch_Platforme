@@ -23,8 +23,8 @@ return new class extends Migration
             $table->text('outputFormat');
             // relations
             $table->foreignId('skill_id')->constrained('Skills')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('administrator_id')->constrained('administrators')->onDelete('cascade')->onUpdate('cascade');
-            
+            $table->foreignId('administrator_id')->constrained('administrators');
+            $table->timestamps();
 
         });
     }

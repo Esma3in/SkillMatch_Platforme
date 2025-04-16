@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ProfileCandidate;
 use App\Models\Profile_candidate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,7 @@ class DocumentFactory extends Factory
                 'ID Document',
                 'Certificate'];
         return [
-            'candidate_profile_id'=>Profile_candidate::factory(),
+            'candidate_profile_id'=>ProfileCandidate::factory(),
             'document_type'=>$this->faker->randomElement($types_documents),
             'file_path'=>'Documents/'.$this->faker->uuid.'pdf',
         ];

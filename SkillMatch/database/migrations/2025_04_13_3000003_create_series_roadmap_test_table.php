@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('series_roadmap_test', function (Blueprint $table) {
+        Schema::create('road_map_tests', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('roadmap_id')->constrained()->onDelete('cascade');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('series_roadmap_test');
+        Schema::dropIfExists('road_map_tests');
     }
 };

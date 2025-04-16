@@ -16,6 +16,7 @@ return new class extends Migration
             $table->double('score');
             $table->foreignId('candidate_id')->constrained()->onDelete("cascade");
             $table->foreignId('test_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
 
         });
     }

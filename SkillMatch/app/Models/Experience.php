@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Experience extends Model
 {
+    use HasFactory;
     protected $fillable=[
         'candidate_profile_id',
         'title',
@@ -25,7 +27,6 @@ class Experience extends Model
             //Profile_candidate::class
             'id',
             'id',
-            'candidate_id',
             'profile_candidate_id'
         );
     }

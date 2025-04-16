@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('formations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("candidate_profile_id");
-            $table->foreign('candidate_profile_id')->references("id")->on('profiles_candidate')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('candidate_profile_id')->references("id")->on('profile_candidates')->onDelete('cascade')->onUpdate('cascade');
             $table->string('institution_name');
             $table->float('degree');
             $table->date('start_date');

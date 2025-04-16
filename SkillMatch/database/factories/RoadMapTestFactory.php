@@ -2,15 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\RoadMap_Test;
-use App\Models\Candidate;
 use App\Models\Roadmap;
+use App\Models\Candidate;
+use App\Models\RoadMapTest;
+use App\Models\RoadMap_Test;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RoadMap_Test>
  */
-class RoadMap_TestFactory extends Factory
+class RoadMapTestFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -31,7 +32,7 @@ class RoadMap_TestFactory extends Factory
     //des candidats associés dans un test de la roadmap
     public function withCandidates(int $count = 3): self
     {
-        return $this->afterCreating(function (RoadMap_Test $roadMapTest) use ($count) {
+        return $this->afterCreating(function (RoadMapTest $roadMapTest) use ($count) {
             $candidates = Candidate::factory($count)->create();
             $roadMapTest->candidates()->attach($candidates, [
                 'score' => $this->faker->numberBetween(0, 100),

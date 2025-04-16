@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Administrator;
 use App\Models\Skill;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -39,8 +40,9 @@ class ChallengeFactory extends Factory
             'level'=>fake()->randomElement($levels),
             'example'=>fake()->text(),
             'inputFormat'=>fake()->text(10000),
-            'ouputFormat'=>fake()->text(100),
-            'skill_id'=>Skill::factory()
+            'outputFormat'=>fake()->text(100),
+            'skill_id'=>Skill::factory(),
+            'administrator_id'=>Administrator::factory()
         ];
     }
 }

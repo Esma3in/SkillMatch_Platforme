@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\SerieChallenge;
 use App\Models\Serie_Challenge;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,10 +14,7 @@ class Attestation extends Model
 
     protected $fillable = [
         'id',
-        'title',
-        'description',
-        'signature',
-        'candidate_id',
+        'title'
     ];
 
     public function candidate(): BelongsTo
@@ -26,6 +24,6 @@ class Attestation extends Model
 
     public function seriesChallenge() : BelongsTo
     {
-        return $this->belongsTo(Serie_Challenge::class, 'series_challenge_id');
+        return $this->belongsTo(SerieChallenge::class, 'series_challenge_id');
     }
 }

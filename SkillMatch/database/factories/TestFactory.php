@@ -22,7 +22,7 @@ class TestFactory extends Factory
         return [
             'description'=>fake()->paragraph(3),
             'difficulte'=>$this->faker->randomElement($difficulteTable),
-            'evaluation'=>$this->faker->random_int(5,10),
+            'evaluation'=>$this->faker->randomNumber(5,10),
             'company_id'=>Company::factory(),
         ];
     }

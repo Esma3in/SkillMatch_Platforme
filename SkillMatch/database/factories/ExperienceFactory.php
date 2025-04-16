@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ProfileCandidate;
 use App\Models\Profile_candidate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class ExperienceFactory extends Factory
     public function definition(): array
     {
         return [
-            'candidate_profile_id'=>Profile_candidate::factory(),
+            'candidate_profile_id'=>ProfileCandidate::factory(),
             'title'=>fake()->sentence(7),
             'company_name'=>fake()->company(),
             'start_date'=>fake()->dateTimeBetween('-7 years','-5 years'),

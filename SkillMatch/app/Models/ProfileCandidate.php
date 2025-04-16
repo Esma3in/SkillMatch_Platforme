@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Candidate;
+use App\Models\ProfileCompany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
-class Profile_candidate extends Model
+class ProfileCandidate extends Model
 {
 
 use HasFactory ;
@@ -29,6 +30,6 @@ use HasFactory ;
 
     public function profileCompany()
     {
-        return $this->ManyToMany(Profile_company::class);
+        return $this->ManyToMany(ProfileCompany::class);
     }
 }

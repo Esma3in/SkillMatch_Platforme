@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create("Challenges_Selected" , function(Blueprint $table){
             $table->id();
             $table->foreignId('challenge_id')->constrained('challenges')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('series_challenges_id')->constrained('Series_Challenges')->onDelete('cascade')->onUpdate('cascade');
+            $table->timestamps();
+
         });
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('Challenges_Selected');
     }
 };

@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('usageFrequency');
             $table->string('classement');
             $table->foreignId('candidate_id')->nullable()->constrained();
-            $table->foreignId('company_id')->nullable()->constrained();
+            $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('test_id')->nullable()->constrained('Tests');
-        });
+            $table->timestamps();
+                });
     }
 
     /**

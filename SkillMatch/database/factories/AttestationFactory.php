@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Candidate;
+use App\Models\SerieChallenge;
 use App\Models\Serie_Challenge;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,10 +21,7 @@ class AttestationFactory extends Factory
     {
         return [
             'title' => fake()->sentence(3),
-            'description' => substr(fake()->paragraph(),0,255),
-            'signature' => fake()->imageUrl(),
-            'candidate_id' => Candidate::factory(),
-            'series_challenge_id' => Serie_Challenge::factory(),
+            'series_challenge_id' => SerieChallenge::factory(),
         ];
     }
 }

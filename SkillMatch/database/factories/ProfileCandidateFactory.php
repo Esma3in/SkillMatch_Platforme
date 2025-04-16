@@ -47,7 +47,7 @@ class ProfileCandidateFactory extends Factory
                 'country' => fake()->country,
             ]),
             'competenceList' => json_encode(fake()->words(5)),
-            'candidat_id' => Candidate::factory(),
+            'candidate_id' => Candidate::factory(),
         ];
     }
 }

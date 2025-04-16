@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('sector')->nullable();
             $table->string('files')->nullable();
-            $table->foreignId('profileCompany_id')->constrained('profilesCompanies')->onDelete('cascade')->onUpdate('cascade');
+            $table->timestamps();
         } );
     }
 

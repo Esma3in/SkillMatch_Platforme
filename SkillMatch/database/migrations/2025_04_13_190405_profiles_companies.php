@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profilesCompanies' ,function(Blueprint $table){
+        Schema::create('profile_companies' ,function(Blueprint $table){
             $table->id();
             $table->string('serieNumber')->unique();
             $table->string('reasonSocial')->nullable();
@@ -24,8 +24,9 @@ return new class extends Migration
             $table->date('DateCreation')->nullable();
             $table->string('status')->nullable();
             $table->foreignId('skill_id')->constrained()->cascadeOnDelete();
-            $table->foreingId('company_id')->constrained('companies')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('candidate_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('profile_companies');
     }
 };

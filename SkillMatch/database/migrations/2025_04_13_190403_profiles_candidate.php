@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('profiles_candidate', function (Blueprint $table) {
+        Schema::create('profile_candidates', function (Blueprint $table) {
             $table->id();
             $table->json('experience')->nullable(); // to make sure that this variable in zn array
             $table->json('formation')->nullable();  // to make sure that this variable in zn array
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('profiles_candidate');
+        Schema::dropIfExists('profile_candidates');
     }
 };

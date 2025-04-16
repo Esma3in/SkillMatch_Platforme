@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\ProfileCandidate;
 use App\Models\Profile_candidate;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Formation>
@@ -40,7 +42,7 @@ class FormationFactory extends Factory
             "Digital Sociology / Humanities"
         ];
         return [
-        'candidate_profile_id'=>Profile_candidate::factory(),
+        'candidate_profile_id'=>ProfileCandidate::factory(),
         'institution_name'=>fake()->company(),
         'degree'=>$this->faker->randomFloat(2,12,19),
         'start_date'=>fake()->dateTimeBetween('-11 years','-7 years'),

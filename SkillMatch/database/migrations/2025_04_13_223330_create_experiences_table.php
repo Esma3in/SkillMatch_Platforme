@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("candidate_profile_id");
-            $table->foreign('candidate_profile_id')->references("id")->on('profiles_candidate')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('candidate_profile_id')->references("id")->on('profile_candidates')->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
             $table->string('company_name');
             $table->date('start_date');
