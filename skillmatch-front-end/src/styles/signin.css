@@ -1,0 +1,149 @@
+/* General resets and font */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  .switch-link {
+    color: #2563eb;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8fafc;
+  }
+  
+  .container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  fieldset{
+    border: none;
+  }
+  
+  .form-section {
+    width: 55%;
+    padding: 100px 80px;
+    background-color: #F8FAFC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .signin-form {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  legend {
+    font-weight: 500;
+    font-size: 52px;
+    line-height: 62px;
+    letter-spacing: 2px;
+    color: #090914;
+    margin-bottom: 40px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-field label {
+    font-weight: 500;
+    font-size: 16px;
+    color: #090914;
+    margin-bottom: 8px;
+  }
+  
+  .form-field input[type="email"],
+  .form-field input[type="password"] ,
+  .form-field input[type='text']{
+    padding: 16px;
+    font-size: 16px;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    background: #F8FAFC;
+  }
+  
+  .remForg-part {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #18181B;
+  }
+  
+  .remForg-part .form-field {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  #remember-meCheck {
+    width: 19px;
+    height: 19px;
+    border: 1px solid #94A3B8;
+    border-radius: 5px;
+    margin-right: 8px;
+  }
+  
+  .forgetPassword a {
+    color: #2563EB;
+    text-decoration: none;
+  }
+  
+  .signin-btn {
+    margin-top: 20px;
+  }
+  
+  .signin-btn button {
+    width: 160px;
+    height: 55px;
+    background: #2563EB;
+    border-radius: 9px;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .signUp-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #64748B;
+  }
+  
+  .signUp-link a {
+    margin-left: 5px;
+    color: #2563EB;
+    text-decoration: none;
+  }
+  
+  /* Right: Visual side */
+  .visual-section {
+    width: 45%;
+    background-color: #2563EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  .visual-section img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  
