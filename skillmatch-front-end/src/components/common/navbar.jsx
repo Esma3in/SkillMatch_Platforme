@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../styles/pages/Navbar/navbarLanding.css';
 import logo from '../../assets/logo.png';
-const Header = () => {
+const NavbarLanding = () => {
   return (
     <header className="header">
       <div className="header-container">
@@ -31,4 +31,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default NavbarLanding;
