@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import image from '../assets/BG (1).png';
 import '../styles/signin.css';
 import { useState } from 'react';
@@ -99,7 +99,6 @@ export default function SignUp({ onToggle }) {
     </>
   );
 }
-=======
 import React from 'react';
 import "../styles/pages/SignUp.css"
 
@@ -164,4 +163,3 @@ export const SignUp =()=>{
         </div>
     )
 }
->>>>>>> 4af6a459bbec8bba44598bb9c552272eac2bbff9
