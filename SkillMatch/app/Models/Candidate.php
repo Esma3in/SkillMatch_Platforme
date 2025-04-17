@@ -10,7 +10,7 @@ use App\Models\Roadmap;
 use App\Models\Challenge;
 use App\Models\Attestation;
 use App\Models\Notification;
-use App\Models\Profile_candidate;
+use App\Models\ProfileCandidate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,7 +36,7 @@ class Candidate extends Model
 
     public function profile(): HasOne
     {
-        return $this->hasOne(Profile_candidate::class);
+        return $this->hasOne(ProfileCandidate::class);
     }
 
     public function result(): HasOne
