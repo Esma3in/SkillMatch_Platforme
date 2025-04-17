@@ -1,0 +1,148 @@
+.header {
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+  }
+  
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+  }
+  
+  .brand-name {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.5px;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .navigation {
+    margin-left: 60px;
+  }
+  
+  .nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 36px;
+  }
+  
+  .nav-links li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links li a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #4a36ec;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-links li a:hover {
+    color: #4a36ec;
+  }
+  
+  .nav-links li a:hover::after {
+    width: 100%;
+  }
+  
+  .auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  
+  .btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #4a36ec, #7c59ff);
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(74, 54, 236, 0.3);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #3a29c9, #6b48e2);
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    color: #4a36ec;
+    border: 2px solid #4a36ec;
+  }
+  
+  .btn-outline:hover {
+    background-color: rgba(74, 54, 236, 0.07);
+    border-color: #3a29c9;
+    color: #3a29c9;
+  }
+  
+  .profile-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #4a36ec;
+  }
+  
+  .profile-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  @media (max-width: 768px) {
+    .navigation {
+      display: none;
+    }
+  
+    .btn {
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+  
+    .auth-buttons {
+      gap: 10px;
+    }
+  }
+  
