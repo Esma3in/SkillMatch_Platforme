@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CandidateController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return ['Laravel' => app()->version()];
 });
+
+require __DIR__.'/auth.php';

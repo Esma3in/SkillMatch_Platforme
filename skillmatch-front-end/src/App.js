@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import Candidates from "./Espaces/Candidate";
 import { useEffect } from "react";
 import axios from "axios";
@@ -9,16 +9,5 @@ export default function App(){
     <SignPages/>
   )
 }
-=======
 
-import './App.css';
-import { SignUp } from './pages/SignUp';
 
-function App() {
-  return (
-    <SignUp />
-  );
-}
-
-export default App;
->>>>>>> 4af6a459bbec8bba44598bb9c552272eac2bbff9
