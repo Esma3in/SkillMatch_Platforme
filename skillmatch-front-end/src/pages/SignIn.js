@@ -1,5 +1,5 @@
 import image from '../assets/BG (1).png';
-import '../styles/signin.css';
+import '../styles/pages/Sign/signin.css';
 import { useState } from 'react';
 
 export default function SignIn({ onToggle }) {

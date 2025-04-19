@@ -19,8 +19,8 @@ class CandidateFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'dateInscription' => fake()->date(),
-            'files' => fake()->optional()->word() . '.pdf',
+            'email' => fake()->safeEmail(),
+            'password' => fake()->password()
         ];
     }
 }

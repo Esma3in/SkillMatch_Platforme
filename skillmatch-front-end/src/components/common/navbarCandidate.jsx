@@ -146,8 +146,6 @@ const NavbarCandidate = () => {
           </div>
         </div>
       </div>
-      <div className="content-background">
-      </div>
     </div>
   );
 };

@@ -15,7 +15,7 @@ Route::get('/sanctum/csrf-cookie', function () {
 
 //candidate Routes :
 
-
+Route::post('/store/candidate',[CandidateController::class,'store']);
 Route::get('/candidate/suggestedcompanies/{id}',[CandidateController::class,'CompaniesMatched']);
 
 

@@ -30,4 +30,21 @@ class CandidateController extends Controller
     
         return response()->json($companiesSuggested, 200);
     }
+    public function store(Request $request){
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:candidates,email',
+            'password' => 'required|min:6',
+        ]);
+    
+        // You might want to hash the password:
+        $validated['password'] = bcrypt($validated['password']);
+        
+
+        $candidate = Candidate::create($validated);
+    
+            session()->put('candidate_id',$candidate->id);
+            return response()->json($candidate->id, 201);
+
+    }
 }
