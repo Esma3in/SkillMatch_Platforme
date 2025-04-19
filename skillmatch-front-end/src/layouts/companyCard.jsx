@@ -1,7 +1,8 @@
+
 import '../styles/pages/SugggestedCompanies/companycard.css'
 
 
-export default function CompnayCard({ props }) {
+export default function CompanyCard({ props }) {
 
     return (
         <div className="container-companycard ">
@@ -13,22 +14,34 @@ export default function CompnayCard({ props }) {
                     <p>{props.name}</p>
                 </div>
                 <div className="link">
-                    <a className='link-url' href={props.profile.email}>{props.profile.email}</a>
+                    {
+                        props.profile ? <a className='link-url' href={props.profile.email}>{props.profile.email}</a> : <a className='link-url' href={props.sector}>{props.sector}</a>
+                    }
+
                 </div>
                 <div className="skils">
-                    {props.skills.map((skill, i) => (
-                        <div key={i} className="chip">
-                            <p className="textname">{skill.name}</p>
+                    {props.skills && props.skills.length > 0 ? (
+                        props.skills.map((skill, i) => (
+                            <div key={i} className="chip">
+                                <p className="textname">{skill.name}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="chip">
+                            <p className="textname">Has no skills for now</p>
                         </div>
-                    ))}
+                    )}
                 </div>
+
                 <div className="Content">
                     <div className="content">
                         <div className="Text">
-                            SerieNumber:{props.profile.serieNumber}
-                            Sector :{props.sector}
-                            Address :{props.profile.address}
+                            {
+                                props.profile ? <p>SerieNumber:{props.profile.serieNumber}
 
+                                    Address :{props.profile.address}</p>
+                                    : ''}
+                            Sector :{props.sector}
                         </div>
                         <div className="employees">
                             {/* <div className="joind-Users">
@@ -37,7 +50,9 @@ export default function CompnayCard({ props }) {
                                 ))}
                             </div> */}
                             <div className="numberEmployees">
-                                +{props.profile.nbEmployers} Employees
+                                {
+                                    props.profile ? <p>  +{props.profile.nbEmployers} Employees</p> : 0
+                                }
                             </div>
                         </div>
                     </div>

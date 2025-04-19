@@ -15,7 +15,7 @@ export default function SignUp({ onToggle }) {
   const navigate = useNavigate(); // ✅ Doit être ici
 
   const handleChange = (e) => {
-    const { id, type, checked, value } = e.target;
+    const { id, value } = e.target;
 
     setFormData((prevData) => {
       switch (id) {
