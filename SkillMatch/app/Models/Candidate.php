@@ -61,7 +61,8 @@ class Candidate extends Model
 
     public function skills(): BelongsToMany
     {
-        return $this->belongsToMany(Skill::class);
+        return $this->belongsToMany(Skill::class,'candidates_skills')
+                    ->withTimestamps();
     }
 
     public function tests(): BelongsToMany

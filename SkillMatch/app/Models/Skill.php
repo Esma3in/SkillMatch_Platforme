@@ -18,18 +18,18 @@ class Skill extends Model
         'type',
         'usageFrequency',
         'classement',
-        'candidate_id',
-        'company_id',
         'test_id'
     ];
 
     // get  the recommandede skills by Company 
-    public function Company(){
-        return $this->belongsToMany(Company::class);
+    public function Companies(){
+        return $this->belongsToMany(Company::class,'companies_skills')
+                    ->withTimestamps();
     }
     // get  the candidate skills
-    public function Candidate(){
-        return $this->belongsToMany(Candidate::class);
+    public function Candidates(){
+        return $this->belongsToMany(Candidate::class,'candidate_skills')
+                    ->withTimestamps();
     }
     // get the corresponding roadmap for this skill
     public function Roadmap(){

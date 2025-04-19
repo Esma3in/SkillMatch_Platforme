@@ -22,4 +22,12 @@ class Company extends Model
         return $this->hasMany(Test::class);
     }
 
+    public function skills(){
+        return $this->belongsToMany(Skill::class,'companies_skills')
+                    ->withTimestamps();
+    }
+    public function profile(){
+        return $this->hasOne(ProfileCompany::class);
+    }
+
 }

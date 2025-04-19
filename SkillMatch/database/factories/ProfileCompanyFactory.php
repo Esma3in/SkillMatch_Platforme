@@ -27,7 +27,6 @@ class ProfileCompanyFactory extends Factory
             'status'         => $this->faker->randomElement(['active', 'inactive', 'pending']),
             
             // Foreign Keys
-            'skill_id'       => Skill::inRandomOrder()->first()?->id ?? Skill::factory(),
             'company_id'     => Company::inRandomOrder()->first()?->id ?? Company::factory(),
             'candidate_id'   => Candidate::inRandomOrder()->first()?->id ?? Candidate::factory(),
         ];

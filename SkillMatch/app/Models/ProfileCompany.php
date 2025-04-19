@@ -20,17 +20,11 @@ class ProfileCompany extends Model
         'nbEmployers',
         'DateCreation',
         'status',
-        'skill_id',
         'company_id',
         'candidate_id'
     ];
 
-    // gett the competences of an  companyh
-    public function skills(){
-        return $this->hasMany(Skill::class);
-
-    }
-    // get the company associted to this profile 
+     // get the company associted to this profile 
     public function company(){
         return $this->belongsTo(Company::class);
     }

@@ -54,8 +54,6 @@ class SkillFactory extends Factory
             'type' =>fake()->randomElement($type),
             'usageFrequency' =>fake()->randomElement($usageFrequency),
              'classement'=> fake()->randomElement($classement),
-              'candidate_id'=>Candidate::factory(),
-              'company_id' =>Company::factory(),
               'test_id'=>Test::factory()
         ];
     }

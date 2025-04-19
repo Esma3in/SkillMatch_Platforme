@@ -15,16 +15,16 @@ class Test extends Model
     ];
 
     public function company(){
-        return $this->belongsTo('Company::class');
+        return $this->belongsTo(Company::class);
     }
 
-    public function competences(){
-        return $this->belongsToMany('Competence::class','test_competence')
+    public function skills(){
+        return $this->belongsToMany(skill::class,'test_competence')
                     ->withTimestamps();
     }
 
     public function candidate(){
-        return $this->belongsToMany('Candidate::class','resultats')
+        return $this->belongsToMany(Candidate::class,'resultats')
                     ->withPivot('result')
                     ->withTimestamps();
     }
