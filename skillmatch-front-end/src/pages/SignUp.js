@@ -1,191 +1,132 @@
-
 import image from '../assets/BG (1).png';
 import '../styles/signin.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { api } from '../api/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp({ onToggle }) {
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // First: get the CSRF token
-      await api.get('/sanctum/csrf-cookie');
-    
-        // Then: send your secure POST request
-        const response = await api.post('/api/store/candidate',{
-          name: "yassine",
-          dateInscription: "2005-07-12",
-          files: "yassine.pdf" // Make sure this is actually a file, not just a string
-        });
-    
-        console.log(response);
-      } catch (err) {
-        console.error('Error:', err.message);
-      }
-    };
-
-    fetchData();
-  }, []);
-  const [FormData, setFormData] = useState({
-    FullName:'',
+  const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
     remember_me: false,
   });
 
+  const navigate = useNavigate(); // ✅ Doit être ici
+
   const handleChange = (e) => {
     const { id, type, checked, value } = e.target;
 
-    if (type === 'checkbox') {
-      setFormData((prevData) => ({
-        ...prevData,
-        remember_me: checked,
-      }));
-    } else if (id === 'EmailInput') {
-      setFormData((prevData) => ({
-        ...prevData,
-        email: value,
-      }));
-    } else if (id === 'PasswordInput') {
-      setFormData((prevData) => ({
-        ...prevData,
-        password: value,
-      }));
-    }else if(id === 'FullNameInput'){
-            setFormData((prevData)=>({
-                ...prevData,FullName:value,
-            }))
+    setFormData((prevData) => {
+      switch (id) {
+        case 'EmailInput':
+          return { ...prevData, email: value };
+        case 'PasswordInput':
+          return { ...prevData, password: value };
+        case 'FullNameInput':
+          return { ...prevData, name: value };
+        case 'RememberMeCheckbox':
+          return { ...prevData, remember_me: checked };
+        default:
+          return prevData;
+      }
+    });
+  };
+
+  const fetchData = async () => {
+    try {
+      await api.get('/sanctum/csrf-cookie');
+
+      const response = await api.post('/api/store/candidate', {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      console.log('Server response:', response);
+    } catch (err) {
+      console.error('Error:', err.message);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted data:', FormData);
-
+    try {
+      await fetchData();
+      navigate('/candidate/Session'); // ✅ Navigation directe
+    } catch (err) {
+      console.error('Signup failed:', err.message);
+    }
   };
 
   return (
-    <>
-      <div className="container">
+    <div className="container">
       <div className="visual-section">
-          <img src={image} alt="Sign In Visual" />
-        </div>
-        <div className="form-section">
-          <div className="signin-form">
-            <fieldset>
-              <legend>Sign Up</legend>
-              <form onSubmit={handleSubmit}>
+        <img src={image} alt="Sign In Visual" />
+      </div>
+      <div className="form-section">
+        <div className="signin-form">
+          <fieldset>
+            <legend>Sign Up</legend>
+            <form onSubmit={handleSubmit}>
               <div className="form-field">
-                  <label htmlFor="FullNameInput" id="FullNameLabel">Full Name</label>
+                <label htmlFor="FullNameInput">Name</label>
+                <input
+                  type="text"
+                  id="FullNameInput"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-field">
+                <label htmlFor="EmailInput">Email</label>
+                <input
+                  type="email"
+                  id="EmailInput"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-field">
+                <label htmlFor="PasswordInput">Password</label>
+                <input
+                  type="password"
+                  id="PasswordInput"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-field">
+                <label htmlFor="RememberMeCheckbox">
                   <input
-                    type="text"
-                    id="FullNameInput"
-                    value={FormData.FullName}
+                    type="checkbox"
+                    id="RememberMeCheckbox"
+                    checked={formData.remember_me}
                     onChange={handleChange}
-                    required
                   />
+                  Remember Me
+                </label>
+              </div>
+              <div className="action-part">
+                <div className="signin-btn">
+                  <button type="submit">Sign Up</button>
                 </div>
-                <div className="form-field">
-                  <label htmlFor="EmailInput" id="emailLabel">Email</label>
-                  <input
-                    type="email"
-                    id="EmailInput"
-                    value={FormData.email}
-                    onChange={handleChange}
-                    required
-                  />
+                <div className="signUp-link">
+                  <p>
+                    You already have an account?{' '}
+                    <span className="switch-link" onClick={onToggle}>
+                      Sign In
+                    </span>
+                  </p>
                 </div>
-                <div className="form-field">
-                  <label htmlFor="PasswordInput" id="passwordLabel">Password</label>
-                  <input
-                    type="password"
-                    id="PasswordInput"
-                    value={FormData.password}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="action-part">
-                  <div className="signin-btn">
-                    <button type="submit">Sign Up</button>
-                  </div>
-                  <div className="signUp-link">
-                    <p>You already have an account? <span className="switch-link" onClick={onToggle}>Sign In</span></p>
-                  </div>
-                </div>
-              </form>
-            </fieldset>
-          </div>
+              </div>
+            </form>
+          </fieldset>
         </div>
       </div>
-    </>
+    </div>
   );
 }
-<<<<<<< HEAD
-=======
-import React from 'react';
-import "../styles/pages/SignUp.css"
-
-//import starts
-import Star1 from "../assets/group-1.png";
-import Star2 from "../assets/group-2.png";
-import Star3 from "../assets/group-3.png";
-import Star4 from "../assets/group-4.png";
-
-export const SignUp =()=>{
-    const starImages= [Star1,Star2,Star3,Star4];
-
-    return(
-        <div className='signup-container'>
-            {/* left section */}
-            <div className='left-section'>
-                <div className="welcome-message">
-                    <h1>Welcome to <span className="highlight">SkillMatch</span></h1>
-                    <p>Our site offers a seamless company and candidate experience.</p>
-                </div>
-
-                <div className="testimonial-section">
-                    <div className="star-rating">
-                        {starImages.map((src, index) => (
-                        <img key={index} src={src} alt="star" className="star-icon" />
-                        ))}
-                    </div>
-                    <p className="testimonial-text">
-                        Discover and interact with companies and candidates with ease.
-                        Enjoy a smooth and intuitive experience to find the best opportunities.
-                    </p>
-                </div>
-            </div>
-            {/* Right section */}
-            <div className="right-section">
-                <div className="form-card">
-                <h2>Create your account</h2>
-                    <form className="signup-form">
-                        <div className="form-group">
-                        <label htmlFor="fullName">Full Name</label>
-                        <input id="fullName" type="text" placeholder="John Doe" />
-                        </div>
-
-                        <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input id="email" type="email" placeholder="john@example.com" />
-                        </div>
-
-                        <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input id="password" type="password" placeholder="••••••••" />
-                        </div>
-
-                        <button type="submit" className="submit-button">Sign Up</button>
-
-                        <p className="signin-link">
-                        Already have an account? <a href="#">Sign In</a>
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    )
-}
->>>>>>> 298a223bb1c2cf812439e8488db481076d73e512

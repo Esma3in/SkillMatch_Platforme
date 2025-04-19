@@ -21,10 +21,10 @@ class Candidate extends Model
 {
     use HasFactory ;
 
-    protected $fillable = ['id',
+    protected $fillable = [
     'name',
-    'dateInscription',
-    'files'
+    'email',
+    'password'
     ];
 
 

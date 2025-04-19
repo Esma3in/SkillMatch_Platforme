@@ -8,12 +8,17 @@ use Illuminate\Http\Request;
 class CandidateController extends Controller
 {
     public function store(Request $request){
-        $credentials =$request->validate([
-            'name'=>'required',
-            'dateInscription'=>'required',
-            'files'=>'required',
-        ] );
-        $candidate = Candidate::create($credentials);
-        return response()->json($candidate,200);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:candidates,email',
+            'password' => 'required|min:6',
+        ]);
+    
+        // You might want to hash the password:
+        $validated['password'] = bcrypt($validated['password']);
+    
+        $candidate = Candidate::create($validated);
+    
+        return response()->json($candidate, 201);
     }
 }
