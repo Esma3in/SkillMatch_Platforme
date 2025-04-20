@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
         Administrator::factory(3)->create();
 
         // Create Companies and their Profiles, Roadmaps, Challenges
-        Company::factory(5)->create()->each(function ($company) use($skillsCreated) {
+        Company::factory(125)->create()->each(function ($company) use($skillsCreated) {
              ProfileCompany::factory()->create(['company_id' => $company->id]);
             $randomSkill = $skillsCreated[array_rand($skillsCreated)];
             CompaniesSkills::factory()->create([

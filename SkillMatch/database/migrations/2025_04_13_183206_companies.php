@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('sector')->nullable();
             $table->string('files')->nullable();
+            $table->string('logo')->nullable();
             $table->timestamps();
         } );
     }

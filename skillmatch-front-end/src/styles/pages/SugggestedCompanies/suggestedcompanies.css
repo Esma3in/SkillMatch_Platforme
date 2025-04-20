@@ -10,18 +10,51 @@
     display: flex;
     justify-content: space-between;
   }
+  .title{
+    display:flex;
+    align-items: baseline;
+    margin-left: .33em;
+  }
   .The-suggested-companies {
     left: 16px;
     top: 46px;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 32px;
+    font-size:24px;
     line-height: 20px;
     text-align: center;
     color: #000000;
   }
-  
+      /* Container for the BsStars icon */
+    .icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 48px; /* Square size */
+      height: 48px;
+      background: #f8f9fa; /* Light background to match .companiescards */
+      border: 1px solid #d1d5db; /* Subtle gray border */
+      border-radius: 12px; /* Rounded corners, slightly less than .companiescards' 16px */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); 
+      margin:.33em;/* Softer shadow for elegance */
+      transition: all 0.3s ease; /* Smooth hover effect */
+    }
+
+    /* Style the BsStars icon */
+    .icon-container svg {
+      color: #8b5cf6; /* Vibrant purple */
+      width: 24px; /* Icon size, half the container for balance */
+      height: 24px;
+    }
+
+    /* Hover effect for interactivity */
+    .icon-container:hover {
+      background: #ede9fe; /* Light purple tint on hover */
+      border-color: #8b5cf6; /* Purple border on hover */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
+      transform: scale(1.05); /* Subtle zoom effect */
+    }
   .view-all-companies-btn {
     display: flex;
     flex-direction: column;
@@ -52,11 +85,17 @@
     color: white;
   }
 
-  .companiescards{
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+ /* Container with vertical scrollbar */
+.companiescards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 
   

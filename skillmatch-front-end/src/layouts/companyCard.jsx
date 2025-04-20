@@ -2,65 +2,60 @@
 import '../styles/pages/SugggestedCompanies/companycard.css'
 
 
-export default function CompanyCard({ props }) {
-
+export default function CompanyCard({ name,logo, profile, sector, skills }) {
+  
     return (
-        <div className="container-companycard ">
-            <div className="card">
-                <div className="logo">
-                    <img src={props.name} alt={props.name} />
+      <div className="container-companycard">
+        <div className="card">
+          <div className="logo">
+            <img src={logo} alt={name} width='40px' height='40px' />
+          </div>
+          <div className="title">
+            <p>{name}</p>
+          </div>
+          <div className="link">
+            {profile ? (
+              <a className="link-url" href={profile.email}>{profile.email}</a>
+            ) : (
+              <a className="link-url" href={sector}>{sector}</a>
+            )}
+          </div>
+          <div className="skils">
+            {skills && skills.length > 0 ? (
+              skills.map((skill, i) => (
+                <div key={i} className="chip">
+                  <p className="textname">{skill.name}</p>
                 </div>
-                <div className="title">
-                    <p>{props.name}</p>
+              ))
+            ) : (
+              <div className="chip">
+                <p className="textname">Has no skills for now</p>
+              </div>
+            )}
+          </div>
+  
+          <div className="Content">
+            <div className="content">
+              <div className="Text">
+                {profile ? 
+                  <p>
+                    SerieNumber: {profile.serieNumber}<br />
+                    Address: {profile.address}
+                  </p> : <p>We didnt create our porfile yet</p>
+                }
+                Sector: {sector}
+              </div>
+              <div className="employees">
+                <div className="numberEmployees">
+                  {profile ? <p>+{profile.nbEmployers} Employees</p> : 0}
                 </div>
-                <div className="link">
-                    {
-                        props.profile ? <a className='link-url' href={props.profile.email}>{props.profile.email}</a> : <a className='link-url' href={props.sector}>{props.sector}</a>
-                    }
-
-                </div>
-                <div className="skils">
-                    {props.skills && props.skills.length > 0 ? (
-                        props.skills.map((skill, i) => (
-                            <div key={i} className="chip">
-                                <p className="textname">{skill.name}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="chip">
-                            <p className="textname">Has no skills for now</p>
-                        </div>
-                    )}
-                </div>
-
-                <div className="Content">
-                    <div className="content">
-                        <div className="Text">
-                            {
-                                props.profile ? <p>SerieNumber:{props.profile.serieNumber}
-
-                                    Address :{props.profile.address}</p>
-                                    : ''}
-                            Sector :{props.sector}
-                        </div>
-                        <div className="employees">
-                            {/* <div className="joind-Users">
-                                {props.candidates.map((candidate, i) => (
-                                    <img key={i} src={candidate.avatar} alt="profile" className="Ellipse" />
-                                ))}
-                            </div> */}
-                            <div className="numberEmployees">
-                                {
-                                    props.profile ? <p>  +{props.profile.nbEmployers} Employees</p> : 0
-                                }
-                            </div>
-                        </div>
-                    </div>
-
-                    <button className="view-prfile-btn">View Profile</button>
-
-                </div>
+              </div>
             </div>
+            <button className="view-prfile-btn">View Profile</button>
+          </div>
         </div>
-    )
-}
+      </div>
+
+    );
+  }
+  

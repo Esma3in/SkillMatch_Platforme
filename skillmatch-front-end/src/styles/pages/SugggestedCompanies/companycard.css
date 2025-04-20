@@ -1,152 +1,137 @@
+/* Container principal centré */
 .container-companycard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-    gap: 13px;
-    width: 321px;
-    height: auto;
-    background: #ffffff;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 16px;
-    position: relative;
-  }
-  
-  .card {
-    width: 100%;
-  }
-  
-  .logo img {
-    border: 1px transparent;
-    border-radius: 50%;
-    width: 75px;
-    height: 75px;
-    margin: 0 auto;
-    display: block;
-  }
-  
-  .title {
-    font-family: 'Manrope', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 25px;
-    text-align: center;
-    color: #191d23;
-    margin-top: 16px;
-  }
-  
-  .link {
-    width: 100%;
-    padding: 4px 8px;
-    background: rgba(88, 69, 238, 0.15);
-    border-radius: 24px;
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 280px;
+  background: #ffffff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px auto;
+  transition: transform 0.3s ease;
 }
-  .link-url {
-    display: block;
-    font-family: 'Manrope', sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 19px;
-    text-decoration: underline;
-    color: #0901f1;
-    word-break: break-word;
-  }
-  
-  .skils {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px;
-    gap: 7px;
-    width: 289px;
-    height: 26px;
-    left: 16px;
-    top: 177px;
-  }
-  
-  .chip {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 6px 8px;
-    background: #F7F8F9;
-    border-radius: 2px;
-    font-family: 'Manrope';
-    font-weight: 500;
-    font-size: 10px;
-    line-height: 14px;
-    color: #4B5768;
-  }
-  
-  .Content {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 100%;
-    margin-top: 16px;
-  }
-  
-  .content {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .Text {
-    font-family: 'Manrope', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
-    color: #191d23;
-  }
-  
-  .employees {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .joind-Users {
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .joind-Users img {
-    width: 40px;
-    height: 40px;
-    margin: 0 -17px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .numberEmployees {
-    font-family: 'Manrope', sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 19px;
-    color: #64748b;
-  }
-  
-  .view-prfile-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px;
-    width: 100%;
-    height: 44px;
-    background: #5856d6;
-    border-radius: 5px;
-    color: #ffffff;
-    font-family: 'Manrope', sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 28px;
-    border: none;
-    cursor: pointer;
-    margin-top: auto;
-  }
-  
+
+.container-companycard:hover {
+  transform: translateY(-5px);
+}
+
+/* Contenu de la carte */
+.card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Logo */
+.logo img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #e5e7eb;
+  background-color: #f9fafb;
+  margin: 0 auto;
+}
+
+/* Nom de l'entreprise */
+.title {
+  text-align: center;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #191d23;
+}
+
+/* Lien (email ou secteur) */
+.link {
+  display: flex;
+  justify-content: center;
+  background: rgba(88, 69, 238, 0.1);
+  border-radius: 24px;
+  padding: 6px 12px;
+}
+
+.link-url {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #5a4de7;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.link-url:hover {
+  text-decoration: underline;
+}
+
+/* Compétences */
+.skils {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.chip {
+  background: #f1f5f9;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #334155;
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Contenu complémentaire */
+.Content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.Text {
+  font-size: 14px;
+  line-height: 20px;
+  color: #191d23;
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Employés */
+.employees {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.numberEmployees {
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Bouton */
+.view-prfile-btn {
+  background: #5856d6;
+  color: #fff;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.view-prfile-btn:hover {
+  background: #4947b7;
+}
