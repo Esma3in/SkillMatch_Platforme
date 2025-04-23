@@ -12,7 +12,8 @@ class ProfileCandidate extends Model
 {
 
 use HasFactory ;
-    protected $fillable = ['experience', 'formation', 'photoProfil', 'langage', 'localisation', 'competenceList', 'candidat_id'];
+    protected $fillable = 
+    ['first_name', "last_name" ,"phoneNumber", "'file'", " 'projects'",'experience', 'formation', 'photoProfil', 'langage', 'localisation', 'competenceList', 'candidat_id'];
 
     // bcuz it's better to stock array variabeles on other varibake protected
     protected $casts = [

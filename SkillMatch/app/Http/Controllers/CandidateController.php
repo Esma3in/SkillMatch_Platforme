@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Candidate;
+use App\Models\ProfileCandidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Profiler\Profile;
@@ -46,5 +47,41 @@ class CandidateController extends Controller
             session()->put('candidate_id',$candidate->id);
             return response()->json($candidate->id, 201);
 
+    }
+
+    // profile candidate
+    public function storeProfile(Request $request)
+    {
+        // Validate the request data
+        $validated = $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'phone' => 'required|string|regex:/^\+?[0-9\s\-]{6,20}$/',
+            'file' => 'required|file|mimes:pdf,doc,docx|max:2048', // Max 2MB
+            'projects' => 'required|string',
+            'location' => 'required|string|max:255',
+            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Max 2MB
+        ]);
+
+        // Handle file uploads
+        $photoPath = $request->file('photoProfile')->store('photos', 'public');
+        $filePath = $request->file('file')->store('files', 'public');
+
+        // Create a new CandidateProfile record
+        $profile = ProfileCandidate::create([
+            'first_name' => $validated['firstName'],
+            'last_name' => $validated['lastName'],
+            'phoneNumber' => $validated['phone'],
+            'file' => $filePath,
+            'projects' => $validated['projects'],
+            'location' => $validated['location'],
+            'photoProfil' => $photoPath,
+        ]);
+
+        // Return a success response
+        return response()->json([
+            'message' => 'Profile created successfully!',
+            'data' => $profile,
+        ], 201);
     }
 }

@@ -18,6 +18,10 @@ class ProfileCandidateFactory extends Factory
     public function definition()
     {
         return [
+            'first_name' =>fake()->firstName(),
+            'last_name' =>fake()->lastName(),
+            'phoneNumber'=>fake()->phoneNumber(),
+            'file'=>fake()->optional()->word()."pdf",
             'experience' => json_encode([
                 [
                     'title' => fake()->jobTitle,

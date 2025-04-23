@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/pages/Navbar/navbarCandidate.css';
 import userAvatar from '../../assets/userAvatar.jpg'; 
-
+import {Link} from "react-router"
 const NavbarCandidate = () => {
   const [isTrainingOpen, setIsTrainingOpen] = useState(false);
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
@@ -115,10 +115,7 @@ const NavbarCandidate = () => {
                     </div>
                   </div>
                   <div className="profile-options">
-                    <a href="/profile" className="profile-option">
-                      <i className="option-icon profile-icon"></i>
-                      View profile
-                    </a>
+                   <Link to={'/profile'}>View porfile</Link>
                     <a href="/settings" className="profile-option">
                       <i className="option-icon settings-icon"></i>
                       Settings

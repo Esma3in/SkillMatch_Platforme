@@ -3,6 +3,7 @@ import SignPages from './pages/SignPages';
 import Candidates from './Espaces/Candidate.jsx';
 import Listcompanies from './pages/ListComapnies.jsx';
 import CompaniesMatching from './pages/CompaniesMatching.jsx';
+import { Box } from './pages/createProfileCandidate.jsx';
 export default function App() {
   return (
     <Router>
@@ -14,6 +15,7 @@ export default function App() {
 
         {/* Espace candidat après inscription */}
         <Route path="/candidate/Session/:id" element={<Candidates />} />
+        <Route path='/profile' element={<Box />}/>
 
          <Route path='/companies/list'  element={<CompaniesMatching/>}></Route> 
       </Routes>

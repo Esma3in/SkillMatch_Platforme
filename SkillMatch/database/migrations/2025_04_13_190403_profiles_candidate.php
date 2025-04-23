@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('profile_candidates', function (Blueprint $table) {
             $table->id();
-            $table->json('experience')->nullable(); // to make sure that this variable in zn array
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('phoneNumber')->nullable();
+            $table->string('file')->nullable();
+            $table->json('experience')->nullable();
+            $table->text('projects')->nullable(); // to make sure that this variable in zn array
             $table->json('formation')->nullable();  // to make sure that this variable in zn array
             $table->string('photoProfil')->nullable();
             $table->json('langage')->nullable();    // to make sure that this variable in zn array
