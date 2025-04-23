@@ -2,6 +2,7 @@ import { BrowserRouter as Router,Routes,Route } from 'react-router';
 import SignPages from './pages/SignPages';
 import Candidates from './Espaces/Candidate.jsx';
 import Listcompanies from './pages/ListComapnies.jsx';
+import { ProfileCandidat } from './pages/ProfileCandidate.jsx';
 export default function App() {
   return (
     <Router>
@@ -13,7 +14,7 @@ export default function App() {
 
         {/* Espace candidat après inscription */}
         <Route path="/candidate/Session/:id" element={<Candidates />} />
-
+        <Route path='/profile' element={<ProfileCandidat/>}></Route>
          <Route path='/companies/list'  element={<Listcompanies/>}></Route> 
       </Routes>
     </Router>

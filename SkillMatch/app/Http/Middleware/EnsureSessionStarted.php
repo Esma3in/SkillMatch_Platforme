@@ -20,6 +20,7 @@ class EnsureSessionStarted
     public function handle(Request $request, Closure $next): Response
     {
         if (!session()->has('candidate_id')) {
+              
             return response()->json(['message' => 'You are not connected'], 401); // 🔁 Use 401 Unauthorized
         }
 
