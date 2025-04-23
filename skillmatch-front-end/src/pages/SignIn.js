@@ -75,7 +75,7 @@ export default function SignIn({ onToggle }) {
                     <label htmlFor="remember-meCheck" id="remembermeLabel">Remember me</label>
                   </div>
                   <div className="forgetPassword">
-                    <a href="#">Forgot your password?</a>
+                    <a href="/forgetPassword">Forgot your password?</a>
                   </div>
                 </div>
                 <div className="action-part">

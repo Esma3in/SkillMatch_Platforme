@@ -2,7 +2,7 @@ import '../../styles/pages/SugggestedCompanies/suggestedcompanies.css';
 import { useEffect, useState } from 'react';
 import { api } from '../../api/api';
 import CompnayCard from '../../layouts/companyCard';
-
+import { BsStars } from "react-icons/bs";
 export default function SuggestedCompanies({id}) {
     const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -25,13 +25,15 @@ export default function SuggestedCompanies({id}) {
 
         fetchData();
     }, [id]); // empty dependency array: run once on mount
-
+console.log(companies)
     return (
-        <div className="CompanyMatchedContainer">
+        <div className="CompanyMatchedContainer" >
             <div className="head">
-                <div className="The-suggested-companies">
-                    The suggested companies
-                </div>
+                <div className='title'> 
+                    <div className="The-suggested-companies">
+                  Our Recommdation
+                </div><div className='icon-container'><BsStars /></div></div>
+               
                 <div className="view-all-companies-btn">
                     <button className="btn">View All</button>
                 </div>

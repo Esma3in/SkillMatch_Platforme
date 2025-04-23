@@ -37,7 +37,14 @@ export default function  Companies() {
                 {loading && <p>Loading...</p>}
                 {message && <p>{message}</p>}
                 {!loading && companies.map((company,i) => (
-                    <CompanyCard key={i} props={company}/>
+                    <CompanyCard key={i}
+                    name = {company.name}
+                    profile={company.profile}
+                    skills={company.skills}
+                    sector={company.sector}
+                    logo ={company.logo}
+                    
+                    />
                 ))}
             </div>
         </div>
