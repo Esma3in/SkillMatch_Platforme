@@ -20,4 +20,9 @@ class CandidatesSkills extends Model
     public function Companies(){
         return $this->belongsToMany(Candidate::class);
     }
+    public function challenges()
+    {
+        return $this->belongsToMany(Challenge::class, 'candidate_challenge');
+    }
+
 }

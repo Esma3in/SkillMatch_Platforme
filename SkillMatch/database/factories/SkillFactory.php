@@ -47,9 +47,28 @@ class SkillFactory extends Factory
             'scrum master',
             'product owner'
         ];
+        $skills = [
+            // Languages
+            'Java', 'JavaScript', 'Python', 'C#', 'C++', 'PHP', 'Go', 'Ruby', 'Swift', 'Kotlin', 'TypeScript',
+            // Frontend frameworks
+            'React', 'Vue.js', 'Angular', 'Svelte', 'Alpine.js',
+            // Backend frameworks
+            'Laravel', 'Symfony', 'Express.js', 'Spring Boot', 'Django', 'Flask', 'Rails', 'ASP.NET Core',
+            // Mobile frameworks
+            'React Native', 'Flutter', 'Ionic', 'Xamarin',
+            // DevOps / Tools
+            'Docker', 'Kubernetes', 'Git', 'CI/CD', 'Jenkins', 'GitHub Actions',
+            // Testing
+            'Jest', 'Mocha', 'PHPUnit', 'Cypress', 'Selenium',
+            // Database / Data
+            'MySQL', 'PostgreSQL', 'MongoDB', 'SQLite', 'Redis', 'GraphQL',
+            // Cloud
+            'AWS', 'Azure', 'Google Cloud Platform'
+        ];
+
 
         return [
-            'name'=>fake()->name(),
+            'name' => fake()->randomElement($skills),
             'level'=>fake()->randomElement($levels),
             'type' =>fake()->randomElement($type),
             'usageFrequency' =>fake()->randomElement($usageFrequency),

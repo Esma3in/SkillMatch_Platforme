@@ -53,6 +53,15 @@ class DatabaseSeeder extends Seeder
             ]);
             array_push($skillsCreated, $skillcreated);
         }
+
+        $candidates = Candidate::factory(10)->create();
+        $challenges = Challenge::factory(20)->create();
+
+        foreach ($challenges as $challenge) {
+            $challenge->candidates()->attach(
+                $candidates->random(rand(1, 5))->pluck('id')->toArray()
+            );
+        }
         // Create Administrators
         Administrator::factory(3)->create();
 
