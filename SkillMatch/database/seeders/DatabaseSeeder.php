@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ceo;
 use App\Models\Test;
 use App\Models\Badge;
 use App\Models\Skill;
@@ -17,11 +18,11 @@ use App\Models\Attestation;
 use App\Models\RoadMapTest;
 use App\Models\Notification;
 use App\Models\Administrator;
-use App\Models\CandidatesSkills;
-use App\Models\CompaniesSkills;
 use App\Models\ProfileCompany;
 use App\Models\SerieChallenge;
+use App\Models\CompaniesSkills;
 use Illuminate\Database\Seeder;
+use App\Models\CandidatesSkills;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\Log;
 
@@ -58,6 +59,9 @@ class DatabaseSeeder extends Seeder
 
         // Create Companies and their Profiles, Roadmaps, Challenges
         Company::factory(5)->create()->each(function ($company) use($skillsCreated) {
+            Ceo::factory()->create([
+                'company_id'=>$company->id
+            ]);
              ProfileCompany::factory()->create(['company_id' => $company->id]);
             $randomSkill = $skillsCreated[array_rand($skillsCreated)];
             CompaniesSkills::factory()->create([

@@ -6,13 +6,21 @@ use Mpdf\Mpdf;
 use App\Models\Company;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
-use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
 class CandidateController extends Controller
 {
 
+    public function getCandidate($id){
+        $candidate = Candidate::with(['profile','languages','skills','badges'])->find($id);
+
+        if($candidate){
+            return response()->json($candidate,200);
+        }else{
+            return response()->json(['message'=>'Candidate Not Found'],404);
+        }
+    }
 
 
     public function CompaniesMatched($id)
@@ -76,47 +84,8 @@ class CandidateController extends Controller
     }
 
 
-    public function storeProfile(Request $request)
-    {
+    
 
-        $validated = $request->validate([
-            'field' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'phone' => 'required|string|regex:/^\+?[0-9\s\-]{6,20}$/',
-            'file' => 'required|file|mimes:pdf,doc,docx|max:2048', // Max 2MB
-            'projects' => 'required|string',
-            'location' => 'required|string|max:255',
-            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'candidate_id' => 'required'
-        ]);
-
-        $photoPath = $request->file('photoProfile')->store('images', 'public');
-        $filePath = $request->file('file')->store('files', 'public');
-
-        $profile = ProfileCandidate::create([
-
-            'field' => $validated['field'],
-            'last_name' => $validated['lastName'],
-            'phoneNumber' => $validated['phone'],
-            'file' => $filePath,
-            'projects' => $validated['projects'],
-            'localisation' => $validated['location'],
-            'photoProfil' => $photoPath,
-            'candidate_id' => $validated['candidate_id']
-        ]);
-
-        return response()->json([
-            'message' => 'Profile created successfully!',
-            'data' => $profile,
-        ], 201);
-    }
-
-    public function GetProfile($id)
-    {
-        $candidate = Candidate::with(['profile', 'languages'])->find($id);
-
-        return response()->json($candidate, 200);
-    }
 
     public function printCV($id)
     {

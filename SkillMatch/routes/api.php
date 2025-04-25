@@ -19,16 +19,21 @@ Route::get('/sanctum/csrf-cookie', function () {
 
 
 //candidate Routes :
-Route::get('/candidate/CV/{id}',[CandidateController::class,'printCV']);
+
 Route::post('/candidate/signUp',[CandidateController::class,'SignUp']);
-Route::Post('/profiles' , [CandidateController:: class , 'storeProfile']);
-Route::get('/candidate/suggestedcompanies/{id}',[CandidateController::class,'CompaniesMatched']);
-Route::get('/candidate/companies/all',[CompanyController::class,'index']);
-Route::get('/ProfileCandidate/{id}',[CandidateController::class,'GetProfile']);
-Route::post('/candidate/NewLanguage',[LanguageController::class,'store']);
-Route::put('/candidate/setdescription',[ProfileCandidateController::class,'EditDescription']);
-
-
 Route::post('/candidate/signin',[CandidateController::class,'SignIn']);
 Route::get('/logout',[CandidateController::class,'Logout']);
 
+
+Route::Post('/profiles' , [ProfileCandidateController:: class , 'storeProfile']);
+Route::get('/candidate/suggestedcompanies/{id}',[CandidateController::class,'CompaniesMatched']);
+Route::get('/candidate/companies/all',[CompanyController::class,'index']);
+
+Route::post('/candidate/NewLanguage',[LanguageController::class,'store']);
+Route::put('/candidate/setdescription',[ProfileCandidateController::class,'EditDescription']);
+
+Route::get('/candidate/CV/{id}',[CandidateController::class,'printCV']);
+
+
+Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);
+Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);

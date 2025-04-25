@@ -8,11 +8,6 @@ export default function CompaniesMatching({id}){
 <>
         <NavbarCandidate/>
         <SuggestedCompanies id={id}/>
-
-
-
-
-
         <Companies />
 </>
         
