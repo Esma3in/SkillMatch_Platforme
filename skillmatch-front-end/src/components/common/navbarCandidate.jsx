@@ -3,7 +3,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/pages/Navbar/navbarCandidate.css';
 import userAvatar from '../../assets/userAvatar.jpg'; 
 import {Link} from "react-router"
+import UseLogout from '../../hooks/useLogout';
+
 const NavbarCandidate = () => {
+  const logout = UseLogout()
+  const candidate_id = JSON.parse(localStorage.getItem('candidate_id'))
   const [isTrainingOpen, setIsTrainingOpen] = useState(false);
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -37,7 +41,7 @@ const NavbarCandidate = () => {
         <div className="navbar-left">
           <div className="navbar-logo">SkillMatch</div>
           <nav className="navbar-nav">
-            <a href="/" className="nav-item">Home</a>
+            <a href={`/candidate/Session/${candidate_id}`} className="nav-item">Home</a>
             
             <div 
               className="nav-item dropdown"
@@ -115,7 +119,10 @@ const NavbarCandidate = () => {
                     </div>
                   </div>
                   <div className="profile-options">
-                   <Link to={'/profile'}>View porfile</Link>
+                  <a href="/profile" className="profile-option">
+                      <i className="option-icon profile-icon"></i>
+                      Profile
+                    </a>
                     <a href="/settings" className="profile-option">
                       <i className="option-icon settings-icon"></i>
                       Settings
@@ -132,10 +139,10 @@ const NavbarCandidate = () => {
                       <i className="option-icon support-icon"></i>
                       Support
                     </a>
-                    <a href="/logout" className="profile-option">
+                    <button onClick={logout} className="profile-option">
                       <i className="option-icon logout-icon"></i>
                       Log out
-                    </a>
+                    </button>
                   </div>
                 </div>
               )}
