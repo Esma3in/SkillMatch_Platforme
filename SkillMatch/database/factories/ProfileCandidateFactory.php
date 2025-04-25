@@ -18,6 +18,10 @@ class ProfileCandidateFactory extends Factory
     public function definition()
     {
         return [
+            'field' =>fake()->firstName(),
+            'last_name' =>fake()->lastName(),
+            'phoneNumber'=>fake()->phoneNumber(),
+            'file'=>fake()->optional()->word()."pdf",
             'experience' => json_encode([
                 [
                     'title' => fake()->jobTitle,
@@ -41,7 +45,6 @@ class ProfileCandidateFactory extends Factory
                 ],
             ]),
             'photoProfil' => fake()->imageUrl(200, 200, 'people'),
-            'langage' => json_encode(fake()->randomElements(['English', 'French', 'Spanish', 'German'], rand(1, 3))),
             'localisation' => json_encode([
                 'city' => fake()->city,
                 'country' => fake()->country,

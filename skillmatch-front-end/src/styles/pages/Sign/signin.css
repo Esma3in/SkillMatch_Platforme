@@ -32,6 +32,12 @@ body {
   overflow: hidden;
   background-color: #64748b;
 }
+.error-message {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
+}
 
 /* ========================
    Form Section Styling

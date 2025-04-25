@@ -9,6 +9,8 @@ export default function SignIn({ onToggle }) {
     remember_me: false,
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { id, type, checked, value } = e.target;
 
@@ -30,10 +32,36 @@ export default function SignIn({ onToggle }) {
     }
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!FormData.email) {
+      newErrors.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(FormData.email)) {
+      newErrors.email = 'Email is invalid.';
+    }
+
+    if (!FormData.password) {
+      newErrors.password = 'Password is required.';
+    } else if (FormData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters.';
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     console.log('Submitted data:', FormData);
-    // Add your sign-in logic here
+    
   };
 
   return (
@@ -53,6 +81,7 @@ export default function SignIn({ onToggle }) {
                     onChange={handleChange}
                     required
                   />
+                  {errors.email && <span className="error-message">{errors.email}</span>}
                 </div>
                 <div className="form-field">
                   <label htmlFor="PasswordInput" id="passwordLabel">Password</label>
@@ -63,6 +92,7 @@ export default function SignIn({ onToggle }) {
                     onChange={handleChange}
                     required
                   />
+                  {errors.password && <span className="error-message">{errors.password}</span>}
                 </div>
                 <div className="remForg-part">
                   <div className="form-field">

@@ -5,6 +5,7 @@ import Candidates from './Espaces/Candidate.jsx';
 import ProfileCandidat from './pages/ProfileCandidate.jsx';
 import CompaniesMatching from './pages/CompaniesMatching.jsx';
 import CompanyProfile from './components/modals/CompanyProfileForCandidate.jsx';
+import { Box } from './pages/createProfileCandidate.jsx';
 export default function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ export default function App() {
 
         {/* Espace candidat après inscription */}
         <Route path="/candidate/Session/:id" element={<Candidates />} />
+        <Route path='/Createprofile' element={<Box/>}/>
 
          <Route path='/companies/list'  element={<CompaniesMatching/>}></Route> 
          <Route path='/profile' element={<ProfileCandidat/>} />

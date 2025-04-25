@@ -3,8 +3,11 @@ import '../styles/pages/Sign/signin.css';
 import { useState } from 'react';
 import { api } from '../api/api';
 import { useNavigate } from 'react-router-dom';
+import { setSession } from '../features/session/sessionSlice';
+import { useDispatch } from 'react-redux';
 
 export default function SignUp({ onToggle }) {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -41,7 +44,9 @@ export default function SignUp({ onToggle }) {
         password: formData.password,
       });
       
-      console.log('Server response:', response);
+      console.log('Server response:', response.data);
+      
+     
       return response.data
     } catch (err) {
       console.error('Error:', err.message);
@@ -53,9 +58,14 @@ export default function SignUp({ onToggle }) {
     try {
       const session_id = await fetchData();
       if(session_id){
+        const user = {
+          'user_id': session_id
+      };
+      
+      localStorage.setItem('user', JSON.stringify(user));
+        dispatch(setSession(session_id))
         navigate(`/candidate/Session/${session_id}`);
       }else{console.log(session_id)}
-       // ✅ Navigation directe
     } catch (err) {
       console.error('Signup failed:', err.message);
     }

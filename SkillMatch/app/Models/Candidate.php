@@ -75,5 +75,8 @@ class Candidate extends Model
     {
         return $this->belongsToMany(Challenge::class);
     }
+    public function languages(){
+        return $this->hasMany(Language::class);
+    }
 
 }

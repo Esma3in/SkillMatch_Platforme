@@ -13,17 +13,21 @@ return new class extends Migration
     {
         Schema::create('profile_candidates', function (Blueprint $table) {
             $table->id();
-            $table->json('experience')->nullable(); // to make sure that this variable in zn array
+            $table->string('last_name')->nullable();
+            $table->string('field')->nullable();
+            $table->string('phoneNumber')->nullable();
+            $table->string('file')->nullable();
+            $table->json('experience')->nullable();
+            $table->text('description')->nullable();
+            $table->text('projects')->nullable(); // to make sure that this variable in zn array
             $table->json('formation')->nullable();  // to make sure that this variable in zn array
             $table->string('photoProfil')->nullable();
-            $table->json('langage')->nullable();    // to make sure that this variable in zn array
-            $table->json('localisation')->nullable(); // to make sure that this variable in zn array
+            $table->string('localisation')->nullable(); // to make sure that this variable in zn array
             $table->json('competenceList')->nullable();
             $table->foreignId('candidate_id')->constrained('candidates')->onDelete('cascade');
             $table->timestamps();
         });
     }
-
     public function down()
     {
         Schema::dropIfExists('profile_candidates');

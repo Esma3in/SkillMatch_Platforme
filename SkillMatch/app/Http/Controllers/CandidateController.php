@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Candidate;
+use App\Models\ProfileCandidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Profiler\Profile;
+use Mpdf\Mpdf;
 
 class CandidateController extends Controller
 {
@@ -30,21 +31,194 @@ class CandidateController extends Controller
     
         return response()->json($companiesSuggested, 200);
     }
-    public function store(Request $request){
+    public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:candidates,email',
+        'password' => 'required|min:6',
+    ]);
+
+    $validated['password'] = bcrypt($validated['password']);
+
+    $candidate = Candidate::create($validated);
+
+    session()->put('candidate_id', $candidate->id);
+
+    $candidate_id = session('candidate_id');
+
+    
+    return response()->json($candidate_id, 201);
+}
+
+
+    // profile candidate
+    public function storeProfile(Request $request)
+    {
+        // Validate the request data
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:candidates,email',
-            'password' => 'required|min:6',
+            'field' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'phone' => 'required|string|regex:/^\+?[0-9\s\-]{6,20}$/',
+            'file' => 'required|file|mimes:pdf,doc,docx|max:2048', // Max 2MB
+            'projects' => 'required|string',
+            'location' => 'required|string|max:255',
+            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048', 
+            'candidate_id'=>'required'
         ]);
-    
-        // You might want to hash the password:
-        $validated['password'] = bcrypt($validated['password']);
-        
 
-        $candidate = Candidate::create($validated);
-    
-            session()->put('candidate_id',$candidate->id);
-            return response()->json($candidate->id, 201);
+        // Handle file uploads
+        $photoPath = $request->file('photoProfile')->store('images', 'public');
+        $filePath = $request->file('file')->store('files', 'public');
 
+        // Create a new CandidateProfile record
+        $profile = ProfileCandidate::create([
+
+            'field' => $validated['field'],
+            'last_name' => $validated['lastName'],
+            'phoneNumber' => $validated['phone'],
+            'file' => $filePath,
+            'projects' => $validated['projects'],
+            'localisation' => $validated['location'],
+            'photoProfil' => $photoPath,
+            'candidate_id'=>$validated['candidate_id']
+        ]);
+
+        // Return a success response
+        return response()->json([
+            'message' => 'Profile created successfully!',
+            'data' => $profile,
+        ], 201);
     }
+
+    public function GetProfile($id){
+        $candidate = Candidate::with(['profile','languages'])->find($id);
+
+        return response()->json($candidate,200);
+    }
+
+    public function printCV($id)
+    {
+        // Increase memory limit for generating large PDFs
+        ini_set('memory_limit', '256M');
+    
+        // Fetch candidate data including profile and languages
+        $candidate = Candidate::with(['profile', 'languages'])->find($id);
+    
+        // Check if candidate exists
+        if (!$candidate) {
+            return response()->json(['error' => 'Candidate not found'], 404);
+        }
+    
+        // Initialize mPDF
+        $mpdf = new \Mpdf\Mpdf();
+    
+        // Direct HTML content without using a Blade view
+        $html = '
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Candidate CV</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f3f4f6;
+                    color: #333;
+                }
+                .container {
+                    max-width: 800px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    background-color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                    display: flex;
+                    justify-content: space-between;
+                    border-bottom: 2px solid #ddd;
+                    padding-bottom: 20px;
+                    margin-bottom: 20px;
+                }
+                .header .info {
+                    flex: 1;
+                }
+                .header img {
+                    border-radius: 50%;
+                    width: 100px;
+                    height: 100px;
+                    object-fit: cover;
+                }
+                h1 {
+                    font-size: 24px;
+                    margin-bottom: 5px;
+                }
+                h2 {
+                    font-size: 20px;
+                    margin-bottom: 10px;
+                }
+                .contact-info p, .bio p {
+                    margin: 5px 0;
+                }
+                .languages ul {
+                    padding-left: 20px;
+                }
+                .languages li {
+                    margin: 5px 0;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <div class="info">
+                        <h1>' . $candidate->name . ' ' . $candidate->profile->last_name . '</h1>
+                        <h2>' . $candidate->profile->field . '</h2>
+                    </div>';
+                    
+                    if($candidate->profile->photoProfil) {
+                        $html .= '<img src="' . storage_path('/app/public/' . $candidate->profile->photoProfil) . '" alt="Profile Photo">';
+                    }
+    
+        $html .= '</div>
+                <div class="contact-info">
+                    <h2>Contact Information</h2>
+                    <p><strong>Email:</strong> ' . $candidate->email . '</p>
+                    <p><strong>Phone:</strong> ' . $candidate->profile->phoneNumber . '</p>
+                    <p><strong>Location:</strong> ' . $candidate->profile->localisation . '</p>
+                </div>
+    
+                <div class="languages">
+                    <h2>Languages</h2>
+                    <ul>';
+                    
+                    foreach ($candidate->languages as $language) {
+                        $html .= '<li>' . $language->language . ' - <span>' . $language->level . '</span></li>';
+                    }
+    
+        $html .= '</ul>
+                </div>
+    
+                <div class="bio">
+                    <h2>Bio</h2>
+                    <p>' . nl2br(e($candidate->profile->description)) . '</p>
+                </div>
+            </div>
+        </body>
+        </html>';
+    
+        // Write HTML content to the PDF
+        $mpdf->WriteHTML($html);
+    
+        // Output the PDF and force download
+        return response($mpdf->Output('Candidate_info'.$id, 'I'))
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="candidate_cv.pdf"');
+    }
+    
+
 }
