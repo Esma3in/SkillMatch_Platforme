@@ -21,7 +21,7 @@ Route::get('/sanctum/csrf-cookie', function () {
 
 //candidate Routes :
 Route::get('/candidate/CV/{id}',[CandidateController::class,'printCV']);
-Route::post('/store/candidate',[CandidateController::class,'store']);
+Route::post('/candidate/signUp',[CandidateController::class,'SignUp']);
 Route::Post('/profiles' , [CandidateController:: class , 'storeProfile']);
 Route::get('/candidate/suggestedcompanies/{id}',[CandidateController::class,'CompaniesMatched']);
 Route::get('/candidate/companies/all',[CompanyController::class,'index']);
@@ -37,6 +37,6 @@ Route::get('/serie-challenges/{skill}', [ChallengeController::class, 'getSerieCh
 
 
 
-
-
+Route::post('/candidate/signin',[CandidateController::class,'SignIn']);
+Route::get('/logout',[CandidateController::class,'Logout']);
 

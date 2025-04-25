@@ -8,8 +8,9 @@
 }
 
 body {
+  width: 100vw;;
   font-family: 'Poppins', sans-serif;
-  background-color: #f8fafc;
+  background-color: #162534;
 }
 
 .auth-wrapper {
@@ -31,12 +32,51 @@ body {
   height: 100vh;
   overflow: hidden;
   background-color: #64748b;
+  flex-direction: row;
 }
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .form-section,
+  .visual-section {
+    width: 100%;
+    height: auto;
+  }
+}
+
 .error-message {
   color: red;
   font-size: 0.85rem;
-  margin-top: 4px;
-  display: block;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: green;
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
+
+/* ========================
+   Visual Section (Left Side)
+=========================== */
+.visual-section {
+  width: 45%;
+  background-color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.visual-section img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 /* ========================
@@ -158,23 +198,4 @@ form {
   margin-left: 5px;
   color: #2563eb;
   text-decoration: none;
-}
-
-/* ========================
-   Visual Section (Right Side)
-=========================== */
-.visual-section {
-  width: 45%;
-  background-color: #2563eb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-}
-
-.visual-section img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 12px;
 }
