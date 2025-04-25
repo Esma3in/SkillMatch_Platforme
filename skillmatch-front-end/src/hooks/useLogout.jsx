@@ -7,7 +7,7 @@ const UseLogout = () => {
   const logout = async () => {
     try {
       await api.get('/api/logout'); // Call the Laravel logout route
-      localStorage.removeItem('candidate_id'); // Clear stored authentication data
+      localStorage.removeItem('candidate_id'); 
       navigate('/'); // Redirect to the login or home page
     } catch (error) {
       console.error('Logout failed:', error.message);

@@ -2,7 +2,7 @@
 import '../styles/pages/SugggestedCompanies/companycard.css'
 
 
-export default function CompanyCard({ name,logo, profile, sector, skills }) {
+export default function CompanyCard({ id,name,logo, profile, sector, skills }) {
   
     return (
       <div className="container-companycard">
@@ -51,7 +51,7 @@ export default function CompanyCard({ name,logo, profile, sector, skills }) {
                 </div>
               </div>
             </div>
-            <button className="view-prfile-btn">View Profile</button>
+            <a href={`/candidate/company/${id}/profile`} className="view-prfile-btn">View Profile</a>
           </div>
         </div>
       </div>

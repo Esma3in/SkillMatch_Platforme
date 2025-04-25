@@ -2,7 +2,7 @@ import { useState } from "react";
 import { api } from "../../api/api";
 
 export default function Bio() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
   const [isOpen, setIsOpen] = useState(false);
   const [description, setdescription] = useState("");
   const [error, setError] = useState("");
@@ -26,7 +26,7 @@ export default function Bio() {
     try {
       await api.get("/sanctum/csrf-cookie");
       const response = await api.put("/api/candidate/setdescription", {
-        candidate_id: user.user_id,
+        candidate_id: candidate_id,
         description: description.trim(),
       });
       console.log("Success:", response.data);

@@ -9,25 +9,13 @@ export default function ProfileCandidate() {
   const [candidateInfo, setCandidateInfo] = useState(null);
   const [error, setError] = useState(null);
 
-  const print = async (id) => {
-    try {
-      await api.get('/sanctum/csrf-cookie');
-      window.open(`http://localhost:8000/api/candidate/CV/${id}`, '_blank');
-    } catch (error) {
-      console.error('Error fetching CV:', error);
-    }
-  };
-
   useEffect(() => {
-    const storedId = localStorage.getItem('candidate_id');
-    if (!storedId) return;
-
-    const parsedId = JSON.parse(storedId);
-
     const fetchCandidateInfo = async () => {
+      const candidate_id = JSON.parse(localStorage.getItem('candidate_id'))
       try {
-        const response = await api.get(`/api/ProfileCandidate/${parsedId}`);
+        const response = await api.get(`/api/candidate/${candidate_id}`);
         setCandidateInfo(response.data);
+        console.log(response.data)
       } catch (err) {
         console.error("Failed to fetch candidate info", err);
         setError("There was an error loading your profile. Please try again later.");
@@ -36,42 +24,46 @@ export default function ProfileCandidate() {
 
     fetchCandidateInfo();
   }, []);
-  
 
+  const handleDownloadCV = async (id) => {
+    try {
+      await api.get('/sanctum/csrf-cookie');
+      window.open(`http://localhost:8000/api/candidate/CV/${id}`, '_blank');
+    } catch (error) {
+      console.error('Error fetching CV:', error);
+    }
+  };
 
   if (!candidateInfo && !error) {
     return (
-      <>
       <div className="flex items-center justify-center h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
-      </>
-      
     );
   }
 
   if (error) {
     return (
-      <><NavbarCandidate/>
-      <div className="flex flex-col items-center justify-center p-6 bg-red-100 rounded-lg shadow-md">
-        <p className="text-xl text-red-700 mb-4">{error}</p>
-      </div>
+      <>
+        <NavbarCandidate />
+        <div className="flex flex-col items-center justify-center p-6 bg-red-100 rounded-lg shadow-md">
+          <p className="text-xl text-red-700 mb-4">{error}</p>
+        </div>
       </>
-      
     );
   }
 
   if (candidateInfo && !candidateInfo.profile) {
     return (
-      <><NavbarCandidate/>
-      <div className="flex flex-col items-center justify-center p-6 bg-gray-100 rounded-lg shadow-md">
-        <p className="text-xl text-gray-700 mb-4">You don't have a profile yet.</p>
-        <p className="text-lg text-gray-600">
-          <a href="/CreateProfile" className="text-blue-600 hover:underline">Please create one</a>
-        </p>
-      </div>
+      <>
+        <NavbarCandidate />
+        <div className="flex flex-col items-center justify-center p-6 bg-gray-100 rounded-lg shadow-md">
+          <p className="text-xl text-gray-700 mb-4">You don't have a profile yet.</p>
+          <p className="text-lg text-gray-600">
+            <a href="/CreateProfile" className="text-blue-600 hover:underline">Please create one</a>
+          </p>
+        </div>
       </>
-      
     );
   }
 
@@ -80,19 +72,18 @@ export default function ProfileCandidate() {
 
   return (
     <>
-    <NavbarCandidate/>
-    
-    <div className="containerProfileCandidate mx-auto py-12 px-4">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Profile Info */}
-        <div className="col-span-1 lg:col-span-3 bg-[#f7f8f9] rounded-[25px]">
-          <div className="p-6">
+      <NavbarCandidate />
+
+      <div className="containerProfileCandidate mx-auto py-12 px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Profile Info */}
+          <div className="col-span-1 lg:col-span-3 bg-[#f7f8f9] rounded-[25px] p-6">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="w-[100px] h-[100px] rounded-full flex-shrink-0">
                 <img
                   className="w-24 h-24 object-cover rounded-full"
                   alt="User"
-                  src={photoProfil ? `http://localhost:8000/storage/${photoProfil}` : "/assets/default-avatar.png"}
+                  src={photoProfil ? `http://localhost:8000/storage/${photoProfil}` : "/default-avatar.png"}
                 />
               </div>
 
@@ -112,7 +103,7 @@ export default function ProfileCandidate() {
 
                 <div className="flex justify-between items-center mt-6">
                   <button
-                    onClick={() => print(candidateInfo.id)}
+                    onClick={() => handleDownloadCV(candidateInfo.id)}
                     className="bg-[#baffdc] text-[#4c9f44] hover:bg-[#a8eecb] border-2 border-[#4c9f45] rounded-2xl font-medium text-lg px-4 py-2"
                   >
                     Download Resume
@@ -124,11 +115,9 @@ export default function ProfileCandidate() {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Languages */}
-        <div className="col-span-1 bg-[#f7f8f9] rounded-[25px]">
-          <div className="p-6">
+          {/* Languages */}
+          <div className="col-span-1 bg-[#f7f8f9] rounded-[25px] p-6">
             <div className="card-head flex justify-between items-center mb-6">
               <h2 className="font-bold text-4xl">Languages</h2>
               <AddLanguageModal />
@@ -155,30 +144,23 @@ export default function ProfileCandidate() {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* About Me (Placeholder) */}
-        <div className="col-span-1 lg:col-span-3 bg-[#f7f8f9] rounded-[25px]">
-          <div className="p-6">
+          {/* About Me */}
+          <div className="col-span-1 lg:col-span-3 bg-[#f7f8f9] rounded-[25px] p-6">
             <h2 className="font-bold text-4xl mb-6">About Me</h2>
-            <div className="relative mt-8">
-              <div className="absolute left-5 top-0 w-[3px] h-full bg-indigo-600 opacity-50"></div>
-            </div>
+            
           </div>
-        </div>
 
-        {/* Bio */}
-        <div className="col-span-1 bg-[#f7f8f9] rounded-[25px]">
-          <div className="p-6">
+          {/* Bio */}
+          <div className="col-span-1 bg-[#f7f8f9] rounded-[25px] p-6">
             <div className="card-head flex justify-between items-center mb-6">
               <h2 className="font-bold text-4xl">Bio</h2>
               <Bio />
             </div>
-            <p className="text-xl leading-[30px]">{description}</p>
+            <p className="text-xl leading-[30px]">{description||"No bio added yet."}</p>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
