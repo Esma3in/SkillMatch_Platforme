@@ -7,7 +7,7 @@ use App\Models\Badge;
 use App\Models\Skill;
 use App\Models\Result;
 use App\Models\Roadmap;
-use App\Models\Challenge;
+use App\Models\Problem;
 use App\Models\Attestation;
 use App\Models\Notification;
 use App\Models\ProfileCandidate;
@@ -71,12 +71,18 @@ class Candidate extends Model
     }
 
 
-    public function challenges(): BelongsToMany
+    public function problems(): BelongsToMany
     {
-        return $this->belongsToMany(Challenge::class);
+        return $this->belongsToMany(Problem::class);
     }
+
     public function languages(){
         return $this->hasMany(Language::class);
     }
+    public function challenges()
+    {
+        return $this->belongsToMany(Challenge::class, 'candidate_challenge')->withTimestamps();
+    }
+
 
 }

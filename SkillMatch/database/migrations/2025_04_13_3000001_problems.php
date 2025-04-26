@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Challenges' ,function(Blueprint $table){
+        Schema::create('Problems' ,function(Blueprint $table){
             $table->id();
             $table->string('name');
             $table->text('description');
@@ -25,8 +25,8 @@ return new class extends Migration
             $table->foreignId('skill_id')->constrained('Skills')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('administrator_id')->constrained('administrators');
             $table->foreignId('candidate_id')->constrained('candidates');
+            $table->foreignId('challenge_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
-
         });
     }
 

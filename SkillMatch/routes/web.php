@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Problem;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\ChallengeController;
 
 //Route::get('/', function () {
@@ -9,5 +11,9 @@ use App\Http\Controllers\ChallengeController;
 //});
 
 //problems list
-Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
+Route::get('/problems', [ProblemController::class, 'index'])->name('problems.index');
+
+//listOfChallenges
+Route::get('/listofchallenges', [ChallengeController::class, 'index'])->name('listofchallenges.index');
+Route::get('/challenges/{challenge}', [ChallengeController::class, 'show'])->name('challenges.show');
 

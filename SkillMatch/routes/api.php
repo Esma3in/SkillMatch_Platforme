@@ -1,10 +1,12 @@
 <?php
 
 
+use App\Models\Problem;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ChallengeController;
@@ -28,10 +30,15 @@ Route::get('/candidate/companies/all',[CompanyController::class,'index']);
 Route::get('/ProfileCandidate/{id}',[CandidateController::class,'GetProfile']);
 Route::post('/candidate/NewLanguage',[LanguageController::class,'store']);
 Route::put('/candidate/setdescription',[ProfileCandidateController::class,'EditDescription']);
-//problems list
-Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
-//serieChallenges
-Route::get('/serie-challenges/{skill}', [ChallengeController::class, 'getSerieChallenges']);
+// Problems routes
+Route::get('/problems', [ProblemController::class, 'index']);
+Route::get('/serie-problems/{skill}', [ProblemController::class, 'getSerieProblems']);
+
+// Challenges routes
+Route::get('/challenges', [ChallengeController::class, 'index']);
+Route::get('/challenges/{challenge}', [ChallengeController::class, 'show']);
+Route::get('/challenges/{challenge}/problems', [ChallengeController::class, 'getProblems']);
+
 
 
 
