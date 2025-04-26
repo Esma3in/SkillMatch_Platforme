@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Ceo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -377,7 +378,7 @@ class CompanyFactory extends Factory
             'name' => $company['name'],
             'sector' => $company['sector'],
             'files' => $company['files'],
-            'logo' => $defaultLogo
+            'logo' => $defaultLogo,
         ];
     }
 }

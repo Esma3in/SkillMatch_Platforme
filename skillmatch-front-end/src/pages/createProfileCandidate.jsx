@@ -11,9 +11,7 @@ export const Box = () => {
   const [showModal, setShowModal] = useState(false);
 // Corrected usage of useNavigate hook
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  console.log(user);
-
+  const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
   const [formData, setFormData] = useState({
     photoProfile: null,
     field: '',
@@ -60,7 +58,7 @@ export const Box = () => {
 
     try {
       const formDataToSend = new FormData();
-      if (user) formDataToSend.append('candidate_id', user.user_id);
+      if (candidate_id) formDataToSend.append('candidate_id', candidate_id);
       formDataToSend.append('field', formData.field);
       formDataToSend.append('lastName', formData.lastName);
       formDataToSend.append('phone', formData.phone);
@@ -68,7 +66,7 @@ export const Box = () => {
       formDataToSend.append('projects', formData.projects);
       formDataToSend.append('location', formData.location);
       formDataToSend.append('photoProfile', formData.photoProfile);
-
+      await api.get('/sanctum/csrf-cookie');
       const response = await api.post('/api/profiles', formDataToSend, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });

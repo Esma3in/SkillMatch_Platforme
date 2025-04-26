@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Administrator;
 use App\Models\Skill;
+use App\Models\Candidate;
+use App\Models\Administrator;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -42,7 +43,8 @@ class ChallengeFactory extends Factory
             'inputFormat'=>fake()->text(10000),
             'outputFormat'=>fake()->text(100),
             'skill_id'=>Skill::factory(),
-            'administrator_id'=>Administrator::factory()
+            'administrator_id'=>Administrator::factory(),
+            'candidate_id'=>Candidate::factory()
         ];
     }
 }

@@ -5,16 +5,35 @@ namespace App\Http\Controllers;
 use Mpdf\Mpdf;
 use App\Models\Company;
 use App\Models\Candidate;
+<<<<<<< HEAD
 use App\Models\Experience;
+=======
+>>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
 use Illuminate\Http\Request;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+<<<<<<< HEAD
+=======
+use Illuminate\Support\Facades\Hash;
+>>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
 
 class CandidateController extends Controller
 {
 
-    public function CompaniesMatched($id) {
+    public function getCandidate($id){
+        $candidate = Candidate::with(['profile','languages','skills','badges'])->find($id);
+
+        if($candidate){
+            return response()->json($candidate,200);
+        }else{
+            return response()->json(['message'=>'Candidate Not Found'],404);
+        }
+    }
+
+
+    public function CompaniesMatched($id)
+    {
         $candidate = Candidate::with(['skills'])->findOrFail($id);
         Log::info($candidate);
         $candidateSkillIds = $candidate->skills->pluck('id')->toArray();
@@ -22,7 +41,7 @@ class CandidateController extends Controller
         $companies = Company::with(['skills', 'profile'])->get();
         Log::info($companies);
         $companiesSuggested = [];
-    
+
         foreach ($companies as $company) {
             $companySkillIds = $company->skills->pluck('id')->toArray();
             Log::info($companySkillIds);
@@ -30,30 +49,54 @@ class CandidateController extends Controller
                 $companiesSuggested[] = $company;
             }
         }
-    
+
         return response()->json($companiesSuggested, 200);
     }
-    public function store(Request $request)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:candidates,email',
-        'password' => 'required|min:6',
-    ]);
+    public function SignUp(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:candidates,email',
+            'password' => 'required|min:8',
+        ]);
 
-    $validated['password'] = bcrypt($validated['password']);
+        $validated['password'] = Hash::make($validated['password']);
 
-    $candidate = Candidate::create($validated);
+        $candidate = Candidate::create($validated);
 
-    session()->put('candidate_id', $candidate->id);
+        return response()->json($candidate, 201);
+    }
 
-    $candidate_id = session('candidate_id');
+    public function SignIn(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|exists:candidates,email',
+            'password' => 'required|min:8',
+        ]);
+
+        $candidate = Candidate::where('email', $validated['email'])->first();
+
+        if (!$candidate || !Hash::check($validated['password'], $candidate->password)) {
+            return response()->json(['message' => 'Email or password incorrect'], 401);
+        }
+
+        session()->put('candidate_id', $candidate->id);
+        return response()->json(['id' => $candidate->id], 200);
+    }
+    public function Logout()
+    {
+        session()->forget('candidate_id'); // Remove the candidate ID from session
+        session()->invalidate(); // Invalidate the session
+        session()->regenerateToken(); // Regenerate the CSRF token for security
+
+        return response()->json(['message' => 'Successfully logged out'], 200);
+    }
+
 
     
-    return response()->json($candidate_id, 201);
-}
 
 
+<<<<<<< HEAD
     // profile candidate
     public function storeProfile(Request $request)
     {
@@ -172,23 +215,22 @@ class CandidateController extends Controller
         return response()->json($candidate,200);
     }
 
+=======
+>>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
     public function printCV($id)
     {
-        // Increase memory limit for generating large PDFs
         ini_set('memory_limit', '256M');
-    
-        // Fetch candidate data including profile and languages
+
+
         $candidate = Candidate::with(['profile', 'languages'])->find($id);
-    
-        // Check if candidate exists
+
+
         if (!$candidate) {
             return response()->json(['error' => 'Candidate not found'], 404);
         }
-    
-        // Initialize mPDF
+
         $mpdf = new \Mpdf\Mpdf();
-    
-        // Direct HTML content without using a Blade view
+
         $html = '
         <!DOCTYPE html>
         <html lang="en">
@@ -254,11 +296,11 @@ class CandidateController extends Controller
                         <h1>' . $candidate->name . ' ' . $candidate->profile->last_name . '</h1>
                         <h2>' . $candidate->profile->field . '</h2>
                     </div>';
-                    
-                    if($candidate->profile->photoProfil) {
-                        $html .= '<img src="' . storage_path('/app/public/' . $candidate->profile->photoProfil) . '" alt="Profile Photo">';
-                    }
-    
+
+        if ($candidate->profile->photoProfil) {
+            $html .= '<img src="' . storage_path('/app/public/' . $candidate->profile->photoProfil) . '" alt="Profile Photo">';
+        }
+
         $html .= '</div>
                 <div class="contact-info">
                     <h2>Contact Information</h2>
@@ -270,11 +312,11 @@ class CandidateController extends Controller
                 <div class="languages">
                     <h2>Languages</h2>
                     <ul>';
-                    
-                    foreach ($candidate->languages as $language) {
-                        $html .= '<li>' . $language->language . ' - <span>' . $language->level . '</span></li>';
-                    }
-    
+
+        foreach ($candidate->languages as $language) {
+            $html .= '<li>' . $language->language . ' - <span>' . $language->level . '</span></li>';
+        }
+
         $html .= '</ul>
                 </div>
     
@@ -285,15 +327,17 @@ class CandidateController extends Controller
             </div>
         </body>
         </html>';
-    
-        // Write HTML content to the PDF
+
+
         $mpdf->WriteHTML($html);
-    
-        // Output the PDF and force download
-        return response($mpdf->Output('Candidate_info'.$id, 'I'))
+        return response($mpdf->Output('Candidate_info' . $id, 'I'))
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="candidate_cv.pdf"');
+<<<<<<< HEAD
                 }
     
 
+=======
+    }
+>>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
 }

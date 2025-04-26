@@ -161,15 +161,15 @@ const ModalSkill = ({ user, onClose }) => {
                                         type="submit"
                                         className="h-[55px] w-[160px] bg-indigo-600 text-white rounded-[9px] font-semibold text-base hover:bg-indigo-700 transition-colors duration-200"
                                     >
-                                        Add Skill
+                                        + Add Skill
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleCancel}
                                         className="h-[55px] w-[120px] bg-white text-blue-600 border-2 border-blue-600 rounded-[9px] font-semibold text-base hover:bg-blue-50 transition-colors duration-200"
                                     >
-                                        Cancel
-                                    </button>
+                                        Cancel !
+                                    </button> 
                                 </div>
                             </div>
                         </div>

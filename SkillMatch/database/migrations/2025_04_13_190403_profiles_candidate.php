@@ -24,7 +24,8 @@ return new class extends Migration
             $table->string('photoProfil')->nullable();
             $table->string('localisation')->nullable(); // to make sure that this variable in zn array
             $table->json('competenceList')->nullable();
-            $table->foreignId('candidate_id')->constrained('candidates')->onDelete('cascade');
+            $table->unsignedBigInteger('candidate_id');
+            $table->foreign('candidate_id')->references('id')->on('candidates')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { api } from "../../api/api";
 
 export default function AddLanguageModal() {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
 
     const [isOpen, setIsOpen] = useState(false);
     const [formData, setFormData] = useState({
-        candidate_id: user?.user_id || '',
+        candidate_id:candidate_id,
         language: '',
         level: ''
     });
@@ -16,7 +16,7 @@ export default function AddLanguageModal() {
     const openModal = () => setIsOpen(true);
     const closeModal = () => {
         setIsOpen(false);
-        setFormData({ candidate_id: user?.user_id || '', language: '', level: '' });
+        setFormData({ language: '', level: '' });
         setErrors({});
     };
 

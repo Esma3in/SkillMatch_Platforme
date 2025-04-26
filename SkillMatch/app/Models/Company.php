@@ -30,5 +30,8 @@ class Company extends Model
     public function profile(){
         return $this->hasOne(ProfileCompany::class);
     }
+    public function ceo(){
+        return $this->hasOne(Ceo::class);
+    }
 
 }

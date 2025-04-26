@@ -9,7 +9,8 @@ class CandidatesSkills extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
+    protected $fillable=[ 
+        
         'candidate_id',
         'company_id'
     ];
@@ -20,4 +21,9 @@ class CandidatesSkills extends Model
     public function Companies(){
         return $this->belongsToMany(Candidate::class);
     }
+    public function challenges()
+    {
+        return $this->belongsToMany(Challenge::class, 'candidate_challenge');
+    }
+
 }

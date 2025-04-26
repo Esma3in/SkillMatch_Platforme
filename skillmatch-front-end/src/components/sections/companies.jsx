@@ -38,6 +38,7 @@ export default function  Companies() {
                 {message && <p>{message}</p>}
                 {!loading && companies.map((company,i) => (
                     <CompanyCard key={i}
+                    id={company.id}
                     name = {company.name}
                     profile={company.profile}
                     skills={company.skills}

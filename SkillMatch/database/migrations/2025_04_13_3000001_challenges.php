@@ -24,6 +24,7 @@ return new class extends Migration
             // relations
             $table->foreignId('skill_id')->constrained('Skills')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('administrator_id')->constrained('administrators');
+            $table->foreignId('candidate_id')->constrained('candidates');
             $table->timestamps();
 
         });
