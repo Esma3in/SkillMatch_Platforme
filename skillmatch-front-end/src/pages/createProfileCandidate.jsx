@@ -4,9 +4,12 @@ import '../styles/pages/Profiles/CandidateProfile.css';
 import { api } from '../api/api';
 import { useNavigate } from 'react-router-dom'; // Corrected import
 import NavbarCandidate from '../components/common/navbarCandidate';
+import ModalExp from '../components/modals/createExperience';
 
 export const Box = () => {
-  const navigate = useNavigate(); // Corrected usage of useNavigate hook
+  const navigate = useNavigate(); 
+  const [showModal, setShowModal] = useState(false);
+// Corrected usage of useNavigate hook
 
   const user = JSON.parse(localStorage.getItem('user'));
   console.log(user);
@@ -223,32 +226,36 @@ export const Box = () => {
           </section>
 
           <div className="Box-Expriences">
-            <fieldset className="formGroupBox">
+            {/* <fieldset className="formGroupBox">
               <label className="formLabelBox">Skills</label>
-              <button type="button" className="btnOutlineBox">
-                <FaPlus /> Add new skill
+              <button type="button" className="btnOutlineBox" onClick={()=>{navigate('/profile/skill')}}>
+                <div className='titleBtn'> <FaPlus /> Add new skill </div>
               </button>
-            </fieldset>
-
+            </fieldset> */}
+{/* 
             <fieldset className="formGroupBox">
               <label className="formLabelBox">Experiences</label>
-              <button type="button" className="btnOutlineBox">
-                <FaPlus /> Add experience
+              <button className='btnOutlineBox' onClick={()=>{navigate('/profile/exprience')}}>
+              <div className='titleBtn'> <FaPlus /> Add new experience </div>
               </button>
             </fieldset>
 
             <fieldset className="formGroupBox">
               <label className="formLabelBox">Education</label>
-              <button type="button" className="btnOutlineBox">
-                <FaPlus /> Add education
+              <button type="button" className="btnOutlineBox" onClick={()=>{navigate('/profile/education')}}>
+                <div className='titleBtn'> <FaPlus /> Add new  education </div>
               </button>
             </fieldset>
           </div>
 
-          <div className="actionsBox">
+        
+          <ModalExp user={user} onClose={() => {}} /> */}
+            <div className="actionsBox">
             <button type="submit" className="btnPrimaryBox">Save</button>
             <button type="button" className="btnOutlineBox" onClick={cancelSubmit}>Cancel</button>
           </div>
+</div>
+
         </form>
       </div>
     </div>

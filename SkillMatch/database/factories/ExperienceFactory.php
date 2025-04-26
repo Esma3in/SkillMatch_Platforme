@@ -17,11 +17,21 @@ class ExperienceFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
+
     {
+        $location = [
+            'Tetouan','Tanger','Rabat'
+        ];
+        $EmployementType = [
+            'manager' ,'engineer' ,"specilised technical" , "stagiaire","project manager"
+        ];
+    
         return [
             'candidate_profile_id'=>ProfileCandidate::factory(),
-            'title'=>fake()->sentence(7),
-            'company_name'=>fake()->company(),
+            'experience'=>fake()->sentence(7),
+            'location'=>fake()->randomElement($location),
+            'employement_type' =>fake()->randomElement($EmployementType),
+            'role' =>fake()->paragraph(),
             'start_date'=>fake()->dateTimeBetween('-7 years','-5 years'),
             'end_date'=>fake()->dateTimeBetween('-4 years','-5 months'),
             'description'=>fake()->paragraph('7')

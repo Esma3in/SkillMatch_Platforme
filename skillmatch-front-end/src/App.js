@@ -6,6 +6,7 @@ import ProfileCandidat from './pages/ProfileCandidate.jsx';
 import CompaniesMatching from './pages/CompaniesMatching.jsx';
 import CompanyProfile from './components/modals/CompanyProfileForCandidate.jsx';
 import { Box } from './pages/createProfileCandidate.jsx';
+import  ModalExp from './components/modals/createExperience.js';
 export default function App() {
   return (
     <Router>
@@ -21,6 +22,8 @@ export default function App() {
 
          <Route path='/companies/list'  element={<CompaniesMatching/>}></Route> 
          <Route path='/profile' element={<ProfileCandidat/>} />
+                <Route path='/profile/skill' element={<createSkillsCandidate />}/>
+                <Route  path = "/profile/education" element= {<createEducation />}/>
          <Route path='/companyProfile' element={<CompanyProfile/>}/>
          <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
       </Routes>

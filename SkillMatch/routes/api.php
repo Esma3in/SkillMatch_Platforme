@@ -1,11 +1,13 @@
 <?php
 
 
+use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Models\ProfileCandidate;
 
@@ -27,6 +29,12 @@ Route::get('/candidate/companies/all',[CompanyController::class,'index']);
 Route::get('/ProfileCandidate/{id}',[CandidateController::class,'GetProfile']);
 Route::post('/candidate/NewLanguage',[LanguageController::class,'store']);
 Route::put('/candidate/setdescription',[ProfileCandidateController::class,'EditDescription']);
+// Experience routes
+Route::post('/experiences', [ExperienceController::class, 'store']);
+Route::post('/skills', [SkillController::class , 'store'] );
+Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
+
+Route::get('/experiences/candidate/{candidateId}', [ExperienceController::class, 'getExperiencesByCandidate']);
 
 
 

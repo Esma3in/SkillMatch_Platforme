@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
         // Create Candidates and their related data
         Candidate::factory(2)->create()->each(function ($candidate) use ($skillsCreated) {
             ProfileCandidate::factory()->create(['candidate_id' => $candidate->id]);
-            Experience::factory(2)->create();
+            Experience::factory(3)->create();
             Formation::factory(2)->create();
             Attestation::factory(2)->create();
             Document::factory(1)->create();
