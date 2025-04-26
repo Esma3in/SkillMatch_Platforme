@@ -227,6 +227,10 @@ body {
   color: #1f2937;
   margin-bottom: 1rem;
 }
+.titleBtn{
+  display: flex;
+  align-items: center;
+}
 
 /* Expériences Box */
 .Box-Expriences {

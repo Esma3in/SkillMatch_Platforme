@@ -10,8 +10,10 @@ class Experience extends Model
     use HasFactory;
     protected $fillable=[
         'candidate_profile_id',
-        'title',
-        'company_name',
+        'experience',
+        'location',
+        'employement_type',
+        'role',
         'start_date',
         'end_date',
         'description'

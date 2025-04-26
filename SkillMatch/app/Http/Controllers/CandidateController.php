@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use Mpdf\Mpdf;
 use App\Models\Company;
 use App\Models\Candidate;
+<<<<<<< HEAD
+use App\Models\Experience;
+=======
+>>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
 use Illuminate\Http\Request;
+use App\Models\ProfileCandidate;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+<<<<<<< HEAD
+=======
 use Illuminate\Support\Facades\Hash;
+>>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
 
 class CandidateController extends Controller
 {
@@ -87,6 +96,127 @@ class CandidateController extends Controller
     
 
 
+<<<<<<< HEAD
+    // profile candidate
+    public function storeProfile(Request $request)
+    {
+        // Validate the request data
+        $validated = $request->validate([
+            'field' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'phone' => 'required|string|regex:/^\+?[0-9\s\-]{6,20}$/',
+            'file' => 'required|file|mimes:pdf,doc,docx|max:2048', // Max 2MB
+            'projects' => 'required|string',
+            'location' => 'required|string|max:255',
+            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048', 
+            'candidate_id'=>'required'
+        ]);
+
+        // Handle file uploads
+        $photoPath = $request->file('photoProfile')->store('images', 'public');
+        $filePath = $request->file('file')->store('files', 'public');
+
+        // Create a new CandidateProfile record
+        $profile = ProfileCandidate::create([
+
+            'field' => $validated['field'],
+            'last_name' => $validated['lastName'],
+            'phoneNumber' => $validated['phone'],
+            'file' => $filePath,
+            'projects' => $validated['projects'],
+            'localisation' => $validated['location'],
+            'photoProfil' => $photoPath,
+            'candidate_id'=>$validated['candidate_id']
+        ]);
+
+        // Return a success response
+        return response()->json([
+            'message' => 'Profile created successfully!',
+            'data' => $profile,
+        ], 201);
+    }
+
+    
+    public function storeExperience(Request $request)
+    {
+        // Define validation rules for experience and profile fields
+        $validated = $request->validate([
+            'candidate_id' => 'required|exists:candidates,id',
+            'experience' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'employement_type' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'startDate' => 'required|date_format:d/m/Y',
+            'endDate' => 'nullable|date_format:d/m/Y|after_or_equal:startDate',
+            'description' => 'nullable|string|max:1000',
+            // Profile fields (optional except location)
+            'field' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'phone' => 'required|string|regex:/^\+?[0-9\s\-]{6,20}$/',
+            'file' => 'required|file|mimes:pdf,doc,docx|max:2048', // Max 2MB
+            'projects' => 'required|string',
+            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048', 
+            
+        ]);
+
+        try {
+            // Run profile and experience creation in a transaction
+            $experience = DB::transaction(function () use ($validated, $request) {
+                // Check if profile exists for candidate
+                $profile = ProfileCandidate::where('candidate_id', $validated['candidate_id'])->first();
+
+                // Create profile if it doesn't exist
+                if (!$profile) {
+                    $profile = ProfileCandidate::create([
+                        'field' => $validated['field'],
+                        'last_name' => $validated['lastName'],
+                        'phoneNumber' => $validated['phone'],
+                        'file' => $validated['file'],
+                        'projects' => $validated['projects'],
+                        'localisation' => $validated['location'],
+                        'photoProfil' =>$validated['photoProfile'],
+                        'candidate_id'=>$validated['candidate_id']
+                    ]);
+                } else {
+                    // Update location if profile exists (optional)
+                    $profile->update(['location' => $validated['location']]);
+                }
+
+                // Create experience record
+                return Experience::create([
+                    'candidate_profile_id' => $profile->id,
+                    'experience' => $validated['experience'],
+                    'location' => $validated['location'],
+                    'employement_type' => $validated['employement_type'],
+                    'role' => $validated['role'],
+                    'start_date' => $validated['startDate'],
+                    'end_date' => $validated['endDate'] ?? null,
+                    'description' => $validated['description'] ?? null,
+                ]);
+            });
+
+            // Return success response
+            return response()->json([
+                'message' => 'Experience and profile created successfully',
+                'data' => $experience,
+            ], 201);
+        } catch (\Exception $e) {
+            // Log error and return failure response
+            Log::error('Error storing experience and profile: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Failed to create experience and profile',
+            ], 500);
+        }
+    }
+
+    public function GetProfile($id){
+        $candidate = Candidate::with(['profile','languages'])->find($id);
+
+        return response()->json($candidate,200);
+    }
+
+=======
+>>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
     public function printCV($id)
     {
         ini_set('memory_limit', '256M');
@@ -203,5 +333,11 @@ class CandidateController extends Controller
         return response($mpdf->Output('Candidate_info' . $id, 'I'))
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="candidate_cv.pdf"');
+<<<<<<< HEAD
+                }
+    
+
+=======
     }
+>>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
 }

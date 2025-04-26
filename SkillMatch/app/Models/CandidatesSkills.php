@@ -9,7 +9,8 @@ class CandidatesSkills extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
+    protected $fillable=[ 
+        
         'candidate_id',
         'company_id'
     ];

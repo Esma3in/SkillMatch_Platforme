@@ -27,9 +27,10 @@ class Skill extends Model
                     ->withTimestamps();
     }
     // get  the candidate skills
-    public function Candidates(){
-        return $this->belongsToMany(Candidate::class,'candidate_skills')
-                    ->withTimestamps();
+// app/Models/Skill.php
+    public function Candidates()
+    {
+        return $this->belongsToMany(Candidate::class, 'candidates_skills', 'skill_id', 'candidate_id');
     }
     // get the corresponding roadmap for this skill
     public function Roadmap(){
