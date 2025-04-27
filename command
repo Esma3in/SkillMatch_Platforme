@@ -3,3 +3,7 @@ npm install
 npm run dev
 npm run build
 npm start
+
+php artisan migrate
+php artisan dn:seed
+php artisan serve
