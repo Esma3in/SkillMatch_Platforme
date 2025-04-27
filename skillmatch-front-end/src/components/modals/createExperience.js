@@ -70,7 +70,8 @@ const ModalExp = ({ user, onClose }) => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("candidate_id", user?.user_id || "");
+      formDataToSend.append("candidate_id",  user|| "");
+      console.log(user)
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });

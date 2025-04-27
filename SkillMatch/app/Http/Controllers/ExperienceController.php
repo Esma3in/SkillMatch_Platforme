@@ -90,7 +90,7 @@ class ExperienceController extends Controller
             $profile = ProfileCandidate::where('candidate_id', $candidateId)->first();
             
             if (!$profile) {
-                return response()->json(['error' => 'Profile not found for this candidate'], 404);
+                return ;
             }
 
             // Get all experiences for this profile

@@ -59,7 +59,7 @@ const NavbarCandidate = () => {
                     <i className="menu-icon start-icon"></i>
                     Start training
                   </a>
-                  <a href="/training/challenges" className="dropdown-item">
+                  <a href="/problems" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Challenges
                   </a>

@@ -5,18 +5,13 @@ namespace App\Http\Controllers;
 use Mpdf\Mpdf;
 use App\Models\Company;
 use App\Models\Candidate;
-<<<<<<< HEAD
 use App\Models\Experience;
-=======
->>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
 use Illuminate\Http\Request;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-<<<<<<< HEAD
-=======
+
 use Illuminate\Support\Facades\Hash;
->>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
 
 class CandidateController extends Controller
 {
@@ -95,8 +90,6 @@ class CandidateController extends Controller
 
     
 
-
-<<<<<<< HEAD
     // profile candidate
     public function storeProfile(Request $request)
     {
@@ -215,8 +208,7 @@ class CandidateController extends Controller
         return response()->json($candidate,200);
     }
 
-=======
->>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
+
     public function printCV($id)
     {
         ini_set('memory_limit', '256M');
@@ -333,11 +325,7 @@ class CandidateController extends Controller
         return response($mpdf->Output('Candidate_info' . $id, 'I'))
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="candidate_cv.pdf"');
-<<<<<<< HEAD
-                }
-    
 
-=======
     }
->>>>>>> fa3f744cbad371bdbe2cc88d5019366be22012f5
+
 }
