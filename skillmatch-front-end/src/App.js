@@ -11,6 +11,8 @@ import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
 import QcmForRoadmap from './pages/qcmForRoadmap';
 import { Box } from './pages/createProfileCandidate.jsx';
+import { Roadmap } from './pages/Roadmap.js';
+import CompaniesRelated from './pages/compniesSelectedList.jsx';
 export default function App() {
   return (
     <Router>
@@ -27,7 +29,9 @@ export default function App() {
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
         <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
-         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
+        <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
+        <Route path = '/roadmap' element={<ProtectedRoute><Roadmap /></ProtectedRoute>}/>
+        <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
       </Routes>
     </Router>
   );

@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+      
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->text('description');
-            $table->string('difficulte');
-            $table->integer('evaluation');
+            $table->text('objective');
+            $table->text('prerequisites');
+            $table->foreignId('step_id')->constrained('steps')->onDelete('cascade')->onUpdate('cascade');
+            $table->text('tools_Required');
+            $table->text('before_answer');
+            $table->foreignid('qcm_id')->constrained('qcms');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

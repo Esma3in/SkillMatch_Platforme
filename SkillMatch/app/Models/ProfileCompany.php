@@ -24,7 +24,7 @@ class ProfileCompany extends Model
         'candidate_id'
     ];
 
-     // get the company associted to this profile 
+     // get the company associted to this profile
     public function company(){
         return $this->belongsTo(Company::class);
     }
