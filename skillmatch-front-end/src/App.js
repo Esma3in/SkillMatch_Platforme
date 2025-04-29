@@ -10,7 +10,7 @@ import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
 import QcmForRoadmap from './pages/qcmForRoadmap';
-import { Box } from './pages/createProfileCandidate.jsx';
+import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import { Roadmap } from './pages/Roadmap.js';
 import CompaniesRelated from './pages/compniesSelectedList.jsx';
 export default function App() {
