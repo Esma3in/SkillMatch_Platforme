@@ -1,9 +1,10 @@
 import { ClockIcon, XIcon } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from '../../api/api';
+import { api } from "../../api/api";
 
-const ModalExp = ({ user, onClose }) => {
+export default function CreateExperienceModal({ user }) {
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -19,10 +20,10 @@ const ModalExp = ({ user, onClose }) => {
   const [errors, setErrors] = useState({});
 
   const formFields = [
-    { id: "experience", label: "Experience", position: "left" },
-    { id: "location", label: "Location", position: "left" },
-    { id: "company", label: "Employment Type", position: "left" },
-    { id: "role", label: "Role", position: "left" },
+    { id: "experience", label: "Experience" },
+    { id: "location", label: "Location" },
+    { id: "company", label: "Employment Type" },
+    { id: "role", label: "Role" },
   ];
 
   const dateFields = [
@@ -30,10 +31,24 @@ const ModalExp = ({ user, onClose }) => {
     { id: "endDate", label: "End Date" },
   ];
 
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => {
+    setIsOpen(false);
+    setFormData({
+      experience: "",
+      location: "",
+      company: "",
+      role: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    });
+    setErrors({});
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -60,7 +75,6 @@ const ModalExp = ({ user, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted, sending POST to /api/experiences", { user, formData, currentPath: window.location.pathname });
 
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
@@ -70,8 +84,8 @@ const ModalExp = ({ user, onClose }) => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("candidate_id",  user|| "");
-      console.log(user)
+      formDataToSend.append("candidate_id", user || "");
+
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
@@ -81,137 +95,126 @@ const ModalExp = ({ user, onClose }) => {
       });
 
       console.log("Success:", response.data.message);
-      navigate("/profile");
-      if (onClose) onClose();
+      closeModal();
+      window.location.reload();
+     
     } catch (error) {
       console.error("Failed to submit experience:", error.response?.data || error.message);
       setErrors({ general: `Failed to save experience: ${error.message}` });
     }
   };
 
-  const handleCancel = () => {
-    setFormData({
-      experience: "",
-      location: "",
-      company: "",
-      role: "",
-      startDate: "",
-      endDate: "",
-      description: "",
-    });
-    setErrors({});
-    if (onClose) onClose();
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-[882px] h-[596px] relative bg-white shadow-xl rounded-2xl">
-        <div className="p-7 h-full">
-          <div className="flex justify-between items-center">
-            <div className="font-medium text-black text-base leading-5">
-              Creating an Experience
+    <>
+      <button
+                    type="button"
+                    onClick={openModal}
+                    className="flex items-center px-4 py-2 bg-transparent text-white rounded-full focus:outline-none"
+                >
+                    <img src="assets/edit.png" alt="Edit icon" className="w-5 h-5 mr-2" />
+                </button>
+
+      {isOpen && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-3xl mx-4 relative">
+            <div className="flex justify-between items-center mb-4">
+              <h5 className="text-xl font-semibold">Add Experience</h5>
+              <button
+                onClick={closeModal}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                <XIcon className="w-6 h-6" />
+              </button>
             </div>
-            <XIcon
-              className="w-5 h-5 cursor-pointer hover:text-gray-600"
-              onClick={handleCancel}
-            />
-          </div>
 
-          <hr className="my-4 border-gray-200" />
-
-          <form onSubmit={handleSubmit} method="POST" action="">
-            <div className="flex h-[calc(100%-80px)]">
-              <div className="w-[376px] pr-8">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {formFields.map((field) => (
-                  <div key={field.id} className="mb-[20px]">
-                    <div className="font-semibold text-gray-800 text-base mb-[10px]">
+                  <div key={field.id}>
+                    <label htmlFor={field.id} className="block text-gray-700 mb-1">
                       {field.label}
-                    </div>
+                    </label>
                     <input
+                      id={field.id}
                       name={field.id}
                       value={formData[field.id]}
                       onChange={handleChange}
-                      className={`h-[60px] rounded-xl border-2 w-full px-4 focus:outline-none focus:border-indigo-500 transition-colors duration-200 ${
+                      className={`w-full px-4 py-2 border ${
                         errors[field.id] ? "border-red-500" : "border-gray-300"
-                      }`}
+                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       placeholder={`Enter ${field.label.toLowerCase()}`}
                     />
                     {errors[field.id] && (
-                      <div className="text-red-500 text-sm mt-1">
-                        {errors[field.id]}
-                      </div>
+                      <div className="text-red-500 text-sm mt-1">{errors[field.id]}</div>
                     )}
                   </div>
                 ))}
-                {errors.general && (
-                  <div className="text-red-500 text-sm mt-1">{errors.general}</div>
-                )}
               </div>
 
-              <div className="w-[1px] bg-gray-200 mx-4 h-[388px] mt-[10px]"></div>
-
-              <div className="w-[376px] pl-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {dateFields.map((field) => (
-                  <div key={field.id} className="mb-[20px]">
-                    <div className="font-semibold text-gray-800 text-base mb-[10px] font-['Poppins',Helvetica]">
+                  <div key={field.id}>
+                    <label htmlFor={field.id} className="block text-gray-700 mb-1">
                       {field.label}
-                    </div>
+                    </label>
                     <div className="relative">
                       <input
                         type="text"
+                        id={field.id}
                         name={field.id}
                         value={formData[field.id]}
                         onChange={handleChange}
                         placeholder="DD/MM/YYYY"
-                        className={`h-[60px] rounded-xl border-2 w-full px-4 pr-10 font-normal text-gray-500 text-sm font-['Manrope',Helvetica] focus:outline-none focus:border-indigo-500 transition-colors duration-200 ${
+                        className={`w-full px-4 py-2 border ${
                           errors[field.id] ? "border-red-500" : "border-gray-300"
-                        }`}
+                        } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
-                      <ClockIcon className="w-5 h-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <ClockIcon className="w-5 h-5 absolute right-3 top-3 text-gray-400" />
                     </div>
                     {errors[field.id] && (
-                      <div className="text-red-500 text-sm mt-1">
-                        {errors[field.id]}
-                      </div>
+                      <div className="text-red-500 text-sm mt-1">{errors[field.id]}</div>
                     )}
                   </div>
                 ))}
-
-                <div className="mt-[20px]">
-                  <div className="font-semibold text-gray-800 text-base leading-5 mb-[10px] font-['Poppins',Helvetica]">
-                    Description
-                  </div>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    className="h-[120px] rounded-xl border-2 border-gray-300 p-3.5 resize-none w-full focus:outline-none focus:border-indigo-500 transition-colors duration-200"
-                    placeholder="Create your description here..."
-                  ></textarea>
-                </div>
-
-                <div className="flex gap-4 mt-[30px] justify-end">
-                  <button
-                    type="submit"
-                    className="h-[55px] w-[160px] bg-indigo-600 text-white rounded-[9px] font-semibold text-base hover:bg-indigo-700 transition-colors duration-200"
-                  >
-                    Create experience
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCancel}
-                    className="h-[55px] w-[120px] bg-white text-blue-600 border-2 border-blue-600 rounded-[9px] font-semibold text-base hover:bg-blue-50 transition-colors duration-200"
-                  >
-                    Cancel
-                  </button>
-                </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-export default ModalExp;
+              <div className="mt-4">
+                <label htmlFor="description" className="block text-gray-700 mb-1">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="w-full h-28 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  placeholder="Enter your description..."
+                ></textarea>
+              </div>
+
+              {errors.general && (
+                <div className="text-red-500 text-sm mt-2">{errors.general}</div>
+              )}
+
+              <div className="flex justify-end space-x-2 mt-6">
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

@@ -31,6 +31,7 @@ Route::put('/candidate/setdescription', [ProfileCandidateController::class, 'Edi
 Route::post('/candidate/signin', [CandidateController::class, 'SignIn']);
 Route::get('/logout', [CandidateController::class, 'Logout']);
 Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);
+Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);
 
 // Experience Routes
 Route::post('/experiences', [ExperienceController::class, 'store']);

@@ -3,14 +3,15 @@ import { useEffect, useState } from 'react';
 import { api } from '../../api/api';
 import CompnayCard from '../../layouts/companyCard';
 import { BsStars } from "react-icons/bs";
-export default function SuggestedCompanies({id}) {
+export default function SuggestedCompanies() {
+    const candidate_id = JSON.parse(localStorage.getItem('candidate_id'))
     const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await api.get(`/api/candidate/suggestedcompanies/${id}`);
+                const response = await api.get(`/api/candidate/suggestedcompanies/${candidate_id}`);
                 setLoading(false);
                 if (response.data && response.data.length > 0) {
                     setCompanies(response.data);
@@ -24,7 +25,7 @@ export default function SuggestedCompanies({id}) {
         };
 
         fetchData();
-    }, [id]); // empty dependency array: run once on mount
+    }, [candidate_id]); // empty dependency array: run once on mount
 console.log(companies)
     return (
         <div className="CompanyMatchedContainer" >
