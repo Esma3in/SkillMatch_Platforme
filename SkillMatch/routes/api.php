@@ -13,6 +13,7 @@ use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\ProfileCandidateController;
+use App\Http\Controllers\TestController;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -50,3 +51,7 @@ Route::get('/serie-challenges/{skill}', [ChallengeController::class, 'getSerieCh
 // Problem Routes (retained for backward compatibility, remove if not needed)
 Route::get('/problems', [ProblemController::class, 'index']);
 Route::get('/serie-problems/{skill}', [ProblemController::class, 'getSerieProblems']);
+
+//Candidate Test Routes:
+
+Route::get('/candidate/test/company/{id}',[TestController::class,'GetTestCompanieSelected']);

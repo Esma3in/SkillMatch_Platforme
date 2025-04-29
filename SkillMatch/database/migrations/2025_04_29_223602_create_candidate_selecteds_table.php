@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-      
-        Schema::create('tests', function (Blueprint $table) {
+        Schema::create('candidate_selecteds', function (Blueprint $table) {
             $table->id();
-            $table->text('objective');
-            $table->text('prerequisites');
-            $table->text('tools_Required');
-            $table->text('before_answer');
-            $table->foreignid('qcm_id')->constrained('qcms');
+            $table->unsignedBigInteger('candidate_id');
             $table->unsignedBigInteger('company_id');
+            $table->foreign('candidate_id')->references('id')->on('candidates')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tests');
+        Schema::dropIfExists('candidate_selecteds');
     }
 };

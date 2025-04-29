@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('order');
+            $table->unsignedBigInteger('test_id');
+            $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade')->onUpdate('cascade');
             $table->boolean('completed')->default(false);
             $table->timestamps();
         });

@@ -11,8 +11,12 @@ class Step extends Model
     use HasFactory;
     protected $fillable=[
         'title',
+        'test_id',
         'description',
         'order',
         'completed'
     ];
+    public function test(){
+        return $this->belongsTo(Test::class);
+    }
 }

@@ -14,7 +14,6 @@ class TestFactory extends Factory
         return [
             'objective' => $this->faker->sentence(),
             'prerequisites' => $this->faker->paragraph(),
-            'step_id' => Step::factory(),  // Automatically create a Step
             'tools_Required' => $this->faker->words(3, true),
             'before_answer' => $this->faker->sentence(),
             'qcm_id' => Qcm::factory(),    // Automatically create a QCM
