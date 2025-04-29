@@ -1,5 +1,6 @@
 import { useState } from "react";
 import NavbarCandidate from "../components/common/navbarCandidate";
+import { useNavigate } from "react-router";
 
 function CompaniesRelated() {
   const [company, setCompany] = useState({
@@ -16,6 +17,8 @@ function CompaniesRelated() {
 
   const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
   console.log(candidate_id);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -107,7 +110,7 @@ function CompaniesRelated() {
                   </p>
                 </div>
                 <div className="mt-6 flex flex-col space-y-3">
-                  <button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all">
+                  <button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all"onClick={()=>{navigate('/roadmap')}}>
                     View Career Roadmap
                   </button>
                   <button className="bg-white border border-purple-500 text-purple-600 font-semibold py-2 rounded-lg hover:bg-purple-50 transition-all">
