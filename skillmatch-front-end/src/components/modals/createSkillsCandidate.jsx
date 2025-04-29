@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../api/api";
 
 const CreateSkillsModal = ({ user, onClose }) => {
+  console.log(user)
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -47,13 +48,13 @@ const CreateSkillsModal = ({ user, onClose }) => {
       setErrors(validationErrors);
       return;
     }
-    if (!user?.user_id) {
+    if (!user) {
       setErrors({ general: "User ID is missing. Please log in." });
       return;
     }
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("candidate_id", user.user_id);
+      formDataToSend.append("candidate_id", user);
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });

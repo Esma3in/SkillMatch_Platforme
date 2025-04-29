@@ -95,8 +95,9 @@ export default function CreateExperienceModal({ user }) {
       });
 
       console.log("Success:", response.data.message);
-      navigate("/profile");
       closeModal();
+      window.location.reload();
+     
     } catch (error) {
       console.error("Failed to submit experience:", error.response?.data || error.message);
       setErrors({ general: `Failed to save experience: ${error.message}` });
