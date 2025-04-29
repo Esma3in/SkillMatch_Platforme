@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->text('objective');
             $table->text('prerequisites');
-            $table->foreignId('step_id')->constrained('steps')->onDelete('cascade')->onUpdate('cascade');
             $table->text('tools_Required');
             $table->text('before_answer');
             $table->foreignid('qcm_id')->constrained('qcms');

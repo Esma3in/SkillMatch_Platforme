@@ -12,7 +12,6 @@ class Test extends Model
     protected $fillable = [
         'objective',
         'prerequisites',
-        'step_id',
         'tools_Required',
         'before_answer',
         'qcm_id',
@@ -20,9 +19,9 @@ class Test extends Model
     ];
 
     // Relationships
-    public function step()
+    public function steps()
     {
-        return $this->belongsTo(Step::class);
+        return $this->hasMany(Step::class);
     }
 
     public function qcm()

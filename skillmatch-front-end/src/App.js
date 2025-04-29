@@ -1,7 +1,6 @@
 import { BrowserRouter as Router,Routes,Route } from 'react-router';
 import SignPages from './pages/SignPages';
 import Candidates from './Espaces/Candidate.jsx';
-import Listcompanies from './pages/ListComapnies.jsx';
 import ProfileCandidat from './pages/ProfileCandidate.jsx';
 import CompaniesMatching from './pages/CompaniesMatching.jsx';
 import ProtectedRoute from './features/session/ProtectedRoute.jsx';
@@ -9,7 +8,8 @@ import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
 import QcmForRoadmap from './pages/qcmForRoadmap';
-import { Box } from './pages/createProfileCandidate.jsx';
+
+import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
 import { Roadmap } from './pages/Roadmap.js';
 import CompaniesRelated from './pages/compniesSelectedList.jsx';
@@ -33,7 +33,7 @@ export default function App() {
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
-        <Route path='/candidate/test' element={<CandidateTest/>}/>
+        <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
       </Routes>
     </Router>

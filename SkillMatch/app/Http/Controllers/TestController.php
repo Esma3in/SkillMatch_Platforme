@@ -15,7 +15,7 @@ class TestController extends Controller
         return response()->json(['error' => 'Company not found'], 404);
     }
 
-    $test = $company->tests()->with(['step', 'qcm', 'company'])->get();
+    $test = $company->tests()->with(['steps', 'qcm', 'company','skills'])->get();
 
     if (!$test) {
         return response()->json(['error' => 'Test not found'], 404);

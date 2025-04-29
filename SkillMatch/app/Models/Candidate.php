@@ -83,6 +83,9 @@ class Candidate extends Model
     {
         return $this->belongsToMany(Challenge::class, 'candidate_challenge')->withTimestamps();
     }
-
+    public function companies_selcted(){
+        return $this->belongsToMany(Company::class,'companies_selecteds')
+        ->withTimestamps();
+    }
 
 }

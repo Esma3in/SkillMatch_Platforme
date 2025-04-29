@@ -1,0 +1,71 @@
+.formBox {
+    max-width: 700px;
+    margin: auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .sectionTitleBox {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 2rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #222;
+  }
+  
+  .formLabelBox {
+    display: block;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .formInputBox {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+  }
+  
+  .formSectionBox {
+    margin-bottom: 2rem;
+  }
+  
+  .formSubmitButton {
+    background-color: #007bff;
+    color: white;
+    padding: 0.7rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .errorMsgBox {
+    color: red;
+    font-size: 0.8rem;
+  }
+  
+  .helperTextBox {
+    font-size: 0.75rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .previewImageBox {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  

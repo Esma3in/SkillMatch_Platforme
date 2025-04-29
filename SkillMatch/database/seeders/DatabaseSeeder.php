@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Ceo;
+use App\Models\Step;
 use App\Models\Test;
 use App\Models\Badge;
 use App\Models\Skill;
@@ -26,6 +27,8 @@ use App\Models\CompaniesSkills;
 use Illuminate\Database\Seeder;
 use App\Models\CandidatesSkills;
 use App\Models\ProfileCandidate;
+use App\Models\CandidateSelected;
+use App\Models\CompaniesSelected;
 use Illuminate\Support\Facades\Log;
 
 class DatabaseSeeder extends Seeder
@@ -80,10 +83,10 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create Administrators
-        Administrator::factory(3)->create();
+        Administrator::factory(1)->create();
 
         // Create Companies and their Profiles, Roadmaps, Challenges
-        Company::factory(5)->create()->each(function ($company) use($skillsCreated) {
+       $companies=Company::factory(5)->create()->each(function ($company) use($skillsCreated) {
             Ceo::factory()->create([
                 'company_id'=>$company->id
             ]);
@@ -93,6 +96,7 @@ class DatabaseSeeder extends Seeder
                 'company_id' => $company->id,
                 'skill_id' => $randomSkill->id
             ]);
+            
             // Create Challenges with Series, Tests and Roadmap_Tests
             Challenge::factory(3)->create()->each(function ($challenge) use ($company) {
                 SerieChallenge::factory(10)->create();
@@ -109,6 +113,9 @@ class DatabaseSeeder extends Seeder
 
         // Create Candidates and their related data
         Candidate::factory(2)->create()->each(function ($candidate) use ($skillsCreated) {
+            CompaniesSelected::factory(10)->create([
+            'candidate_id'=>$candidate->id,
+            ]);
             ProfileCandidate::factory()->create(['candidate_id' => $candidate->id]);
             Experience::factory(3)->create();
             Formation::factory(2)->create();
@@ -129,7 +136,11 @@ class DatabaseSeeder extends Seeder
                     'test_id' => $test->id
                 ]);
             });
+            Test::inRandomOrder()->get()->each(function ($test){
+                Step::factory(4)->create([
+                    'test_id' => $test->id
+                ]);
+            });
         });
-
     }
 }
