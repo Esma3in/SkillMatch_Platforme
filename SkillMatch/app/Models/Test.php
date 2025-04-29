@@ -44,7 +44,6 @@ class Test extends Model
                     ->withTimestamps();
     }
     
- 
 }
 
 

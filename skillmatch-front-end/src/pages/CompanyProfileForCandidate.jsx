@@ -73,9 +73,9 @@ export default function CompanyProfileForCandidate() {
 
   // Company vision/recruitment message
   const companyVision = `Subject: Join our team and help shape the future with us
-Hello ${candidateInfo.name},
-At ${companyInfo.name}, we believe that the future is built by passionate, curious, and bold minds. When we came across your profile on Futurna, we were genuinely impressed by your journey, your projects, and most of all, your ability to actively learn and innovate.
-We are currently looking for a collaborator capable of contributing to ${companyInfo.sector}, and we believe your profile aligns perfectly with this vision. Your approach to ${companyInfoFetched?.skills?.[0]['name']}, along with your drive to grow, is exactly what we value.
+Hello ${candidateInfo?.name},
+At ${companyInfo?.name}, we believe that the future is built by passionate, curious, and bold minds. When we came across your profile on Futurna, we were genuinely impressed by your journey, your projects, and most of all, your ability to actively learn and innovate.
+We are currently looking for a collaborator capable of contributing to ${companyInfo?.sector}, and we believe your profile aligns perfectly with this vision. Your approach to ${companyInfoFetched?.skills?.[0]?.['name']}, along with your drive to grow, is exactly what we value.
 Here's what we offer you:
 A stimulating environment where every idea matters
 A clear roadmap to grow your skills, with hands-on projects at each stage
@@ -85,13 +85,13 @@ Your potential deserves to be supported and nurtured. With us, you won't be just
 We would be thrilled to connect with you and share more about how this collaboration could benefit you.
 Looking forward to speaking with you,
 ${companyInfoFetched?.ceo?.name}
-Team Lead at ${companyInfo.name}
-${companyInfo.email} – ${companyInfoFetched?.profile?.phone} `;
+Team Lead at ${companyInfo?.name}
+${companyInfo?.email} – ${companyInfoFetched?.profile?.phone} `;
 
   // Test information
   const testInfo = {
     title: "Our tests",
-    description: `🎯 Objective: At ${companyInfo.name}, we believe that technical skills go beyond a CV. That's why we offer a series of short problem-solving tests to help us discover how you think, analyze, and approach real-world challenges.
+    description: `🎯 Objective: At ${companyInfo?.name}, we believe that technical skills go beyond a CV. That's why we offer a series of short problem-solving tests to help us discover how you think, analyze, and approach real-world challenges.
 These exercises aren't just about finding the right answer — they're about creativity, logic, and clarity.
 Whether you're solving an algorithmic puzzle or optimizing a simple function, we value the way you think through problems and communicate your solutions.
 🧩 Each test is designed to be:
@@ -114,22 +114,22 @@ We encourage you to explore them when you're ready — take your time and have f
               <div className="flex items-start mb-8">
                 <img
                   className="w-[102px] h-[103px] object-cover rounded-full"
-                  alt={companyInfo.logo}
-                  src={companyInfo.logo}
+                  alt={companyInfo?.logo}
+                  src={companyInfo?.logo}
                 />
 
                 <div className="ml-4 flex flex-col">
                   <h1 className="font-semibold text-2xl text-center font-['Plus_Jakarta_Sans',Helvetica]">
-                    {companyInfo.name}
+                    {companyInfo?.name}
                   </h1>
                   <div className="mt-2 bg-[#5845ee26] rounded-3xl px-1.5 py-1">
                     <a
                       className="font-normal text-[#0800f1] text-sm underline overflow-hidden text-ellipsis [display:-webkit-box] [-webkit-line-clamp:1] [-webkit-box-orient:vertical] font-['Manrope',Helvetica]"
-                      href={companyInfo.linkedIn}
+                      href={companyInfo?.linkedIn}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      {companyInfo.email}
+                      {companyInfo?.email}
                     </a>
                   </div>
                 </div>
@@ -170,7 +170,7 @@ We encourage you to explore them when you're ready — take your time and have f
                       Bio
                     </h3>
                     <p className="font-normal text-[15px] text-neutral-800 font-['Manrope',Helvetica] mt-2">
-                      {companyInfo.bio}
+                      {companyInfo?.bio}
                     </p>
                   </div>
 
@@ -180,7 +180,7 @@ We encourage you to explore them when you're ready — take your time and have f
                         Adresse
                       </h3>
                       <p className="font-normal text-base font-['Manrope',Helvetica]">
-                        {companyInfo.address}
+                        {companyInfo?.address}
                       </p>
                     </div>
                     <div>
@@ -188,7 +188,7 @@ We encourage you to explore them when you're ready — take your time and have f
                         Email
                       </h3>
                       <p className="font-normal text-base font-['Manrope',Helvetica]">
-                        {companyInfo.email}
+                        {companyInfo?.email}
                       </p>
                     </div>
                   </div>
@@ -198,7 +198,7 @@ We encourage you to explore them when you're ready — take your time and have f
                       Secteur d'activite
                     </h3>
                     <p className="font-normal text-base font-['Manrope',Helvetica]">
-                      {companyInfo.sector}
+                      {companyInfo?.sector}
                     </p>
                   </div>
                 </div>
@@ -214,13 +214,13 @@ We encourage you to explore them when you're ready — take your time and have f
                     <div className="flex items-center mb-6">
                       <div className="w-[45px] h-[45px] rounded-full overflow-hidden">
                         <img
-                          src={ceoInfo.avatar}
+                          src={ceoInfo?.avatar}
                           alt="CEO avatar"
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <span className="ml-3 font-semibold text-sm font-['Manrope',Helvetica]">
-                        {ceoInfo.name}
+                        {ceoInfo?.name}
                       </span>
                     </div>
 
@@ -229,7 +229,7 @@ We encourage you to explore them when you're ready — take your time and have f
                         Description
                       </h3>
                       <p className="font-normal text-[13px] font-['Manrope',Helvetica]">
-                        {ceoInfo.description}
+                        {ceoInfo?.description}
                       </p>
                     </div>
                   </div>
@@ -238,13 +238,13 @@ We encourage you to explore them when you're ready — take your time and have f
                 {/* Tests card */}
                 <div className="w-full md:w-[313px] bg-[#f7f8f9] rounded-2xl p-6">
                   <h2 className="font-bold text-xl text-center font-['Hind_Kochi-Bold',Helvetica] mb-2">
-                    {testInfo.title}
+                    {testInfo?.title}
                   </h2>
                   <p className="font-normal text-[13px] leading-5 font-['Hind_Kochi-Regular',Helvetica]">
                     <span className="font-bold font-['Hind_Kochi-Bold',Helvetica]">
-                      {testInfo.description.split(":")[0]}:
+                      {testInfo?.description.split(":")[0]}:
                     </span>
-                    {testInfo.description.split(":").slice(1).join(":")}
+                    {testInfo?.description.split(":").slice(1).join(":")}
                   </p>
                 </div>
               </div>
