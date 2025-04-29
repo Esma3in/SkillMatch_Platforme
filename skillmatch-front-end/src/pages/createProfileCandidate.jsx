@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { FaPlus, FaExclamationCircle } from 'react-icons/fa';
+import { FaExclamationCircle } from 'react-icons/fa';
 import '../styles/pages/Profiles/CandidateProfile.css';
 import { api } from '../api/api';
 import { useNavigate } from 'react-router-dom'; // Corrected import
 import NavbarCandidate from '../components/common/navbarCandidate';
-import ModalExp from '../components/modals/createExperience';
+
 
 export const Box = () => {
   const navigate = useNavigate(); 

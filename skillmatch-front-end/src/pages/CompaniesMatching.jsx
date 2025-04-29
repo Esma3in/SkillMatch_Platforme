@@ -3,11 +3,11 @@ import Companies from "../components/sections/companies";
 import SuggestedCompanies from "../components/sections/suggestedCompanies";
 
 
-export default function CompaniesMatching({id}){
+export default function CompaniesMatching(){
     return(
 <>
         <NavbarCandidate/>
-        <SuggestedCompanies id={id}/>
+        <SuggestedCompanies/>
         <Companies />
 </>
         

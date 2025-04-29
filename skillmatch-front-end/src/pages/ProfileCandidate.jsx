@@ -2,21 +2,18 @@ import React, { useEffect, useState } from "react";
 import { api } from "../api/api";
 import AddLanguageModal from "../components/modals/AddLanguage";
 import Bio from "../components/modals/AddBioCandidate";
-import ModalExp from "../components/modals/createExperience";
+import CreateExperienceModal from '../components/modals/createExperience'
 import ModalSkill from "../components/modals/createSkillsCandidate";
 // import "../styles/pages/profileCandidate/profileCandidate.css";
 import NavbarCandidate from "../components/common/navbarCandidate";
-import Candidate from "../Espaces/Candidate";
 
 export default function ProfileCandidate() {
 
   const [candidateInfo, setCandidateInfo] = useState(null);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
   const [experiences, setExperiences] = useState([]);
   const [skills, setSkills] = useState([]);
   const [educations, setEducations] = useState([]);
-  const [showExpModal, setShowExpModal] = useState(false);
   const [showSkillModal, setShowSkillModal] = useState(false);
 
   // Fetch candidate information, experiences, and skills
@@ -235,12 +232,7 @@ export default function ProfileCandidate() {
               <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
                 Experiences
               </h2>
-              <button
-                onClick={() => setShowExpModal(true)}
-                className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-6 py-2.5 rounded-full text-base font-medium hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-md flex items-center gap-2"
-              >
-                <span>+ Add Experience</span>
-              </button>
+             <CreateExperienceModal user={candidateInfo.id}/>
             </div>
             <div className="relative ml-8 mt-8">
               <div className="absolute left-2.5 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500"></div>
@@ -291,11 +283,12 @@ export default function ProfileCandidate() {
                 Skills
               </h2>
               <button
-                onClick={() => setShowSkillModal(true)}
-                className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-6 py-2.5 rounded-full text-base font-medium hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-md flex items-center gap-2"
-              >
-                <span>+ Add Skill</span>
-              </button>
+                    type="button"
+                    onClick={() => setShowSkillModal(true)}
+                    className="flex items-center px-4 py-2 bg-transparent text-white rounded-full focus:outline-none"
+                >
+                    <img src="assets/edit.png" alt="Edit icon" className="w-5 h-5 mr-2" />
+                </button>
             </div>
             <div className="relative ml-8 mt-8">
               <div className="absolute left-2.5 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500"></div>
@@ -353,33 +346,14 @@ export default function ProfileCandidate() {
         </div>
 
         {/* Modals */}
-        {showExpModal && (
-          <ModalExp
-            user={candidateInfo.id}
-            onClose={() => {
-              setShowExpModal(false);
-              if (candidateInfo && candidateInfo.id) {
-                api
-                  .get(`/api/experiences/candidate/${candidateInfo.id}`)
-                  .then((response) => {
-                    setExperiences(response.data);
-                  })
-                  .catch((err) => {
-                    console.error("Failed to refresh experiences", err);
-                  });
-              }
-            }}
-          />
-        )}
-
         {showSkillModal && (
           <ModalSkill
-            user={user}
+            user={candidateInfo.id}
             onClose={() => {
               setShowSkillModal(false);
-              if (user && user.user_id) {
+              if (candidateInfo && candidateInfo.id) {
                 api
-                  .get(`/api/skills/candidate/${user.user_id}`)
+                  .get(`/api/skills/candidate/${candidateInfo.id}`)
                   .then((response) => {
                     setSkills(response.data); // Corrected to update skills
                   })
