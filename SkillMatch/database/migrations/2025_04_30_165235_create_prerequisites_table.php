@@ -13,8 +13,8 @@ class CreatePrerequisitesTable extends Migration
             $table->string('text');
             $table->boolean('completed')->default(false);
             $table->timestamps();
-
             // Optional: Add foreign key constraints
+            $table->foreignId('skill_id')->constrained('skills');
             $table->foreignId('roadmap_id')->constrained('roadmaps');
             $table->foreignId('candidate_id')->constrained('candidates');
         });
