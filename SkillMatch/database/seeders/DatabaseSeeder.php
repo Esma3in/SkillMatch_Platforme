@@ -18,6 +18,7 @@ use App\Models\Formation;
 use App\Models\Experience;
 use App\Models\Attestation;
 use App\Models\RoadMapTest;
+use App\Models\SocialMedia;
 use App\Models\Notification;
 use App\Models\Administrator;
 use App\Models\ProfileCompany;
@@ -97,7 +98,7 @@ class DatabaseSeeder extends Seeder
                 'company_id' => $company->id,
                 'skill_id' => $randomSkill->id
             ]);
-            
+
             // Create Challenges with Series, Tests and Roadmap_Tests
             Challenge::factory(3)->create()->each(function ($challenge) use ($company) {
                 SerieChallenge::factory(10)->create();
@@ -238,6 +239,50 @@ class DatabaseSeeder extends Seeder
                 }, $decoded['tools']['tools']);
                 DB::table('tools')->insert($toolsData);
             });
+
+
+        // Get all candidates
+        $candidates = Candidate::all();
+
+        if ($candidates->count() > 0) {
+            // Define available platforms
+            $platforms = ['facebook', 'twitter', 'discord', 'linkedin', 'github'];
+
+            // Create social media profiles for each candidate
+            foreach ($candidates as $candidate) {
+                // For each candidate, we'll create between 1-5 social media links
+                $numLinks = rand(1, 5);
+
+                // Shuffle platforms to get random selection
+                shuffle($platforms);
+
+                // Create social links for randomly selected platforms
+                for ($i = 0; $i < $numLinks; $i++) {
+                    SocialMedia::factory()
+                        ->forPlatform($platforms[$i])
+                        ->create([
+                            'candidate_id' => $candidate->id
+                        ]);
+                }
+            }
+        } else {
+            // If no candidates exist, create some with social media profiles
+            for ($i = 0; $i < 10; $i++) {
+                $candidate = Candidate::factory()->create();
+
+                // For each platform, 50% chance to create a profile
+                foreach (['facebook', 'twitter', 'discord', 'linkedin', 'github'] as $platform) {
+                    if (rand(0, 1)) {
+                        SocialMedia::factory()
+                            ->forPlatform($platform)
+                            ->create([
+                                'candidate_id' => $candidate->id
+                            ]);
+                    }
+                }
+            }
+
         }
     }
+}
 

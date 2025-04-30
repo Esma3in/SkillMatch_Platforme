@@ -8,6 +8,7 @@ import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
 import QcmForRoadmap from './pages/qcmForRoadmap';
+import ProfileSettings from './pages/Settings.js';
 
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
@@ -30,6 +31,7 @@ export default function App() {
          <Route path="/" element={<ProtectedRoute ><QcmForRoadmap /></ProtectedRoute>} />
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
         <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
+        <Route path="/profile-settings" element={<ProfileSettings />} />
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>

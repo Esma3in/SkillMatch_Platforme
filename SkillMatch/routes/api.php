@@ -5,8 +5,8 @@ use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
-use App\Http\Controllers\SkillController;
 
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\RoadmapController;
@@ -14,7 +14,9 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\ProfileCandidateController;
+
 use App\Http\Controllers\CompaniesSelectedController;
 
 // CSRF Token Route
@@ -55,6 +57,13 @@ Route::get('/serie-challenges/{skill}', [ChallengeController::class, 'getSerieCh
 // Problem Routes (retained for backward compatibility, remove if not needed)
 Route::get('/problems', [ProblemController::class, 'index']);
 Route::get('/serie-problems/{skill}', [ProblemController::class, 'getSerieProblems']);
+
+// Profile Settings Routes
+Route::get('/candidate/settings/{id}', [ProfileSettingsController::class, 'getProfileSettings']);
+Route::post('/candidate/settings/update', [ProfileSettingsController::class, 'updateProfile']);
+Route::post('/candidate/settings/change-password', [ProfileSettingsController::class, 'changePassword']);
+Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsController::class, 'deleteProfilePicture']);
+
 
 //Candidate Test Routes:
 
