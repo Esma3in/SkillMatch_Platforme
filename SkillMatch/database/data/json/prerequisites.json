@@ -1,365 +1,293 @@
 [
   {
-    "roadmap_id": 1,
-    "candidate_id": 1,
     "prerequisites": [
-      { "id": 1, "text": "Install Java Development Kit (JDK) 17 or later.", "completed": false, "skill_id": 1 },
-      { "id": 2, "text": "Set up Visual Studio Code with Java extensions.", "completed": true, "skill_id": 1 },
-      { "id": 3, "text": "Understand basic programming concepts (variables, loops).", "completed": true, "skill_id": 1 },
-      { "id": 4, "text": "Install Node.js for Angular development.", "completed": false, "skill_id": 2 }
+      { "id": 1, "text": "Install Java Development Kit (JDK) 17 or later.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Set up Visual Studio Code with Java extensions.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Understand basic programming concepts (variables, loops).", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 4, "text": "Install Node.js for Angular development.", "completed": false, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 2,
-    "candidate_id": 2,
     "prerequisites": [
-      { "id": 1, "text": "Learn HTML5 basics (tags, semantic elements).", "completed": false, "skill_id": 3 },
-      { "id": 2, "text": "Understand CSS3 fundamentals (flexbox, grid).", "completed": false, "skill_id": 4 },
-      { "id": 3, "text": "Install Git and configure a GitHub account.", "completed": true, "skill_id": 5 }
+      { "id": 1, "text": "Learn HTML5 basics (tags, semantic elements).", "completed": false, "skills": [{ "name": "HTML" }] },
+      { "id": 2, "text": "Understand CSS3 fundamentals (flexbox, grid).", "completed": false, "skills": [{ "name": "CSS" }] },
+      { "id": 3, "text": "Install Git and configure a GitHub account.", "completed": true, "skills": [{ "name": "Git" }] }
     ]
   },
   {
-    "roadmap_id": 3,
-    "candidate_id": 3,
     "prerequisites": [
-      { "id": 1, "text": "Install Node.js and npm for JavaScript development.", "completed": false, "skill_id": 6 },
-      { "id": 2, "text": "Learn JavaScript basics (DOM manipulation, events).", "completed": true, "skill_id": 6 },
-      { "id": 3, "text": "Understand TypeScript fundamentals (types, interfaces).", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up Angular CLI for project scaffolding.", "completed": false, "skill_id": 2 }
+      { "id": 1, "text": "Install Node.js and npm for JavaScript development.", "completed": false, "skills": [{ "name": "JavaScript" }] },
+      { "id": 2, "text": "Learn JavaScript basics (DOM manipulation, events).", "completed": true, "skills": [{ "name": "JavaScript" }] },
+      { "id": 3, "text": "Understand TypeScript fundamentals (types, interfaces).", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up Angular CLI for project scaffolding.", "completed": false, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 4,
-    "candidate_id": 4,
     "prerequisites": [
-      { "id": 1, "text": "Familiarize with REST API concepts (GET, POST).", "completed": false, "skill_id": 8 },
-      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skill_id": 8 },
-      { "id": 3, "text": "Learn basic Git commands (commit, push, pull).", "completed": true, "skill_id": 5 },
-      { "id": 4, "text": "Understand CSS3 media queries for responsive design.", "completed": false, "skill_id": 4 },
-      { "id": 5, "text": "Set up Visual Studio Code with HTML/CSS extensions.", "completed": true, "skill_id": 3 }
+      { "id": 1, "text": "Familiarize with REST API concepts (GET, POST).", "completed": false, "skills": [{ "name": "React" }] },
+      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skills": [{ "name": "React" }] },
+      { "id": 3, "text": "Learn basic Git commands (commit, push, pull).", "completed": true, "skills": [{ "name": "Git" }] },
+      { "id": 4, "text": "Understand CSS3 media queries for responsive design.", "completed": false, "skills": [{ "name": "CSS" }] },
+      { "id": 5, "text": "Set up Visual Studio Code with HTML/CSS extensions.", "completed": true, "skills": [{ "name": "HTML" }] }
     ]
   },
   {
-    "roadmap_id": 5,
-    "candidate_id": 5,
     "prerequisites": [
-      { "id": 1, "text": "Install JDK 17 for Java backend development.", "completed": false, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java OOP concepts (classes, inheritance).", "completed": false, "skill_id": 1 },
-      { "id": 3, "text": "Set up IntelliJ IDEA for Java projects.", "completed": true, "skill_id": 1 }
+      { "id": 1, "text": "Install JDK 17 for Java backend development.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java OOP concepts (classes, inheritance).", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up IntelliJ IDEA for Java projects.", "completed": true, "skills": [{ "name": "Java" }] }
     ]
   },
   {
-    "roadmap_id": 6,
-    "candidate_id": 6,
     "prerequisites": [
-      { "id": 1, "text": "Learn Angular component basics.", "completed": false, "skill_id": 2 },
-      { "id": 2, "text": "Install Node.js and Angular CLI.", "completed": true, "skill_id": 2 },
-      { "id": 3, "text": "Understand TypeScript for Angular.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up VS Code with Angular extensions.", "completed": true, "skill_id": 2 }
+      { "id": 1, "text": "Learn Angular component basics.", "completed": false, "skills": [{ "name": "Angular" }] },
+      { "id": 2, "text": "Install Node.js and Angular CLI.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Understand TypeScript for Angular.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up VS Code with Angular extensions.", "completed": true, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 7,
-    "candidate_id": 7,
     "prerequisites": [
-      { "id": 1, "text": "Learn HTML5 semantic elements.", "completed": true, "skill_id": 3 },
-      { "id": 2, "text": "Understand CSS3 box model and positioning.", "completed": false, "skill_id": 4 },
-      { "id": 3, "text": "Install Git for version control.", "completed": true, "skill_id": 5 },
-      { "id": 4, "text": "Learn JavaScript array methods.", "completed": false, "skill_id": 6 }
+      { "id": 1, "text": "Learn HTML5 semantic elements.", "completed": true, "skills": [{ "name": "HTML" }] },
+      { "id": 2, "text": "Understand CSS3 box model and positioning.", "completed": false, "skills": [{ "name": "CSS" }] },
+      { "id": 3, "text": "Install Git for version control.", "completed": true, "skills": [{ "name": "Git" }] },
+      { "id": 4, "text": "Learn JavaScript array methods.", "completed": false, "skills": [{ "name": "JavaScript" }] }
     ]
   },
   {
-    "roadmap_id": 8,
-    "candidate_id": 8,
     "prerequisites": [
-      { "id": 1, "text": "Understand REST API authentication (JWT, OAuth).", "completed": false, "skill_id": 8 },
-      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skill_id": 8 },
-      { "id": 3, "text": "Learn TypeScript interfaces.", "completed": false, "skill_id": 7 }
+      { "id": 1, "text": "Understand REST API authentication (JWT, OAuth).", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Learn TypeScript interfaces.", "completed": false, "skills": [{ "name": "TypeScript" }] }
     ]
   },
   {
-    "roadmap_id": 9,
-    "candidate_id": 9,
     "prerequisites": [
-      { "id": 1, "text": "Install JDK 17 for Java development.", "completed": true, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java exception handling.", "completed": false, "skill_id": 1 },
-      { "id": 3, "text": "Set up Maven for Java project management.", "completed": false, "skill_id": 1 },
-      { "id": 4, "text": "Understand Git branching strategies.", "completed": true, "skill_id": 5 }
+      { "id": 1, "text": "Install JDK 17 for Java development.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java exception handling.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up Maven for Java project management.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 4, "text": "Understand Git branching strategies.", "completed": true, "skills": [{ "name": "Git" }] }
     ]
   },
   {
-    "roadmap_id": 10,
-    "candidate_id": 10,
     "prerequisites": [
-      { "id": 1, "text": "Learn Angular routing basics.", "completed": false, "skill_id": 2 },
-      { "id": 2, "text": "Install Node.js and npm.", "completed": true, "skill_id": 2 },
-      { "id": 3, "text": "Understand JavaScript ES6 modules.", "completed": false, "skill_id": 6 },
-      { "id": 4, "text": "Set up VS Code with TypeScript extensions.", "completed": true, "skill_id": 7 },
-      { "id": 5, "text": "Learn HTML5 forms and validation.", "completed": false, "skill_id": 3 }
+      { "id": 1, "text": "Learn Angular routing basics.", "completed": false, "skills": [{ "name": "Angular" }] },
+      { "id": 2, "text": "Install Node.js and npm.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Understand JavaScript ES6 modules.", "completed": false, "skills": [{ "name": "JavaScript" }] },
+      { "id": 4, "text": "Set up VS Code with TypeScript extensions.", "completed": true, "skills": [{ "name": "TypeScript" }] },
+      { "id": 5, "text": "Learn HTML5 forms and validation.", "completed": false, "skills": [{ "name": "HTML" }] }
     ]
   },
   {
-    "roadmap_id": 11,
-    "candidate_id": 11,
     "prerequisites": [
-      { "id": 1, "text": "Learn CSS3 animations and transitions.", "completed": false, "skill_id": 4 },
-      { "id": 2, "text": "Understand JavaScript event handling.", "completed": true, "skill_id": 6 },
-      { "id": 3, "text": "Install Git and create a repository.", "completed": true, "skill_id": 5 }
+      { "id": 1, "text": "Learn CSS3 animations and transitions.", "completed": false, "skills": [{ "name": "CSS" }] },
+      { "id": 2, "text": "Understand JavaScript event handling.", "completed": true, "skills": [{ "name": "JavaScript" }] },
+      { "id": 3, "text": "Install Git and create a repository.", "completed": true, "skills": [{ "name": "Git" }] }
     ]
   },
   {
-    "roadmap_id": 12,
-    "candidate_id": 12,
     "prerequisites": [
-      { "id": 1, "text": "Learn REST API design principles.", "completed": false, "skill_id": 8 },
-      { "id": 2, "text": "Install Postman for API development.", "completed": true, "skill_id": 8 },
-      { "id": 3, "text": "Understand TypeScript generics.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up Angular CLI for projects.", "completed": true, "skill_id": 2 }
+      { "id": 1, "text": "Learn REST API design principles.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Install Postman for API development.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Understand TypeScript generics.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up Angular CLI for projects.", "completed": true, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 13,
-    "candidate_id": 13,
     "prerequisites": [
-      { "id": 1, "text": "Install JDK 17 for backend development.", "completed": false, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java collections framework.", "completed": false, "skill_id": 1 },
-      { "id": 3, "text": "Set up IntelliJ IDEA with Java plugins.", "completed": true, "skill_id": 1 },
-      { "id": 4, "text": "Understand Git merge and rebase.", "completed": false, "skill_id": 5 },
-      { "id": 5, "text": "Learn HTML5 canvas basics.", "completed": false, "skill_id": 3 }
+      { "id": 1, "text": "Install JDK 17 for backend development.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java collections framework.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up IntelliJ IDEA with Java plugins.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 4, "text": "Understand Git merge and rebase.", "completed": false, "skills": [{ "name": "Git" }] },
+      { "id": 5, "text": "Learn HTML5 canvas basics.", "completed": false, "skills": [{ "name": "React" }] }
     ]
   },
   {
-    "roadmap_id": 14,
-    "candidate_id": 14,
     "prerequisites": [
-      { "id": 1, "text": "Learn Angular services and dependency injection.", "completed": false, "skill_id": 2 },
-      { "id": 2, "text": "Install Node.js for Angular.", "completed": true, "skill_id": 2 },
-      { "id": 3, "text": "Understand TypeScript classes.", "completed": false, "skill_id": 7 }
+      { "id": 1, "text": "Learn Angular services and dependency injection.", "completed": false, "skills": [{ "name": "Angular" }] },
+      { "id": 2, "text": "Install Node.js for Angular.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Understand TypeScript classes.", "completed": false, "skills": [{ "name": "TypeScript" }] }
     ]
   },
   {
-    "roadmap_id": 15,
-    "candidate_id": 15,
     "prerequisites": [
-      { "id": 1, "text": "Learn CSS3 grid layout.", "completed": true, "skill_id": 4 },
-      { "id": 2, "text": "Understand JavaScript promises.", "completed": false, "skill_id": 6 },
-      { "id": 3, "text": "Install Git and configure SSH keys.", "completed": true, "skill_id": 5 },
-      { "id": 4, "text": "Learn HTML5 accessibility standards.", "completed": false, "skill_id": 3 }
+      { "id": 1, "text": "Learn CSS3 grid layout.", "completed": true, "skills": [{ "name": "CSS" }] },
+      { "id": 2, "text": "Understand JavaScript promises.", "completed": false, "skills": [{ "name": "JavaScript" }] },
+      { "id": 3, "text": "Install Git and configure SSH keys.", "completed": true, "skills": [{ "name": "Git" }] },
+      { "id": 4, "text": "Learn HTML5 accessibility standards.", "completed": false, "skills": [{ "name": "React" }] }
     ]
   },
   {
-    "roadmap_id": 16,
-    "candidate_id": 16,
     "prerequisites": [
-      { "id": 1, "text": "Understand REST API status codes.", "completed": false, "skill_id": 8 },
-      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skill_id": 8 },
-      { "id": 3, "text": "Learn TypeScript decorators.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up Angular CLI.", "completed": true, "skill_id": 2 },
-      { "id": 5, "text": "Learn JavaScript async/await.", "completed": false, "skill_id": 6 }
+      { "id": 1, "text": "Understand  status codes.", "completed": false, "skills": [{ "name": "React" }] },
+      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skills": [{ "name": "TypeScript" }] },
+      { "id": 3, "text": "Learn TypeScript decorators.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up Angular CLI.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 5, "text": "Learn JavaScript async/await.", "completed": false, "skills": [{ "name": "JavaScript" }] }
     ]
   },
   {
-    "roadmap_id": 17,
-    "candidate_id": 17,
     "prerequisites": [
-      { "id": 1, "text": "Install JDK 17 for Java.", "completed": true, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java streams API.", "completed": false, "skill_id": 1 },
-      { "id": 3, "text": "Set up Maven for Java.", "completed": true, "skill_id": 1 }
+      { "id": 1, "text": "Install JDK 17 for Java.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java streams API.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up Maven for Java.", "completed": true, "skills": [{ "name": "Java" }] }
     ]
   },
   {
-    "roadmap_id": 18,
-    "candidate_id": 18,
     "prerequisites": [
-      { "id": 1, "text": "Learn Angular reactive forms.", "completed": false, "skill_id": 2 },
-      { "id": 2, "text": "Install Node.js and npm.", "completed": true, "skill_id": 2 },
-      { "id": 3, "text": "Understand TypeScript modules.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Learn HTML5 video/audio elements.", "completed": false, "skill_id": 3 }
+      { "id": 1, "text": "Learn Angular reactive forms.", "completed": false, "skills": [{ "name": "Angular" }] },
+      { "id": 2, "text": "Install Node.js and npm.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Understand TypeScript modules.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Learn React video/audio elements.", "completed": false, "skills": [{ "name": "HTML" }] }
     ]
   },
   {
-    "roadmap_id": 19,
-    "candidate_id": 19,
     "prerequisites": [
-      { "id": 1, "text": "Learn CSS3 variables.", "completed": true, "skill_id": 4 },
-      { "id": 2, "text": "Understand JavaScript closures.", "completed": false, "skill_id": 6 },
-      { "id": 3, "text": "Install Git for collaboration.", "completed": true, "skill_id": 5 },
-      { "id": 4, "text": "Learn REST API versioning.", "completed": false, "skill_id": 8 }
+      { "id": 1, "text": "Learn CSS3 variables.", "completed": true, "skills": [{ "name": "CSS" }] },
+      { "id": 2, "text": "Understand JavaScript closures.", "completed": false, "skills": [{ "name": "JavaScript" }] },
+      { "id": 3, "text": "Install Git for collaboration.", "completed": true, "skills": [{ "name": "Git" }] },
+      { "id": 4, "text": "Learn  versioning.", "completed": false, "skills": [{ "name": "React" }] }
     ]
   },
   {
-    "roadmap_id": 20,
-    "candidate_id": 20,
     "prerequisites": [
-      { "id": 1, "text": "Install JDK 17 for Java.", "completed": false, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java multithreading basics.", "completed": false, "skill_id": 1 },
-      { "id": 3, "text": "Set up IntelliJ IDEA.", "completed": true, "skill_id": 1 },
-      { "id": 4, "text": "Understand Angular directives.", "completed": false, "skill_id": 2 },
-      { "id": 5, "text": "Learn TypeScript enums.", "completed": false, "skill_id": 7 },
-      { "id": 6, "text": "Install Postman for APIs.", "completed": true, "skill_id": 8 }
+      { "id": 1, "text": "Install JDK 17 for Java.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java multithreading basics.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up IntelliJ IDEA.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 4, "text": "Understand Angular directives.", "completed": false, "skills": [{ "name": "Angular" }] },
+      { "id": 5, "text": "Learn TypeScript enums.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 6, "text": "Install Postman for APIs.", "completed": true, "skills": [{ "name": "Java" }] }
     ]
   },
   {
-    "roadmap_id": 21,
-    "candidate_id": 21,
     "prerequisites": [
-      { "id": 1, "text": "Install Java Development Kit (JDK) 17 for backend development.", "completed": false, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java basic syntax and control structures.", "completed": true, "skill_id": 1 },
-      { "id": 3, "text": "Set up IntelliJ IDEA with Java plugins.", "completed": true, "skill_id": 1 },
-      { "id": 4, "text": "Install Node.js for Angular development.", "completed": false, "skill_id": 2 }
+      { "id": 1, "text": "Install Java Development Kit (JDK) 17 for backend development.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java basic syntax and control structures.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up IntelliJ IDEA with Java plugins.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 4, "text": "Install Node.js for Angular development.", "completed": false, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 22,
-    "candidate_id": 22,
     "prerequisites": [
-      { "id": 1, "text": "Learn HTML5 semantic elements for web structure.", "completed": true, "skill_id": 3 },
-      { "id": 2, "text": "Understand CSS3 flexbox for layout design.", "completed": false, "skill_id": 4 },
-      { "id": 3, "text": "Install Git and create a GitHub repository.", "completed": true, "skill_id": 5 },
-      { "id": 4, "text": "Learn JavaScript basics for interactivity.", "completed": false, "skill_id": 6 }
+      { "id": 1, "text": "Learn HTML5 semantic elements for web structure.", "completed": true, "skills": [{ "name": "HTML" }] },
+      { "id": 2, "text": "Understand CSS3 flexbox for layout design.", "completed": false, "skills": [{ "name": "CSS" }] },
+      { "id": 3, "text": "Install Git and create a GitHub repository.", "completed": true, "skills": [{ "name": "Git" }] },
+      { "id": 4, "text": "Learn JavaScript basics for interactivity.", "completed": false, "skills": [{ "name": "JavaScript" }] }
     ]
   },
   {
-    "roadmap_id": 23,
-    "candidate_id": 23,
     "prerequisites": [
-      { "id": 1, "text": "Install Angular CLI for project scaffolding.", "completed": true, "skill_id": 2 },
-      { "id": 2, "text": "Learn TypeScript basics (types, interfaces).", "completed": false, "skill_id": 7 },
-      { "id": 3, "text": "Understand JavaScript ES6 features (arrow functions, destructuring).", "completed": true, "skill_id": 6 },
-      { "id": 4, "text": "Set up Visual Studio Code with Angular extensions.", "completed": false, "skill_id": 2 }
+      { "id": 1, "text": "Install Angular CLI for project scaffolding.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 2, "text": "Learn TypeScript basics (types, interfaces).", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 3, "text": "Understand JavaScript ES6 features (arrow functions, destructuring).", "completed": true, "skills": [{ "name": "JavaScript" }] },
+      { "id": 4, "text": "Set up Visual Studio Code with Angular extensions.", "completed": false, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 24,
-    "candidate_id": 24,
     "prerequisites": [
-      { "id": 1, "text": "Learn REST API concepts (GET, POST, JSON).", "completed": false, "skill_id": 8 },
-      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skill_id": 8 },
-      { "id": 3, "text": "Understand Git branching and merging.", "completed": false, "skill_id": 5 },
-      { "id": 4, "text": "Learn CSS3 grid for responsive layouts.", "completed": true, "skill_id": 4 },
-      { "id": 5, "text": "Set up HTML5 development environment.", "completed": true, "skill_id": 3 }
+      { "id": 1, "text": "Learn  concepts (GET, POST, JSON).", "completed": false, "skills": [{ "name": "React" }] },
+      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Understand Git branching and merging.", "completed": false, "skills": [{ "name": "Git" }] },
+      { "id": 4, "text": "Learn CSS3 grid for responsive layouts.", "completed": true, "skills": [{ "name": "CSS" }] },
+      { "id": 5, "text": "Set up HTML5 development environment.", "completed": true, "skills": [{ "name": "HTML" }] }
     ]
   },
   {
-    "roadmap_id": 25,
-    "candidate_id": 25,
     "prerequisites": [
-      { "id": 1, "text": "Install JDK 17 for Java programming.", "completed": false, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java object-oriented programming (OOP) principles.", "completed": false, "skill_id": 1 },
-      { "id": 3, "text": "Set up Maven for Java project management.", "completed": true, "skill_id": 1 },
-      { "id": 4, "text": "Understand Git commit workflows.", "completed": false, "skill_id": 5 }
+      { "id": 1, "text": "Install JDK 17 for Java programming.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java object-oriented programming (OOP) principles.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up Maven for Java project management.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 4, "text": "Understand Git commit workflows.", "completed": false, "skills": [{ "name": "Git" }] }
     ]
   },
   {
-    "roadmap_id": 26,
-    "candidate_id": 26,
     "prerequisites": [
-      { "id": 1, "text": "Learn Angular component lifecycle hooks.", "completed": false, "skill_id": 2 },
-      { "id": 2, "text": "Install Node.js and npm for Angular.", "completed": true, "skill_id": 2 },
-      { "id": 3, "text": "Understand TypeScript classes and modules.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up VS Code for Angular development.", "completed": true, "skill_id": 2 }
+      { "id": 1, "text": "Learn Angular component lifecycle hooks.", "completed": false, "skills": [{ "name": "Angular" }] },
+      { "id": 2, "text": "Install Node.js and npm for Angular.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Understand TypeScript classes and modules.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up VS Code for Angular development.", "completed": true, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 27,
-    "candidate_id": 27,
     "prerequisites": [
-      { "id": 1, "text": "Learn HTML5 form validation techniques.", "completed": true, "skill_id": 3 },
-      { "id": 2, "text": "Understand CSS3 animations for UI enhancement.", "completed": false, "skill_id": 4 },
-      { "id": 3, "text": "Install Git for version control.", "completed": true, "skill_id": 5 },
-      { "id": 4, "text": "Learn JavaScript event delegation.", "completed": false, "skill_id": 6 }
+      { "id": 1, "text": "Learn HTML5 form validation techniques.", "completed": true, "skills": [{ "name": "HTML" }] },
+      { "id": 2, "text": "Understand CSS3 animations for UI enhancement.", "completed": false, "skills": [{ "name": "CSS3" }] },
+      { "id": 3, "text": "Install Git for version control.", "completed": true, "skills": [{ "name": "Git" }] },
+      { "id": 4, "text": "Learn JavaScript event delegation.", "completed": false, "skills": [{ "name": "JavaScript" }] }
     ]
   },
   {
-    "roadmap_id": 28,
-    "candidate_id": 28,
     "prerequisites": [
-      { "id": 1, "text": "Understand REST API authentication methods (JWT).", "completed": false, "skill_id": 8 },
-      { "id": 2, "text": "Install Postman for API development.", "completed": true, "skill_id": 8 },
-      { "id": 3, "text": "Learn TypeScript generics for Angular.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up Angular CLI for rapid development.", "completed": true, "skill_id": 2 }
+      { "id": 1, "text": "Understand  authentication methods (JWT).", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 2, "text": "Install Postman for API development.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Learn TypeScript generics for Angular.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up Angular CLI for rapid development.", "completed": true, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 29,
-    "candidate_id": 29,
     "prerequisites": [
-      { "id": 1, "text": "Install JDK 17 for Java backend.", "completed": true, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java collections and streams.", "completed": false, "skill_id": 1 },
-      { "id": 3, "text": "Set up IntelliJ IDEA for Java projects.", "completed": true, "skill_id": 1 },
-      { "id": 4, "text": "Understand Git pull requests.", "completed": false, "skill_id": 5 }
+      { "id": 1, "text": "Install JDK 17 for Java backend.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java collections and streams.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up IntelliJ IDEA for Java projects.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 4, "text": "Understand Git pull requests.", "completed": false, "skills": [{ "name": "Git" }] }
     ]
   },
   {
-    "roadmap_id": 30,
-    "candidate_id": 30,
     "prerequisites": [
-      { "id": 1, "text": "Learn Angular routing and navigation.", "completed": false, "skill_id": 2 },
-      { "id": 2, "text": "Install Node.js for Angular projects.", "completed": true, "skill_id": 2 },
-      { "id": 3, "text": "Understand JavaScript async/await.", "completed": false, "skill_id": 6 },
-      { "id": 4, "text": "Learn HTML5 accessibility features.", "completed": true, "skill_id": 3 },
-      { "id": 5, "text": "Set up TypeScript environment.", "completed": false, "skill_id": 7 }
+      { "id": 1, "text": "Learn Angular routing and navigation.", "completed": false, "skills": [{ "name": "Angular" }] },
+      { "id": 2, "text": "Install Node.js for Angular projects.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Understand JavaScript async/await.", "completed": false, "skills": [{ "name": "JavaScript" }] },
+      { "id": 4, "text": "Learn HTML5 accessibility features.", "completed": true, "skills": [{ "name": "HTML" }] },
+      { "id": 5, "text": "Set up TypeScript environment.", "completed": false, "skills": [{ "name": "TypeScript" }] }
     ]
   },
   {
-    "roadmap_id": 31,
-    "candidate_id": 31,
     "prerequisites": [
-      { "id": 1, "text": "Learn CSS3 media queries for responsive design.", "completed": true, "skill_id": 4 },
-      { "id": 2, "text": "Understand JavaScript closures.", "completed": false, "skill_id": 6 },
-      { "id": 3, "text": "Install Git and configure SSH keys.", "completed": true, "skill_id": 5 }
+      { "id": 1, "text": "Learn CSS3 media queries for responsive design.", "completed": true, "skills": [{ "name": "CSS" }] },
+      { "id": 2, "text": "Understand JavaScript closures.", "completed": false, "skills": [{ "name": "JavaScript" }] },
+      { "id": 3, "text": "Install Git and configure SSH keys.", "completed": true, "skills": [{ "name": "Git" }] }
     ]
   },
   {
-    "roadmap_id": 32,
-    "candidate_id": 32,
     "prerequisites": [
-      { "id": 1, "text": "Learn REST API versioning strategies.", "completed": false, "skill_id": 8 },
-      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skill_id": 8 },
-      { "id": 3, "text": "Understand TypeScript decorators.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up Angular CLI for development.", "completed": true, "skill_id": 2 },
-      { "id": 5, "text": "Learn JavaScript promises.", "completed": false, "skill_id": 6 }
+      { "id": 1, "text": "Learn  versioning strategies.", "completed": false, "skills": [{ "name": "PHP" }] },
+      { "id": 2, "text": "Install Postman for API testing.", "completed": true, "skills": [{ "name": "PHP" }] },
+      { "id": 3, "text": "Understand TypeScript decorators.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up Angular CLI for development.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 5, "text": "Learn JavaScript promises.", "completed": false, "skills": [{ "name": "JavaScript" }] }
     ]
   },
   {
-    "roadmap_id": 33,
-    "candidate_id": 33,
     "prerequisites": [
-      { "id": 1, "text": "Install JDK 17 for Java development.", "completed": false, "skill_id": 1 },
-      { "id": 2, "text": "Learn Java exception handling.", "completed": true, "skill_id": 1 },
-      { "id": 3, "text": "Set up Maven for dependency management.", "completed": false, "skill_id": 1 },
-      { "id": 4, "text": "Learn HTML5 canvas for graphics.", "completed": false, "skill_id": 3 }
+      { "id": 1, "text": "Install JDK 17 for Java development.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 2, "text": "Learn Java exception handling.", "completed": true, "skills": [{ "name": "Java" }] },
+      { "id": 3, "text": "Set up Maven for dependency management.", "completed": false, "skills": [{ "name": "Java" }] },
+      { "id": 4, "text": "Learn HTML5 canvas for graphics.", "completed": false, "skills": [{ "name": "HTML5" }] }
     ]
   },
   {
-    "roadmap_id": 34,
-    "candidate_id": 34,
     "prerequisites": [
-      { "id": 1, "text": "Learn Angular pipes for data transformation.", "completed": false, "skill_id": 2 },
-      { "id": 2, "text": "Install Node.js and npm.", "completed": true, "skill_id": 2 },
-      { "id": 3, "text": "Understand TypeScript enums.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up VS Code for Angular.", "completed": true, "skill_id": 2 }
+      { "id": 1, "text": "Learn Angular pipes for data transformation.", "completed": false, "skills": [{ "name": "Angular" }] },
+      { "id": 2, "text": "Install Node.js and npm.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 3, "text": "Understand TypeScript enums.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up VS Code for Angular.", "completed": true, "skills": [{ "name": "Angular" }] }
     ]
   },
   {
-    "roadmap_id": 35,
-    "candidate_id": 35,
     "prerequisites": [
-      { "id": 1, "text": "Learn CSS3 variables for theming.", "completed": true, "skill_id": 4 },
-      { "id": 2, "text": "Understand JavaScript array methods.", "completed": false, "skill_id": 6 },
-      { "id": 3, "text": "Install Git for team collaboration.", "completed": true, "skill_id": 5 },
-      { "id": 4, "text": "Learn HTML5 semantic markup.", "completed": false, "skill_id": 3 }
+      { "id": 1, "text": "Learn CSS3 variables for theming.", "completed": true, "skills": [{ "name": "CSS" }] },
+      { "id": 2, "text": "Understand JavaScript array methods.", "completed": false, "skills": [{ "name": "JavaScript" }] },
+      { "id": 3, "text": "Install Git for team collaboration.", "completed": true, "skills": [{ "name": "Git" }] },
+      { "id": 4, "text": "Learn HTML5 semantic markup.", "completed": false, "skills": [{ "name": "HTML" }] }
     ]
   },
   {
-    "roadmap_id": 36,
-    "candidate_id": 36,
     "prerequisites": [
-      { "id": 1, "text": "Understand REST API status codes (200, 404, 500).", "completed": false, "skill_id": 8 },
-      { "id": 2, "text": "Install Postman for API workflows.", "completed": true, "skill_id": 8 },
-      { "id": 3, "text": "Learn TypeScript advanced types.", "completed": false, "skill_id": 7 },
-      { "id": 4, "text": "Set up Angular CLI for projects.", "completed": true, "skill_id": 2 },
-      { "id": 5, "text": "Learn JavaScript fetch API.", "completed": false, "skill_id": 6 }
+      { "id": 1, "text": "Understand REST API status codes (200, 404, 500).", "completed": false, "skills": [{ "name": "React" }] },
+      { "id": 2, "text": "Install Postman for API workflows.", "completed": true, "skills": [{ "name": "React" }] },
+      { "id": 3, "text": "Learn TypeScript advanced types.", "completed": false, "skills": [{ "name": "TypeScript" }] },
+      { "id": 4, "text": "Set up Angular CLI for projects.", "completed": true, "skills": [{ "name": "Angular" }] },
+      { "id": 5, "text": "Learn JavaScript fetch API.", "completed": false, "skills": [{ "name": "JavaScript" }] }
     ]
   }
 ]

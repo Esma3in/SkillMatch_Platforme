@@ -1,38 +1,454 @@
 {
-    "roadmap_id": 1,
-    "candidate_id": 96,
-    "courses": [
-      {
-        "id": 1,
-        "name": "Java Programming Masterclass",
-        "provider": "Udemy",
-        "link": "https://www.udemy.com/course/java-programming-masterclass/",
-        "duration": "40 hours",
-        "completed": false
-      },
-      {
-        "id": 2,
-        "name": "Angular - The Complete Guide",
-        "provider": "Udemy",
-        "link": "https://www.udemy.com/course/the-complete-guide-to-angular/",
-        "duration": "34 hours",
-        "completed": false
-      },
-      {
-        "id": 3,
-        "name": "Java for Beginners",
-        "provider": "OpenClassrooms",
-        "link": "https://openclassrooms.com/en/courses/java-for-beginners",
-        "duration": "20 hours",
-        "completed": true
-      },
-      {
-        "id": 4,
-        "name": "Build Web Apps with Angular",
-        "provider": "Pluralsight",
-        "link": "https://www.pluralsight.com/courses/angular-web-apps",
-        "duration": "15 hours",
-        "completed": false
-      }
-    ]
-  }
+  "courses": [
+    {
+      "course_id": 1,
+      "name": "Java Programming Masterclass",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/java-programming-masterclass/",
+      "duration": "40 hours",
+      "completed": false,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 2,
+      "name": "Angular - The Complete Guide",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/the-complete-guide-to-angular/",
+      "duration": "34 hours",
+      "completed": false,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 3,
+      "name": "Java for Beginners",
+      "provider": "OpenClassrooms",
+      "link": "https://openclassrooms.com/en/courses/java-for-beginners",
+      "duration": "20 hours",
+      "completed": true,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 4,
+      "name": "Build Web Apps with Angular",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/angular-web-apps",
+      "duration": "15 hours",
+      "completed": false,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 5,
+      "name": "Advanced Java Programming",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/advanced-java-programming",
+      "duration": "25 hours",
+      "completed": false,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 6,
+      "name": "Angular Reactive Forms",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/angular-reactive-forms/",
+      "duration": "12 hours",
+      "completed": true,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 7,
+      "name": "Java Multithreading Essentials",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/java-multithreading-essentials",
+      "duration": "18 hours",
+      "completed": false,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 8,
+      "name": "TypeScript for Angular Developers",
+      "provider": "edX",
+      "link": "https://www.edx.org/course/typescript-for-angular",
+      "duration": "10 hours",
+      "completed": true,
+      "skills": [{ "name": "TypeScript" }, { "name": "Angular" }]
+    },
+    {
+      "course_id": 9,
+      "name": "Java Streams and Lambdas",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/java-streams-lambdas/",
+      "duration": "22 hours",
+      "completed": false,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 10,
+      "name": "Angular Routing and Navigation",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/angular-routing",
+      "duration": "14 hours",
+      "completed": false,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 11,
+      "name": "JavaScript Fundamentals",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/javascript-fundamentals",
+      "duration": "30 hours",
+      "completed": true,
+      "skills": [{ "name": "JavaScript" }]
+    },
+    {
+      "course_id": 12,
+      "name": "REST API Development with Java",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/rest-api-java/",
+      "duration": "28 hours",
+      "completed": false,
+      "skills": [{ "name": "React" }, { "name": "Java" }]
+    },
+    {
+      "course_id": 13,
+      "name": "CSS3 for Web Developers",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/css3-web-developers",
+      "duration": "16 hours",
+      "completed": true,
+      "skills": [{ "name": "CSS" }]
+    },
+    {
+      "course_id": 14,
+      "name": "HTML5 and Modern Web Design",
+      "provider": "edX",
+      "link": "https://www.edx.org/course/html5-web-design",
+      "duration": "20 hours",
+      "completed": false,
+      "skills": [{ "name": "HTML" }]
+    },
+    {
+      "course_id": 15,
+      "name": "Git for Beginners",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/git-for-beginners/",
+      "duration": "10 hours",
+      "completed": true,
+      "skills": [{ "name": "Git" }]
+    },
+    {
+      "course_id": 16,
+      "name": "Angular Services and Dependency Injection",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/angular-services",
+      "duration": "13 hours",
+      "completed": false,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 17,
+      "name": "Java Collections Framework",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/java-collections",
+      "duration": "24 hours",
+      "completed": false,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 18,
+      "name": "JavaScript ES6 and Beyond",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/javascript-es6/",
+      "duration": "15 hours",
+      "completed": true,
+      "skills": [{ "name": "JavaScript" }]
+    },
+    {
+      "course_id": 19,
+      "name": "Advanced Angular Techniques",
+      "provider": "edX",
+      "link": "https://www.edx.org/course/advanced-angular",
+      "duration": "18 hours",
+      "completed": false,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 20,
+      "name": "Java Exception Handling",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/java-exception-handling",
+      "duration": "12 hours",
+      "completed": true,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 21,
+      "name": "Building REST APIs with Postman",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/rest-api-postman/",
+      "duration": "14 hours",
+      "completed": false,
+      "skills": [{ "name": "React" }]
+    },
+    {
+      "course_id": 22,
+      "name": "CSS3 Grid and Flexbox",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/css3-grid-flexbox",
+      "duration": "20 hours",
+      "completed": true,
+      "skills": [{ "name": "CSS" }]
+    },
+    {
+      "course_id": 23,
+      "name": "HTML5 Forms and Accessibility",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/html5-forms-accessibility",
+      "duration": "10 hours",
+      "completed": false,
+      "skills": [{ "name": "HTML" }]
+    },
+    {
+      "course_id": 24,
+      "name": "Git Branching and Merging",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/git-branching-merging/",
+      "duration": "8 hours",
+      "completed": true,
+      "skills": [{ "name": "Git" }]
+    },
+    {
+      "course_id": 25,
+      "name": "TypeScript Fundamentals",
+      "provider": "edX",
+      "link": "https://www.edx.org/course/typescript-fundamentals",
+      "duration": "15 hours",
+      "completed": false,
+      "skills": [{ "name": "TypeScript" }]
+    },
+    {
+      "course_id": 26,
+      "name": "Java Object-Oriented Programming",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/java-oop",
+      "duration": "30 hours",
+      "completed": true,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 27,
+      "name": "Angular Component Lifecycle",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/angular-component-lifecycle",
+      "duration": "11 hours",
+      "completed": false,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 28,
+      "name": "JavaScript Promises and Async/Await",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/javascript-promises-async/",
+      "duration": "12 hours",
+      "completed": true,
+      "skills": [{ "name": "JavaScript" }]
+    },
+    {
+      "course_id": 29,
+      "name": "REST API Authentication with JWT",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/rest-api-jwt",
+      "duration": "16 hours",
+      "completed": false,
+      "skills": [{ "name": "React" }]
+    },
+    {
+      "course_id": 30,
+      "name": "CSS3 Animations and Transitions",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/css3-animations",
+      "duration": "18 hours",
+      "completed": true,
+      "skills": [{ "name": "CSS" }]
+    },
+    {
+      "course_id": 31,
+      "name": "HTML5 Canvas for Developers",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/html5-canvas/",
+      "duration": "14 hours",
+      "completed": false,
+      "skills": [{ "name": "HTML" }]
+    },
+    {
+      "course_id": 32,
+      "name": "Git for Team Collaboration",
+      "provider": "edX",
+      "link": "https://www.edx.org/course/git-team-collaboration",
+      "duration": "10 hours",
+      "completed": true,
+      "skills": [{ "name": "Git" }]
+    },
+    {
+      "course_id": 33,
+      "name": "Angular Pipes and Directives",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/angular-pipes-directives",
+      "duration": "13 hours",
+      "completed": false,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 34,
+      "name": "Java Maven for Dependency Management",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/java-maven/",
+      "duration": "20 hours",
+      "completed": true,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 35,
+      "name": "JavaScript Array Methods",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/javascript-array-methods",
+      "duration": "15 hours",
+      "completed": false,
+      "skills": [{ "name": "JavaScript" }]
+    },
+    {
+      "course_id": 36,
+      "name": "TypeScript Advanced Types",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/typescript-advanced-types",
+      "duration": "12 hours",
+      "completed": true,
+      "skills": [{ "name": "TypeScript" }]
+    },
+    {
+      "course_id": 37,
+      "name": "Java Backend Development",
+      "provider": "edX",
+      "link": "https://www.edx.org/course/java-backend-development",
+      "duration": "35 hours",
+      "completed": false,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 38,
+      "name": "Angular and REST API Integration",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/angular-rest-api/",
+      "duration": "16 hours",
+      "completed": true,
+      "skills": [{ "name": "Angular" }, { "name": "React" }]
+    },
+    {
+      "course_id": 39,
+      "name": "CSS3 Media Queries for Responsive Design",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/css3-media-queries",
+      "duration": "14 hours",
+      "completed": false,
+      "skills": [{ "name": "CSS" }]
+    },
+    {
+      "course_id": 40,
+      "name": "HTML5 Semantic Markup",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/html5-semantic-markup",
+      "duration": "12 hours",
+      "completed": true,
+      "skills": [{ "name": "HTML" }]
+    },
+    {
+      "course_id": 41,
+      "name": "Git Pull Requests and Workflows",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/git-pull-requests/",
+      "duration": "9 hours",
+      "completed": false,
+      "skills": [{ "name": "Git" }]
+    },
+    {
+      "course_id": 42,
+      "name": "JavaScript Event Handling",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/javascript-event-handling",
+      "duration": "13 hours",
+      "completed": true,
+      "skills": [{ "name": "JavaScript" }]
+    },
+    {
+      "course_id": 43,
+      "name": "Angular for Enterprise Applications",
+      "provider": "edX",
+      "link": "https://www.edx.org/course/angular-enterprise",
+      "duration": "20 hours",
+      "completed": false,
+      "skills": [{ "name": "Angular" }, { "name": "TypeScript" }]
+    },
+    {
+      "course_id": 44,
+      "name": "Java Unit Testing with JUnit",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/java-junit/",
+      "duration": "18 hours",
+      "completed": true,
+      "skills": [{ "name": "Java" }]
+    },
+    {
+      "course_id": 45,
+      "name": "REST API Versioning Strategies",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/rest-api-versioning",
+      "duration": "15 hours",
+      "completed": false,
+      "skills": [{ "name": "REST API" }]
+    },
+    {
+      "course_id": 46,
+      "name": "CSS3 Variables and Theming",
+      "provider": "Coursera",
+      "link": "https://www.coursera.org/learn/css3-variables",
+      "duration": "16 hours",
+      "completed": true,
+      "skills": [{ "name": "CSS" }]
+    },
+    {
+      "course_id": 47,
+      "name": "HTML5 Video and Audio Elements",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/html5-video-audio/",
+      "duration": "10 hours",
+      "completed": false,
+      "skills": [{ "name": "HTML" }]
+    },
+    {
+      "course_id": 48,
+      "name": "Git Advanced Techniques",
+      "provider": "Pluralsight",
+      "link": "https://www.pluralsight.com/courses/git-advanced",
+      "duration": "12 hours",
+      "completed": true,
+      "skills": [{ "name": "Git" }]
+    },
+    {
+      "course_id": 49,
+      "name": "TypeScript for Web Developers",
+      "provider": "edX",
+      "link": "https://www.edx.org/course/typescript-web-developers",
+      "duration": "14 hours",
+      "completed": false,
+      "skills": [{ "name": "TypeScript" }]
+    },
+    {
+      "course_id": 50,
+      "name": "Java Design Patterns",
+      "provider": "Udemy",
+      "link": "https://www.udemy.com/course/java-design-patterns/",
+      "duration": "25 hours",
+      "completed": true,
+      "skills": [{ "name": "Java" }]
+    }
+  ]
+}
