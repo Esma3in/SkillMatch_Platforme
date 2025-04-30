@@ -1,0 +1,48 @@
+{
+    "roadmap_id": 1,
+    "candidate_id": 96,
+    "java": [
+      {
+        "id": 1,
+        "text": "Basic Syntax: Variables, data types, operators, control structures (if, switch, while, for)",
+        "completed": true
+      },
+      {
+        "id": 2,
+        "text": "Object-Oriented Programming (OOP): Classes, objects, methods, inheritance, polymorphism, encapsulation, abstraction",
+        "completed": false
+      },
+      {
+        "id": 3,
+        "text": "Multithreading: Threads, Runnable, synchronization, concurrency concepts",
+        "completed": false
+      },
+      {
+        "id": 4,
+        "text": "Input/Output (I/O): Reading/writing files, Streams (InputStream, OutputStream, BufferedReader, etc.)",
+        "completed": false
+      }
+    ],
+    "angular_competences": [
+      {
+        "id": 1,
+        "text": "Basic Syntax: Variables, data types, operators, control structures (if, switch, while, for)",
+        "completed": false
+      },
+      {
+        "id": 2,
+        "text": "Components: Creating and using components, communication between components (Input/Output, EventEmitter)",
+        "completed": false
+      },
+      {
+        "id": 3,
+        "text": "Templates & Data Binding: Interpolation {{ }}, Property Binding [], Event Binding (), Two-way binding [(ngModel)]",
+        "completed": false
+      },
+      {
+        "id": 4,
+        "text": "Routing & Navigation: Configuring routes, dynamic routing with parameters",
+        "completed": false
+      }
+    ]
+  }

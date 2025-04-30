@@ -29,6 +29,7 @@ use App\Models\CandidatesSkills;
 use App\Models\ProfileCandidate;
 use App\Models\CandidateSelected;
 use App\Models\CompaniesSelected;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class DatabaseSeeder extends Seeder
@@ -142,5 +143,101 @@ class DatabaseSeeder extends Seeder
                 ]);
             });
         });
+        //Insert prerequisites
+      
+            DB::transaction(function () {
+                // Load and validate JSON files
+                $files = [
+                    'prerequisites' => database_path('data/json/prerequisites.json'),
+                    'courses' => database_path('data/json/candidateCourses.json'),
+                    'skills' => database_path('data/json/skills.json'),
+                    'tools' => database_path('data/json/tools.json'),
+                ];
+    
+                foreach ($files as $key => $filePath) {
+                    if (!file_exists($filePath)) {
+                        throw new \Exception("File not found: $filePath");
+                    }
+                    $data[$key] = file_get_contents($filePath);
+                    $decoded[$key] = json_decode($data[$key], true);
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        throw new \Exception("Invalid JSON in $key.json: " . json_last_error_msg());
+                    }
+                }
+    
+                // Insert prerequisites
+                if (!isset($decoded['prerequisites']['prerequisites'])) {
+                    throw new \Exception('Missing "prerequisites" key in prerequisites.json');
+                }
+                $prerequisitesData = array_map(function ($prereq) use ($decoded) {
+                    return [
+                        'roadmap_id' => (int) $decoded['prerequisites']['roadmap_id'],
+                        'candidate_id' => (int) $decoded['prerequisites']['candidate_id'],
+                        'id' => (int) $prereq['id'],
+                        'text' => $prereq['text'],
+                        'completed' => (bool) $prereq['completed'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }, $decoded['prerequisites']['prerequisites']);
+                DB::table('prerequisites')->insert($prerequisitesData);
+    
+                // Insert courses
+                if (!isset($decoded['courses']['courses'])) {
+                    throw new \Exception('Missing "courses" key in courses.json');
+                }
+                $coursesData = array_map(function ($course) use ($decoded) {
+                    return [
+                        'roadmap_id' => (int) $decoded['courses']['roadmap_id'],
+                        'candidate_id' => (int) $decoded['courses']['candidate_id'],
+                        'id' => (int) $course['id'],
+                        'name' => $course['name'],
+                        'provider' => $course['provider'],
+                        'link' => $course['link'],
+                        'duration' => $course['duration'],
+                        'completed' => (bool) $course['completed'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }, $decoded['courses']['courses']);
+                DB::table('candidate_courses')->insert($coursesData);
+    
+                // Insert skills
+                if (!isset($decoded['skills']['java'])) {
+                    throw new \Exception('Missing "java" key in skills.json');
+                }
+                $skillsData = array_map(function ($skill) use ($decoded) {
+                    return [
+                        'roadmap_id' => (int) $decoded['skills']['roadmap_id'],
+                        'candidate_id' => (int) $decoded['skills']['candidate_id'],
+                        'id' => (int) $skill['id'],
+                        'text' => $skill['text'],
+                        'completed' => (bool) $skill['completed'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }, $decoded['skills']['java']);
+                DB::table('roadmap_skills')->insert($skillsData);
+    
+                // Insert tools
+                if (!isset($decoded['tools']['tools'])) {
+                    throw new \Exception('Missing "tools" key in tools.json');
+                }
+                $toolsData = array_map(function ($tool) use ($decoded) {
+                    return [
+                        'roadmap_id' => (int) $decoded['tools']['roadmap_id'],
+                        'candidate_id' => (int) $decoded['tools']['candidate_id'],
+                        'id' => (int) $tool['id'],
+                        'name' => $tool['name'],
+                        'description' => $tool['description'],
+                        'link' => $tool['link'],
+                        'image' => $tool['image'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }, $decoded['tools']['tools']);
+                DB::table('tools')->insert($toolsData);
+            });
+        }
     }
-}
+

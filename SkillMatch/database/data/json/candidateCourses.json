@@ -1,0 +1,38 @@
+{
+    "roadmap_id": 1,
+    "candidate_id": 96,
+    "courses": [
+      {
+        "id": 1,
+        "name": "Java Programming Masterclass",
+        "provider": "Udemy",
+        "link": "https://www.udemy.com/course/java-programming-masterclass/",
+        "duration": "40 hours",
+        "completed": false
+      },
+      {
+        "id": 2,
+        "name": "Angular - The Complete Guide",
+        "provider": "Udemy",
+        "link": "https://www.udemy.com/course/the-complete-guide-to-angular/",
+        "duration": "34 hours",
+        "completed": false
+      },
+      {
+        "id": 3,
+        "name": "Java for Beginners",
+        "provider": "OpenClassrooms",
+        "link": "https://openclassrooms.com/en/courses/java-for-beginners",
+        "duration": "20 hours",
+        "completed": true
+      },
+      {
+        "id": 4,
+        "name": "Build Web Apps with Angular",
+        "provider": "Pluralsight",
+        "link": "https://www.pluralsight.com/courses/angular-web-apps",
+        "duration": "15 hours",
+        "completed": false
+      }
+    ]
+  }

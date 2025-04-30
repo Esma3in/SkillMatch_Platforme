@@ -1,0 +1,26 @@
+{
+    "roadmap_id": 1,
+    "candidate_id": 96,
+    "prerequisites": [
+      {
+        "id": 1,
+        "text": "Install Java Development Kit (JDK) 17 or later.",
+        "completed": false
+      },
+      {
+        "id": 2,
+        "text": "Set up Visual Studio Code with Java and Angular extensions.",
+        "completed": false
+      },
+      {
+        "id": 3,
+        "text": "Understand basic programming concepts (variables, loops, functions).",
+        "completed": true
+      },
+      {
+        "id": 4,
+        "text": "Install Node.js for Angular development.",
+        "completed": false
+      }
+    ]
+  }

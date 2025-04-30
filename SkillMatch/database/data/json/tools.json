@@ -1,0 +1,41 @@
+{
+    "roadmap_id": 1,
+    "candidate_id": 96,
+    "tools": [
+      {
+        "id": 1,
+        "name": "Java Development Kit (JDK)",
+        "description": "Install JDK 17 or later to compile and run Java programs.",
+        "link": "https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html",
+        "image": "https://via.placeholder.com/40"
+      },
+      {
+        "id": 2,
+        "name": "Visual Studio Code",
+        "description": "A lightweight code editor with Java and Angular extensions.",
+        "link": "https://code.visualstudio.com/",
+        "image": "https://via.placeholder.com/40"
+      },
+      {
+        "id": 3,
+        "name": "Node.js",
+        "description": "Required for Angular development and running npm commands.",
+        "link": "https://nodejs.org/",
+        "image": "https://via.placeholder.com/40"
+      },
+      {
+        "id": 4,
+        "name": "Angular CLI",
+        "description": "Command-line tool to scaffold and build Angular applications.",
+        "link": "https://angular.io/cli",
+        "image": "https://via.placeholder.com/40"
+      },
+      {
+        "id": 5,
+        "name": "Git",
+        "description": "Version control system for managing your project code.",
+        "link": "https://git-scm.com/",
+        "image": "https://via.placeholder.com/40"
+      }
+    ]
+  }
