@@ -1,48 +1,1154 @@
 {
-    "roadmap_id": 1,
-    "candidate_id": 96,
-    "java": [
-      {
-        "id": 1,
-        "text": "Basic Syntax: Variables, data types, operators, control structures (if, switch, while, for)",
-        "completed": true
-      },
-      {
-        "id": 2,
-        "text": "Object-Oriented Programming (OOP): Classes, objects, methods, inheritance, polymorphism, encapsulation, abstraction",
-        "completed": false
-      },
-      {
-        "id": 3,
-        "text": "Multithreading: Threads, Runnable, synchronization, concurrency concepts",
-        "completed": false
-      },
-      {
-        "id": 4,
-        "text": "Input/Output (I/O): Reading/writing files, Streams (InputStream, OutputStream, BufferedReader, etc.)",
-        "completed": false
-      }
+    "react": [
+        {
+            "id": 25,
+            "text": "JSX Syntax: Embedding expressions, component rendering",
+            "completed": false
+        },
+        {
+            "id": 26,
+            "text": "Functional Components & Props: Creating stateless components, passing data",
+            "completed": false
+        },
+        {
+            "id": 27,
+            "text": "State and Lifecycle: useState, useEffect hooks, managing component state",
+            "completed": false
+        },
+        {
+            "id": 28,
+            "text": "Routing with React Router: BrowserRouter, Route, Link, useParams",
+            "completed": false
+        }
     ],
-    "angular_competences": [
-      {
-        "id": 1,
-        "text": "Basic Syntax: Variables, data types, operators, control structures (if, switch, while, for)",
-        "completed": false
-      },
-      {
-        "id": 2,
-        "text": "Components: Creating and using components, communication between components (Input/Output, EventEmitter)",
-        "completed": false
-      },
-      {
-        "id": 3,
-        "text": "Templates & Data Binding: Interpolation {{ }}, Property Binding [], Event Binding (), Two-way binding [(ngModel)]",
-        "completed": false
-      },
-      {
-        "id": 4,
-        "text": "Routing & Navigation: Configuring routes, dynamic routing with parameters",
-        "completed": false
-      }
+    "laravel": [
+        {
+            "id": 29,
+            "text": "Routing & Controllers: Defining routes, resource controllers",
+            "completed": false
+        },
+        {
+            "id": 30,
+            "text": "Blade Templating: Syntax, includes, layouts, loops, conditionals",
+            "completed": false
+        },
+        {
+            "id": 31,
+            "text": "Eloquent ORM: Models, relationships (hasMany, belongsTo), querying",
+            "completed": false
+        },
+        {
+            "id": 32,
+            "text": "Form Handling & Validation: Request classes, validation rules",
+            "completed": false
+        }
+    ],
+    "python_basics": [
+        {
+            "id": 33,
+            "text": "Variables, Data Types & Operators: int, float, str, bool, basic math & logic",
+            "completed": false
+        },
+        {
+            "id": 34,
+            "text": "Control Flow: if/else, for loops, while loops",
+            "completed": false
+        },
+        {
+            "id": 35,
+            "text": "Functions & Modules: Defining functions, importing built-in modules",
+            "completed": false
+        },
+        {
+            "id": 36,
+            "text": "File Handling: Reading and writing files with open(), with, read/write modes",
+            "completed": false
+        }
+    ],
+    "nodejs": [
+        {
+            "id": 37,
+            "text": "Introduction to Node.js: What it is, use cases, installing Node and npm",
+            "completed": false
+        },
+        {
+            "id": 38,
+            "text": "Working with Modules: CommonJS, require/export, third-party modules",
+            "completed": false
+        },
+        {
+            "id": 39,
+            "text": "Creating a Web Server with Express.js",
+            "completed": false
+        },
+        {
+            "id": 40,
+            "text": "Middleware & Routing in Express",
+            "completed": false
+        }
+    ],
+    "mongodb": [
+        {
+            "id": 41,
+            "text": "Understanding NoSQL & MongoDB basics",
+            "completed": false
+        },
+        {
+            "id": 42,
+            "text": "CRUD operations: insert, find, update, delete",
+            "completed": false
+        },
+        {
+            "id": 43,
+            "text": "Using Mongoose with Node.js",
+            "completed": false
+        },
+        {
+            "id": 44,
+            "text": "Schemas & Relationships in MongoDB",
+            "completed": false
+        }
+    ],
+    "typescript": [
+        {
+            "id": 45,
+            "text": "Basic Types: number, string, boolean, arrays, enums",
+            "completed": false
+        },
+        {
+            "id": 46,
+            "text": "Interfaces & Type Aliases",
+            "completed": false
+        },
+        {
+            "id": 47,
+            "text": "Classes and Inheritance",
+            "completed": false
+        },
+        {
+            "id": 48,
+            "text": "Working with Generics",
+            "completed": false
+        }
+    ],
+    "docker": [
+        {
+            "id": 49,
+            "text": "What is Docker & Containers vs VMs",
+            "completed": false
+        },
+        {
+            "id": 50,
+            "text": "Dockerfile & Building Images",
+            "completed": false
+        },
+        {
+            "id": 51,
+            "text": "Running Containers: docker run, stop, ps, logs",
+            "completed": false
+        },
+        {
+            "id": 52,
+            "text": "Docker Compose: Defining multi-container apps",
+            "completed": false
+        }
+    ],
+    "mysql": [
+        {
+            "id": 53,
+            "text": "Database Basics: Tables, rows, columns, relations",
+            "completed": false
+        },
+        {
+            "id": 54,
+            "text": "Basic SQL Queries: SELECT, INSERT, UPDATE, DELETE",
+            "completed": false
+        },
+        {
+            "id": 55,
+            "text": "Joins: INNER JOIN, LEFT JOIN, RIGHT JOIN",
+            "completed": false
+        },
+        {
+            "id": 56,
+            "text": "Indexes & Constraints",
+            "completed": false
+        }
+    ],
+    "git": [
+        {
+            "id": 57,
+            "text": "Version Control Basics: git init, git status, git add/commit",
+            "completed": false
+        },
+        {
+            "id": 58,
+            "text": "Branching & Merging",
+            "completed": false
+        },
+        {
+            "id": 59,
+            "text": "Working with Remote Repositories",
+            "completed": false
+        },
+        {
+            "id": 60,
+            "text": "Resolving Merge Conflicts",
+            "completed": false
+        }
+    ],
+    "graphql": [
+        {
+            "id": 61,
+            "text": "GraphQL vs REST: Why GraphQL?",
+            "completed": false
+        },
+        {
+            "id": 62,
+            "text": "Schemas & Types",
+            "completed": false
+        },
+        {
+            "id": 63,
+            "text": "Queries & Mutations",
+            "completed": false
+        },
+        {
+            "id": 64,
+            "text": "Resolvers and Data Fetching",
+            "completed": false
+        }
+    ],
+    "redux": [
+        {
+            "id": 65,
+            "text": "State Management Concepts",
+            "completed": false
+        },
+        {
+            "id": 66,
+            "text": "Actions, Reducers, and Store",
+            "completed": false
+        },
+        {
+            "id": 67,
+            "text": "Connecting Redux to React Components",
+            "completed": false
+        },
+        {
+            "id": 68,
+            "text": "Middleware: Redux Thunk or Redux Saga",
+            "completed": false
+        }
+    ],
+    "vuejs": [
+        {
+            "id": 69,
+            "text": "Vue Basics: Template syntax, data binding",
+            "completed": false
+        },
+        {
+            "id": 70,
+            "text": "Components and Props",
+            "completed": false
+        },
+        {
+            "id": 71,
+            "text": "Vue Directives and Events",
+            "completed": false
+        },
+        {
+            "id": 72,
+            "text": "Vue Router Basics",
+            "completed": false
+        }
+    ],
+    "ci_cd": [
+        {
+            "id": 73,
+            "text": "What is CI/CD? Concepts and Benefits",
+            "completed": false
+        },
+        {
+            "id": 74,
+            "text": "Setting up GitHub Actions / GitLab CI",
+            "completed": false
+        },
+        {
+            "id": 75,
+            "text": "Running Tests in Pipelines",
+            "completed": false
+        },
+        {
+            "id": 76,
+            "text": "Deploying Automatically on Merge",
+            "completed": false
+        }
+    ],
+    "html_css": [
+        {
+            "id": 77,
+            "text": "HTML Structure: DOCTYPE, head, body, semantic elements",
+            "completed": false
+        },
+        {
+            "id": 78,
+            "text": "CSS Selectors and Specificity",
+            "completed": false
+        },
+        {
+            "id": 79,
+            "text": "Flexbox & Grid Layouts",
+            "completed": false
+        },
+        {
+            "id": 80,
+            "text": "Responsive Design & Media Queries",
+            "completed": false
+        }
+    ],
+    "rest_api": [
+        {
+            "id": 81,
+            "text": "What is REST? HTTP Methods (GET, POST, etc.)",
+            "completed": false
+        },
+        {
+            "id": 82,
+            "text": "Creating RESTful APIs in Laravel/Express",
+            "completed": false
+        },
+        {
+            "id": 83,
+            "text": "Status Codes & Error Handling",
+            "completed": false
+        },
+        {
+            "id": 84,
+            "text": "API Testing with Postman",
+            "completed": false
+        }
+    ],
+    "jwt_authentication": [
+        {
+            "id": 85,
+            "text": "What is JWT and Why Use It?",
+            "completed": false
+        },
+        {
+            "id": 86,
+            "text": "Generating Tokens on Login",
+            "completed": false
+        },
+        {
+            "id": 87,
+            "text": "Protecting Routes with Middleware",
+            "completed": false
+        },
+        {
+            "id": 88,
+            "text": "Token Expiry & Refresh Strategies",
+            "completed": false
+        }
+    ],
+    "firebase": [
+        {
+            "id": 89,
+            "text": "Setting up Firebase Project",
+            "completed": false
+        },
+        {
+            "id": 90,
+            "text": "Realtime Database & Firestore Basics",
+            "completed": false
+        },
+        {
+            "id": 91,
+            "text": "Firebase Auth Integration",
+            "completed": false
+        },
+        {
+            "id": 92,
+            "text": "Firebase Hosting & Deployment",
+            "completed": false
+        }
+    ],
+    "sass": [
+        {
+            "id": 93,
+            "text": "SASS Syntax: Variables, nesting, mixins",
+            "completed": false
+        },
+        {
+            "id": 94,
+            "text": "Partials and Imports",
+            "completed": false
+        },
+        {
+            "id": 95,
+            "text": "Extending and Inheritance in SASS",
+            "completed": false
+        },
+        {
+            "id": 96,
+            "text": "Compiling SASS to CSS",
+            "completed": false
+        }
+    ],
+    "unit_testing": [
+        {
+            "id": 97,
+            "text": "Introduction to Unit Testing Concepts",
+            "completed": false
+        },
+        {
+            "id": 98,
+            "text": "Writing Tests with Jest or PHPUnit",
+            "completed": false
+        },
+        {
+            "id": 99,
+            "text": "Mocking and Dependency Injection",
+            "completed": false
+        },
+        {
+            "id": 100,
+            "text": "Code Coverage Reports",
+            "completed": false
+        }
+    ],
+    "figma": [
+        {
+            "id": 101,
+            "text": "Figma Interface Overview",
+            "completed": false
+        },
+        {
+            "id": 102,
+            "text": "Creating Wireframes and UI Mockups",
+            "completed": false
+        },
+        {
+            "id": 103,
+            "text": "Working with Components and Variants",
+            "completed": false
+        },
+        {
+            "id": 104,
+            "text": "Exporting Assets for Development",
+            "completed": false
+        }
+    ],
+    "flutter": [
+        {
+            "id": 105,
+            "text": "Dart Basics & Flutter Setup",
+            "completed": false
+        },
+        {
+            "id": 106,
+            "text": "Creating Widgets & Navigation",
+            "completed": false
+        },
+        {
+            "id": 107,
+            "text": "State Management in Flutter",
+            "completed": false
+        },
+        {
+            "id": 108,
+            "text": "Consuming APIs in Flutter",
+            "completed": false
+        }
+    ],
+    "nestjs": [
+        {
+            "id": 109,
+            "text": "Understanding NestJS Architecture",
+            "completed": false
+        },
+        {
+            "id": 110,
+            "text": "Creating Modules, Controllers, and Services",
+            "completed": false
+        },
+        {
+            "id": 111,
+            "text": "Dependency Injection & Providers",
+            "completed": false
+        },
+        {
+            "id": 112,
+            "text": "Exception Handling & Validation Pipes",
+            "completed": false
+        }
+    ],
+    "linux_basics": [
+        {
+            "id": 113,
+            "text": "Linux CLI: cd, ls, mkdir, rm, mv, cp",
+            "completed": false
+        },
+        {
+            "id": 114,
+            "text": "File Permissions and Ownership (chmod, chown)",
+            "completed": false
+        },
+        {
+            "id": 115,
+            "text": "Installing and Updating Packages",
+            "completed": false
+        },
+        {
+            "id": 116,
+            "text": "Managing Processes and Services",
+            "completed": false
+        }
+    ],
+    "tailwind_css": [
+        {
+            "id": 117,
+            "text": "Setting up Tailwind CSS in your Project",
+            "completed": false
+        },
+        {
+            "id": 118,
+            "text": "Utility Classes for Layout, Typography, and Spacing",
+            "completed": false
+        },
+        {
+            "id": 119,
+            "text": "Responsive Design and Media Queries in Tailwind",
+            "completed": false
+        },
+        {
+            "id": 120,
+            "text": "Customizing with Tailwind Config",
+            "completed": false
+        }
+    ],
+    "agile_scrum": [
+        {
+            "id": 121,
+            "text": "Scrum Basics: Roles (Scrum Master, Product Owner, Dev Team)",
+            "completed": false
+        },
+        {
+            "id": 122,
+            "text": "Sprint Planning and Retrospectives",
+            "completed": false
+        },
+        {
+            "id": 123,
+            "text": "Daily Standups and Backlog Grooming",
+            "completed": false
+        },
+        {
+            "id": 124,
+            "text": "Agile Values and Principles",
+            "completed": false
+        }
+    ],
+    "web_security": [
+        {
+            "id": 125,
+            "text": "Common Threats: XSS, CSRF, SQL Injection",
+            "completed": false
+        },
+        {
+            "id": 126,
+            "text": "Authentication Best Practices",
+            "completed": false
+        },
+        {
+            "id": 127,
+            "text": "Secure Headers & HTTPS",
+            "completed": false
+        },
+        {
+            "id": 128,
+            "text": "Storing Passwords Securely (Hashing & Salting)",
+            "completed": false
+        }
+    ],
+    "nginx": [
+        {
+            "id": 129,
+            "text": "Installing NGINX and Basic Configuration",
+            "completed": false
+        },
+        {
+            "id": 130,
+            "text": "Serving Static Files & Reverse Proxy",
+            "completed": false
+        },
+        {
+            "id": 131,
+            "text": "Setting up SSL with Let's Encrypt",
+            "completed": false
+        },
+        {
+            "id": 132,
+            "text": "Load Balancing with NGINX",
+            "completed": false
+        }
+    ],
+    "nextjs": [
+        {
+            "id": 133,
+            "text": "Pages and Routing in Next.js",
+            "completed": false
+        },
+        {
+            "id": 134,
+            "text": "Data Fetching: getStaticProps and getServerSideProps",
+            "completed": false
+        },
+        {
+            "id": 135,
+            "text": "API Routes and Middleware",
+            "completed": false
+        },
+        {
+            "id": 136,
+            "text": "Deploying Next.js on Vercel",
+            "completed": false
+        }
+    ],
+    "soft_skills": [
+        {
+            "id": 137,
+            "text": "Effective Communication in Teams",
+            "completed": false
+        },
+        {
+            "id": 138,
+            "text": "Time Management & Task Prioritization",
+            "completed": false
+        },
+        {
+            "id": 139,
+            "text": "Critical Thinking & Problem Solving",
+            "completed": false
+        },
+        {
+            "id": 140,
+            "text": "Conflict Resolution & Feedback Handling",
+            "completed": false
+        }
+    ],
+    "apache": [
+        {
+            "id": 141,
+            "text": "Apache Server Installation and Configuration",
+            "completed": false
+        },
+        {
+            "id": 142,
+            "text": "Virtual Hosts and URL Rewriting",
+            "completed": false
+        },
+        {
+            "id": 143,
+            "text": "Basic Security Configurations (Disabling Directory Listing)",
+            "completed": false
+        },
+        {
+            "id": 144,
+            "text": "Serving PHP Applications",
+            "completed": false
+        }
+    ],
+    "graphql_apollo": [
+        {
+            "id": 145,
+            "text": "Setting Up Apollo Client",
+            "completed": false
+        },
+        {
+            "id": 146,
+            "text": "Fetching Data using useQuery/useMutation",
+            "completed": false
+        },
+        {
+            "id": 147,
+            "text": "Managing Global State with Apollo",
+            "completed": false
+        },
+        {
+            "id": 148,
+            "text": "Handling Errors and Loading States",
+            "completed": false
+        }
+    ],
+    "kubernetes": [
+        {
+            "id": 149,
+            "text": "Kubernetes Architecture: Pods, Nodes, Clusters",
+            "completed": false
+        },
+        {
+            "id": 150,
+            "text": "Creating Deployments and Services",
+            "completed": false
+        },
+        {
+            "id": 151,
+            "text": "Scaling and Rolling Updates",
+            "completed": false
+        },
+        {
+            "id": 152,
+            "text": "Using kubectl for Management",
+            "completed": false
+        }
+    ],
+    "advanced_js": [
+        {
+            "id": 169,
+            "text": "Event Loop and Concurrency Model",
+            "completed": false
+        },
+        {
+            "id": 170,
+            "text": "Memory Management in JavaScript",
+            "completed": false
+        },
+        { "id": 171, "text": "Closures and Scope Chains", "completed": false }
+    ],
+    "frontend_architecture": [
+        {
+            "id": 172,
+            "text": "Micro Frontends Architecture",
+            "completed": false
+        },
+        {
+            "id": 173,
+            "text": "Component-Driven Development",
+            "completed": false
+        },
+        {
+            "id": 174,
+            "text": "Design Systems and Reusable UI Components",
+            "completed": false
+        }
+    ],
+    "api_techniques": [
+        {
+            "id": 175,
+            "text": "Rate Limiting and Throttling APIs",
+            "completed": false
+        },
+        {
+            "id": 176,
+            "text": "Webhooks: Design and Security",
+            "completed": false
+        },
+        { "id": 177, "text": "GraphQL vs REST: Trade-offs", "completed": false }
+    ],
+    "security": [
+        {
+            "id": 178,
+            "text": "OWASP Top 10 for Web Developers",
+            "completed": false
+        },
+        {
+            "id": 179,
+            "text": "Cross-Origin Resource Sharing (CORS)",
+            "completed": false
+        },
+        {
+            "id": 180,
+            "text": "Security Headers (CSP, HSTS)",
+            "completed": false
+        }
+    ],
+    "devops_basics": [
+        {
+            "id": 181,
+            "text": "Infrastructure as Code (IaC) with Terraform",
+            "completed": false
+        },
+        {
+            "id": 182,
+            "text": "Containerization with Docker",
+            "completed": false
+        },
+        { "id": 183, "text": "Introduction to Kubernetes", "completed": false }
+    ],
+    "testing_strategies": [
+        {
+            "id": 184,
+            "text": "Test-Driven Development (TDD)",
+            "completed": false
+        },
+        {
+            "id": 185,
+            "text": "End-to-End Testing with Cypress or Playwright",
+            "completed": false
+        },
+        { "id": 186, "text": "Mocking APIs in Unit Tests", "completed": false }
+    ],
+    "performance_monitoring": [
+        { "id": 187, "text": "Real User Monitoring (RUM)", "completed": false },
+        {
+            "id": 188,
+            "text": "Time to First Byte (TTFB) Optimization",
+            "completed": false
+        },
+        { "id": 189, "text": "Analyzing Core Web Vitals", "completed": false }
+    ],
+    "build_tools": [
+        {
+            "id": 190,
+            "text": "Tree Shaking in Webpack/Vite",
+            "completed": false
+        },
+        {
+            "id": 191,
+            "text": "Using ESBuild for Lightning-Fast Builds",
+            "completed": false
+        }
+    ],
+    "web_performance": [
+        {
+            "id": 153,
+            "text": "Optimizing Images and Assets for Performance",
+            "completed": false
+        },
+        {
+            "id": 154,
+            "text": "Lazy Loading Techniques (Images, Components)",
+            "completed": false
+        },
+        {
+            "id": 155,
+            "text": "Using Lighthouse to Audit and Improve Speed",
+            "completed": false
+        },
+        {
+            "id": 156,
+            "text": "Caching Strategies: Browser and Server-Side",
+            "completed": false
+        }
+    ],
+    "ci_monitoring": [
+        {
+            "id": 157,
+            "text": "Setting up Monitoring Tools (Prometheus, Grafana)",
+            "completed": false
+        },
+        {
+            "id": 158,
+            "text": "Integrating Logs and Alerts (ELK Stack, Datadog)",
+            "completed": false
+        },
+        {
+            "id": 159,
+            "text": "Health Checks and Uptime Monitoring",
+            "completed": false
+        },
+        {
+            "id": 160,
+            "text": "Analyzing Metrics for System Health",
+            "completed": false
+        }
+    ],
+    "data_structures": [
+        {
+            "id": 161,
+            "text": "Arrays and Linked Lists: Usage and Differences",
+            "completed": false
+        },
+        {
+            "id": 162,
+            "text": "Stacks and Queues: Implementation and Use Cases",
+            "completed": false
+        },
+        {
+            "id": 163,
+            "text": "Trees and Graphs: Basic Traversals",
+            "completed": false
+        },
+        {
+            "id": 164,
+            "text": "Hash Tables: Time Complexity and Applications",
+            "completed": false
+        }
+    ],
+    "system_design": [
+        {
+            "id": 165,
+            "text": "Designing Scalable Systems: Horizontal vs Vertical Scaling",
+            "completed": false
+        },
+        {
+            "id": 166,
+            "text": "Load Balancers and Caching Layers",
+            "completed": false
+        },
+        {
+            "id": 167,
+            "text": "Database Sharding and Replication",
+            "completed": false
+        },
+        {
+            "id": 168,
+            "text": "Designing RESTful and Event-Driven Architectures",
+            "completed": false
+        }
+    ],
+    "advanced_html_css": [
+        {
+            "id": 192,
+            "text": "HTML5 APIs: Web Storage, WebSockets, Geolocation",
+            "completed": false
+        },
+        {
+            "id": 193,
+            "text": "CSS Grid Layout and Advanced Flexbox Techniques",
+            "completed": false
+        },
+        {
+            "id": 194,
+            "text": "CSS Variables and Custom Properties",
+            "completed": false
+        }
+    ],
+    "frontend_frameworks": [
+        {
+            "id": 195,
+            "text": "Next.js Server-Side Rendering and Static Site Generation",
+            "completed": false
+        },
+        { "id": 196, "text": "Vue 3 Composition API", "completed": false },
+        {
+            "id": 197,
+            "text": "Svelte: Reactive Programming and Compilation",
+            "completed": false
+        }
+    ],
+    "state_management": [
+        {
+            "id": 198,
+            "text": "Recoil.js for State Management in React",
+            "completed": false
+        },
+        {
+            "id": 199,
+            "text": "Pinia for State Management in Vue 3",
+            "completed": false
+        },
+        {
+            "id": 200,
+            "text": "Zustand: Simple State Management for React",
+            "completed": false
+        }
+    ],
+    "backend_technologies": [
+        {
+            "id": 201,
+            "text": "NestJS Dependency Injection and Modules",
+            "completed": false
+        },
+        {
+            "id": 202,
+            "text": "FastAPI for Building APIs with Python",
+            "completed": false
+        },
+        {
+            "id": 203,
+            "text": "Express Middleware: Handling Requests and Responses",
+            "completed": false
+        }
+    ],
+    "database_technologies": [
+        { "id": 204, "text": "Graph Databases with Neo4j", "completed": false },
+        {
+            "id": 205,
+            "text": "Database Sharding and Partitioning",
+            "completed": false
+        },
+        {
+            "id": 206,
+            "text": "Full-Text Search in SQL and NoSQL Databases",
+            "completed": false
+        }
+    ],
+    "web_accessibility": [
+        {
+            "id": 210,
+            "text": "WCAG Guidelines for Accessibility",
+            "completed": false
+        },
+        {
+            "id": 211,
+            "text": "Accessible Forms and Inputs",
+            "completed": false
+        },
+        {
+            "id": 212,
+            "text": "Keyboard Navigation and Focus Management",
+            "completed": false
+        }
+    ],
+    "cloud_services": [
+        {
+            "id": 213,
+            "text": "Deploying Apps with AWS Lambda and API Gateway",
+            "completed": false
+        },
+        {
+            "id": 214,
+            "text": "Using Azure Functions for Serverless Development",
+            "completed": false
+        },
+        {
+            "id": 215,
+            "text": "Google Cloud Pub/Sub for Asynchronous Messaging",
+            "completed": false
+        }
+    ],
+    "authentication": [
+        {
+            "id": 216,
+            "text": "OAuth 2.0 and OpenID Connect Protocols",
+            "completed": false
+        },
+        {
+            "id": 217,
+            "text": "Multi-Factor Authentication (MFA) Implementation",
+            "completed": false
+        },
+        {
+            "id": 218,
+            "text": "Session Management and Security Best Practices",
+            "completed": false
+        }
+    ],
+    "web_deployment": [
+        {
+            "id": 219,
+            "text": "CI/CD Pipelines for Web Applications",
+            "completed": false
+        },
+        {
+            "id": 220,
+            "text": "Automated Deployment with Docker and Kubernetes",
+            "completed": false
+        },
+        {
+            "id": 221,
+            "text": "Serverless Architecture for Web Deployment",
+            "completed": false
+        }
+    ],
+    "frontend_technologies": [
+        {
+            "id": 222,
+            "text": "Progressive Web Apps (PWA) Development",
+            "completed": false
+        },
+        {
+            "id": 223,
+            "text": "Tailwind CSS for Utility-First Styling",
+            "completed": false
+        },
+        {
+            "id": 224,
+            "text": "Web Components: Custom Elements and Shadow DOM",
+            "completed": false
+        },
+        {
+            "id": 225,
+            "text": "Parcel Bundler for Fast Web Development",
+            "completed": false
+        },
+        {
+            "id": 226,
+            "text": "Vue 3 with Vuex for State Management",
+            "completed": false
+        }
+    ],
+    "javascript_advanced": [
+        {
+            "id": 227,
+            "text": "JavaScript Proxy and Reflect API",
+            "completed": false
+        },
+        {
+            "id": 228,
+            "text": "JavaScript Event Loop and Concurrency Model",
+            "completed": false
+        },
+        {
+            "id": 229,
+            "text": "Web Workers for Multithreading in JavaScript",
+            "completed": false
+        },
+        {
+            "id": 230,
+            "text": "JavaScript Design Patterns: Singleton, Observer",
+            "completed": false
+        },
+        {
+            "id": 231,
+            "text": "Async Iterators and Generators in JavaScript",
+            "completed": false
+        }
+    ],
+    "backend_frameworks": [
+        {
+            "id": 232,
+            "text": "Laravel API Development and Authentication",
+            "completed": false
+        },
+        {
+            "id": 233,
+            "text": "Django REST Framework for API Development",
+            "completed": false
+        },
+        {
+            "id": 234,
+            "text": "Ruby on Rails for Full-Stack Web Applications",
+            "completed": false
+        },
+        {
+            "id": 235,
+            "text": "Spring Boot for REST APIs in Java",
+            "completed": false
+        },
+        {
+            "id": 236,
+            "text": "Flask for Lightweight Python Web Applications",
+            "completed": false
+        }
+    ],
+    "testing_and_quality_assurance": [
+        {
+            "id": 247,
+            "text": "Unit Testing with Jest for JavaScript",
+            "completed": false
+        },
+        {
+            "id": 248,
+            "text": "End-to-End Testing with Cypress",
+            "completed": false
+        },
+        {
+            "id": 249,
+            "text": "Test-Driven Development (TDD) in JavaScript",
+            "completed": false
+        },
+        {
+            "id": 250,
+            "text": "Continuous Integration with GitHub Actions",
+            "completed": false
+        },
+        {
+            "id": 251,
+            "text": "API Testing with Postman and Newman",
+            "completed": false
+        }
     ]
-  }
+}

@@ -9,14 +9,14 @@ class CreateToolsTable extends Migration
     public function up()
     {
         Schema::create('tools', function (Blueprint $table) {
-            $table->id();
+            // Replace $table->id() with:
+            $table->unsignedBigInteger('id')->primary();
+
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('link')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
-            $table->foreignId('roadmap_id')->constrained('roadmaps');
-            $table->foreignId('candidate_id')->constrained('candidates');
         });
     }
 

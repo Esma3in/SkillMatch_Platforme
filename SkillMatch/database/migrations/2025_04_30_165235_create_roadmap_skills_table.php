@@ -13,9 +13,6 @@ class CreateRoadmapSkillsTable extends Migration
             $table->string('text');
             $table->boolean('completed')->default(false);
             $table->timestamps();
-
-            $table->foreignId('roadmap_id')->constrained('roadmaps');
-            $table->foreignId('candidate_id')->constrained('candidates');
         });
     }
 
