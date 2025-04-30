@@ -7,6 +7,7 @@ export default function ProfileSettings() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [noProfile, setNoProfile] = useState(false);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -29,19 +30,22 @@ export default function ProfileSettings() {
   });
 
   // Get candidate ID from localStorage
-  const candidateId = JSON.parse(localStorage.getItem('candidate_id'));
+  const candidateId = localStorage.getItem('candidate_id') ? JSON.parse(localStorage.getItem('candidate_id')) : null;
 
   // Fetch candidate profile data
-useEffect(() => {
+  useEffect(() => {
     const fetchProfileData = async () => {
       try {
         setLoading(true);
   
-        // Récupération sécurisée de l'ID depuis le localStorage
-        const storedId = JSON.parse(localStorage.getItem("candidate_id"));
-        if (!storedId) throw new Error("No candidate ID found in localStorage");
+        // Check if we have a candidate ID before trying to fetch data
+        if (!candidateId) {
+          setNoProfile(true);
+          setLoading(false);
+          return;
+        }
   
-        const response = await api.get(`/api/candidate/settings/${storedId}`);
+        const response = await api.get(`/api/candidate/settings/${candidateId}`);
   
         const { candidate, profile, social_media } = response.data;
   
@@ -75,7 +79,7 @@ useEffect(() => {
     };
   
     fetchProfileData(); 
-  }, []);
+  }, [candidateId]);
   
   // Handle input changes
   const handleInputChange = (e) => {
@@ -232,6 +236,37 @@ useEffect(() => {
     // Redirect back to profile page
     window.location.href = '/ProfileCandidate';
   };
+
+  // No profile/not logged in state
+  if (noProfile) {
+    return (
+      <>
+        <NavbarCandidate />
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">Profile Not Found</h2>
+            <p className="text-gray-700 mb-6">
+              It looks like you're not logged in or don't have a profile yet.
+            </p>
+            <div className="flex flex-col space-y-4">
+              <a
+                href="/login"
+                className="bg-blue-600 text-white text-center py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Login
+              </a>
+              <a
+                href="/CreateProfile"
+                className="bg-green-600 text-white text-center py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
+              >
+                Create Profile
+              </a>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   if (loading) {
     return (
