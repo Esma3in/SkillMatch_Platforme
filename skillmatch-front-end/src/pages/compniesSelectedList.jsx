@@ -103,6 +103,104 @@ function CompaniesRelated() {
           </div>
         </div>
       </div>
+          {/* Progress Tracker */}
+          <div className="mb-16">
+            <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
+              Your Progress
+            </h3>
+            <div className="bg-white rounded-xl shadow-md p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-lg font-semibold text-gray-800">
+                  Application Status
+                </h4>
+                <span className="text-sm text-purple-600 font-medium">
+                  In Progress
+                </span>
+              </div>
+              <div className="relative pt-1">
+                <div className="flex mb-2 items-center justify-between">
+                  <div>
+                    <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-purple-600 bg-purple-100">
+                      60% Complete
+                    </span>
+                  </div>
+                </div>
+                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                  <div
+                    style={{ width: "60%" }}
+                    className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"
+                  ></div>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">
+                Complete theFusce dapibus, lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+              <div className="mt-4">
+                <h5 className="text-sm font-semibold text-gray-700">
+                  Next Steps:
+                </h5>
+                <ul className="list-disc list-inside text-sm text-gray-600 mt-2">
+                  <li>Complete the technical assessment</li>
+                  <li>Schedule an interview</li>
+                  <li>Review company culture fit</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Tips and Resources */}
+          <div>
+            <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
+              Tips for Success
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                  Prepare for Assessments
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Review common technical questions and practice coding challenges
+                  to excel in your assessments.
+                </p>
+                <a
+                  href="#"
+                  className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
+                >
+                  Learn More
+                </a>
+              </div>
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                  Build Your Profile
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Complete your SkillMatch profile to attract more employers and
+                  showcase your skills.
+                </p>
+                <a
+                  href="#"
+                  className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
+                >
+                  Update Profile
+                </a>
+              </div>
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                  Research Companies
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Learn about company culture, values, and recent projects to
+                  tailor your applications.
+                </p>
+                <a
+                  href="#"
+                  className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
+                >
+                  Explore Resources
+                </a>
+              </div>
+            </div>
+          </div>
     </>
   );
 }

@@ -5,5 +5,5 @@ npm run build
 npm start
 
 php artisan migrate
-php artisan dn:seed
+php artisan db:seed
 php artisan serve

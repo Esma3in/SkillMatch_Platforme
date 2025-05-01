@@ -18,6 +18,9 @@ class CandidateFactory extends Factory
     public function definition()
     {
         return [
+            'user_id'=>User::factory()->create([
+                'role'=>'candidate'
+            ]),
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
             'password' => fake()->password()

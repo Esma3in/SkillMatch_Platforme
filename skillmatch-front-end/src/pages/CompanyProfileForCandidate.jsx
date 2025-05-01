@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { api } from "../api/api";
 import NavbarCandidate from "../components/common/navbarCandidate";
 
+
 export default function CompanyProfileForCandidate() {
   const candidate_id = JSON.parse(localStorage.getItem('candidate_id'))
   const { id } = useParams();
@@ -12,6 +13,8 @@ export default function CompanyProfileForCandidate() {
   const [errors, setErrors] = useState({
     fetchError: ''
   });
+  const [message,setmessage] = useState('');
+  const [Loading,setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +23,7 @@ export default function CompanyProfileForCandidate() {
         const response1 = await api.get(`/api/candidate/${candidate_id}`)
         setCompanyInfo(response.data); // <- set state here
         setCandidateInfo(response1.data);
+        setLoading(false)   
       } catch (err) {
         console.log(err.message);
         setErrors(prev => ({
@@ -33,17 +37,13 @@ export default function CompanyProfileForCandidate() {
       fetchData(); // don't pass id, use from outer scope
     }
   }, [id]);
-
-  console.log(companyInfoFetched)
-
-
   const companyInfo = {
     name: companyInfoFetched?.name || 'N/A',
     logo: companyInfoFetched?.logo || 'N/A',
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus,el..",
-    address: companyInfoFetched?.profile?.address,
-    email: companyInfoFetched?.profile?.email,
-    sector: companyInfoFetched.sector,
+    address: companyInfoFetched?.profile?.address|| 'N/A',
+    email: companyInfoFetched?.profile?.email || 'N/A',
+    sector: companyInfoFetched.sector|| 'N/A',
   };
 
   // CEO information
@@ -100,10 +100,24 @@ Language-flexible English
 Centered on real challenges from our team's daily work
 We encourage you to explore them when you're ready — take your time and have fun!.`,
   };
+  if (Loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <>
       <NavbarCandidate />
+      {
+
+        message && (<div className="bg-blue-100 border border-blue-300 text-blue-800 px-4 py-2 rounded-md shadow-sm">
+  <span>{message}</span>
+</div>)
+      }
+      
 
       <div className="w-full w-[100%] min-h-screen bg-white">
         <div className="relative w-full max-w-[1448px] mx-auto pt-[69px] pb-6">
@@ -264,6 +278,7 @@ We encourage you to explore them when you're ready — take your time and have f
           {/* Action buttons */}
           <div className="flex flex-col md:flex-row gap-4 mt-8">
             <button
+            onClick={()=>{window.location.href=`/candidate/Session/${candidate_id}`}}
               className="flex-1 h-[59px] bg-[#f7f8f9] font-extrabold text-[#5856d6] font-['Manrope',Helvetica] rounded-md border border-[#5856d6]"
             >
               cancel
