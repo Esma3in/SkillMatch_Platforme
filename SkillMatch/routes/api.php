@@ -77,8 +77,10 @@ Route::get('/roadmaps/{roadmap_id}/skills/{skill_type?}', [RoadmapController::cl
 Route::get('/roadmaps/{roadmap_id}/tools', [RoadmapController::class, 'getTools']);
 // Generate the roadmap from JSON based on company skills
 Route::get('/companies/{company_id}/roadmap-from-json', [RoadmapController::class, 'getSkillsRoadmapFromJson']);
-// Retrieve a complete roadmap with all its elements
-Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getRoadmap']);
+// get roadmap
+Route::get('/roadmaps', [RoadmapController::class, 'getRoadmap']);
+
+
 
 
 // Retrieve skills for a specific company
