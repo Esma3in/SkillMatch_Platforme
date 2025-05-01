@@ -1,4 +1,3 @@
-// NavbarCandidate.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/pages/Navbar/navbarCandidate.css';
 import userAvatar from '../../assets/userAvatar.jpg'; 
@@ -12,10 +11,14 @@ const NavbarCandidate = () => {
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [candidate, setCandidate] = useState({});
-  
+
   const trainingRef = useRef(null);
   const companyRef = useRef(null);
   const profileRef = useRef(null);
+
+  // for tyme
+  const trainingTimeout = useRef(null);
+  const companyTimeout = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -38,6 +41,29 @@ const NavbarCandidate = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Handlers
+  const handleTrainingEnter = () => {
+    clearTimeout(trainingTimeout.current);
+    setIsTrainingOpen(true);
+  };
+
+  const handleTrainingLeave = () => {
+    trainingTimeout.current = setTimeout(() => {
+      setIsTrainingOpen(false);
+    }, 200); // ness tanya
+  };
+
+  const handleCompanyEnter = () => {
+    clearTimeout(companyTimeout.current);
+    setIsCompanyOpen(true);
+  };
+
+  const handleCompanyLeave = () => {
+    companyTimeout.current = setTimeout(() => {
+      setIsCompanyOpen(false);
+    }, 200); //  ness tanya
+  };
+
   return (
     <div className="navbar-container">
       <div className="navbar">
@@ -47,10 +73,10 @@ const NavbarCandidate = () => {
             <a href={`/candidate/Session/${candidate_id}`} className="nav-item">Home</a>
             
             <div 
-              className="nav-item dropdown"
+              className="nav-item dropdown m-5" 
               ref={trainingRef}
-              onMouseEnter={() => setIsTrainingOpen(true)}
-              onMouseLeave={() => setIsTrainingOpen(false)}
+              onMouseEnter={handleTrainingEnter}
+              onMouseLeave={handleTrainingLeave}
             >
               <span>Training <i className="dropdown-icon">▼</i></span>
               {isTrainingOpen && (
@@ -68,10 +94,10 @@ const NavbarCandidate = () => {
             </div>
             
             <div 
-              className="nav-item dropdown"
+              className="nav-item dropdown m-5"
               ref={companyRef}
-              onMouseEnter={() => setIsCompanyOpen(true)}
-              onMouseLeave={() => setIsCompanyOpen(false)}
+              onMouseEnter={handleCompanyEnter}
+              onMouseLeave={handleCompanyLeave}
             >
               <span>Company <i className="dropdown-icon">▼</i></span>
               {isCompanyOpen && (
@@ -174,4 +200,3 @@ const NavbarCandidate = () => {
 };
 
 export default NavbarCandidate;
-   
