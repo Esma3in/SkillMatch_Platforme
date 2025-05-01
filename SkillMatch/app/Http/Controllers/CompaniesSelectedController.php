@@ -115,6 +115,7 @@ class CompaniesSelectedController extends Controller
             $skillNames = $skills->pluck('name')->toArray();
 
             // Step 2: Fetch prerequisites (Query 1) // prerequesties
+            //there
             $prerequisites = Roadmap::join('prerequisites', 'roadmaps.skill_id', '=', 'prerequisites.skill_id')
                 ->whereIn('roadmaps.skill_id', $skillIds)
                 ->get(['roadmaps.*', 'prerequisites.*']);
