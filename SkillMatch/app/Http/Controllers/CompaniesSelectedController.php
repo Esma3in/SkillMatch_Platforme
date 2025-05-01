@@ -38,7 +38,7 @@ class CompaniesSelectedController extends Controller
                 'candidate_id' => $candidate->id,
                 'company_id' => $validated['company_id'],
                 'name' => $validated['name'],
-                
+
                 'selected_at' => now(),
                 //
             ]);
@@ -91,5 +91,37 @@ class CompaniesSelectedController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch selected companies: ' . $e->getMessage()], 500);
         }
+    }
+
+    //companies related to a candidate
+    /**
+     * Get the list of companies selected by a candidate.
+     */
+    public function getSelectedCompaniess($candidate_id)
+    {
+        // Vérifie si le candidat existe
+        $candidate = Candidate::find($candidate_id);
+
+        if (!$candidate) {
+            return response()->json(['message' => 'Candidate not found'], 404);
+        }
+
+        // Récupère les entreprises sélectionnées avec les infos de l'entreprise
+        $companies = CompaniesSelected::where('candidate_id', $candidate_id)
+            ->with(['company:id,company_name,sector,description,location,website'])
+            ->get()
+            ->map(function ($selection) {
+                return [
+                    'id' => $selection->company->id,
+                    'company_name' => $selection->company->company_name,
+                    'sector' => $selection->company->sector,
+                    'description' => $selection->company->description,
+                    'location' => $selection->company->location,
+                    'website' => $selection->company->website,
+                    'selected_date' => $selection->created_at->toDateString(),
+                ];
+            });
+
+        return response()->json($companies);
     }
 }

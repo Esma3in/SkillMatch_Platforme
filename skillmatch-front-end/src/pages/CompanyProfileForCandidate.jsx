@@ -335,7 +335,7 @@ We encourage you to explore them when you're ready — take your time and have f
               className="flex-1 h-[59px] bg-[#5856d6] font-semibold text-shadeswhite font-['Manrope',Helvetica] rounded-md"
               onClick={createRoadmap}
             >
-              Select entreprise
+              Select company
             </button>
           </div>
         </div>

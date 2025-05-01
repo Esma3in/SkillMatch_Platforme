@@ -81,6 +81,9 @@ Route::get('/tools', [toolsController::class, 'index']);
 Route::get('/candidate-courses', [candidateCoursesController::class, 'index']);
 Route::get('/roadmap-skills', [skillsRoadmapController::class, 'index']);
 
+//companies related
+Route::get('/selected/companies/{candidate_id}', [CompaniesSelectedController::class, 'getSelectedCompaniess']);
+
 
 
 
