@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Candidate;
+use Log;
+use App\Models\Tool;
+use App\Models\Skill;
 use App\Models\Company;
+use App\Models\Roadmap;
+use App\Models\Candidate;
+use App\Models\Prerequiste;
+use App\Models\SkillRoadmap;
 use Illuminate\Http\Request;
+use App\Models\CandidateCourse;
 use App\Models\CompaniesSelected;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,4 +99,86 @@ class CompaniesSelectedController extends Controller
             return response()->json(['error' => 'Failed to fetch selected companies: ' . $e->getMessage()], 500);
         }
     }
+
+
+    public function getSkillsData(Request $request, $companyId)
+    {
+        try {
+            // Step 1: Fetch skills for the given company ID
+            $skills = Skill::where('company_id', $companyId)->get();
+
+            if ($skills->isEmpty()) {
+                return response()->json(['message' => 'No skills found for this company'], 404);
+            }
+
+            $skillIds = $skills->pluck('id')->toArray();
+            $skillNames = $skills->pluck('name')->toArray();
+
+            // Step 2: Fetch prerequisites (Query 1)
+            $prerequisites = Roadmap::join('prerequisites', 'roadmaps.skill_id', '=', 'prerequisites.skill_id')
+                ->whereIn('roadmaps.skill_id', $skillIds)
+                ->get(['roadmaps.*', 'prerequisites.*']);
+
+            // Step 3: Fetch tools (Query 2)
+            $tools = Tool::join('skills', 'tools.name', '=', 'skills.name')
+                ->join('roadmaps', 'skills.id', '=', 'roadmaps.skill_id')
+                ->whereIn('skills.id', $skillIds)
+                ->get(['tools.*', 'skills.*', 'roadmaps.*']);
+
+            // Step 4: Fetch candidate courses (Query 3)
+            $candidateCourses = CandidateCourse::join('skills', function ($join) {
+                    $join->whereRaw('candidate_courses.name LIKE CONCAT("%", skills.name, "%")')
+                         ->orWhereRaw('skills.name LIKE CONCAT("%", candidate_courses.name, "%")');
+                })
+                ->join('roadmaps', 'skills.id', '=', 'roadmaps.skill_id')
+                ->whereIn('skills.id', $skillIds)
+                ->get(['candidate_courses.*', 'skills.*', 'roadmaps.*']);
+
+            // Step 5: Fetch roadmap skills (Query 4)
+            $roadmapSkills = SkillRoadmap::join('skills', function ($join) {
+                    $join->whereRaw('roadmap_skills.text LIKE CONCAT("%", skills.name, "%")')
+                         ->orWhereRaw('skills.name LIKE CONCAT("%", roadmap_skills.text, "%")');
+                })
+                ->join('roadmaps', 'skills.id', '=', 'roadmaps.skill_id')
+                ->whereIn('skills.id', $skillIds)
+                ->get(['roadmap_skills.*', 'skills.*', 'roadmaps.*']);
+
+            // Step 6: Format the response
+            $response = [
+                'prerequisites' => $prerequisites->map(function ($item) {
+                    return [
+                        'roadmap' => collect($item)->only(Roadmap::getModel()->getFillable()),
+                        'prerequisite' => collect($item)->only(Prerequiste::getModel()->getFillable()),
+                    ];
+                })->toArray(),
+                'candidate_courses' => $candidateCourses->map(function ($item) {
+                    return [
+                        'course' => collect($item)->only(CandidateCourse::getModel()->getFillable()),
+                        'skill' => collect($item)->only(Skill::getModel()->getFillable()),
+                        'roadmap' => collect($item)->only(Roadmap::getModel()->getFillable()),
+                    ];
+                })->toArray(),
+                'roadmap_skills' => $roadmapSkills->map(function ($item) {
+                    return [
+                        'roadmap_skill' => collect($item)->only(SkillRoadmap::getModel()->getFillable()),
+                        'skill' => collect($item)->only(Skill::getModel()->getFillable()),
+                        'roadmap' => collect($item)->only(Roadmap::getModel()->getFillable()),
+                    ];
+                })->toArray(),
+                'tools' => $tools->map(function ($item) {
+                    return [
+                        'tool' => collect($item)->only(Tool::getModel()->getFillable()),
+                        'skill' => collect($item)->only(Skill::getModel()->getFillable()),
+                        'roadmap' => collect($item)->only(Roadmap::getModel()->getFillable()),
+                    ];
+                })->toArray(),
+            ];
+
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            // Log::error('Error fetching skills data: ' . $e->getMessage());
+            return response()->json(['message' => 'Internal server error'], 500);
+        }
+    }
 }
+
