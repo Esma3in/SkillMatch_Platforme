@@ -16,7 +16,6 @@ use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\ProfileCandidateController;
-
 use App\Http\Controllers\CompaniesSelectedController;
 
 // CSRF Token Route
@@ -69,5 +68,10 @@ Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsContro
 
 Route::get('/candidate/test/company/{id}',[TestController::class,'GetTestCompanieSelected']);
 
+
+//Select Company Route:
+// Route::post('/candidate/select/company',[CompaniesSelectedController::class,'SelectCompany']);
+// Route::get('/candidate/getSelected/companies/{id}',[CompaniesSelectedController::class,'getcompanies']);
 // candidate Roadmap Routes
 Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'getPrerequisites']);
+

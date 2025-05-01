@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidate;
 use App\Models\ProfileCompany;
+
 use Illuminate\Http\Request;
+use App\Models\CompaniesSelected;
 
 class CompaniesSelectedController extends Controller
 {

@@ -15,20 +15,23 @@ import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
 import { Roadmap } from './pages/Roadmap.js';
 import CompaniesRelated from './pages/compniesSelectedList.jsx';
 import { CandidateTest } from './pages/CandidateTest.jsx';
+import { LandingPage } from './Espaces/LandingPage.jsx';
 export default function App() {
   return (
     <Router>
       <Routes>
         Page d'authentification (SignIn / SignUp toggle) 
-        <Route path="/" element={<SignPages />} />
+        <Route path="/" element={<LandingPage/>} />
         {/* Espace candidat après inscription  */}
+        <Route path='/signIn' element={<SignPages isSignin={true}/>}/>
+        <Route path='/signUp' element={<SignPages isSignin={false}/>}/>
         <Route path='/candidate/company/:id/profile' element={<ProtectedRoute><CompanyProfileForCandidate/></ProtectedRoute>}/>
         <Route path="/candidate/Session/:id" element={<ProtectedRoute><Candidates/></ProtectedRoute>} />
         <Route path='/Createprofile' element={<ProtectedRoute><Box/></ProtectedRoute>}/>
         <Route path='/companies/list'  element={<ProtectedRoute><CompaniesMatching/></ProtectedRoute>}></Route> 
         <Route path='/profile' element={<ProtectedRoute><ProfileCandidat/></ProtectedRoute>} />
         {/* <Route path='/companyProfile' element={<ProtectedRoute><CompanyProfile/></ProtectedRoute>}/>  */}
-         <Route path="/" element={<ProtectedRoute ><QcmForRoadmap /></ProtectedRoute>} />
+         <Route path="/QcmRoadMap" element={<ProtectedRoute ><QcmForRoadmap /></ProtectedRoute>} />
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
         <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
