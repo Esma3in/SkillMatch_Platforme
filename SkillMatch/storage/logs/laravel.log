@@ -10209,3 +10209,1071 @@ East Geo, NV 53572-8446","phone":"(726) 989-7131","email":"shodkiewicz@bernier.b
 )  
 [2025-05-01 13:08:24] local.INFO: array (
 )  
+[2025-05-01 14:07:40] local.INFO: {"id":97,"name":"ahmadi","email":"ahmed@gmail.com","password":"$2y$12$LzKjmISPH6QHBFa9MxaFBuJUZGx.AEyvGJ0sRzFyB\/btchCkkVpNS","created_at":"2025-05-01T13:07:52.000000Z","updated_at":"2025-05-01T13:07:52.000000Z","skills":[{"id":3,"name":"JavaScript","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"candidate_id":97,"skill_id":3,"created_at":"2025-05-01T13:13:12.000000Z","updated_at":"2025-05-01T13:13:12.000000Z"}}]}  
+[2025-05-01 14:07:40] local.INFO: array (
+  0 => 3,
+)  
+[2025-05-01 14:07:41] local.INFO: [{"id":1,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":2,"name":"YES TO THE NET","sector":"Web Development & IT Outsourcing","files":"yestothenet.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=YES+TO+THE+NET&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":3,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":4,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":5,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":6,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":7,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":8,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":9,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":10,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":11,"name":"Majjane","sector":"Web Development","files":"majjane_web.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Majjane&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":12,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":13,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":14,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":15,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":16,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":17,"name":"Taillis Labs","sector":"Software Development & Mobile Apps","files":"taillis_labs.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Taillis+Labs&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":18,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":19,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":20,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":21,"name":"DIAVNET","sector":"Digital Strategy & SEO","files":"diavnet_strategy.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=DIAVNET&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":2,"name":"CSS","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":21,"skill_id":2,"created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z"}}],"profile":{"id":1,"serieNumber":"SN-3425159","reasonSocial":"Bernhard-Gleason","address":"3356 Kuvalis Motorway Apt. 450
+Kossport, WV 08775","phone":"+1 (781) 406-8877","email":"johns.daphnee@bartell.net","capital":129173,"salesfigures":2318242,"nbEmployers":192,"DateCreation":"2024-01-19","status":"pending","company_id":21,"candidate_id":34,"created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z"}},{"id":22,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":10,"name":"REST APIs","level":"hard","type":"valuable","usageFrequency":"Weekly","classement":"product owner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":22,"skill_id":10,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":2,"serieNumber":"SN-3535709","reasonSocial":"Casper, Bernier and Turner","address":"693 Rusty Summit
+Ryderfurt, FL 35942-7242","phone":"747.779.0158","email":"turner.donavon@rolfson.com","capital":912590,"salesfigures":3310277,"nbEmployers":415,"DateCreation":"1999-10-16","status":"active","company_id":22,"candidate_id":46,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":23,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":3,"name":"JavaScript","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":23,"skill_id":3,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":3,"serieNumber":"SN-1097685","reasonSocial":"Marks-Erdman","address":"825 Twila Street
+Kubburgh, UT 95760","phone":"+12624765626","email":"donnelly.kris@bogisich.com","capital":608827,"salesfigures":1591888,"nbEmployers":486,"DateCreation":"1983-11-15","status":"pending","company_id":23,"candidate_id":54,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":24,"name":"Logigroup","sector":"IT Consulting","files":"logigroup_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Logigroup&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":15,"name":"TypeScript","level":"hard","type":"valuable","usageFrequency":"Daily","classement":"product owner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":24,"skill_id":15,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":4,"serieNumber":"SN-3173139","reasonSocial":"Macejkovic PLC","address":"609 Grayce Port
+South Jett, MD 86246-9330","phone":"605.665.9408","email":"hilma65@rowe.com","capital":851421,"salesfigures":4570998,"nbEmployers":341,"DateCreation":"1976-05-25","status":"pending","company_id":24,"candidate_id":19,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":25,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":5,"name":"Laravel","level":"meduim","type":"secondaire","usageFrequency":"Monthly","classement":"engienner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":25,"skill_id":5,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":5,"serieNumber":"SN-0382144","reasonSocial":"Veum PLC","address":"9793 Justen Plains
+East Geo, NV 53572-8446","phone":"(726) 989-7131","email":"shodkiewicz@bernier.biz","capital":799836,"salesfigures":1556489,"nbEmployers":66,"DateCreation":"2016-12-27","status":"pending","company_id":25,"candidate_id":59,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":26,"name":"Hills Soft","sector":"Digital Marketing & IT","files":"hills_soft.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Hills+Soft&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":27,"name":"HMDServices","sector":"IT Strategy Consulting","files":"hmdservices_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HMDServices&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":28,"name":"Intelcia IT Solutions","sector":"IT Outsourcing","files":"intelcia_itsolutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Intelcia+IT+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":29,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":30,"name":"MarocRank","sector":"IT Services","files":"marocrank_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MarocRank&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":31,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":32,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":33,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":34,"name":"EKBLOCKS","sector":"Cybersecurity & IT Managed Services","files":"ekblocks_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=EKBLOCKS&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":35,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":36,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":37,"name":"xHub","sector":"Software Development","files":"xhub_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=xHub&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":38,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":39,"name":"Manzana.ma","sector":"Digital Communication","files":"manzana_comms.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Manzana.ma&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":40,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":41,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":42,"name":"Gear9","sector":"Software Development","files":"gear9_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Gear9&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":43,"name":"Gear9","sector":"Software Development","files":"gear9_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Gear9&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":44,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":45,"name":"Numa Maroc","sector":"Startup Incubator","files":"numa_incubator.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Numa+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":46,"name":"Numa Maroc","sector":"Startup Incubator","files":"numa_incubator.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Numa+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":47,"name":"Finatech Group","sector":"Back Office Outsourcing & IT","files":"finatech_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Finatech+Group&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":48,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":49,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":50,"name":"CleanCode","sector":"Web Development & Testing","files":"cleancode_dev.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=CleanCode&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":51,"name":"M2T","sector":"Accounting & IT Managed Services","files":"m2t_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=M2T&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":52,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":53,"name":"Manzana.ma","sector":"Digital Communication","files":"manzana_comms.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Manzana.ma&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":54,"name":"KubicBits","sector":"SaaS & Web Applications","files":"kubicbits_saas.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=KubicBits&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":55,"name":"QuickTech","sector":"Web & Mobile Development","files":"quicktech_dev.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=QuickTech&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":56,"name":"HMDServices","sector":"IT Strategy Consulting","files":"hmdservices_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HMDServices&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":57,"name":"TeraByte Software","sector":"Software Development","files":"terabyte_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=TeraByte+Software&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":58,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":59,"name":"HPS (Hightech Payment Systems)","sector":"Fintech & IT","files":"hps_fintech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HPS+%28Hightech+Payment+Systems%29&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":60,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":61,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":62,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":63,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":64,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":65,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":66,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":67,"name":"MarocRank","sector":"IT Services","files":"marocrank_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MarocRank&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":68,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":69,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":70,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":71,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":72,"name":"Logigroup","sector":"IT Consulting","files":"logigroup_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Logigroup&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":73,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":74,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":75,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":76,"name":"M2T","sector":"Accounting & IT Managed Services","files":"m2t_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=M2T&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":77,"name":"YES TO THE NET","sector":"Web Development & IT Outsourcing","files":"yestothenet.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=YES+TO+THE+NET&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":78,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":79,"name":"Yovista","sector":"Digital Marketing & Web Development","files":"yovista_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Yovista&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":80,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":81,"name":"EKBLOCKS","sector":"Cybersecurity & IT Managed Services","files":"ekblocks_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=EKBLOCKS&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":82,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":83,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":84,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":85,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":86,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":87,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":88,"name":"CGI Technologies","sector":"IT Services","files":"cgi_tech_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=CGI+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":89,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":90,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":91,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":92,"name":"FORNET","sector":"IT Services","files":"fornet_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FORNET&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":93,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":94,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":95,"name":"Maroc Cloud","sector":"Cloud Consulting","files":"maroc_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Maroc+Cloud&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":96,"name":"Maroc Cloud","sector":"Cloud Consulting","files":"maroc_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Maroc+Cloud&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":97,"name":"KubicBits","sector":"SaaS & Web Applications","files":"kubicbits_saas.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=KubicBits&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":98,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":99,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":100,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":101,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":102,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":103,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":104,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":105,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":106,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":107,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":108,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":109,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":110,"name":"Yovista","sector":"Digital Marketing & Web Development","files":"yovista_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Yovista&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":111,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":112,"name":"Hills Soft","sector":"Digital Marketing & IT","files":"hills_soft.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Hills+Soft&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":113,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":114,"name":"Majjane","sector":"Web Development","files":"majjane_web.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Majjane&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":115,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":116,"name":"Finatech Group","sector":"Back Office Outsourcing & IT","files":"finatech_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Finatech+Group&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":117,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":118,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":119,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":120,"name":"Obytes","sector":"Information Technology","files":"obytes_presentation.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Obytes&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":121,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":122,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":123,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":124,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":125,"name":"xHub","sector":"Software Development","files":"xhub_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=xHub&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":126,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null}]  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+  0 => 2,
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+  0 => 10,
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+  0 => 3,
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+  0 => 15,
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+  0 => 5,
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:41] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: {"id":97,"name":"ahmadi","email":"ahmed@gmail.com","password":"$2y$12$LzKjmISPH6QHBFa9MxaFBuJUZGx.AEyvGJ0sRzFyB\/btchCkkVpNS","created_at":"2025-05-01T13:07:52.000000Z","updated_at":"2025-05-01T13:07:52.000000Z","skills":[{"id":3,"name":"JavaScript","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"candidate_id":97,"skill_id":3,"created_at":"2025-05-01T13:13:12.000000Z","updated_at":"2025-05-01T13:13:12.000000Z"}}]}  
+[2025-05-01 14:07:42] local.INFO: array (
+  0 => 3,
+)  
+[2025-05-01 14:07:42] local.INFO: [{"id":1,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":2,"name":"YES TO THE NET","sector":"Web Development & IT Outsourcing","files":"yestothenet.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=YES+TO+THE+NET&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":3,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":4,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":5,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":6,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":7,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":8,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":9,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":10,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":11,"name":"Majjane","sector":"Web Development","files":"majjane_web.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Majjane&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":12,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":13,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":14,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":15,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":16,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":17,"name":"Taillis Labs","sector":"Software Development & Mobile Apps","files":"taillis_labs.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Taillis+Labs&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":18,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":19,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":20,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":21,"name":"DIAVNET","sector":"Digital Strategy & SEO","files":"diavnet_strategy.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=DIAVNET&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":2,"name":"CSS","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":21,"skill_id":2,"created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z"}}],"profile":{"id":1,"serieNumber":"SN-3425159","reasonSocial":"Bernhard-Gleason","address":"3356 Kuvalis Motorway Apt. 450
+Kossport, WV 08775","phone":"+1 (781) 406-8877","email":"johns.daphnee@bartell.net","capital":129173,"salesfigures":2318242,"nbEmployers":192,"DateCreation":"2024-01-19","status":"pending","company_id":21,"candidate_id":34,"created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z"}},{"id":22,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":10,"name":"REST APIs","level":"hard","type":"valuable","usageFrequency":"Weekly","classement":"product owner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":22,"skill_id":10,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":2,"serieNumber":"SN-3535709","reasonSocial":"Casper, Bernier and Turner","address":"693 Rusty Summit
+Ryderfurt, FL 35942-7242","phone":"747.779.0158","email":"turner.donavon@rolfson.com","capital":912590,"salesfigures":3310277,"nbEmployers":415,"DateCreation":"1999-10-16","status":"active","company_id":22,"candidate_id":46,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":23,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":3,"name":"JavaScript","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":23,"skill_id":3,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":3,"serieNumber":"SN-1097685","reasonSocial":"Marks-Erdman","address":"825 Twila Street
+Kubburgh, UT 95760","phone":"+12624765626","email":"donnelly.kris@bogisich.com","capital":608827,"salesfigures":1591888,"nbEmployers":486,"DateCreation":"1983-11-15","status":"pending","company_id":23,"candidate_id":54,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":24,"name":"Logigroup","sector":"IT Consulting","files":"logigroup_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Logigroup&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":15,"name":"TypeScript","level":"hard","type":"valuable","usageFrequency":"Daily","classement":"product owner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":24,"skill_id":15,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":4,"serieNumber":"SN-3173139","reasonSocial":"Macejkovic PLC","address":"609 Grayce Port
+South Jett, MD 86246-9330","phone":"605.665.9408","email":"hilma65@rowe.com","capital":851421,"salesfigures":4570998,"nbEmployers":341,"DateCreation":"1976-05-25","status":"pending","company_id":24,"candidate_id":19,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":25,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":5,"name":"Laravel","level":"meduim","type":"secondaire","usageFrequency":"Monthly","classement":"engienner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":25,"skill_id":5,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":5,"serieNumber":"SN-0382144","reasonSocial":"Veum PLC","address":"9793 Justen Plains
+East Geo, NV 53572-8446","phone":"(726) 989-7131","email":"shodkiewicz@bernier.biz","capital":799836,"salesfigures":1556489,"nbEmployers":66,"DateCreation":"2016-12-27","status":"pending","company_id":25,"candidate_id":59,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":26,"name":"Hills Soft","sector":"Digital Marketing & IT","files":"hills_soft.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Hills+Soft&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":27,"name":"HMDServices","sector":"IT Strategy Consulting","files":"hmdservices_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HMDServices&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":28,"name":"Intelcia IT Solutions","sector":"IT Outsourcing","files":"intelcia_itsolutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Intelcia+IT+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":29,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":30,"name":"MarocRank","sector":"IT Services","files":"marocrank_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MarocRank&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":31,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":32,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":33,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":34,"name":"EKBLOCKS","sector":"Cybersecurity & IT Managed Services","files":"ekblocks_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=EKBLOCKS&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":35,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":36,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":37,"name":"xHub","sector":"Software Development","files":"xhub_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=xHub&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":38,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":39,"name":"Manzana.ma","sector":"Digital Communication","files":"manzana_comms.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Manzana.ma&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":40,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":41,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":42,"name":"Gear9","sector":"Software Development","files":"gear9_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Gear9&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":43,"name":"Gear9","sector":"Software Development","files":"gear9_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Gear9&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":44,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":45,"name":"Numa Maroc","sector":"Startup Incubator","files":"numa_incubator.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Numa+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":46,"name":"Numa Maroc","sector":"Startup Incubator","files":"numa_incubator.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Numa+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":47,"name":"Finatech Group","sector":"Back Office Outsourcing & IT","files":"finatech_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Finatech+Group&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":48,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":49,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":50,"name":"CleanCode","sector":"Web Development & Testing","files":"cleancode_dev.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=CleanCode&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":51,"name":"M2T","sector":"Accounting & IT Managed Services","files":"m2t_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=M2T&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":52,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":53,"name":"Manzana.ma","sector":"Digital Communication","files":"manzana_comms.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Manzana.ma&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":54,"name":"KubicBits","sector":"SaaS & Web Applications","files":"kubicbits_saas.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=KubicBits&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":55,"name":"QuickTech","sector":"Web & Mobile Development","files":"quicktech_dev.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=QuickTech&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":56,"name":"HMDServices","sector":"IT Strategy Consulting","files":"hmdservices_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HMDServices&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":57,"name":"TeraByte Software","sector":"Software Development","files":"terabyte_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=TeraByte+Software&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":58,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":59,"name":"HPS (Hightech Payment Systems)","sector":"Fintech & IT","files":"hps_fintech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HPS+%28Hightech+Payment+Systems%29&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":60,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":61,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":62,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":63,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":64,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":65,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":66,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":67,"name":"MarocRank","sector":"IT Services","files":"marocrank_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MarocRank&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":68,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":69,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":70,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":71,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":72,"name":"Logigroup","sector":"IT Consulting","files":"logigroup_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Logigroup&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":73,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":74,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":75,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":76,"name":"M2T","sector":"Accounting & IT Managed Services","files":"m2t_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=M2T&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":77,"name":"YES TO THE NET","sector":"Web Development & IT Outsourcing","files":"yestothenet.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=YES+TO+THE+NET&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":78,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":79,"name":"Yovista","sector":"Digital Marketing & Web Development","files":"yovista_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Yovista&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":80,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":81,"name":"EKBLOCKS","sector":"Cybersecurity & IT Managed Services","files":"ekblocks_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=EKBLOCKS&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":82,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":83,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":84,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":85,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":86,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":87,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":88,"name":"CGI Technologies","sector":"IT Services","files":"cgi_tech_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=CGI+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":89,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":90,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":91,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":92,"name":"FORNET","sector":"IT Services","files":"fornet_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FORNET&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":93,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":94,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":95,"name":"Maroc Cloud","sector":"Cloud Consulting","files":"maroc_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Maroc+Cloud&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":96,"name":"Maroc Cloud","sector":"Cloud Consulting","files":"maroc_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Maroc+Cloud&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":97,"name":"KubicBits","sector":"SaaS & Web Applications","files":"kubicbits_saas.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=KubicBits&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":98,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":99,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":100,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":101,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":102,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":103,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":104,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":105,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":106,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":107,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":108,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":109,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":110,"name":"Yovista","sector":"Digital Marketing & Web Development","files":"yovista_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Yovista&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":111,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":112,"name":"Hills Soft","sector":"Digital Marketing & IT","files":"hills_soft.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Hills+Soft&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":113,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":114,"name":"Majjane","sector":"Web Development","files":"majjane_web.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Majjane&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":115,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":116,"name":"Finatech Group","sector":"Back Office Outsourcing & IT","files":"finatech_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Finatech+Group&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":117,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":118,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":119,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":120,"name":"Obytes","sector":"Information Technology","files":"obytes_presentation.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Obytes&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":121,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":122,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":123,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":124,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":125,"name":"xHub","sector":"Software Development","files":"xhub_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=xHub&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":126,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null}]  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+  0 => 2,
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+  0 => 10,
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+  0 => 3,
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+  0 => 15,
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+  0 => 5,
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:07:42] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: {"id":97,"name":"ahmadi","email":"ahmed@gmail.com","password":"$2y$12$LzKjmISPH6QHBFa9MxaFBuJUZGx.AEyvGJ0sRzFyB\/btchCkkVpNS","created_at":"2025-05-01T13:07:52.000000Z","updated_at":"2025-05-01T13:07:52.000000Z","skills":[{"id":3,"name":"JavaScript","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"candidate_id":97,"skill_id":3,"created_at":"2025-05-01T13:13:12.000000Z","updated_at":"2025-05-01T13:13:12.000000Z"}}]}  
+[2025-05-01 14:15:44] local.INFO: array (
+  0 => 3,
+)  
+[2025-05-01 14:15:44] local.INFO: [{"id":1,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":2,"name":"YES TO THE NET","sector":"Web Development & IT Outsourcing","files":"yestothenet.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=YES+TO+THE+NET&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":3,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":4,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":5,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":6,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":7,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":8,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":9,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":10,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":11,"name":"Majjane","sector":"Web Development","files":"majjane_web.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Majjane&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":12,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":13,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":14,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":15,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":16,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":17,"name":"Taillis Labs","sector":"Software Development & Mobile Apps","files":"taillis_labs.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Taillis+Labs&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":18,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":19,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":20,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":21,"name":"DIAVNET","sector":"Digital Strategy & SEO","files":"diavnet_strategy.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=DIAVNET&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":2,"name":"CSS","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":21,"skill_id":2,"created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z"}}],"profile":{"id":1,"serieNumber":"SN-3425159","reasonSocial":"Bernhard-Gleason","address":"3356 Kuvalis Motorway Apt. 450
+Kossport, WV 08775","phone":"+1 (781) 406-8877","email":"johns.daphnee@bartell.net","capital":129173,"salesfigures":2318242,"nbEmployers":192,"DateCreation":"2024-01-19","status":"pending","company_id":21,"candidate_id":34,"created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z"}},{"id":22,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":10,"name":"REST APIs","level":"hard","type":"valuable","usageFrequency":"Weekly","classement":"product owner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":22,"skill_id":10,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":2,"serieNumber":"SN-3535709","reasonSocial":"Casper, Bernier and Turner","address":"693 Rusty Summit
+Ryderfurt, FL 35942-7242","phone":"747.779.0158","email":"turner.donavon@rolfson.com","capital":912590,"salesfigures":3310277,"nbEmployers":415,"DateCreation":"1999-10-16","status":"active","company_id":22,"candidate_id":46,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":23,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":3,"name":"JavaScript","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":23,"skill_id":3,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":3,"serieNumber":"SN-1097685","reasonSocial":"Marks-Erdman","address":"825 Twila Street
+Kubburgh, UT 95760","phone":"+12624765626","email":"donnelly.kris@bogisich.com","capital":608827,"salesfigures":1591888,"nbEmployers":486,"DateCreation":"1983-11-15","status":"pending","company_id":23,"candidate_id":54,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":24,"name":"Logigroup","sector":"IT Consulting","files":"logigroup_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Logigroup&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":15,"name":"TypeScript","level":"hard","type":"valuable","usageFrequency":"Daily","classement":"product owner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":24,"skill_id":15,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":4,"serieNumber":"SN-3173139","reasonSocial":"Macejkovic PLC","address":"609 Grayce Port
+South Jett, MD 86246-9330","phone":"605.665.9408","email":"hilma65@rowe.com","capital":851421,"salesfigures":4570998,"nbEmployers":341,"DateCreation":"1976-05-25","status":"pending","company_id":24,"candidate_id":19,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":25,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":5,"name":"Laravel","level":"meduim","type":"secondaire","usageFrequency":"Monthly","classement":"engienner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":25,"skill_id":5,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":5,"serieNumber":"SN-0382144","reasonSocial":"Veum PLC","address":"9793 Justen Plains
+East Geo, NV 53572-8446","phone":"(726) 989-7131","email":"shodkiewicz@bernier.biz","capital":799836,"salesfigures":1556489,"nbEmployers":66,"DateCreation":"2016-12-27","status":"pending","company_id":25,"candidate_id":59,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":26,"name":"Hills Soft","sector":"Digital Marketing & IT","files":"hills_soft.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Hills+Soft&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":27,"name":"HMDServices","sector":"IT Strategy Consulting","files":"hmdservices_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HMDServices&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":28,"name":"Intelcia IT Solutions","sector":"IT Outsourcing","files":"intelcia_itsolutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Intelcia+IT+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":29,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":30,"name":"MarocRank","sector":"IT Services","files":"marocrank_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MarocRank&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":31,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":32,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":33,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":34,"name":"EKBLOCKS","sector":"Cybersecurity & IT Managed Services","files":"ekblocks_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=EKBLOCKS&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":35,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":36,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":37,"name":"xHub","sector":"Software Development","files":"xhub_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=xHub&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":38,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":39,"name":"Manzana.ma","sector":"Digital Communication","files":"manzana_comms.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Manzana.ma&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":40,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":41,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":42,"name":"Gear9","sector":"Software Development","files":"gear9_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Gear9&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":43,"name":"Gear9","sector":"Software Development","files":"gear9_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Gear9&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":44,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":45,"name":"Numa Maroc","sector":"Startup Incubator","files":"numa_incubator.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Numa+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":46,"name":"Numa Maroc","sector":"Startup Incubator","files":"numa_incubator.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Numa+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":47,"name":"Finatech Group","sector":"Back Office Outsourcing & IT","files":"finatech_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Finatech+Group&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":48,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":49,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":50,"name":"CleanCode","sector":"Web Development & Testing","files":"cleancode_dev.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=CleanCode&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":51,"name":"M2T","sector":"Accounting & IT Managed Services","files":"m2t_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=M2T&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":52,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":53,"name":"Manzana.ma","sector":"Digital Communication","files":"manzana_comms.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Manzana.ma&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":54,"name":"KubicBits","sector":"SaaS & Web Applications","files":"kubicbits_saas.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=KubicBits&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":55,"name":"QuickTech","sector":"Web & Mobile Development","files":"quicktech_dev.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=QuickTech&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":56,"name":"HMDServices","sector":"IT Strategy Consulting","files":"hmdservices_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HMDServices&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":57,"name":"TeraByte Software","sector":"Software Development","files":"terabyte_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=TeraByte+Software&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":58,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":59,"name":"HPS (Hightech Payment Systems)","sector":"Fintech & IT","files":"hps_fintech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HPS+%28Hightech+Payment+Systems%29&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":60,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":61,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":62,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":63,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":64,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":65,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":66,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":67,"name":"MarocRank","sector":"IT Services","files":"marocrank_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MarocRank&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":68,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":69,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":70,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":71,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":72,"name":"Logigroup","sector":"IT Consulting","files":"logigroup_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Logigroup&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":73,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":74,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":75,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":76,"name":"M2T","sector":"Accounting & IT Managed Services","files":"m2t_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=M2T&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":77,"name":"YES TO THE NET","sector":"Web Development & IT Outsourcing","files":"yestothenet.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=YES+TO+THE+NET&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":78,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":79,"name":"Yovista","sector":"Digital Marketing & Web Development","files":"yovista_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Yovista&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":80,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":81,"name":"EKBLOCKS","sector":"Cybersecurity & IT Managed Services","files":"ekblocks_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=EKBLOCKS&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":82,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":83,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":84,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":85,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":86,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":87,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":88,"name":"CGI Technologies","sector":"IT Services","files":"cgi_tech_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=CGI+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":89,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":90,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":91,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":92,"name":"FORNET","sector":"IT Services","files":"fornet_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FORNET&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":93,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":94,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":95,"name":"Maroc Cloud","sector":"Cloud Consulting","files":"maroc_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Maroc+Cloud&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":96,"name":"Maroc Cloud","sector":"Cloud Consulting","files":"maroc_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Maroc+Cloud&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":97,"name":"KubicBits","sector":"SaaS & Web Applications","files":"kubicbits_saas.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=KubicBits&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":98,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":99,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":100,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":101,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":102,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":103,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":104,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":105,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":106,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":107,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":108,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":109,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":110,"name":"Yovista","sector":"Digital Marketing & Web Development","files":"yovista_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Yovista&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":111,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":112,"name":"Hills Soft","sector":"Digital Marketing & IT","files":"hills_soft.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Hills+Soft&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":113,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":114,"name":"Majjane","sector":"Web Development","files":"majjane_web.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Majjane&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":115,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":116,"name":"Finatech Group","sector":"Back Office Outsourcing & IT","files":"finatech_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Finatech+Group&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":117,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":118,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":119,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":120,"name":"Obytes","sector":"Information Technology","files":"obytes_presentation.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Obytes&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":121,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":122,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":123,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":124,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":125,"name":"xHub","sector":"Software Development","files":"xhub_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=xHub&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":126,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null}]  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+  0 => 2,
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+  0 => 10,
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+  0 => 3,
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+  0 => 15,
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+  0 => 5,
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:44] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: {"id":97,"name":"ahmadi","email":"ahmed@gmail.com","password":"$2y$12$LzKjmISPH6QHBFa9MxaFBuJUZGx.AEyvGJ0sRzFyB\/btchCkkVpNS","created_at":"2025-05-01T13:07:52.000000Z","updated_at":"2025-05-01T13:07:52.000000Z","skills":[{"id":3,"name":"JavaScript","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"candidate_id":97,"skill_id":3,"created_at":"2025-05-01T13:13:12.000000Z","updated_at":"2025-05-01T13:13:12.000000Z"}}]}  
+[2025-05-01 14:15:46] local.INFO: array (
+  0 => 3,
+)  
+[2025-05-01 14:15:46] local.INFO: [{"id":1,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":2,"name":"YES TO THE NET","sector":"Web Development & IT Outsourcing","files":"yestothenet.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=YES+TO+THE+NET&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":3,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":4,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":5,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":6,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":7,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":8,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":9,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":10,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":11,"name":"Majjane","sector":"Web Development","files":"majjane_web.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Majjane&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":12,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":13,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":14,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":15,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":16,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":17,"name":"Taillis Labs","sector":"Software Development & Mobile Apps","files":"taillis_labs.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Taillis+Labs&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":18,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":19,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":20,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","skills":[],"profile":null},{"id":21,"name":"DIAVNET","sector":"Digital Strategy & SEO","files":"diavnet_strategy.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=DIAVNET&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":2,"name":"CSS","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":21,"skill_id":2,"created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z"}}],"profile":{"id":1,"serieNumber":"SN-3425159","reasonSocial":"Bernhard-Gleason","address":"3356 Kuvalis Motorway Apt. 450
+Kossport, WV 08775","phone":"+1 (781) 406-8877","email":"johns.daphnee@bartell.net","capital":129173,"salesfigures":2318242,"nbEmployers":192,"DateCreation":"2024-01-19","status":"pending","company_id":21,"candidate_id":34,"created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z"}},{"id":22,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":10,"name":"REST APIs","level":"hard","type":"valuable","usageFrequency":"Weekly","classement":"product owner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":22,"skill_id":10,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":2,"serieNumber":"SN-3535709","reasonSocial":"Casper, Bernier and Turner","address":"693 Rusty Summit
+Ryderfurt, FL 35942-7242","phone":"747.779.0158","email":"turner.donavon@rolfson.com","capital":912590,"salesfigures":3310277,"nbEmployers":415,"DateCreation":"1999-10-16","status":"active","company_id":22,"candidate_id":46,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":23,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":3,"name":"JavaScript","level":"meduim","type":"Important","usageFrequency":"Annual","classement":"junior","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":23,"skill_id":3,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":3,"serieNumber":"SN-1097685","reasonSocial":"Marks-Erdman","address":"825 Twila Street
+Kubburgh, UT 95760","phone":"+12624765626","email":"donnelly.kris@bogisich.com","capital":608827,"salesfigures":1591888,"nbEmployers":486,"DateCreation":"1983-11-15","status":"pending","company_id":23,"candidate_id":54,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":24,"name":"Logigroup","sector":"IT Consulting","files":"logigroup_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Logigroup&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":15,"name":"TypeScript","level":"hard","type":"valuable","usageFrequency":"Daily","classement":"product owner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":24,"skill_id":15,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":4,"serieNumber":"SN-3173139","reasonSocial":"Macejkovic PLC","address":"609 Grayce Port
+South Jett, MD 86246-9330","phone":"605.665.9408","email":"hilma65@rowe.com","capital":851421,"salesfigures":4570998,"nbEmployers":341,"DateCreation":"1976-05-25","status":"pending","company_id":24,"candidate_id":19,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":25,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[{"id":5,"name":"Laravel","level":"meduim","type":"secondaire","usageFrequency":"Monthly","classement":"engienner","test_id":null,"created_at":"2025-05-01T00:11:09.000000Z","updated_at":"2025-05-01T00:11:09.000000Z","pivot":{"company_id":25,"skill_id":5,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}}],"profile":{"id":5,"serieNumber":"SN-0382144","reasonSocial":"Veum PLC","address":"9793 Justen Plains
+East Geo, NV 53572-8446","phone":"(726) 989-7131","email":"shodkiewicz@bernier.biz","capital":799836,"salesfigures":1556489,"nbEmployers":66,"DateCreation":"2016-12-27","status":"pending","company_id":25,"candidate_id":59,"created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z"}},{"id":26,"name":"Hills Soft","sector":"Digital Marketing & IT","files":"hills_soft.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Hills+Soft&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":27,"name":"HMDServices","sector":"IT Strategy Consulting","files":"hmdservices_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HMDServices&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":28,"name":"Intelcia IT Solutions","sector":"IT Outsourcing","files":"intelcia_itsolutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Intelcia+IT+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":29,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":30,"name":"MarocRank","sector":"IT Services","files":"marocrank_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MarocRank&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":31,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":32,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":33,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":34,"name":"EKBLOCKS","sector":"Cybersecurity & IT Managed Services","files":"ekblocks_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=EKBLOCKS&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":35,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:19.000000Z","updated_at":"2025-05-01T00:11:19.000000Z","skills":[],"profile":null},{"id":36,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":37,"name":"xHub","sector":"Software Development","files":"xhub_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=xHub&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":38,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":39,"name":"Manzana.ma","sector":"Digital Communication","files":"manzana_comms.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Manzana.ma&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":40,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":41,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":42,"name":"Gear9","sector":"Software Development","files":"gear9_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Gear9&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":43,"name":"Gear9","sector":"Software Development","files":"gear9_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Gear9&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":44,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":45,"name":"Numa Maroc","sector":"Startup Incubator","files":"numa_incubator.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Numa+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":46,"name":"Numa Maroc","sector":"Startup Incubator","files":"numa_incubator.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Numa+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":47,"name":"Finatech Group","sector":"Back Office Outsourcing & IT","files":"finatech_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Finatech+Group&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":48,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":49,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":50,"name":"CleanCode","sector":"Web Development & Testing","files":"cleancode_dev.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=CleanCode&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":51,"name":"M2T","sector":"Accounting & IT Managed Services","files":"m2t_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=M2T&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":52,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":53,"name":"Manzana.ma","sector":"Digital Communication","files":"manzana_comms.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Manzana.ma&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":54,"name":"KubicBits","sector":"SaaS & Web Applications","files":"kubicbits_saas.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=KubicBits&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":55,"name":"QuickTech","sector":"Web & Mobile Development","files":"quicktech_dev.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=QuickTech&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":56,"name":"HMDServices","sector":"IT Strategy Consulting","files":"hmdservices_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HMDServices&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":57,"name":"TeraByte Software","sector":"Software Development","files":"terabyte_software.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=TeraByte+Software&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":58,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":59,"name":"HPS (Hightech Payment Systems)","sector":"Fintech & IT","files":"hps_fintech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=HPS+%28Hightech+Payment+Systems%29&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":60,"name":"ETAFAT","sector":"IT Managed Services","files":"etafat_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=ETAFAT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":61,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":62,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":63,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":64,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":65,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":66,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":67,"name":"MarocRank","sector":"IT Services","files":"marocrank_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MarocRank&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":68,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":69,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":70,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":71,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":72,"name":"Logigroup","sector":"IT Consulting","files":"logigroup_consult.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Logigroup&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":73,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":74,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":75,"name":"OnnVision","sector":"Marketing & IT Consulting","files":"onnvision_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OnnVision&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":76,"name":"M2T","sector":"Accounting & IT Managed Services","files":"m2t_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=M2T&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":77,"name":"YES TO THE NET","sector":"Web Development & IT Outsourcing","files":"yestothenet.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=YES+TO+THE+NET&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":78,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":79,"name":"Yovista","sector":"Digital Marketing & Web Development","files":"yovista_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Yovista&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":80,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":81,"name":"EKBLOCKS","sector":"Cybersecurity & IT Managed Services","files":"ekblocks_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=EKBLOCKS&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":82,"name":"Argyre Technology Services","sector":"Geographic Information Systems & IT","files":"argyre_gis.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Argyre+Technology+Services&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":83,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":84,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":85,"name":"Opinov8 Digital and Engineering Solutions","sector":"Software Development","files":"opinov8_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Opinov8+Digital+and+Engineering+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":86,"name":"MONARK IT","sector":"Web & Mobile Development","files":"monark_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MONARK+IT&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":87,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":88,"name":"CGI Technologies","sector":"IT Services","files":"cgi_tech_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=CGI+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:20.000000Z","updated_at":"2025-05-01T00:11:20.000000Z","skills":[],"profile":null},{"id":89,"name":"FGM Technologies","sector":"Digital Agency","files":"fgm_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FGM+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":90,"name":"Alten Maroc","sector":"Engineering & IT Services","files":"alten_maroc.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Alten+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":91,"name":"Admiral Digital Consulting","sector":"AI & Big Data Consulting","files":"admiral_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Admiral+Digital+Consulting&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":92,"name":"FORNET","sector":"IT Services","files":"fornet_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=FORNET&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":93,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":94,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":95,"name":"Maroc Cloud","sector":"Cloud Consulting","files":"maroc_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Maroc+Cloud&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":96,"name":"Maroc Cloud","sector":"Cloud Consulting","files":"maroc_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Maroc+Cloud&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":97,"name":"KubicBits","sector":"SaaS & Web Applications","files":"kubicbits_saas.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=KubicBits&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":98,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":99,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":100,"name":"Novelis","sector":"Cloud & Data","files":"novelis_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Novelis&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":101,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":102,"name":"OpenScale","sector":"Cloud & Software Development","files":"openscale_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=OpenScale&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":103,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":104,"name":"Dial Technologies","sector":"Information Technology","files":"dialtech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Dial+Technologies&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":105,"name":"SII Group Maroc","sector":"Engineering & Consulting","files":"sii_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=SII+Group+Maroc&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":106,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":107,"name":"Happy Smala","sector":"Information Technology","files":"happysmala_tech.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Happy+Smala&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":108,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":109,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":110,"name":"Yovista","sector":"Digital Marketing & Web Development","files":"yovista_marketing.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Yovista&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":111,"name":"Viix Digital","sector":"Digital Marketing & Web Design","files":"viix_digital.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Viix+Digital&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":112,"name":"Hills Soft","sector":"Digital Marketing & IT","files":"hills_soft.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Hills+Soft&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":113,"name":"Raviga Solutions","sector":"ERP Consulting","files":"raviga_erp.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Raviga+Solutions&color=ffffff&size=100","created_at":"2025-05-01T00:11:21.000000Z","updated_at":"2025-05-01T00:11:21.000000Z","skills":[],"profile":null},{"id":114,"name":"Majjane","sector":"Web Development","files":"majjane_web.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Majjane&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":115,"name":"Business Intelligence Agency","sector":"Software Development & BI","files":"bi_agency.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Business+Intelligence+Agency&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":116,"name":"Finatech Group","sector":"Back Office Outsourcing & IT","files":"finatech_group.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Finatech+Group&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":117,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":118,"name":"Munisys","sector":"Cloud Consulting","files":"munisys_cloud.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Munisys&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":119,"name":"XORTECH","sector":"SaaS & IT Solutions","files":"xortech_solutions.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=XORTECH&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":120,"name":"Obytes","sector":"Information Technology","files":"obytes_presentation.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Obytes&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":121,"name":"VLink","sector":"IT Services","files":"vlink_it.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=VLink&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":122,"name":"Lactic","sector":"UX\/UI Design & Software Development","files":"lactic_ux.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=Lactic&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":123,"name":"NoOps","sector":"IT Strategy Consulting","files":"noops_consulting.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=NoOps&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":124,"name":"MTDS","sector":"IT Managed Services","files":"mtds_services.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=MTDS&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":125,"name":"xHub","sector":"Software Development","files":"xhub_profile.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=xHub&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null},{"id":126,"name":"GEMADEC","sector":"Software Development & Cybersecurity","files":"gemadec_cyber.pdf","logo":"https:\/\/ui-avatars.com\/api\/?name=GEMADEC&color=ffffff&size=100","created_at":"2025-05-01T00:11:22.000000Z","updated_at":"2025-05-01T00:11:22.000000Z","skills":[],"profile":null}]  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+  0 => 2,
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+  0 => 10,
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+  0 => 3,
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+  0 => 15,
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+  0 => 5,
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
+[2025-05-01 14:15:46] local.INFO: array (
+)  
