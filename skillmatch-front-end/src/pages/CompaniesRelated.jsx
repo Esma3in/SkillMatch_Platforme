@@ -1,0 +1,327 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import NavbarCandidate from "../components/common/navbarCandidate";
+import { api } from "../api/api";
+
+function CompaniesRelated() {
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [errorDetails, setErrorDetails] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const navigate = useNavigate();
+  
+  // Get candidate_id from localStorage
+  const candidate_id = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("candidate_id")) || null;
+    } catch (e) {
+      console.error("Error parsing candidate_id from localStorage:", e);
+      return null;
+    }
+  })[0];
+
+  useEffect(() => {
+    const fetchCompaniesSelected = async () => {
+      if (!candidate_id) {
+        setError("Candidate ID not found. Please log in again.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        setErrorDetails(null);
+        
+        // Add timeout to prevent infinite loading if server doesn't respond
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        
+        // Debug the request
+        console.log(`Fetching from: /api/selected/companies/${candidate_id}`);
+        
+        const response = await api.get(`/api/selected/companies/${candidate_id}`, {
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        console.log("API Response:", response);
+        
+        // Validate response data
+        if (!response.data) {
+          throw new Error("Empty response received");
+        }
+        
+        // Ensure we have an array (even if empty)
+        const companiesData = Array.isArray(response.data) ? response.data : [];
+        console.log("Companies data:", companiesData);
+        
+        setCompanies(companiesData);
+      } catch (error) {
+        const errorMessage = "Failed to fetch selected companies. Please try again later.";
+        setError(errorMessage);
+        
+        // Store detailed error for debugging
+        setErrorDetails(error.response?.data?.error || error.message);
+        console.error("Error fetching selected companies:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (candidate_id) {
+      fetchCompaniesSelected();
+    } else {
+      setLoading(false);
+      setError("Please log in to view selected companies");
+    }
+  }, [candidate_id, retryCount]);
+
+  const handleRetry = () => {
+    setRetryCount(prevCount => prevCount + 1);
+  };
+  
+  const handleBrowseCompanies = () => {
+    navigate(`/candidate/Session/${candidate_id}`);
+  };
+
+  const renderCompanyCard = (company) => {
+    // Format date if available
+    const formattedDate = company.selected_date 
+      ? new Date(company.selected_date).toLocaleDateString()
+      : "Recently selected";
+      
+    return (
+      <div
+        key={company.id || `company-${Math.random()}`}
+        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 flex flex-col"
+      >
+        <div className="flex items-center mb-4">
+          <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+            <span className="text-lg font-bold text-purple-600">
+              {(company.company_name || company.name || "?").charAt(0).toUpperCase()}
+            </span>
+          </div>
+          <div>
+            <h4 className="text-xl font-bold text-gray-800">
+              {company.company_name || company.name || "Unknown Company"}
+            </h4>
+            <p className="text-sm text-gray-500">{company.sector || "Technology"}</p>
+          </div>
+        </div>
+        <div className="space-y-3 text-sm text-gray-600 flex-grow">
+          <p>
+            <span className="font-semibold">Selected Date:</span>{" "}
+            {formattedDate}
+          </p>
+          <p>
+            <span className="font-semibold">Description:</span>{" "}
+            {company.description || "No description available."}
+          </p>
+          <p>
+            <span className="font-semibold">Location:</span>{" "}
+            {company.location || "Location not specified"}
+          </p>
+          {company.website && (
+            <p>
+              <span className="font-semibold">Website:</span>{" "}
+              <a
+                href={company.website}
+                className="text-purple-600 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {company.website}
+              </a>
+            </p>
+          )}
+        </div>
+        <div className="mt-6 flex flex-col space-y-3">
+          <button 
+            className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all"
+            onClick={() => navigate(`/candidate/roadmap/${company.id}`)}
+          >
+            View Career Roadmap
+          </button>
+          <button 
+            className="bg-white border border-purple-500 text-purple-600 font-semibold py-2 rounded-lg hover:bg-purple-50 transition-all"
+            onClick={() => navigate(`/candidate/assessment/${company.id}`)}
+          >
+            Take Assessment
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <NavbarCandidate />
+      <div className="min-h-screen bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+            Your Chosen Companies
+          </h2>
+          
+          {loading && (
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+              <p className="mt-4 text-gray-600">Loading your selected companies...</p>
+            </div>
+          )}
+          
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
+              <h3 className="text-lg font-semibold text-red-700 mb-2">Error</h3>
+              <p className="text-red-600 mb-4">{error}</p>
+              {errorDetails && (
+                <details className="mt-2">
+                  <summary className="text-sm text-red-500 cursor-pointer">Show technical details</summary>
+                  <pre className="mt-2 p-3 bg-red-50 rounded text-xs text-red-800 overflow-auto">
+                    {errorDetails}
+                  </pre>
+                </details>
+              )}
+              <button
+                onClick={handleRetry}
+                className="mt-3 bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
+          
+          {!loading && !error && companies.length === 0 && (
+            <div className="bg-white rounded-xl shadow-md p-8 text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <p className="text-gray-600 mb-6">No companies selected yet.</p>
+              <button 
+                className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 px-6 rounded-lg hover:opacity-90 transition-all"
+                onClick={handleBrowseCompanies}
+              >
+                Browse Companies
+              </button>
+            </div>
+          )}
+          
+          {!loading && !error && companies.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {companies.map(renderCompanyCard)}
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {/* Progress Tracker */}
+      {!loading && !error && companies.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
+            Your Progress
+          </h3>
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-lg font-semibold text-gray-800">
+                Application Status
+              </h4>
+              <span className="text-sm text-purple-600 font-medium">
+                In Progress
+              </span>
+            </div>
+            <div className="relative pt-1">
+              <div className="flex mb-2 items-center justify-between">
+                <div>
+                  <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-purple-600 bg-purple-100">
+                    60% Complete
+                  </span>
+                </div>
+              </div>
+              <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                <div
+                  style={{ width: "60%" }}
+                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"
+                ></div>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600">
+              Complete assessments and interviews to move forward in the application process.
+            </p>
+            <div className="mt-4">
+              <h5 className="text-sm font-semibold text-gray-700">
+                Next Steps:
+              </h5>
+              <ul className="list-disc list-inside text-sm text-gray-600 mt-2">
+                <li>Complete the technical assessment</li>
+                <li>Schedule an interview</li>
+                <li>Review company culture fit</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tips and Resources */}
+      {!loading && !error && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
+            Tips for Success
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-xl shadow-md p-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                Prepare for Assessments
+              </h4>
+              <p className="text-sm text-gray-600">
+                Review common technical questions and practice coding challenges
+                to excel in your assessments.
+              </p>
+              <a
+                href="#"
+                className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
+              >
+                Learn More
+              </a>
+            </div>
+            <div className="bg-white rounded-xl shadow-md p-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                Build Your Profile
+              </h4>
+              <p className="text-sm text-gray-600">
+                Complete your SkillMatch profile to attract more employers and
+                showcase your skills.
+              </p>
+              <a
+                href="#"
+                className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
+              >
+                Update Profile
+              </a>
+            </div>
+            <div className="bg-white rounded-xl shadow-md p-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                Research Companies
+              </h4>
+              <p className="text-sm text-gray-600">
+                Learn about company culture, values, and recent projects to
+                tailor your applications.
+              </p>
+              <a
+                href="#"
+                className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
+              >
+                Explore Resources
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default CompaniesRelated;
