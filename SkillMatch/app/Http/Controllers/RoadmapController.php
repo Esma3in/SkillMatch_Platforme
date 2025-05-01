@@ -188,9 +188,9 @@ class RoadmapController extends Controller
     }
 
 
-    public function getRoadmap($roadmap_id)
+    public function getRoadmap()
     {
-        $roadmap = DB::table('roadmaps')->where('id', $roadmap_id)->first();
+        $roadmap = DB::table('roadmaps')->first();
 
         if (!$roadmap) {
             return response()->json([
@@ -200,7 +200,7 @@ class RoadmapController extends Controller
         }
 
         // Fetch all associated roadmap data
-        $prerequisitesRaw = DB::table('prerequisites')->where('roadmap_id', $roadmap_id)->get()->groupBy('skill');
+        $prerequisitesRaw = DB::table('prerequisites')->get()->groupBy('skill');
         $transformedPrerequisites = [];
         foreach ($prerequisitesRaw as $skill => $items) {
             $transformedPrerequisites[] = [
@@ -209,10 +209,10 @@ class RoadmapController extends Controller
             ];
         }
 
-        $courses = DB::table('candidate_courses')->where('roadmap_id', $roadmap_id)->get();
-        $skills = DB::table('roadmap_skills')->where('roadmap_id', $roadmap_id)->get()->groupBy('type');
+        $courses = DB::table('candidate_courses')->get();
+        $skills = DB::table('roadmap_skills')->get()->groupBy('type');
 
-        $tools = DB::table('tools')->where('roadmap_id', $roadmap_id)->get();
+        $tools = DB::table('tools')->get();
         $toolsWithSkills = $tools->map(function ($tool) {
             $tool->skills = DB::table('tool_skills')
                 ->where('tool_id', $tool->id)
