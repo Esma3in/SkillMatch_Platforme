@@ -174,3 +174,4 @@ const NavbarCandidate = () => {
 };
 
 export default NavbarCandidate;
+   

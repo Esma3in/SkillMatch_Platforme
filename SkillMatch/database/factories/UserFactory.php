@@ -25,7 +25,6 @@ class UserFactory extends Factory
         $role = [
             'candidate',
             'company',
-            'administrator'
         ];
         return [
             'email' => fake()->unique()->safeEmail,

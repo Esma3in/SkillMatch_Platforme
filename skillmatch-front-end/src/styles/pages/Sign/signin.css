@@ -8,10 +8,13 @@
 }
 
 body {
-  width: 100vw;;
+  width: 100vw;
+  min-height: 100vh; /* ✅ ensure full height support */
   font-family: 'Poppins', sans-serif;
   background-color: #162534;
+  overflow-x: hidden; /* ✅ prevent horizontal scroll */
 }
+
 
 .auth-wrapper {
   width: 100vw;
@@ -29,11 +32,12 @@ body {
 .container {
   display: flex;
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh; /* ✅ change from height to min-height */
   background-color: #64748b;
   flex-direction: row;
+  flex-wrap: wrap;
 }
+
 
 @media (max-width: 768px) {
   .container {
@@ -199,3 +203,35 @@ form {
   color: #2563eb;
   text-decoration: none;
 }
+
+#FileInput,
+#LogoInput {
+  border: none;
+  padding: 0.5rem;
+  background-color: #f7f7f7;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#FileInput:focus,
+#LogoInput:focus {
+  background-color: #f0f0f0;
+  outline: none;
+}
+
+/* Styling for select role dropdown */
+#role {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+}
+
+#role:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+
+
