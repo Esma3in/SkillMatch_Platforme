@@ -41,9 +41,7 @@ function CompaniesRelated() {
         // Debug the request
         console.log(`Fetching from: /api/selected/companies/${candidate_id}`);
         
-        const response = await api.get(`/api/selected/companies/${candidate_id}`, {
-          signal: controller.signal
-        });
+        const response = await api.get(`/api/selected/companies/${candidate_id}`);
         
         clearTimeout(timeoutId);
         

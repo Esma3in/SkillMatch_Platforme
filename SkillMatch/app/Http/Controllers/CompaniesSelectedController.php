@@ -111,63 +111,66 @@ class CompaniesSelectedController extends Controller
 
 public function getSelectedCompaniess($candidate_id, Request $request)
 {
-    try {
-        // Validate the candidate ID
-        if (!$candidate_id || !is_numeric($candidate_id)) {
-            return response()->json(['error' => 'Invalid candidate ID'], 400);
-        }
+    // try {
+    //     // Validate the candidate ID
+    //     if (!$candidate_id || !is_numeric($candidate_id)) {
+    //         return response()->json(['error' => 'Invalid candidate ID'], 400);
+    //     }
 
-        $user = $request->user();
+    //     $user = $request->user();
 
-        // Check if the candidate exists
-        $candidate = Candidate::find($candidate_id);
-        if (!$candidate) {
-            return response()->json(['error' => 'Candidate not found'], 404);
-        }
+    //     // Check if the candidate exists
+    //     $candidate = Candidate::find($candidate_id);
+    //     if (!$candidate) {
+    //         return response()->json(['error' => 'Candidate not found'], 404);
+    //     }
 
-        // Check if the authenticated user is linked to this candidate
-        if ($user && $user->id !== $candidate->user_id) {
-            return response()->json(['error' => 'Unauthorized access'], 403);
-        }
+    //     // Check if the authenticated user is linked to this candidate
+    //     if ($user && $user->id !== $candidate->user_id) {
+    //         return response()->json(['error' => 'Unauthorized access'], 403);
+    //     }
 
-        // Get selected companies with their details
-        // Use leftJoin instead of with() to avoid null reference errors
-        $companies = DB::table('companies_selected')
-            ->where('companies_selected.candidate_id', $candidate_id)
-            ->leftJoin('companies', 'companies_selected.company_id', '=', 'companies.id')
-            ->select(
-                'companies.id',
-                'companies.company_name',
-                'companies.sector',
-                'companies.description',
-                'companies.location',
-                'companies.website',
-                'companies_selected.created_at as selected_date'
-            )
-            ->get()
-            ->map(function ($item) {
-                if (!$item || !isset($item->selected_date)) {
-                    $item->selected_date = null;
-                } else {
-                    try {
-                        $item->selected_date = date('Y-m-d', strtotime($item->selected_date));
-                    } catch (\Exception $e) {
-                        $item->selected_date = null;
-                    }
-                }
-                return $item;
-            });
+    //     // Get selected companies with their details
+    //     // Use leftJoin instead of with() to avoid null reference errors
+    //     $companies = DB::table('companies_selected')
+    //         ->where('companies_selected.candidate_id', $candidate_id)
+    //         ->leftJoin('companies', 'companies_selected.company_id', '=', 'companies.id')
+    //         ->select(
+    //             'companies.id',
+    //             'companies.company_name',
+    //             'companies.sector',
+    //             'companies.description',
+    //             'companies.location',
+    //             'companies.website',
+    //             'companies_selected.created_at as selected_date'
+    //         )
+    //         ->get()
+    //         ->map(function ($item) {
+    //             if (!$item || !isset($item->selected_date)) {
+    //                 $item->selected_date = null;
+    //             } else {
+    //                 try {
+    //                     $item->selected_date = date('Y-m-d', strtotime($item->selected_date));
+    //                 } catch (\Exception $e) {
+    //                     $item->selected_date = null;
+    //                 }
+    //             }
+    //             return $item;
+    //         });
 
-        return response()->json($companies);
-    } catch (\Exception $e) {
-        // Log the error for debugging
-        Log::error('Failed to fetch selected companies: ' . $e->getMessage(), [
-            'candidate_id' => $candidate_id,
-            'trace' => $e->getTraceAsString()
-        ]);
+    //     return response()->json($companies);
+    // } catch (\Exception $e) {
+    //     // Log the error for debugging
+    //     Log::error('Failed to fetch selected companies: ' . $e->getMessage(), [
+    //         'candidate_id' => $candidate_id,
+    //         'trace' => $e->getTraceAsString()
+    //     ]);
 
-        return response()->json(['error' => 'An error occurred while fetching selected companies'], 500);
-    }
+    //     return response()->json(['error' => 'An error occurred while fetching selected companies'], 500);
+    // }
+
+    $companiesSelected =CompaniesSelected::all();
+    return response()->json($companiesSelected);
 }
     public function getSkillsData(Request $request, $companyId)
     {
