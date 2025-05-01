@@ -1,41 +1,692 @@
 {
-    "roadmap_id": 1,
-    "candidate_id": 96,
     "tools": [
       {
         "id": 1,
         "name": "Java Development Kit (JDK)",
         "description": "Install JDK 17 or later to compile and run Java programs.",
         "link": "https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html",
-        "image": "https://via.placeholder.com/40"
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Classes and Inheritance",
+          "Spring Boot for REST APIs in Java"
+        ]
       },
       {
         "id": 2,
         "name": "Visual Studio Code",
         "description": "A lightweight code editor with Java and Angular extensions.",
         "link": "https://code.visualstudio.com/",
-        "image": "https://via.placeholder.com/40"
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Working with Modules",
+          "Creating Wireframes and UI Mockups",
+          "Time Management & Task Prioritization"
+        ]
       },
       {
         "id": 3,
         "name": "Node.js",
         "description": "Required for Angular development and running npm commands.",
         "link": "https://nodejs.org/",
-        "image": "https://via.placeholder.com/40"
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Introduction to Node.js: What it is, use cases, installing Node and npm",
+          "Working with Modules: CommonJS, require/export, third-party modules",
+          "Creating a Web Server with Express.js",
+          "Middleware & Routing in Express"
+        ]
       },
       {
         "id": 4,
         "name": "Angular CLI",
         "description": "Command-line tool to scaffold and build Angular applications.",
         "link": "https://angular.io/cli",
-        "image": "https://via.placeholder.com/40"
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Component-Driven Development",
+          "Design Systems and Reusable UI Components"
+        ]
       },
       {
         "id": 5,
         "name": "Git",
         "description": "Version control system for managing your project code.",
         "link": "https://git-scm.com/",
-        "image": "https://via.placeholder.com/40"
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Version Control Basics: git init, git status, git add/commit",
+          "Branching & Merging",
+          "Working with Remote Repositories",
+          "Resolving Merge Conflicts"
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Webpack",
+        "description": "Module bundler for JavaScript applications.",
+        "link": "https://webpack.js.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Tree Shaking in Webpack/Vite",
+          "Using ESBuild for Lightning-Fast Builds"
+        ]
+      },
+      {
+        "id": 7,
+        "name": "Nginx",
+        "description": "Web server and reverse proxy for high-performance applications.",
+        "link": "https://nginx.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Installing NGINX and Basic Configuration",
+          "Serving Static Files & Reverse Proxy",
+          "Setting up SSL with Let's Encrypt",
+          "Load Balancing with NGINX"
+        ]
+      },
+      {
+        "id": 8,
+        "name": "Docker",
+        "description": "Platform for building, shipping, and running distributed applications.",
+        "link": "https://www.docker.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "What is Docker & Containers vs VMs",
+          "Dockerfile & Building Images",
+          "Running Containers: docker run, stop, ps, logs",
+          "Docker Compose: Defining multi-container apps",
+          "Containerization with Docker"
+        ]
+      },
+      {
+        "id": 9,
+        "name": "MySQL",
+        "description": "Relational database management system.",
+        "link": "https://www.mysql.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Database Basics: Tables, rows, columns, relations",
+          "Basic SQL Queries: SELECT, INSERT, UPDATE, DELETE",
+          "Joins: INNER JOIN, LEFT JOIN, RIGHT JOIN",
+          "Indexes & Constraints"
+        ]
+      },
+      {
+        "id": 10,
+        "name": "MongoDB",
+        "description": "NoSQL database management system.",
+        "link": "https://www.mongodb.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Understanding NoSQL & MongoDB basics",
+          "CRUD operations: insert, find, update, delete",
+          "Using Mongoose with Node.js",
+          "Schemas & Relationships in MongoDB"
+        ]
+      },
+      {
+        "id": 11,
+        "name": "Redis",
+        "description": "In-memory data store.",
+        "link": "https://redis.io/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Caching Strategies: Browser and Server-Side"
+        ]
+      },
+      {
+        "id": 12,
+        "name": "Elasticsearch",
+        "description": "Distributed search and analytics engine.",
+        "link": "https://www.elastic.co/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Full-Text Search in SQL and NoSQL Databases"
+        ]
+      },
+      {
+        "id": 13,
+        "name": "Kafka",
+        "description": "Stream processing platform.",
+        "link": "https://kafka.apache.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Google Cloud Pub/Sub for Asynchronous Messaging"
+        ]
+      },
+      {
+        "id": 18,
+        "name": "Sass",
+        "description": "CSS preprocessor for writing more maintainable and flexible styles.",
+        "link": "https://sass-lang.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "SASS Syntax: Variables, nesting, mixins",
+          "Partials and Imports",
+          "Extending and Inheritance in SASS",
+          "Compiling SASS to CSS"
+        ]
+      },
+      {
+        "id": 19,
+        "name": "Tailwind CSS",
+        "description": "Utility-first CSS framework for rapid UI development.",
+        "link": "https://tailwindcss.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Setting up Tailwind CSS in your Project",
+          "Utility Classes for Layout, Typography, and Spacing",
+          "Responsive Design and Media Queries in Tailwind",
+          "Customizing with Tailwind Config",
+          "Tailwind CSS for Utility-First Styling"
+        ]
+      },
+      {
+        "id": 20,
+        "name": "Figma",
+        "description": "Design tool for user interfaces and collaboration in real-time.",
+        "link": "https://www.figma.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Figma Interface Overview",
+          "Creating Wireframes and UI Mockups",
+          "Working with Components and Variants",
+          "Exporting Assets for Development"
+        ]
+      },
+      {
+        "id": 21,
+        "name": "Slack",
+        "description": "Collaboration platform for teams and project communication.",
+        "link": "https://slack.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Effective Communication in Teams"
+        ]
+      },
+      {
+        "id": 22,
+        "name": "Vercel",
+        "description": "Cloud platform for static sites and serverless functions.",
+        "link": "https://vercel.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Deploying Next.js on Vercel",
+          "Web Deployment"
+        ]
+      },
+      {
+        "id": 23,
+        "name": "AWS (Amazon Web Services)",
+        "description": "Cloud platform providing on-demand computing services.",
+        "link": "https://aws.amazon.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Deploying Apps with AWS Lambda and API Gateway",
+          "Web Deployment",
+          "Serverless Architecture for Web Deployment"
+        ]
+      },
+      {
+        "id": 24,
+        "name": "Cloudflare",
+        "description": "Web performance and security company providing CDN and DDoS protection.",
+        "link": "https://www.cloudflare.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Web Performance",
+          "Caching Strategies: Browser and Server-Side"
+        ]
+      },
+      {
+        "id": 25,
+        "name": "Swagger",
+        "description": "API documentation tool and specification format for RESTful APIs.",
+        "link": "https://swagger.io/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "API Testing with Postman",
+          "Creating RESTful APIs in Laravel/Express"
+        ]
+      },
+      {
+        "id": 26,
+        "name": "Redis",
+        "description": "In-memory data structure store, used as a database, cache, and message broker.",
+        "link": "https://redis.io/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Caching Strategies: Browser and Server-Side"
+        ]
+      },
+      {
+        "id": 27,
+        "name": "Terraform",
+        "description": "Infrastructure as Code (IaC) tool for building, changing, and versioning infrastructure.",
+        "link": "https://www.terraform.io/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Infrastructure as Code (IaC) with Terraform"
+        ]
+      },
+      {
+        "id": 28,
+        "name": "Docker Compose",
+        "description": "Tool for defining and running multi-container Docker applications.",
+        "link": "https://docs.docker.com/compose/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Docker Compose: Defining multi-container apps"
+        ]
+      },
+      {
+        "id": 29,
+        "name": "Kubernetes",
+        "description": "Open-source platform for automating deployment, scaling, and management of containerized applications.",
+        "link": "https://kubernetes.io/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Kubernetes Architecture: Pods, Nodes, Clusters",
+          "Creating Deployments and Services",
+          "Scaling and Rolling Updates",
+          "Using kubectl for Management",
+          "Introduction to Kubernetes",
+          "Automated Deployment with Docker and Kubernetes"
+        ]
+      },
+
+      {
+        "id": 30,
+        "name": "Jenkins",
+        "description": "Open-source automation server for continuous integration and delivery.",
+        "link": "https://www.jenkins.io/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "CI/CD Pipelines for Web Applications",
+          "Running Tests in Pipelines"
+        ]
+      },
+      {
+        "id": 31,
+        "name": "IntelliJ IDEA",
+        "description": "Integrated development environment (IDE) for Java development with powerful refactoring and debugging tools.",
+        "link": "https://www.jetbrains.com/idea/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Classes and Inheritance",
+          "Working with Modules"
+        ]
+      },
+      {
+        "id": 32,
+        "name": "Docker Desktop",
+        "description": "A platform for building and sharing containerized applications.",
+        "link": "https://www.docker.com/products/docker-desktop",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "What is Docker & Containers vs VMs",
+          "Running Containers: docker run, stop, ps, logs"
+        ]
+      },
+      {
+        "id": 33,
+        "name": "PyCharm",
+        "description": "Python IDE for professional developers, with full-stack development capabilities.",
+        "link": "https://www.jetbrains.com/pycharm/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Variables, Data Types & Operators: int, float, str, bool, basic math & logic",
+          "Control Flow: if/else, for loops, while loops",
+          "Functions & Modules: Defining functions, importing built-in modules"
+        ]
+      },
+      {
+        "id": 34,
+        "name": "Gulp",
+        "description": "A toolkit to automate and enhance your workflow by running tasks like minification and compilation.",
+        "link": "https://gulpjs.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Compiling SASS to CSS",
+          "Tree Shaking in Webpack/Vite"
+        ]
+      },
+      {
+        "id": 35,
+        "name": "Jira",
+        "description": "Project management and issue tracking software for agile development teams.",
+        "link": "https://www.atlassian.com/software/jira",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Sprint Planning and Retrospectives",
+          "Daily Standups and Backlog Grooming",
+          "Agile Values and Principles"
+        ]
+      },
+      {
+        "id": 36,
+        "name": "Docker Swarm",
+        "description": "A native clustering and orchestration tool for Docker containers.",
+        "link": "https://docs.docker.com/engine/swarm/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Scaling and Rolling Updates",
+          "Load Balancing with NGINX"
+        ]
+      },
+      {
+        "id": 37,
+        "name": "Azure DevOps",
+        "description": "Cloud-based collaboration platform for managing software development and deployment.",
+        "link": "https://azure.microsoft.com/en-us/services/devops/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "CI/CD Pipelines for Web Applications",
+          "Using Azure Functions for Serverless Development"
+        ]
+      },
+      {
+        "id": 38,
+        "name": "Vagrant",
+        "description": "Tool for building and maintaining virtualized development environments.",
+        "link": "https://www.vagrantup.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "What is Docker & Containers vs VMs"
+        ]
+      },
+      {
+        "id": 39,
+        "name": "RabbitMQ",
+        "description": "Open-source message broker for efficient communication between distributed systems.",
+        "link": "https://www.rabbitmq.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Google Cloud Pub/Sub for Asynchronous Messaging"
+        ]
+      },
+      {
+        "id": 40,
+        "name": "CircleCI",
+        "description": "Continuous integration and delivery platform for automating development workflows.",
+        "link": "https://circleci.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "CI/CD Pipelines for Web Applications",
+          "Running Tests in Pipelines"
+        ]
+      },
+      {
+        "id": 41,
+        "name": "Atom",
+        "description": "Open-source text editor for developers with features like Git integration and customizable themes.",
+        "link": "https://atom.io/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Working with Modules"
+        ]
+      },
+      {
+        "id": 42,
+        "name": "Sublime Text",
+        "description": "A sophisticated text editor for code, markup, and prose with an emphasis on speed.",
+        "link": "https://www.sublimetext.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Working with Modules"
+        ]
+      },
+      {
+        "id": 43,
+        "name": "AWS Lambda",
+        "description": "Serverless compute service that runs code in response to events and automatically manages the computing resources.",
+        "link": "https://aws.amazon.com/lambda/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Deploying Apps with AWS Lambda and API Gateway",
+          "Serverless Architecture for Web Deployment"
+        ]
+      },
+      {
+        "id": 44,
+        "name": "Sentry",
+        "description": "Error tracking tool that helps developers monitor and fix crashes in real time.",
+        "link": "https://sentry.io/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Setting up Monitoring Tools (Prometheus, Grafana)",
+          "Health Checks and Uptime Monitoring"
+        ]
+      },
+      {
+        "id": 45,
+        "name": "New Relic",
+        "description": "Real-time monitoring and performance management software for applications and infrastructure.",
+        "link": "https://newrelic.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Setting up Monitoring Tools (Prometheus, Grafana)",
+          "Analyzing Metrics for System Health",
+          "Real User Monitoring (RUM)",
+          "Analyzing Core Web Vitals"
+        ]
+      },
+      {
+        "id": 46,
+        "name": "Travis CI",
+        "description": "Continuous integration tool for testing and deploying code in GitHub repositories.",
+        "link": "https://travis-ci.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "CI/CD Pipelines for Web Applications",
+          "Running Tests in Pipelines"
+        ]
+      },
+      {
+        "id": 47,
+        "name": "Redmine",
+        "description": "Open-source project management tool with support for issue tracking, time tracking, and document management.",
+        "link": "https://www.redmine.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Sprint Planning and Retrospectives",
+          "Time Management & Task Prioritization"
+        ]
+      },
+      {
+        "id": 48,
+        "name": "Bitbucket",
+        "description": "Git repository management solution for teams with built-in CI/CD capabilities.",
+        "link": "https://bitbucket.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Working with Remote Repositories",
+          "CI/CD Pipelines for Web Applications"
+        ]
+      },
+      {
+        "id": 49,
+        "name": "Puppet",
+        "description": "Automation software for IT infrastructure management through configuration management and deployment.",
+        "link": "https://puppet.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Infrastructure as Code (IaC) with Terraform"
+        ]
+      },
+      {
+        "id": 50,
+        "name": "Ansible",
+        "description": "Open-source automation tool for configuring and managing servers, applications, and networks.",
+        "link": "https://www.ansible.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Infrastructure as Code (IaC) with Terraform"
+        ]
+      },
+      {
+        "id": 51,
+        "name": "Gradle",
+        "description": "Build automation tool used for Java and Android development.",
+        "link": "https://gradle.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Tree Shaking in Webpack/Vite"
+        ]
+      },
+      {
+        "id": 52,
+        "name": "GitLab",
+        "description": "A web-based DevOps lifecycle tool that provides source code management (SCM), CI/CD, and collaboration tools.",
+        "link": "https://gitlab.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Setting up GitHub Actions / GitLab CI",
+          "Working with Remote Repositories"
+        ]
+      },
+      {
+        "id": 53,
+        "name": "Vim",
+        "description": "Highly configurable text editor used for editing and writing code.",
+        "link": "https://www.vim.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Working with Modules",
+          "Linux CLI: cd, ls, mkdir, rm, mv, cp"
+        ]
+      },
+      {
+        "id": 54,
+        "name": "Grunt",
+        "description": "JavaScript task runner that automates repetitive tasks like minification, compilation, and testing.",
+        "link": "https://gruntjs.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Compiling SASS to CSS",
+          "Tree Shaking in Webpack/Vite"
+        ]
+      },
+      {
+        "id": 55,
+        "name": "Bash",
+        "description": "Command-line interface and scripting language for Unix-based systems.",
+        "link": "https://www.gnu.org/software/bash/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Linux CLI: cd, ls, mkdir, rm, mv, cp",
+          "File Permissions and Ownership (chmod, chown)",
+          "Installing and Updating Packages",
+          "Managing Processes and Services"
+        ]
+      },
+      {
+        "id": 56,
+        "name": "Confluence",
+        "description": "Team collaboration software for creating, sharing, and collaborating on content.",
+        "link": "https://www.atlassian.com/software/confluence",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Effective Communication in Teams",
+          "Sprint Planning and Retrospectives"
+        ]
+      },
+      {
+        "id": 57,
+        "name": "Maven",
+        "description": "Build automation tool used primarily for Java projects.",
+        "link": "https://maven.apache.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Tree Shaking in Webpack/Vite"
+        ]
+      },
+      {
+        "id": 58,
+        "name": "MongoDB Atlas",
+        "description": "Cloud-hosted database service for MongoDB with features like backups, monitoring, and scaling.",
+        "link": "https://www.mongodb.com/cloud/atlas",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Understanding NoSQL & MongoDB basics",
+          "CRUD operations: insert, find, update, delete",
+          "Schemas & Relationships in MongoDB"
+        ]
+      },
+      {
+        "id": 59,
+        "name": "Chart.js",
+        "description": "Open-source JavaScript library for creating interactive charts and graphs.",
+        "link": "https://www.chartjs.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Creating RESTful APIs in Laravel/Express"
+        ]
+      },
+      {
+        "id": 60,
+        "name": "Alpine.js",
+        "description": "Minimalist JavaScript framework for composing JavaScript behavior in HTML.",
+        "link": "https://alpinejs.dev/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "State Management Concepts"
+        ]
+      },
+      {
+        "id": 61,
+        "name": "Jupyter Notebook",
+        "description": "Open-source web application for creating and sharing documents containing live code, equations, and visualizations.",
+        "link": "https://jupyter.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Variables, Data Types & Operators: int, float, str, bool, basic math & logic",
+          "Control Flow: if/else, for loops, while loops"
+        ]
+      },
+      {
+        "id": 62,
+        "name": "Ember.js",
+        "description": "JavaScript framework for building ambitious web applications with a strong convention-over-configuration philosophy.",
+        "link": "https://emberjs.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "State Management Concepts"
+        ]
+      },
+      {
+        "id": 63,
+        "name": "Kotlin",
+        "description": "Statically typed programming language for JVM, Android, and JavaScript development.",
+        "link": "https://kotlinlang.org/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Classes and Inheritance"
+        ]
+      },
+      {
+        "id": 64,
+        "name": "Firebase",
+        "description": "Platform for building mobile and web applications with real-time databases, authentication, and cloud functions.",
+        "link": "https://firebase.google.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Setting up Firebase Project",
+          "Realtime Database & Firestore Basics",
+          "Firebase Auth Integration",
+          "Firebase Hosting & Deployment"
+        ]
+      },
+      {
+        "id": 65,
+        "name": "Twilio",
+        "description": "Cloud communication platform for sending and receiving SMS, voice calls, and messages.",
+        "link": "https://www.twilio.com/",
+        "image": "https://via.placeholder.com/40",
+        "skills": [
+          "Creating RESTful APIs in Laravel/Express",
+          "API Testing with Postman"
+        ]
       }
     ]
   }

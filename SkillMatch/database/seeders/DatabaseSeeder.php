@@ -145,6 +145,8 @@ class DatabaseSeeder extends Seeder
             });
         });
         //Insert prerequisites
+     
+        
         DB::transaction(function () {
             // Load and validate JSON files
             $files = [
@@ -167,32 +169,30 @@ class DatabaseSeeder extends Seeder
                 }
             }
         
-            // Validate prerequisites
+            // Validate and insert prerequisites
             $skillNames = [];
-            foreach ($decoded['prerequisites'] as $roadmap) {
-                if (!isset($roadmap['prerequisites'])) {
-                    throw new \Exception('Missing "prerequisites" key in prerequisites.json roadmap entry');
+            foreach ($decoded['prerequisites'] as $skillGroup) {
+                if (!isset($skillGroup['skill']) || !isset($skillGroup['prerequisites'])) {
+                    throw new \Exception('Missing "skill" or "prerequisites" key in prerequisites.json');
                 }
-                foreach ($roadmap['prerequisites'] as $prereq) {
-                    if (!isset($prereq['skills'][0]['name'])) {
-                        throw new \Exception('Missing skill name in prerequisites.json');
-                    }
-                    $skillNames[] = $prereq['skills'][0]['name'];
-                }
+                $skillNames[] = $skillGroup['skill'];
             }
             $skillNames = array_unique($skillNames);
         
             // Check if skill names exist and map to skill_ids
             $skillMap = DB::table('skills')->whereIn('name', $skillNames)->pluck('id', 'name')->toArray();
-            $missingSkills = array_diff($skillNames, array_keys($skillMap));
-      
         
             // Insert prerequisites
             $prerequisitesData = [];
-            foreach ($decoded['prerequisites'] as $roadmap) {
-                foreach ($roadmap['prerequisites'] as $prereq) {
+            foreach ($decoded['prerequisites'] as $skillGroup) {
+                $skillName = $skillGroup['skill'];
+                if (!isset($skillMap[$skillName])) {
+                    throw new \Exception("Skill '$skillName' not found in skills table");
+                }
+                $skillId = $skillMap[$skillName];
+                foreach ($skillGroup['prerequisites'] as $prereq) {
                     $prerequisitesData[] = [
-                        'skill_id' => (int) $skillMap[$prereq['skills'][0]['name']],
+                        'skill_id' => $skillId,
                         'text' => $prereq['text'],
                         'completed' => (bool) $prereq['completed'],
                         'created_at' => now(),
@@ -222,14 +222,14 @@ class DatabaseSeeder extends Seeder
             }, $decoded['courses']['courses']);
             DB::table('candidate_courses')->insert($coursesData);
         
-            // Insert skills (unchanged)
+            // Insert skills
             if (!isset($decoded['skills']['java'])) {
                 throw new \Exception('Missing "java" key in skills.json');
             }
             $skillsData = array_map(function ($skill) use ($decoded) {
                 return [
-                    'roadmap_id' => (int) $decoded['skills']['roadmap_id'],
-                    'candidate_id' => (int) $decoded['skills']['candidate_id'],
+                    // 'roadmap_id' => (int) $decoded['skills']['roadmap_id'],
+                    // 'candidate_id' => (int) $decoded['skills']['candidate_id'],
                     'id' => (int) $skill['id'],
                     'text' => $skill['text'],
                     'completed' => (bool) $skill['completed'],
@@ -239,27 +239,88 @@ class DatabaseSeeder extends Seeder
             }, $decoded['skills']['java']);
             DB::table('roadmap_skills')->insert($skillsData);
         
-            // Insert tools (unchanged)
+            // Insert tools
             if (!isset($decoded['tools']['tools'])) {
                 throw new \Exception('Missing "tools" key in tools.json');
             }
-            $toolsData = array_map(function ($tool) use ($decoded) {
-                return [
-                    'roadmap_id' => (int) $decoded['tools']['roadmap_id'],
-                    'candidate_id' => (int) $decoded['tools']['candidate_id'],
+        
+            $toolsData = [];
+            $toolSkillsData = [];
+        
+            foreach ($decoded['tools']['tools'] as $tool) {
+                // Data for the tools table
+                $toolsData[] = [
+                    // 'roadmap_id' => (int) $decoded['tools']['roadmap_id'],
+                    // 'candidate_id' => (int) $decoded['tools']['candidate_id'],
                     'id' => (int) $tool['id'],
                     'name' => $tool['name'],
-                    'description' => $tool['description'],
-                    'link' => $tool['link'],
-                    'image' => $tool['image'],
+                    'description' => $tool['description'] ?? null,
+                    'link' => $tool['link'] ?? null,
+                    'image' => $tool['image'] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
-            }, $decoded['tools']['tools']);
+        
+                // Data for the tool_skills table
+                if (!empty($tool['skills']) && is_array($tool['skills'])) {
+                    foreach ($tool['skills'] as $skillText) {
+                        $toolSkillsData[] = [
+                            'tool_id' => (int) $tool['id'],
+                            'skill' => $skillText,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                    }
+                }
+            }
+        
             DB::table('tools')->insert($toolsData);
+        
+            if (!empty($toolSkillsData)) {
+                DB::table('tool_skills')->insert($toolSkillsData);
+            }
         });
+        // Get all candidates
+        $candidates = Candidate::all();
+
+        if ($candidates->count() > 0) {
+            // Define available platforms
+            $platforms = ['facebook', 'twitter', 'discord', 'linkedin', 'github'];
+
+            // Create social media profiles for each candidate
+            foreach ($candidates as $candidate) {
+                // For each candidate, we'll create between 1-5 social media links
+                $numLinks = rand(1, 5);
+
+                // Shuffle platforms to get random selection
+                shuffle($platforms);
+
+                // Create social links for randomly selected platforms
+                for ($i = 0; $i < $numLinks; $i++) {
+                    SocialMedia::factory()
+                        ->forPlatform($platforms[$i])
+                        ->create([
+                            'candidate_id' => $candidate->id
+                        ]);
+                }
+            }
+        } else {
+            // If no candidates exist, create some with social media profiles
+            for ($i = 0; $i < 10; $i++) {
+                $candidate = Candidate::factory()->create();
+
+                // For each platform, 50% chance to create a profile
+                foreach (['facebook', 'twitter', 'discord', 'linkedin', 'github'] as $platform) {
+                    if (rand(0, 1)) {
+                        SocialMedia::factory()
+                            ->forPlatform($platform)
+                            ->create([
+                                'candidate_id' => $candidate->id
+                            ]);
+                    }
+                }
+            }
+
         }
-
-
     }
-
+}

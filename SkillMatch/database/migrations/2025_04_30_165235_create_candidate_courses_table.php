@@ -16,9 +16,6 @@ class CreateCandidateCoursesTable extends Migration
             $table->string('duration')->nullable();
             $table->boolean('completed')->default(false);
             $table->timestamps();
-
-            $table->foreignId('roadmap_id')->constrained('roadmaps');
-            $table->foreignId('candidate_id')->constrained('candidates');
         });
     }
 
