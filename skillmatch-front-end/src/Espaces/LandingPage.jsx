@@ -207,6 +207,12 @@ export const LandingPage = () => {
                         <div className="flex items-center space-x-2 md:space-x-4">
                             {/* Consistent button styling */}
                             <a
+                                href="/signIn"
+                                className="bg-white hover:bg-gray-100 text-indigo-600 border border-indigo-600 rounded-lg h-9 px-3 md:px-4 text-sm md:text-[15px] font-bold font-['Plus_Jakarta_Sans'] flex items-center justify-center transition-colors duration-200 whitespace-nowrap"
+                            >
+                                Sign In
+                            </a>
+                            <a
                                 href="/signUp"
                                 // Using Button component might be better here if styles are complex
                                 className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg h-9 px-3 md:px-4 text-sm md:text-[15px] font-bold font-['Plus_Jakarta_Sans'] flex items-center justify-center transition-colors duration-200 whitespace-nowrap"
@@ -214,12 +220,6 @@ export const LandingPage = () => {
                                 Sign Up
                             </a>
 
-                            <a
-                                href="/signIn"
-                                className="bg-white hover:bg-gray-100 text-indigo-600 border border-indigo-600 rounded-lg h-9 px-3 md:px-4 text-sm md:text-[15px] font-bold font-['Plus_Jakarta_Sans'] flex items-center justify-center transition-colors duration-200 whitespace-nowrap"
-                            >
-                                Sign In
-                            </a>
                             {/* Hidden on smaller screens, maybe replace with a menu icon */}
                             <img
                                 className="w-10 h-10 md:w-[50px] md:h-[50px] object-cover rounded-full hidden sm:block" // Added rounded-full

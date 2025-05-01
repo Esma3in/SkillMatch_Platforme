@@ -40,6 +40,7 @@ class CompaniesSelectedController extends Controller
                 'name' => $validated['name'],
                 
                 'selected_at' => now(),
+                //
             ]);
 
             return response()->json([
