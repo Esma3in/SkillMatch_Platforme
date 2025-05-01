@@ -8,6 +8,7 @@ export default function SignUp({ onToggle }) {
     name: '',
     email: '',
     password: '',
+    role:'candidate'
   });
 
   const [errors, setErrors] = useState({});
@@ -70,6 +71,7 @@ export default function SignUp({ onToggle }) {
           <fieldset>
             <legend>Sign Up</legend>
             <form onSubmit={handleSubmit}>
+              {formData.role==='company'}
               <div className="form-field">
                 <label htmlFor="FullNameInput">Name</label>
                 <input

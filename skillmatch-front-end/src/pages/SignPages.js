@@ -4,8 +4,8 @@ import SignUp from './SignUp';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
-export default function SignPages() {
-  const [isSignIn, setIsSignIn] = useState(true);
+export default function SignPages({isSignin}) {
+  const [isSignIn, setIsSignIn] = useState(isSignin);
 
   const toggleView = () => {
     setIsSignIn((prev) => !prev);

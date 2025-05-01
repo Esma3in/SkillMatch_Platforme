@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('fichiers')->nullable();
             $table->string('role'); // 'Candidat', 'Entreprise', 'Administrateur'
             $table->timestamps();
         });

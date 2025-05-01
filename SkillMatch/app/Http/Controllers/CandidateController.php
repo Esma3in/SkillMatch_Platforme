@@ -47,20 +47,7 @@ class CandidateController extends Controller
 
         return response()->json($companiesSuggested, 200);
     }
-    public function SignUp(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:candidates,email',
-            'password' => 'required|min:8',
-        ]);
-
-        $validated['password'] = Hash::make($validated['password']);
-
-        $candidate = Candidate::create($validated);
-
-        return response()->json($candidate, 201);
-    }
+    
 
     public function SignIn(Request $request)
     {

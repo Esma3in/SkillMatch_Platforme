@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Ceo;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,6 +15,7 @@ class CompanyFactory extends Factory
     {
         $companies = [
             [
+                
                 'name' => 'Obytes',
                 'sector' => 'Information Technology',
                 'files' => 'obytes_presentation.pdf',
@@ -375,6 +377,9 @@ class CompanyFactory extends Factory
         $defaultLogo = 'https://ui-avatars.com/api/?name=' . urlencode($company['name']) . '&color=ffffff&size=100';
 
         return [
+            'user_id'=>User::factory()->create([
+                    'role'=>'company'
+                ]),
             'name' => $company['name'],
             'sector' => $company['sector'],
             'files' => $company['files'],

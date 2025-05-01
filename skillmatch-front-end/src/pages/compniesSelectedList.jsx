@@ -1,25 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { useNavigate } from "react-router";
+import { api } from "../api/api";
 
 function CompaniesRelated() {
-  const [company, setCompany] = useState({
-    name: "Example Corp",
-    sector: "Technology",
-    selected_Date: "2025-03-15",
-    description: "Innovative tech solutions for a sustainable future.",
-    location: "San Francisco, CA",
-    website: "https://example.com",
-    employees: "500-1000",
-    founded: "2010",
-    mission: "To empower global innovation through cutting-edge technology.",
-  });
+  const [companies, setCompanies] = useState({});
+  const [Loading,setLoading] =useState()
 
   const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
-  console.log(candidate_id);
+
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await api.get(`api/candidate/getSelected/companies/${candidate_id}`)
+      setCompanies(response.data)
+
+    }
+    fetchData()
+  }, [candidate_id])
   return (
     <>
       <NavbarCandidate />
@@ -53,64 +53,58 @@ function CompaniesRelated() {
           </div>
 
           {/* Company Card */}
-          <div className="mb-16">
-            <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
-              Your Chosen Companies
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 flex flex-col">
+          <div className="min-h-screen bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+            Your Chosen Companies
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {companies.map((company) => (
+              <div
+                key={company.id}
+                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 flex flex-col"
+              >
                 <div className="flex items-center mb-4">
                   <img
                     src="https://via.placeholder.com/48"
-                    alt={`${company.name} logo`}
+                    alt={`${company.company_name} logo`}
                     className="w-12 h-12 rounded-full mr-3"
                   />
                   <div>
                     <h4 className="text-xl font-bold text-gray-800">
-                      {company.name}
+                      {company.company_name}
                     </h4>
-                    <p className="text-sm text-gray-500">{company.sector}</p>
+                    <p className="text-sm text-gray-500">{company.sector || "Technology"}</p>
                   </div>
                 </div>
                 <div className="space-y-3 text-sm text-gray-600 flex-grow">
                   <p>
-                    <span className="font-semibold">Mission:</span>{" "}
-                    {company.mission}
+                    <span className="font-semibold">Selected Date:</span>{" "}
+                    {company.selected_date}
                   </p>
                   <p>
                     <span className="font-semibold">Description:</span>{" "}
-                    {company.description}
+                    {company.description || "Innovative solutions for a sustainable future."}
                   </p>
                   <p>
                     <span className="font-semibold">Location:</span>{" "}
-                    {company.location}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Employees:</span>{" "}
-                    {company.employees}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Founded:</span>{" "}
-                    {company.founded}
+                    {company.location || "San Francisco, CA"}
                   </p>
                   <p>
                     <span className="font-semibold">Website:</span>{" "}
                     <a
-                      href={company.website}
-                      className="text-purple-600 hover:underline break-words"
+                      href={company.website || "https://example.com"}
+                      className="text-purple-600 hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {company.website}
+                      {company.website || "https://example.com"}
                     </a>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Selected Date:</span>{" "}
-                    {company.selected_Date}
                   </p>
                 </div>
                 <div className="mt-6 flex flex-col space-y-3">
-                  <button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all"onClick={()=>{navigate('/roadmap')}}>
+                  <button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all">
                     View Career Roadmap
                   </button>
                   <button className="bg-white border border-purple-500 text-purple-600 font-semibold py-2 rounded-lg hover:bg-purple-50 transition-all">
@@ -118,9 +112,10 @@ function CompaniesRelated() {
                   </button>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-
+        </div>
+      </div>
           {/* Progress Tracker */}
           <div className="mb-16">
             <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
