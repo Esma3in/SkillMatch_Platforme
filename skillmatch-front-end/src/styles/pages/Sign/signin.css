@@ -8,10 +8,13 @@
 }
 
 body {
-  width: 100vw;;
+  width: 100vw;
+  min-height: 100vh; /* ✅ ensure full height support */
   font-family: 'Poppins', sans-serif;
   background-color: #162534;
+  overflow-x: hidden; /* ✅ prevent horizontal scroll */
 }
+
 
 .auth-wrapper {
   width: 100vw;
@@ -29,10 +32,12 @@ body {
 .container {
   display: flex;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh; /* ✅ change from height to min-height */
   background-color: #64748b;
   flex-direction: row;
+  flex-wrap: wrap;
 }
+
 
 @media (max-width: 768px) {
   .container {
@@ -215,7 +220,7 @@ form {
 }
 
 /* Styling for select role dropdown */
-#RoleSelect {
+#role {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -223,8 +228,8 @@ form {
   width: 100%;
 }
 
-#RoleSelect:focus {
-  border-color: #4CAF50;
+#role:focus {
+  border-color: #2563eb;
   outline: none;
 }
 

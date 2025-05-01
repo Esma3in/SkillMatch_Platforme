@@ -38,7 +38,7 @@ Route::get('/logout', [CandidateController::class, 'Logout']);
 Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);
 Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);
 
-// get the selected companies by an candidate : 
+// get the selected companies by an candidate :
 Route::get('/selected/companies/{candidate_id}' , [CompaniesSelectedController::class , 'CompaniesSelected']);
 // Experience Routes
 Route::post('/experiences', [ExperienceController::class, 'store']);
@@ -63,6 +63,31 @@ Route::get('/candidate/settings/{id}', [ProfileSettingsController::class, 'getPr
 Route::post('/candidate/settings/update', [ProfileSettingsController::class, 'updateProfile']);
 Route::post('/candidate/settings/change-password', [ProfileSettingsController::class, 'changePassword']);
 Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsController::class, 'deleteProfilePicture']);
+
+//company SELECTED
+Route::post('/candidates/{id}/select-company', [CompaniesSelectedController::class, 'selectCompany']);
+//skills company selected
+Route::get('/company/{company_id}/skills', [CompaniesSelectedController::class, 'getCompanySkills']);
+// Retrieve prerequisites for a given roadmap
+Route::get('/roadmaps/{roadmap_id}/prerequisites', [RoadmapController::class, 'getPrerequisites']);
+// Retrieve courses associated with a roadmap
+Route::get('/roadmaps/{roadmap_id}/courses', [RoadmapController::class, 'getCandidateCourses']);
+// Retrieve skills for a roadmap (optionally by type)
+Route::get('/roadmaps/{roadmap_id}/skills/{skill_type?}', [RoadmapController::class, 'getSkills']);
+// Retrieve tools associated with a roadmap
+Route::get('/roadmaps/{roadmap_id}/tools', [RoadmapController::class, 'getTools']);
+// Generate the roadmap from JSON based on company skills
+Route::get('/companies/{company_id}/roadmap-from-json', [RoadmapController::class, 'getSkillsRoadmapFromJson']);
+// Retrieve a complete roadmap with all its elements
+Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getRoadmap']);
+
+
+// Retrieve skills for a specific company
+Route::get('/companies/{company_id}/skills', [CompaniesSelectedController::class, 'getCompanySkills']);
+// Retrieve selected companies for a candidate
+Route::get('/candidates/{candidate_id}/selected-companies', [CompaniesSelectedController::class, 'getSelectedCompanies']);
+
+
 
 
 //Candidate Test Routes:

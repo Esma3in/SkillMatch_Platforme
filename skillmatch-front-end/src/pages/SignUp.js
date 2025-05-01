@@ -102,9 +102,9 @@ export default function SignUp({ onToggle }) {
             <form onSubmit={handleSubmit} encType="multipart/form-data">
               {/* Role Selection */}
               <div className="form-field">
-                <label htmlFor="RoleSelect">Role</label>
+                <label htmlFor="role">Role</label>
                 <select
-                  id="RoleSelect"
+                  id="role"
                   name="role"
                   value={formData.role}
                   onChange={handleChange}
