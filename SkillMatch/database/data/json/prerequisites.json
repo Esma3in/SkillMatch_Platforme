@@ -1,0 +1,101 @@
+[
+  {
+    "skill": "React",
+    "prerequisites": [
+      { "text": "Install JDK 17", "completed": false },
+      { "text": "Set up IntelliJ IDEA", "completed": true },
+      { "text": "Set up Maven", "completed": false },
+      { "text": "Learn basic syntax and control structures", "completed": true },
+      { "text": "Learn OOP concepts (classes, inheritance)", "completed": false },
+      { "text": "Learn exception handling", "completed": false },
+      { "text": "Learn collections and streams", "completed": false },
+      { "text": "Learn multithreading basics", "completed": false },
+      { "text": "Understand REST API design and authentication (JWT, OAuth)", "completed": false }
+    ]
+  },
+  {
+    "skill": "Angular",
+    "prerequisites": [
+      { "text": "Install Node.js and npm", "completed": true },
+      { "text": "Set up Angular CLI", "completed": true },
+      { "text": "Set up VS Code with Angular extensions", "completed": true },
+      { "text": "Learn component basics", "completed": false },
+      { "text": "Learn routing and navigation", "completed": false },
+      { "text": "Learn services and dependency injection", "completed": false },
+      { "text": "Learn reactive forms", "completed": false },
+      { "text": "Learn pipes for data transformation", "completed": false },
+      { "text": "Learn directives", "completed": false }
+    ]
+  },
+  {
+    "skill": "TypeScript",
+    "prerequisites": [
+      { "text": "Learn basics (types, interfaces)", "completed": false },
+      { "text": "Learn classes and modules", "completed": false },
+      { "text": "Learn generics", "completed": false },
+      { "text": "Learn decorators", "completed": false },
+      { "text": "Learn enums", "completed": false },
+      { "text": "Learn advanced types", "completed": false }
+    ]
+  },
+  {
+    "skill": "HTML",
+    "prerequisites": [
+      { "text": "Learn semantic elements", "completed": true },
+      { "text": "Learn forms and validation", "completed": true },
+      { "text": "Learn accessibility features", "completed": true },
+      { "text": "Set up development environment", "completed": true },
+      { "text": "Learn canvas basics", "completed": false }
+    ]
+  },
+  {
+    "skill": "CSS",
+    "prerequisites": [
+      { "text": "Learn flexbox and grid", "completed": false },
+      { "text": "Learn media queries for responsive design", "completed": true },
+      { "text": "Learn animations and transitions", "completed": false },
+      { "text": "Learn variables for theming", "completed": true },
+      { "text": "Learn box model and positioning", "completed": false }
+    ]
+  },
+  {
+    "skill": "JavaScript",
+    "prerequisites": [
+      { "text": "Learn basics (DOM manipulation, events)", "completed": true },
+      { "text": "Learn ES6 features (arrow functions, destructuring)", "completed": true },
+      { "text": "Learn event handling and delegation", "completed": false },
+      { "text": "Learn array methods", "completed": false },
+      { "text": "Learn promises and async/await", "completed": false },
+      { "text": "Learn closures", "completed": false },
+      { "text": "Learn fetch API", "completed": false }
+    ]
+  },
+  {
+    "skill": "Git",
+    "prerequisites": [
+      { "text": "Install Git and configure GitHub/SSH keys", "completed": true },
+      { "text": "Learn basic commands (commit, push, pull)", "completed": true },
+      { "text": "Learn branching and merging", "completed": false },
+      { "text": "Learn pull requests and commit workflows", "completed": false }
+    ]
+  },
+  {
+    "skill": "React",
+    "prerequisites": [
+      { "text": "Learn REST API concepts (GET, POST, status codes)", "completed": false },
+      { "text": "Learn accessibility standards", "completed": false }
+    ]
+  },
+  {
+    "skill": "PHP",
+    "prerequisites": [
+      { "text": "Learn versioning strategies", "completed": false }
+    ]
+  },
+  {
+    "skill": "Docker",
+    "prerequisites": [
+      { "text": "Install Docker desktop", "completed": true }
+    ]
+  }
+]

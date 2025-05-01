@@ -9,14 +9,14 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\RoadmapController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ChallengeController;
-use App\Http\Controllers\CompaniesSelectedController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\ProfileCandidateController;
-use App\Models\CompaniesSelected;
+use App\Http\Controllers\CompaniesSelectedController;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -37,6 +37,8 @@ Route::get('/logout', [CandidateController::class, 'Logout']);
 Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);
 Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);
 
+// get the selected companies by an candidate : 
+Route::get('/selected/companies/{candidate_id}' , [CompaniesSelectedController::class , 'CompaniesSelected']);
 // Experience Routes
 Route::post('/experiences', [ExperienceController::class, 'store']);
 Route::get('/experiences/candidate/{candidateId}', [ExperienceController::class, 'getExperiencesByCandidate']);
@@ -66,6 +68,10 @@ Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsContro
 
 Route::get('/candidate/test/company/{id}',[TestController::class,'GetTestCompanieSelected']);
 
+
 //Select Company Route:
 // Route::post('/candidate/select/company',[CompaniesSelectedController::class,'SelectCompany']);
 // Route::get('/candidate/getSelected/companies/{id}',[CompaniesSelectedController::class,'getcompanies']);
+// candidate Roadmap Routes
+Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'getPrerequisites']);
+

@@ -30,6 +30,7 @@ use App\Models\CandidatesSkills;
 use App\Models\ProfileCandidate;
 use App\Models\CandidateSelected;
 use App\Models\CompaniesSelected;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class DatabaseSeeder extends Seeder
@@ -143,7 +144,142 @@ class DatabaseSeeder extends Seeder
                 ]);
             });
         });
-
+        //Insert prerequisites
+     
+        
+        DB::transaction(function () {
+            // Load and validate JSON files
+            $files = [
+                'prerequisites' => database_path('data/json/prerequisites.json'),
+                'courses' => database_path('data/json/candidateCourses.json'),
+                'skills' => database_path('data/json/skills.json'),
+                'tools' => database_path('data/json/tools.json'),
+            ];
+        
+            $data = [];
+            $decoded = [];
+            foreach ($files as $key => $filePath) {
+                if (!file_exists($filePath)) {
+                    throw new \Exception("File not found: $filePath");
+                }
+                $data[$key] = file_get_contents($filePath);
+                $decoded[$key] = json_decode($data[$key], true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception("Invalid JSON in $key.json: " . json_last_error_msg());
+                }
+            }
+        
+            // Validate and insert prerequisites
+            $skillNames = [];
+            foreach ($decoded['prerequisites'] as $skillGroup) {
+                if (!isset($skillGroup['skill']) || !isset($skillGroup['prerequisites'])) {
+                    throw new \Exception('Missing "skill" or "prerequisites" key in prerequisites.json');
+                }
+                $skillNames[] = $skillGroup['skill'];
+            }
+            $skillNames = array_unique($skillNames);
+        
+            // Check if skill names exist and map to skill_ids
+            $skillMap = DB::table('skills')->whereIn('name', $skillNames)->pluck('id', 'name')->toArray();
+        
+            // Insert prerequisites
+            $prerequisitesData = [];
+            foreach ($decoded['prerequisites'] as $skillGroup) {
+                $skillName = $skillGroup['skill'];
+                if (!isset($skillMap[$skillName])) {
+                    throw new \Exception("Skill '$skillName' not found in skills table");
+                }
+                $skillId = $skillMap[$skillName];
+                foreach ($skillGroup['prerequisites'] as $prereq) {
+                    $prerequisitesData[] = [
+                        'skill_id' => $skillId,
+                        'text' => $prereq['text'],
+                        'completed' => (bool) $prereq['completed'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+            if (empty($prerequisitesData)) {
+                throw new \Exception('No valid prerequisites found in prerequisites.json');
+            }
+            DB::table('prerequisites')->insert($prerequisitesData);
+        
+            // Insert courses
+            if (!isset($decoded['courses']['courses'])) {
+                throw new \Exception('Missing "courses" key in courses.json');
+            }
+            $coursesData = array_map(function ($course) {
+                return [
+                    'name' => $course['name'],
+                    'provider' => $course['provider'],
+                    'link' => $course['link'],
+                    'duration' => $course['duration'],
+                    'completed' => (bool) $course['completed'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }, $decoded['courses']['courses']);
+            DB::table('candidate_courses')->insert($coursesData);
+        
+            // Insert skills
+            if (!isset($decoded['skills']['java'])) {
+                throw new \Exception('Missing "java" key in skills.json');
+            }
+            $skillsData = array_map(function ($skill) use ($decoded) {
+                return [
+                    // 'roadmap_id' => (int) $decoded['skills']['roadmap_id'],
+                    // 'candidate_id' => (int) $decoded['skills']['candidate_id'],
+                    'id' => (int) $skill['id'],
+                    'text' => $skill['text'],
+                    'completed' => (bool) $skill['completed'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }, $decoded['skills']['java']);
+            DB::table('roadmap_skills')->insert($skillsData);
+        
+            // Insert tools
+            if (!isset($decoded['tools']['tools'])) {
+                throw new \Exception('Missing "tools" key in tools.json');
+            }
+        
+            $toolsData = [];
+            $toolSkillsData = [];
+        
+            foreach ($decoded['tools']['tools'] as $tool) {
+                // Data for the tools table
+                $toolsData[] = [
+                    // 'roadmap_id' => (int) $decoded['tools']['roadmap_id'],
+                    // 'candidate_id' => (int) $decoded['tools']['candidate_id'],
+                    'id' => (int) $tool['id'],
+                    'name' => $tool['name'],
+                    'description' => $tool['description'] ?? null,
+                    'link' => $tool['link'] ?? null,
+                    'image' => $tool['image'] ?? null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+        
+                // Data for the tool_skills table
+                if (!empty($tool['skills']) && is_array($tool['skills'])) {
+                    foreach ($tool['skills'] as $skillText) {
+                        $toolSkillsData[] = [
+                            'tool_id' => (int) $tool['id'],
+                            'skill' => $skillText,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                    }
+                }
+            }
+        
+            DB::table('tools')->insert($toolsData);
+        
+            if (!empty($toolSkillsData)) {
+                DB::table('tool_skills')->insert($toolSkillsData);
+            }
+        });
         // Get all candidates
         $candidates = Candidate::all();
 
@@ -184,6 +320,7 @@ class DatabaseSeeder extends Seeder
                     }
                 }
             }
+
         }
     }
 }

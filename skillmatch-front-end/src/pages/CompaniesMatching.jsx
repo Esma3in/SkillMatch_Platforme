@@ -26,7 +26,7 @@ export default function CompaniesMatching({ id }) {
             </p>
           </div>
           <a
-            href="/edit-profile"
+            href="/profile-settings"
             className="inline-flex items-center gap-1 bg-white px-4 py-2 text-blue-600 font-medium rounded-lg border border-blue-300 hover:bg-blue-100"
           >
             <UserCircle size={18} /> Update profile

@@ -1,64 +1,51 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import NavbarCandidate from "../components/common/navbarCandidate";
-import { useNavigate } from "react-router";
+import axios from "axios"; // Assuming you're using axios for API calls
 import { api } from "../api/api";
 
 function CompaniesRelated() {
-  const [companies, setCompanies] = useState({});
-  const [Loading,setLoading] =useState()
-
-  const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
-
-
-  const navigate = useNavigate();
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const candidate_id = JSON.parse(localStorage.getItem("candidate_id")) || null;
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await api.get(`api/candidate/getSelected/companies/${candidate_id}`)
-      setCompanies(response.data)
+    const fetchCompaniesSelected = async () => {
+      if (!candidate_id) {
+        setError("Candidate ID not found. Please log in again.");
+        setLoading(false);
+        return;
+      }
 
-    }
-    fetchData()
-  }, [candidate_id])
+      try {
+        setLoading(true);
+        const response = await api.get(`/api/selected/companies/${candidate_id}`);
+        setCompanies(response.data); // Assuming response.data is an array of companies
+        setError(null);
+      } catch (error) {
+        setError("Failed to fetch selected companies. Please try again later.");
+        console.error("Error fetching selected companies:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompaniesSelected();
+  }, [candidate_id]);
+
   return (
     <>
       <NavbarCandidate />
       <div className="min-h-screen bg-gray-100">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Explore Your Career Opportunities
-            </h1>
-            <p className="text-lg md:text-xl max-w-3xl">
-              Discover companies that match your skills and aspirations. Follow
-              your roadmap, complete assessments, and take the next step in your
-              career journey.
-            </p>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Welcome Section */}
-          <div className="mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Welcome, Candidate!
-            </h2>
-            <p className="mt-2 text-gray-600 max-w-3xl">
-              This is your personalized dashboard to explore companies, track your
-              progress, and prepare for your dream role. Start by reviewing the
-              companies you’ve selected or explore new opportunities below.
-            </p>
-          </div>
-
-          {/* Company Card */}
-          <div className="min-h-screen bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
             Your Chosen Companies
           </h2>
-          
+          {loading && <p className="text-gray-600">Loading...</p>}
+          {error && <p className="text-red-600">{error}</p>}
+          {!loading && !error && companies.length === 0 && (
+            <p className="text-gray-600">No companies selected yet.</p>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {companies.map((company) => (
               <div
@@ -214,8 +201,6 @@ function CompaniesRelated() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
     </>
   );
 }
