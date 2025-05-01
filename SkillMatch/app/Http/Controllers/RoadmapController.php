@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Roadmap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -190,7 +191,7 @@ class RoadmapController extends Controller
 
     public function getRoadmap()
     {
-        $roadmap = DB::table('roadmaps')->first();
+        $roadmap = Roadmap::all();
 
         if (!$roadmap) {
             return response()->json([
@@ -200,36 +201,27 @@ class RoadmapController extends Controller
         }
 
         // Fetch all associated roadmap data
-        $prerequisitesRaw = DB::table('prerequisites')->get()->groupBy('skill');
-        $transformedPrerequisites = [];
-        foreach ($prerequisitesRaw as $skill => $items) {
-            $transformedPrerequisites[] = [
-                'skill' => $skill,
-                'prerequisites' => $items
-            ];
-        }
+        // $prerequisitesRaw = DB::table('prerequisites')->get()->groupBy('skill');
+        // $transformedPrerequisites = [];
+        // foreach ($prerequisitesRaw as $skill => $items) {
+        //     $transformedPrerequisites[] = [
+        //         'skill' => $skill,
+        //         'prerequisites' => $items
+        //     ];
+        // }
 
-        $courses = DB::table('candidate_courses')->get();
-        $skills = DB::table('roadmap_skills')->get()->groupBy('type');
+        // $courses = DB::table('candidate_courses')->get();
+        // $skills = DB::table('roadmap_skills')->get()->groupBy('type');
 
-        $tools = DB::table('tools')->get();
-        $toolsWithSkills = $tools->map(function ($tool) {
-            $tool->skills = DB::table('tool_skills')
-                ->where('tool_id', $tool->id)
-                ->pluck('skill')
-                ->toArray();
-            return $tool;
-        });
+        // $tools = DB::table('tools')->get();
+        // $toolsWithSkills = $tools->map(function ($tool) {
+        //     $tool->skills = DB::table('tool_skills')
+        //         ->where('tool_id', $tool->id)
+        //         ->pluck('skill')
+        //         ->toArray();
+        //     return $tool;
+        // });
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'roadmap' => $roadmap,
-                'prerequisites' => $transformedPrerequisites,
-                'courses' => $courses,
-                'skills' => $skills,
-                'tools' => $toolsWithSkills
-            ]
-        ]);
+        return response()->json($roadmap);
     }
 }

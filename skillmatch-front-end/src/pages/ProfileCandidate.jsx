@@ -30,6 +30,7 @@ export default function ProfileCandidate() {
         const profileResponse = await api.get(`/api/candidate/${candidate_id}`);
         setCandidateInfo(profileResponse.data);
 
+        
         // Fetch experiences
         const expResponse = await api.get(
           `/api/experiences/candidate/${candidate_id}`

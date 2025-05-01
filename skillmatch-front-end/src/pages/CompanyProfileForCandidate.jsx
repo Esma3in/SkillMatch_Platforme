@@ -1,21 +1,23 @@
 import { PlusIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/api";
 import NavbarCandidate from "../components/common/navbarCandidate";
 
 
 export default function CompanyProfileForCandidate() {
   const candidate_id = JSON.parse(localStorage.getItem('candidate_id'))
+  const [roadmap , setroadmap]=useState({})
   const { id } = useParams();
   const [companyInfoFetched, setCompanyInfo] = useState({});
   const [candidateInfo, setCandidateInfo] = useState({});
+  const [rror , setError]= useState({})
   const [errors, setErrors] = useState({
     fetchError: ''
   });
   const [message,setmessage] = useState('');
   const [Loading,setLoading] = useState(true)
-
+const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,6 +39,40 @@ export default function CompanyProfileForCandidate() {
       fetchData(); // don't pass id, use from outer scope
     }
   }, [id]);
+
+  useEffect(() => {
+    const createSelectedCompany = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await api.post(`/api/selected/company/${id}`, {
+          candidate_id: candidate_id,
+          company_id: id,
+
+        });
+
+        // Optionally handle the response (e.g., update state)
+        console.log("Selected company created:", response.data);
+        // Example: setcompanySelected(response.data); // If you need to update state
+      } catch (err) {
+        // Handle errors (e.g., network error, API failure)
+        setError(err.message || "Failed to create selected company");
+        console.error("Error creating selected company:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Call the async function
+    createSelectedCompany();
+
+    // Cleanup (optional, if needed)
+    return () => {
+      // If using AbortController for cancellation
+      // controller.abort();
+    };
+  }, [id, candidate_id]);
   const companyInfo = {
     name: companyInfoFetched?.name || 'N/A',
     logo: companyInfoFetched?.logo || 'N/A',
@@ -69,7 +105,16 @@ export default function CompanyProfileForCandidate() {
       textColor: Style[nb].textColor
     };
   }) || [];
+const createRoadmap =async ()=>{
 
+    const response = await api.get('/api/roadmaps');
+   setroadmap(response.data)
+   return roadmap
+
+  
+
+}
+console.log(roadmap)
 
   // Company vision/recruitment message
   const companyVision = `Subject: Join our team and help shape the future with us
@@ -285,6 +330,7 @@ We encourage you to explore them when you're ready — take your time and have f
             </button>
             <button
               className="flex-1 h-[59px] bg-[#5856d6] font-semibold text-shadeswhite font-['Manrope',Helvetica] rounded-md"
+              onClick={createRoadmap}
             >
               Select entreprise
             </button>
