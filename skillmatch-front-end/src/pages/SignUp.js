@@ -71,7 +71,7 @@ export default function SignUp({ onToggle }) {
           <fieldset>
             <legend>Sign Up</legend>
             <form onSubmit={handleSubmit}>
-              {formData.role==='company'}
+              {formData.role==='company' ? (<div>company fields</div>):''}
               <div className="form-field">
                 <label htmlFor="FullNameInput">Name</label>
                 <input
