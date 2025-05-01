@@ -49,22 +49,7 @@ class CandidateController extends Controller
     }
     
 
-    public function SignIn(Request $request)
-    {
-        $validated = $request->validate([
-            'email' => 'required|email|exists:candidates,email',
-            'password' => 'required|min:8',
-        ]);
-
-        $candidate = Candidate::where('email', $validated['email'])->first();
-
-        if (!$candidate || !Hash::check($validated['password'], $candidate->password)) {
-            return response()->json(['message' => 'Email or password incorrect'], 401);
-        }
-
-        session()->put('candidate_id', $candidate->id);
-        return response()->json(['id' => $candidate->id], 200);
-    }
+    
     public function Logout()
     {
         session()->forget('candidate_id'); // Remove the candidate ID from session
