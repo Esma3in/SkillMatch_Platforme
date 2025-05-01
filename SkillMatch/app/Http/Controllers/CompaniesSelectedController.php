@@ -20,15 +20,15 @@ class CompaniesSelectedController extends Controller
             return response()->json(['error' => 'Candidate not found'], 404);
         }
 
-        // Vérification que l'utilisateur authentifié est bien le candidat
-        if ($user->id !== $candidate->user_id) {
-            return response()->json(['error' => 'Unauthorized. You can only select companies for your own profile.'], 403);
-        }
+        // // Vérification que l'utilisateur authentifié est bien le candidat
+        // if ($user->id !== $candidate->user_id) {
+        //     return response()->json(['error' => 'Unauthorized. You can only select companies for your own profile.'], 403);
+        // }
 
         // Validation des données envoyées
         $validated = $request->validate([
             'company_id' => 'required|integer|exists:companies,id',
-            'company_name' => 'required|string',
+            'name' => 'required|string',
             'skills' => 'nullable|string',
         ]);
 
@@ -37,8 +37,8 @@ class CompaniesSelectedController extends Controller
             $selection = CompaniesSelected::create([
                 'candidate_id' => $candidate->id,
                 'company_id' => $validated['company_id'],
-                'company_name' => $validated['company_name'],
-                'skills' => $validated['skills'],
+                'name' => $validated['name'],
+                
                 'selected_at' => now(),
             ]);
 
@@ -63,8 +63,7 @@ class CompaniesSelectedController extends Controller
 
         return response()->json([
             'company_id' => $company->id,
-            'company_name' => $company->name,
-            'skills' => $company->skills
+            'name' => $company->name,
         ]);
     }
 

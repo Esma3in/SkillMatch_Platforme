@@ -7,6 +7,7 @@ import NavbarCandidate from "../components/common/navbarCandidate";
 
 export default function CompanyProfileForCandidate() {
   const candidate_id = JSON.parse(localStorage.getItem('candidate_id'))
+  console.log(candidate_id);
   const [roadmap , setroadmap]=useState({})
   const { id } = useParams();
   const [companyInfoFetched, setCompanyInfo] = useState({});
@@ -15,6 +16,7 @@ export default function CompanyProfileForCandidate() {
   const [errors, setErrors] = useState({
     fetchError: ''
   });
+  console.log(id)
   const [message,setmessage] = useState('');
   const [Loading,setLoading] = useState(true)
 const navigate = useNavigate();
@@ -38,7 +40,7 @@ const navigate = useNavigate();
     if (id) {
       fetchData(); // don't pass id, use from outer scope
     }
-  }, [id]);
+  }, [candidate_id ,id]);
 
   useEffect(() => {
     const createSelectedCompany = async () => {
@@ -49,7 +51,8 @@ const navigate = useNavigate();
         const response = await api.post(`/api/selected/company/${id}`, {
           candidate_id: candidate_id,
           company_id: id,
-
+          name : companyInfo.name ,
+        
         });
 
         // Optionally handle the response (e.g., update state)
@@ -107,7 +110,7 @@ const navigate = useNavigate();
   }) || [];
 const createRoadmap =async ()=>{
 
-    const response = await api.get('/api/roadmaps');
+    const response = await api.get(`/api/roadmaps${1}`);
    setroadmap(response.data)
    return roadmap
 

@@ -8,33 +8,54 @@ export default function SignUp({ onToggle }) {
     name: '',
     email: '',
     password: '',
-    role:'candidate'
+    role: 'candidate',
+    sector: '',
+    file: null,
+    logo: null,
   });
 
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value, type, name, files } = e.target;
 
-    setFormData((prevData) => {
-      switch (id) {
-        case 'EmailInput':
-          return { ...prevData, email: value };
-        case 'PasswordInput':
-          return { ...prevData, password: value };
-        case 'FullNameInput':
-          return { ...prevData, name: value };
-        default:
-          return prevData;
-      }
-    });
+    // Handle file input fields
+    if (type === 'file') {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: files[0], // Store the first selected file
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
-  const fetchData = async () => {
+  const storeData = async () => {
     try {
       await api.get('/sanctum/csrf-cookie');
-      const response = await api.post('/api/candidate/signUp', formData);
+      const formDataToSend = new FormData();
+      // Append normal fields
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('password', formData.password);
+      formDataToSend.append('role', formData.role);
+      // Append files
+      if (formData.role === 'company') {
+        formDataToSend.append('file', formData.file);
+        formDataToSend.append('logo', formData.logo);
+        formDataToSend.append('sector', formData.sector);
+      }
+      
+      const response = await api.post('/api/candidate/signUp', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Indicating that this is a form with files
+        },
+      });
+
       return response.data;
     } catch (err) {
       if (err.response && err.response.data && err.response.data.errors) {
@@ -51,10 +72,18 @@ export default function SignUp({ onToggle }) {
     setSuccess(false);
 
     try {
-      const candidate = await fetchData();
-      if (candidate) {
+      const response = await storeData();
+      if (response) {
         setSuccess(true);
-        setFormData({ name: '', email: '', password: '' });
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          role: 'candidate',
+          sector: '',
+          file: null,
+          logo: null,
+        }); // Reset form
       }
     } catch (errorData) {
       setErrors(errorData);
@@ -70,13 +99,28 @@ export default function SignUp({ onToggle }) {
         <div className="signin-form">
           <fieldset>
             <legend>Sign Up</legend>
-            <form onSubmit={handleSubmit}>
-              {formData.role==='company' ? (<div>company fields</div>):''}
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
+              {/* Role Selection */}
+              <div className="form-field">
+                <label htmlFor="role">Role</label>
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                >
+                  <option value="candidate">Candidate</option>
+                  <option value="company">Company</option>
+                </select>
+              </div>
+
+              {/* Name Field */}
               <div className="form-field">
                 <label htmlFor="FullNameInput">Name</label>
                 <input
                   type="text"
                   id="FullNameInput"
+                  name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -84,11 +128,13 @@ export default function SignUp({ onToggle }) {
                 {errors.name && <p className="error-message">{errors.name[0]}</p>}
               </div>
 
+              {/* Email Field */}
               <div className="form-field">
                 <label htmlFor="EmailInput">Email</label>
                 <input
                   type="email"
                   id="EmailInput"
+                  name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -96,11 +142,13 @@ export default function SignUp({ onToggle }) {
                 {errors.email && <p className="error-message">{errors.email[0]}</p>}
               </div>
 
+              {/* Password Field */}
               <div className="form-field">
                 <label htmlFor="PasswordInput">Password</label>
                 <input
                   type="password"
                   id="PasswordInput"
+                  name="password"
                   value={formData.password}
                   onChange={handleChange}
                   required
@@ -108,6 +156,46 @@ export default function SignUp({ onToggle }) {
                 />
                 {errors.password && <p className="error-message">{errors.password[0]}</p>}
               </div>
+
+              {/* Conditional Fields for Company */}
+              {formData.role === 'company' && (
+                <>
+                  <div className="form-field">
+                    <label htmlFor="sectorInput">Sector Name</label>
+                    <input
+                      type="text"
+                      id="sectorInput"
+                      name="sector"
+                      value={formData.sector}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  {errors.sector && <p className="error-message">{errors.sector[0]}</p>}
+                  <div className="form-field">
+                    <label htmlFor="fileInput">File</label>
+                    <input
+                      type="file"
+                      id="fileInput"
+                      name="file"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  {errors.file && <p className="error-message">{errors.file[0]}</p>}
+                  <div className="form-field">
+                    <label htmlFor="logoInput">Logo</label>
+                    <input
+                      type="file"
+                      id="logoInput"
+                      name="logo"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  {errors.logo && <p className="error-message">{errors.logo[0]}</p>}
+                </>
+              )}
 
               {errors.general && <p className="error-message">{errors.general}</p>}
               {success && <p className="success-message">Account created successfully!</p>}

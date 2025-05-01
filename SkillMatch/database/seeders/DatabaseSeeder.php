@@ -32,6 +32,7 @@ use App\Models\CandidateSelected;
 use App\Models\CompaniesSelected;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -85,7 +86,13 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create Administrators
-        Administrator::factory(1)->create();
+        
+        Administrator::factory()->create([
+            'name' => 'Super Admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('Admin@12345'), // Strong default password
+        ]);
+        
 
         // Create Companies and their Profiles, Roadmaps, Challenges
        $companies=Company::factory(5)->create()->each(function ($company) use($skillsCreated) {

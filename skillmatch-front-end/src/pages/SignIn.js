@@ -8,6 +8,7 @@ export default function SignIn({ onToggle }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    role: 'candidate', // Add role to the state
     remember_me: false,
   });
 
@@ -15,6 +16,7 @@ export default function SignIn({ onToggle }) {
   const [formError, setFormError] = useState('');
   const navigate = useNavigate();
 
+  // Handle changes in form inputs
   const handleChange = (e) => {
     const { id, type, checked, value } = e.target;
 
@@ -26,11 +28,12 @@ export default function SignIn({ onToggle }) {
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [id === 'EmailInput' ? 'email' : 'password']: value,
+        [id]: value, // Use dynamic keys for both email and password fields
       }));
     }
   };
 
+  // Validate form data
   const validateForm = () => {
     const newErrors = {};
 
@@ -50,6 +53,7 @@ export default function SignIn({ onToggle }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Make the API call to check credentials
   const check = async (data) => {
     try {
       await api.get('/sanctum/csrf-cookie');
@@ -61,6 +65,7 @@ export default function SignIn({ onToggle }) {
     }
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError('');
@@ -70,9 +75,17 @@ export default function SignIn({ onToggle }) {
     const response = await check(formData);
 
     if (response && response.status === 200) {
-      const id = response.data.id;
-      localStorage.setItem('candidate_id', id);
-      navigate(`/candidate/Session/${id}`);
+      if(response.data.role==='candidate'){
+        console.log(response.data)
+        localStorage.setItem('candidate_id',response.data.candidate?.id)
+        navigate(`/candidate/session/${response.data.candidate?.id}`)
+      }else if(response.data.role === 'company'){
+        localStorage.setItem('company_id',response.data.company?.id)
+        navigate(`/company/session/${response.data.company?.id}`)
+      }else {
+        localStorage.setItem('admin_id',response.data.admin?.id)
+        navigate(`/admin/session/${response.data.admin?.id}`)
+      }
     }
   };
 
@@ -83,28 +96,48 @@ export default function SignIn({ onToggle }) {
           <fieldset>
             <legend>Sign In</legend>
             <form onSubmit={handleSubmit}>
+              {/* Role Selection */}
+              <div className="form-field">
+                <label htmlFor="role">Role</label>
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                >
+                  <option value="candidate">Candidate</option>
+                  <option value="company">Company</option>
+                  <option value="admin">admin</option>
+                </select>
+              </div>
+
+              {/* Email Field */}
               <div className="form-field">
                 <label htmlFor="EmailInput">Email</label>
                 <input
                   type="email"
-                  id="EmailInput"
+                  id="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
                 />
                 {errors.email && <span className="error-message">{errors.email}</span>}
               </div>
+
+              {/* Password Field */}
               <div className="form-field">
                 <label htmlFor="PasswordInput">Password</label>
                 <input
                   type="password"
-                  id="PasswordInput"
+                  id="password"
                   value={formData.password}
                   onChange={handleChange}
                   required
                 />
                 {errors.password && <span className="error-message">{errors.password}</span>}
               </div>
+
+              {/* Remember me checkbox */}
               <div className="remForg-part">
                 <div className="form-field">
                   <input
@@ -119,7 +152,10 @@ export default function SignIn({ onToggle }) {
                   <a href="/forgetPassword">Forgot your password?</a>
                 </div>
               </div>
+
+              {/* Form Error */}
               {formError && <p className="error-message">{formError}</p>}
+
               <div className="action-part">
                 <div className="signin-btn">
                   <button type="submit">Sign In</button>
@@ -137,6 +173,7 @@ export default function SignIn({ onToggle }) {
           </fieldset>
         </div>
       </div>
+
       <div className="visual-section">
         <img src={image} alt="Sign In Visual" />
       </div>
