@@ -78,13 +78,13 @@ export default function SignIn({ onToggle }) {
       if(response.data.role==='candidate'){
         console.log(response.data)
         localStorage.setItem('candidate_id',response.data.candidate?.id)
-        navigate(`/candidate/session/${response.data.candidate?.id}`)
+        navigate(`/candidate/Session/${response.data.candidate?.id}`)
       }else if(response.data.role === 'company'){
         localStorage.setItem('company_id',response.data.company?.id)
-        navigate(`/company/session/${response.data.company?.id}`)
+        navigate(`/company/Session/${response.data.company?.id}`)
       }else {
         localStorage.setItem('admin_id',response.data.admin?.id)
-        navigate(`/admin/session/${response.data.admin?.id}`)
+        navigate(`/admin/Session/${response.data.admin?.id}`)
       }
     }
   };

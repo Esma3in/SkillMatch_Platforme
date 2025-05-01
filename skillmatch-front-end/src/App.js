@@ -10,6 +10,8 @@ import SeriesChallenge from './pages/SerieChallenges'
 import QcmForRoadmap from './pages/qcmForRoadmap';
 import ProfileSettings from './pages/Settings.js';
 
+import AdminHome from './pages/adminHome.jsx';
+
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
 import { Roadmap } from './pages/Roadmap.js';
@@ -40,6 +42,9 @@ export default function App() {
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
+
+        <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
+
       </Routes>
     </Router>
   );
