@@ -4,96 +4,89 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/api";
 import NavbarCandidate from "../components/common/navbarCandidate";
 
-
 export default function CompanyProfileForCandidate() {
-  const candidate_id = JSON.parse(localStorage.getItem('candidate_id'))
-  console.log(candidate_id);
-  const [roadmap , setroadmap]=useState({})
+  const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
+  const [roadmap, setRoadmap] = useState({});
   const { id } = useParams();
   const [companyInfoFetched, setCompanyInfo] = useState({});
   const [candidateInfo, setCandidateInfo] = useState({});
-  const [rror , setError]= useState({})
+  const [error, setError] = useState(null);
   const [errors, setErrors] = useState({
     fetchError: ''
   });
-  console.log(id)
-  const [message,setmessage] = useState('');
-  const [Loading,setLoading] = useState(true)
-const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get(`/api/candidate/companyInfo/${id}`);
-        const response1 = await api.get(`/api/candidate/${candidate_id}`)
-        setCompanyInfo(response.data); // <- set state here
+        const response1 = await api.get(`/api/candidate/${candidate_id}`);
+        setCompanyInfo(response.data);
         setCandidateInfo(response1.data);
-        setLoading(false)   
+        setLoading(false);
       } catch (err) {
         console.log(err.message);
         setErrors(prev => ({
           ...prev,
           fetchError: err.message
         }));
-      }
-    };
-
-    if (id) {
-      fetchData(); // don't pass id, use from outer scope
-    }
-  }, [candidate_id ,id]);
-
-  useEffect(() => {
-    const createSelectedCompany = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await api.post(`/api/selected/company/${id}`, {
-          candidate_id: candidate_id,
-          company_id: id,
-          name : companyInfo.name ,
-        
-        });
-
-        // Optionally handle the response (e.g., update state)
-        console.log("Selected company created:", response.data);
-        // Example: setcompanySelected(response.data); // If you need to update state
-      } catch (err) {
-        // Handle errors (e.g., network error, API failure)
-        setError(err.message || "Failed to create selected company");
-        console.error("Error creating selected company:", err);
-      } finally {
         setLoading(false);
       }
     };
 
-    // Call the async function
-    createSelectedCompany();
+    if (id) {
+      fetchData();
+    }
+  }, [candidate_id, id]);
 
-    // Cleanup (optional, if needed)
-    return () => {
-      // If using AbortController for cancellation
-      // controller.abort();
+  useEffect(() => {
+    const createSelectedCompany = async () => {
+      try {
+        // Only create the selected company if we have the company info
+        if (!companyInfoFetched || !companyInfoFetched.name) {
+          return; // Exit early if we don't have company info yet
+        }
+        
+        setError(null);
+        
+        const response = await api.post(`/api/selected/company/${id}`, {
+          candidate_id: candidate_id,
+          company_id: id,
+          name: companyInfoFetched.name,
+        });
+
+        console.log("Selected company created:", response.data);
+      } catch (err) {
+        setError(err.message || "Failed to create selected company");
+        console.error("Error creating selected company:", err);
+      }
     };
-  }, [id, candidate_id]);
+
+    // Only try to create the selected company if we have the required data
+    if (id && candidate_id && companyInfoFetched && companyInfoFetched.name) {
+      createSelectedCompany();
+    }
+  }, [id, candidate_id, companyInfoFetched]);
+  
   const companyInfo = {
     name: companyInfoFetched?.name || 'N/A',
     logo: companyInfoFetched?.logo || 'N/A',
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus,el..",
-    address: companyInfoFetched?.profile?.address|| 'N/A',
+    address: companyInfoFetched?.profile?.address || 'N/A',
     email: companyInfoFetched?.profile?.email || 'N/A',
-    sector: companyInfoFetched.sector|| 'N/A',
+    sector: companyInfoFetched.sector || 'N/A',
   };
 
   // CEO information
   const ceoInfo = {
     name: companyInfoFetched?.ceo?.name,
     avatar: companyInfoFetched?.ceo?.avatar,
-    description:companyInfoFetched?.ceo?.description
+    description: companyInfoFetched?.ceo?.description
   };
 
   // Technology tags
-
   const Style = [
     { bgColor: "bg-[#1b56fd33]", textColor: "text-[#1b56fd]" },
     { bgColor: "bg-[#a31d1d33]", textColor: "text-[#a31d1d]" },
@@ -103,21 +96,34 @@ const navigate = useNavigate();
   const techTags = companyInfoFetched?.skills?.map((skill) => {
     const nb = Math.floor(Math.random() * Style.length);
     return {
-      name: skill.name, // Only show the skill name
+      name: skill.name,
       bgColor: Style[nb].bgColor,
       textColor: Style[nb].textColor
     };
   }) || [];
-const createRoadmap =async ()=>{
-
-    const response = await api.get(`/api/roadmaps${1}`);
-   setroadmap(response.data)
-   return roadmap
-
   
-
-}
-console.log(roadmap)
+  // Fixed function to handle company selection and redirect
+  const handleSelectCompany = async () => {
+    try {
+      setLoading(true);
+      setMessage("Processing your selection...");
+      
+      // Create or update selected company entry
+      await api.post(`/api/selected/company/${id}`, {
+        candidate_id: candidate_id,
+        company_id: id,
+        name: companyInfoFetched?.name || 'Unknown Company',
+      });
+      
+      // Use navigate from react-router-dom instead of window.location
+      navigate("/candidate/related");
+    } catch (error) {
+      console.error("Error selecting company:", error);
+      setError("Failed to select company. Please try again.");
+      setMessage("An error occurred while processing your selection.");
+      setLoading(false);
+    }
+  };
 
   // Company vision/recruitment message
   const companyVision = `Subject: Join our team and help shape the future with us
@@ -148,7 +154,8 @@ Language-flexible English
 Centered on real challenges from our team's daily work
 We encourage you to explore them when you're ready — take your time and have fun!.`,
   };
-  if (Loading) {
+  
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
@@ -160,14 +167,14 @@ We encourage you to explore them when you're ready — take your time and have f
     <>
       <NavbarCandidate />
       {
-
-        message && (<div className="bg-blue-100 border border-blue-300 text-blue-800 px-4 py-2 rounded-md shadow-sm">
-  <span>{message}</span>
-</div>)
+        message && (
+          <div className="bg-blue-100 border border-blue-300 text-blue-800 px-4 py-2 rounded-md shadow-sm">
+            <span>{message}</span>
+          </div>
+        )
       }
       
-
-      <div className="w-full w-[100%] min-h-screen bg-white">
+      <div className="w-full min-h-screen bg-white">
         <div className="relative w-full max-w-[1448px] mx-auto pt-[69px] pb-6">
           <div className="flex flex-col md:flex-row gap-6">
             {/* Left column */}
@@ -326,14 +333,14 @@ We encourage you to explore them when you're ready — take your time and have f
           {/* Action buttons */}
           <div className="flex flex-col md:flex-row gap-4 mt-8">
             <button
-            onClick={()=>{window.location.href=`/candidate/Session/${candidate_id}`}}
+              onClick={() => navigate(`/candidate/Session/${candidate_id}`)}
               className="flex-1 h-[59px] bg-[#f7f8f9] font-extrabold text-[#5856d6] font-['Manrope',Helvetica] rounded-md border border-[#5856d6]"
             >
-              cancel
+              Cancel
             </button>
             <button
-              className="flex-1 h-[59px] bg-[#5856d6] font-semibold text-shadeswhite font-['Manrope',Helvetica] rounded-md"
-              onClick={createRoadmap}
+              className="flex-1 h-[59px] bg-[#5856d6] font-semibold text-white font-['Manrope',Helvetica] rounded-md"
+              onClick={handleSelectCompany}
             >
               Select company
             </button>
@@ -342,4 +349,4 @@ We encourage you to explore them when you're ready — take your time and have f
       </div>
     </>
   );
-};
+}

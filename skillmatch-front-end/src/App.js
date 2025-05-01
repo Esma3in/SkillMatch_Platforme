@@ -15,7 +15,7 @@ import AdminHome from './pages/adminHome.jsx';
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
 import { Roadmap } from './pages/Roadmap.js';
-import CompaniesRelated from './pages/compniesSelectedList.jsx';
+import CompaniesRelated from './pages/CompaniesRelated.jsx';
 import { CandidateTest } from './pages/CandidateTest.jsx';
 import { LandingPage } from './Espaces/LandingPage.jsx';
 export default function App() {
