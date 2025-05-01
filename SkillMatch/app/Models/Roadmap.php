@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Tool;
 use App\Models\Skill;
 use App\Models\Candidate;
 use App\Models\Prerequiste;
+use App\Models\SkillRoadmap;
 use App\Models\CandidateCourse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
