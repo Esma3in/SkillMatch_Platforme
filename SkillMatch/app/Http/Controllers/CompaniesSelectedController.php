@@ -18,24 +18,21 @@ use Illuminate\Support\Facades\Auth;
 
 class CompaniesSelectedController extends Controller
 {
-    public function selectCompany($candidate_id, Request $request)
+    public function selectCompany($company_id, Request $request)
     {
         $user = $request->user();
 
         // Vérification si le candidat existe
-        $candidate = Candidate::find($candidate_id);
-        if (!$candidate) {
-            return response()->json(['error' => 'Candidate not found'], 404);
+        $company = Candidate::find($company_id);
+        if (!$company) {
+            return response()->json(['error' => 'company not found'], 404);
         }
 
-        // // Vérification que l'utilisateur authentifié est bien le candidat
-        // if ($user->id !== $candidate->user_id) {
-        //     return response()->json(['error' => 'Unauthorized. You can only select companies for your own profile.'], 403);
-        // }
+     
 
         // Validation des données envoyées
         $validated = $request->validate([
-            'company_id' => 'required|integer|exists:companies,id',
+            'candidate_id' => 'required|integer|exists:candidates,id',
             'name' => 'required|string',
             'skills' => 'nullable|string',
         ]);
@@ -43,12 +40,11 @@ class CompaniesSelectedController extends Controller
         try {
             // Création de l'entrée dans CompaniesSelected
             $selection = CompaniesSelected::create([
-                'candidate_id' => $candidate->id,
-                'company_id' => $validated['company_id'],
+                'candidate_id' => $validated['candidate_id'],
+                'company_id' => $company_id,
                 'name' => $validated['name'],
 
                 'selected_at' => now(),
-                //
             ]);
 
             return response()->json([
@@ -62,18 +58,10 @@ class CompaniesSelectedController extends Controller
         }
     }
 
-    public function getCompanySkills($company_id)
-    {
-        $company = Company::with('skills')->find($company_id);
+    public function getSkillsByCompany($company_id){
+        $company_skills = Company::where('id' , $company_id)->with('skills')->get();
+        return response()->json($company_skills);
 
-        if (!$company) {
-            return response()->json(['error' => 'Company not found'], 404);
-        }
-
-        return response()->json([
-            'company_id' => $company->id,
-            'name' => $company->name,
-        ]);
     }
 
     public function getSelectedCompanies($candidate_id, Request $request)
@@ -111,64 +99,7 @@ class CompaniesSelectedController extends Controller
 
 public function getSelectedCompaniess($candidate_id, Request $request)
 {
-    // try {
-    //     // Validate the candidate ID
-    //     if (!$candidate_id || !is_numeric($candidate_id)) {
-    //         return response()->json(['error' => 'Invalid candidate ID'], 400);
-    //     }
-
-    //     $user = $request->user();
-
-    //     // Check if the candidate exists
-    //     $candidate = Candidate::find($candidate_id);
-    //     if (!$candidate) {
-    //         return response()->json(['error' => 'Candidate not found'], 404);
-    //     }
-
-    //     // Check if the authenticated user is linked to this candidate
-    //     if ($user && $user->id !== $candidate->user_id) {
-    //         return response()->json(['error' => 'Unauthorized access'], 403);
-    //     }
-
-    //     // Get selected companies with their details
-    //     // Use leftJoin instead of with() to avoid null reference errors
-    //     $companies = DB::table('companies_selected')
-    //         ->where('companies_selected.candidate_id', $candidate_id)
-    //         ->leftJoin('companies', 'companies_selected.company_id', '=', 'companies.id')
-    //         ->select(
-    //             'companies.id',
-    //             'companies.company_name',
-    //             'companies.sector',
-    //             'companies.description',
-    //             'companies.location',
-    //             'companies.website',
-    //             'companies_selected.created_at as selected_date'
-    //         )
-    //         ->get()
-    //         ->map(function ($item) {
-    //             if (!$item || !isset($item->selected_date)) {
-    //                 $item->selected_date = null;
-    //             } else {
-    //                 try {
-    //                     $item->selected_date = date('Y-m-d', strtotime($item->selected_date));
-    //                 } catch (\Exception $e) {
-    //                     $item->selected_date = null;
-    //                 }
-    //             }
-    //             return $item;
-    //         });
-
-    //     return response()->json($companies);
-    // } catch (\Exception $e) {
-    //     // Log the error for debugging
-    //     Log::error('Failed to fetch selected companies: ' . $e->getMessage(), [
-    //         'candidate_id' => $candidate_id,
-    //         'trace' => $e->getTraceAsString()
-    //     ]);
-
-    //     return response()->json(['error' => 'An error occurred while fetching selected companies'], 500);
-    // }
-
+  
     $companiesSelected =CompaniesSelected::whereCandidateId($candidate_id)->with('companies')->get();
     return response()->json($companiesSelected);
 }

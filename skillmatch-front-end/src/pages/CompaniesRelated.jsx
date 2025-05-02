@@ -10,6 +10,7 @@ function CompaniesRelated() {
   const [error, setError] = useState(null);
   const [errorDetails, setErrorDetails] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [companiesSkills, setCompaniesSkills] = useState([]);
   const navigate = useNavigate();
   
   const candidate_id = useState(() => {
@@ -85,7 +86,7 @@ function CompaniesRelated() {
     const formattedDate = company.created_at 
       ? new Date(company.created_at).toLocaleDateString()
       : "Recently selected";
-      
+  
     return (
       <div
         key={company.id || `company-${Math.random()}`}
@@ -94,7 +95,7 @@ function CompaniesRelated() {
         <div className="flex items-center mb-4">
           <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-3">
             <span className="text-lg font-bold text-purple-600">
-            <img src={company.companies.logo} alt ={company.company_id} />
+            <img src={company.companies.logo} alt={company.company_id} />
             </span>
           </div>
           <div>
@@ -121,7 +122,7 @@ function CompaniesRelated() {
         <div className="mt-6 flex flex-col space-y-3">
           <button 
             className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all"
-            onClick={() => navigate(`/candidate/roadmap/${company.company_id}`)}
+            onClick={() => generateRoadMap(company.company_id)}
           >
             View Career Roadmap
           </button>
@@ -134,6 +135,47 @@ function CompaniesRelated() {
         </div>
       </div>
     );
+  };
+
+  const generateRoadMap = async (companyId) => {
+    try {
+      // First, fetch the skills for the company
+      const response = await api.get(`/api/skills/company/${companyId}`);
+      const skillsData = response.data;
+      
+      // Store the skills data in state
+      setCompaniesSkills(skillsData);
+      
+      console.log("Company skills data:", skillsData);
+      
+      // Based on the JSON format you shared, the skills are directly on the object
+      // and not nested under a company object
+      // if (!skillsData || !skillsData.skills || skillsData.skills.length === 0) {
+      //   console.error("No skills found for this company");
+      //   return;
+      // }
+      
+      // Get the first skill ID from the skills array
+      const skillId = skillsData[0].skills[0].id;
+      
+      console.log(`Creating roadmap for company ID: ${companyId}, skill ID: ${skillId}`);
+      
+      // Create the roadmap
+      const responseRoadmap = await api.post(`/api/create-roadmap`, {
+        skill_id: skillId,
+        candidate_id: candidate_id
+      });
+      
+      console.log("Roadmap created:", responseRoadmap.data);
+      
+      // Navigate to the roadmap page or handle the roadmap display
+      // You might want to uncomment and adjust this based on your routing
+      navigate(`/candidate/roadmap/${responseRoadmap.data.data.id}`);
+      
+    } catch (error) {
+      console.error("Error generating roadmap:", error);
+      // Handle error appropriately
+    }
   };
 
   return (

@@ -73,7 +73,7 @@ Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsContro
 Route::post('/selected/company/{id}', [CompaniesSelectedController::class, 'selectCompany']);
 
 // get roadmap
-Route::get('/roadmaps{roadmap_id}', [RoadmapController::class, 'getCompleteRoadmap']);
+Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getCompleteRoadmap']);
 
 
 Route::get('/prerequisites', [prerequisitesController::class, 'index']);
@@ -86,7 +86,8 @@ Route::get('/selected/companies/{candidate_id}', [CompaniesSelectedController::c
 
 // skills of an companyId
 Route::get('/skills/company/{company_id}' , [CompaniesSelectedController::class , 'getSkillsByCompany']);
-
+// genrate roadmap 
+Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 
 
