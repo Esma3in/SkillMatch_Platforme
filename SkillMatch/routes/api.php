@@ -103,7 +103,6 @@ Route::get('/candidate/test/company/{id}',[TestController::class,'GetTestCompani
 // candidate Roadmap Routes
 Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'getPrerequisites']);
 
-
 // admin routes
 
 Route::get('/admin',[AdminController::class],'index')->name('admin.index');
@@ -111,3 +110,7 @@ Route::get('/admin',[AdminController::class],'index')->name('admin.index');
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
 // Route::get('/admin/CanidatsList/Canidate/{id}',[AdminConroller::class],'Candidate')->name('admin.index');
+
+Route::get('/roadmap/{companyId}' , [CompaniesSelectedController::class  , 'getSkillsData']);
+
+

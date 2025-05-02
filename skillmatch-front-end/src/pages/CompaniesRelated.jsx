@@ -11,6 +11,7 @@ function CompaniesRelated() {
   const [errorDetails, setErrorDetails] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
   const [companiesSkills, setCompaniesSkills] = useState([]);
+  const [RoadmapData , setRoadmapData] = useState([])
   const navigate = useNavigate();
   
   const candidate_id = useState(() => {
@@ -123,6 +124,8 @@ function CompaniesRelated() {
           <button 
             className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all"
             onClick={() => generateRoadMap(company.company_id)}
+
+
           >
             View Career Roadmap
           </button>
@@ -139,6 +142,12 @@ function CompaniesRelated() {
 
   const generateRoadMap = async (companyId) => {
     try {
+
+        const responseRoadmapData =await api.get(`/api/roadmap/${companyId}`)
+        setRoadmapData(responseRoadmapData.data)
+        console.log(responseRoadmapData.data)
+        console.log(RoadmapData)
+ 
       // First, fetch the skills for the company
       const response = await api.get(`/api/skills/company/${companyId}`);
       const skillsData = response.data;
@@ -171,7 +180,7 @@ function CompaniesRelated() {
       // Navigate to the roadmap page or handle the roadmap display
       // You might want to uncomment and adjust this based on your routing
       navigate(`/candidate/roadmap/${responseRoadmap.data.data.id}`);
-      
+     
     } catch (error) {
       console.error("Error generating roadmap:", error);
       // Handle error appropriately
