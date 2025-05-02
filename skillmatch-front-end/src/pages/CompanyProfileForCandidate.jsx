@@ -51,13 +51,13 @@ export default function CompanyProfileForCandidate() {
         
         setError(null);
         
-        const response = await api.post(`/api/selected/company/${id}`, {
-          candidate_id: candidate_id,
-          company_id: id,
-          name: companyInfoFetched.name,
-        });
+        // const response = await api.post(`/api/selected/company/${id}`, {
+        //   candidate_id: candidate_id,
+        //   company_id: id,
+        //   name: companyInfoFetched.name,
+        // });
 
-        console.log("Selected company created:", response.data);
+        // console.log("Selected company created:", response.data);
       } catch (err) {
         setError(err.message || "Failed to create selected company");
         console.error("Error creating selected company:", err);
@@ -116,7 +116,7 @@ export default function CompanyProfileForCandidate() {
       });
       
       // Use navigate from react-router-dom instead of window.location
-      navigate("/candidate/related");
+      navigate("/companies/related");
     } catch (error) {
       console.error("Error selecting company:", error);
       setError("Failed to select company. Please try again.");

@@ -4,6 +4,7 @@ import NavbarCandidate from "../components/common/navbarCandidate";
 import { api } from "../api/api";
 
 function CompaniesRelated() {
+  const [companiesSelectedList, setCompaniesSelectedList] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +12,6 @@ function CompaniesRelated() {
   const [retryCount, setRetryCount] = useState(0);
   const navigate = useNavigate();
   
-  // Get candidate_id from localStorage
   const candidate_id = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("candidate_id")) || null;
@@ -34,34 +34,30 @@ function CompaniesRelated() {
         setError(null);
         setErrorDetails(null);
         
-        // Add timeout to prevent infinite loading if server doesn't respond
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000);
         
-        // Debug the request
         console.log(`Fetching from: /api/selected/companies/${candidate_id}`);
         
         const response = await api.get(`/api/selected/companies/${candidate_id}`);
         
         clearTimeout(timeoutId);
         
-        console.log("API Response:", response);
+        console.log("API Response:", response.data);
         
-        // Validate response data
-        if (!response.data) {
-          throw new Error("Empty response received");
+        if (!response.data || !Array.isArray(response.data)) {
+          throw new Error("Invalid response format");
         }
         
-        // Ensure we have an array (even if empty)
-        const companiesData = Array.isArray(response.data) ? response.data : [];
-        console.log("Companies data:", companiesData);
+        // Set the full response data
+        setCompaniesSelectedList(response.data);
+        setCompanies(response.data); // Use the flat list directly as companies
         
-        setCompanies(companiesData);
+        console.log("Companies data:", response.data);
+        
       } catch (error) {
         const errorMessage = "Failed to fetch selected companies. Please try again later.";
         setError(errorMessage);
-        
-        // Store detailed error for debugging
         setErrorDetails(error.response?.data?.error || error.message);
         console.error("Error fetching selected companies:", error);
       } finally {
@@ -86,9 +82,8 @@ function CompaniesRelated() {
   };
 
   const renderCompanyCard = (company) => {
-    // Format date if available
-    const formattedDate = company.selected_date 
-      ? new Date(company.selected_date).toLocaleDateString()
+    const formattedDate = company.created_at 
+      ? new Date(company.created_at).toLocaleDateString()
       : "Recently selected";
       
     return (
@@ -99,14 +94,14 @@ function CompaniesRelated() {
         <div className="flex items-center mb-4">
           <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-3">
             <span className="text-lg font-bold text-purple-600">
-              {(company.company_name || company.name || "?").charAt(0).toUpperCase()}
+            <img src={company.companies.logo} alt ={company.company_id} />
             </span>
           </div>
           <div>
             <h4 className="text-xl font-bold text-gray-800">
-              {company.company_name || company.name || "Unknown Company"}
+            {company.companies.name || "Unknown"}
             </h4>
-            <p className="text-sm text-gray-500">{company.sector || "Technology"}</p>
+            <p className="text-sm text-gray-500">{company.companies.sector || "Sector not available"}</p>
           </div>
         </div>
         <div className="space-y-3 text-sm text-gray-600 flex-grow">
@@ -116,36 +111,23 @@ function CompaniesRelated() {
           </p>
           <p>
             <span className="font-semibold">Description:</span>{" "}
-            {company.description || "No description available."}
+            No description available.
           </p>
           <p>
             <span className="font-semibold">Location:</span>{" "}
-            {company.location || "Location not specified"}
+            Location not specified
           </p>
-          {company.website && (
-            <p>
-              <span className="font-semibold">Website:</span>{" "}
-              <a
-                href={company.website}
-                className="text-purple-600 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {company.website}
-              </a>
-            </p>
-          )}
         </div>
         <div className="mt-6 flex flex-col space-y-3">
           <button 
             className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all"
-            onClick={() => navigate(`/candidate/roadmap/${company.id}`)}
+            onClick={() => navigate(`/candidate/roadmap/${company.company_id}`)}
           >
             View Career Roadmap
           </button>
           <button 
             className="bg-white border border-purple-500 text-purple-600 font-semibold py-2 rounded-lg hover:bg-purple-50 transition-all"
-            onClick={() => navigate(`/candidate/assessment/${company.id}`)}
+            onClick={() => navigate(`/candidate/assessment/${company.company_id}`)}
           >
             Take Assessment
           </button>
@@ -216,7 +198,6 @@ function CompaniesRelated() {
         </div>
       </div>
       
-      {/* Progress Tracker */}
       {!loading && !error && companies.length > 0 && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
           <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
@@ -263,7 +244,6 @@ function CompaniesRelated() {
         </div>
       )}
 
-      {/* Tips and Resources */}
       {!loading && !error && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
           <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">

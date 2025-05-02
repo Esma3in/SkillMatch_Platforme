@@ -169,7 +169,7 @@ public function getSelectedCompaniess($candidate_id, Request $request)
     //     return response()->json(['error' => 'An error occurred while fetching selected companies'], 500);
     // }
 
-    $companiesSelected =CompaniesSelected::all();
+    $companiesSelected =CompaniesSelected::whereCandidateId($candidate_id)->with('companies')->get();
     return response()->json($companiesSelected);
 }
     public function getSkillsData(Request $request, $companyId)
@@ -189,13 +189,13 @@ public function getSelectedCompaniess($candidate_id, Request $request)
             //there
             $prerequisites = Roadmap::join('prerequisites', 'roadmaps.skill_id', '=', 'prerequisites.skill_id')
                 ->whereIn('roadmaps.skill_id', $skillIds)
-                ->get(['roadmaps.*', 'prerequisites.*']);
+                ->get(['roadmaps.', 'prerequisites.']);
 
             // Step 3: Fetch tools (Query 2)
             $tools = Tool::join('skills', 'tools.name', '=', 'skills.name')
                 ->join('roadmaps', 'skills.id', '=', 'roadmaps.skill_id')
                 ->whereIn('skills.id', $skillIds)
-                ->get(['tools.*', 'skills.*', 'roadmaps.*']);
+                ->get(['tools.', 'skills.', 'roadmaps.*']);
 
             // Step 4: Fetch candidate courses (Query 3)
             $candidateCourses = CandidateCourse::join('skills', function ($join) {
@@ -204,7 +204,7 @@ public function getSelectedCompaniess($candidate_id, Request $request)
                 })
                 ->join('roadmaps', 'skills.id', '=', 'roadmaps.skill_id')
                 ->whereIn('skills.id', $skillIds)
-                ->get(['candidate_courses.*', 'skills.*', 'roadmaps.*']);
+                ->get(['candidate_courses.', 'skills.', 'roadmaps.*']);
 
             // Step 5: Fetch roadmap skills (Query 4)
             $roadmapSkills = SkillRoadmap::join('skills', function ($join) {
@@ -213,7 +213,7 @@ public function getSelectedCompaniess($candidate_id, Request $request)
                 })
                 ->join('roadmaps', 'skills.id', '=', 'roadmaps.skill_id')
                 ->whereIn('skills.id', $skillIds)
-                ->get(['roadmap_skills.*', 'skills.*', 'roadmaps.*']);
+                ->get(['roadmap_skills.', 'skills.', 'roadmaps.*']);
 
             // Step 6: Format the response
             $response = [
@@ -254,4 +254,3 @@ public function getSelectedCompaniess($candidate_id, Request $request)
     }
 }
 //testetestestest
-

@@ -84,7 +84,8 @@ Route::get('/roadmap-skills', [skillsRoadmapController::class, 'index']);
 //companies related
 Route::get('/selected/companies/{candidate_id}', [CompaniesSelectedController::class, 'getSelectedCompaniess']);
 
-
+// skills of an companyId
+Route::get('/skills/company/{company_id}' , [CompaniesSelectedController::class , 'getSkillsByCompany']);
 
 
 

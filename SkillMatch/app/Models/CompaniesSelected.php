@@ -19,6 +19,6 @@ class CompaniesSelected extends Model
         return $this->belongsToMany(Candidate::class);
     }
     public function companies(){
-        return $this->belongsToMany(Company::class);
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 }
