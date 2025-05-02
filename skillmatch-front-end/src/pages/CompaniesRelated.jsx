@@ -11,7 +11,7 @@ function CompaniesRelated() {
   const [errorDetails, setErrorDetails] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
   const [companiesSkills, setCompaniesSkills] = useState([]);
-  const [RoadmapData , setRoadmapData] = useState([])
+  const [RoadmapData , setRoadmapData] = useState({})
   const navigate = useNavigate();
   
   const candidate_id = useState(() => {
@@ -144,9 +144,11 @@ function CompaniesRelated() {
     try {
 
         const responseRoadmapData =await api.get(`/api/roadmap/${companyId}`)
-        setRoadmapData(responseRoadmapData.data)
-        console.log(responseRoadmapData.data)
-        console.log(RoadmapData)
+      console.log( responseRoadmapData.data) 
+      // console.log(responseRoadmapData.data.prerequisties)
+      // console.log(responseRoadmapData.data.tools)
+        console.log(responseRoadmapData.data.message)
+
  
       // First, fetch the skills for the company
       const response = await api.get(`/api/skills/company/${companyId}`);
