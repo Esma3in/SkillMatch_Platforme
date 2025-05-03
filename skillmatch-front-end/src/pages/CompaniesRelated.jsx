@@ -127,6 +127,7 @@ function CompaniesRelated() {
             onClick={() => generateRoadMap(company.company_id)}
 
 
+
           >
             View Career Roadmap
           </button>
@@ -182,7 +183,7 @@ function CompaniesRelated() {
       
       // Navigate to the roadmap page or handle the roadmap display
       // You might want to uncomment and adjust this based on your routing
-      navigate(`/candidate/roadmap/${responseRoadmap.data.data.id}`);
+      navigate(`/candidate/roadmap/${companyId}`);
      
     } catch (error) {
       console.error("Error generating roadmap:", error);
