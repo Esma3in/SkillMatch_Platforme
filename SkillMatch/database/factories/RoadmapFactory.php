@@ -32,4 +32,5 @@ class RoadmapFactory extends Factory
              'candidate_id'=>Candidate::factory()
         ];
     }
+
 }

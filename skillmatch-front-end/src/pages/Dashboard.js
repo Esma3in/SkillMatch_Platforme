@@ -1,59 +1,240 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
+import { api } from "../api/api.js";
 
 export const Dashboard = () => {
   const chartRef = useRef(null);
   const [timeRange, setTimeRange] = useState('7d');
+  const [statsCards, setStatsCards] = useState([]);
+  const [roadmapProgress, setRoadmapProgress] = useState([]);
+  const [testsProgress, setTestsProgress] = useState([]);
+  const [challengeProgress, setChallengeProgress] = useState([]);
+  const [companiesData, setCompaniesData] = useState([]);
+  const [roadmapDetails, setRoadmapDetails] = useState([]);
+  const [error, setError] = useState(null);
 
-  // Stats data with corrected title to avoid linter warning
-  const statsCards = [
-    { title: 'ENTREPRISE MATCHED', value: '25', change: '+ 4', increase: true },
-    { title: 'ENTREPRISE SELECTED', value: '20', change: '+ 5', increase: true },
-    { title: 'ROADMAPS COMPLETED', value: '7', change: '-3', increase: false },
-    { title: 'BADGES EARNED', value: '30', change: '+ 5', increase: true },
-    { title: 'ACTIVE ROADMAPS', value: '20', change: '+ 5', increase: true }, // Renamed to avoid repetition
-  ];
+  // Get the candidate_id from localStorage
+  const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
 
-  // Progress data (Roadmap Progress)
-  const roadmapProgress = [
-    { name: 'Laravel', percentage: 90 },
-    { name: 'React', percentage: 75 },
-    { name: 'Java', percentage: 27 },
-    { name: 'C++', percentage: 11 },
-  ];
+  // Fetch dashboard data
 
-  // Tests progress data
-  const testsProgress = [
-    { name: 'test1', percentage: 90 },
-    { name: 'test2', percentage: 75 },
-    { name: 'test3', percentage: 27 },
-    { name: 'test4', percentage: 11 },
-  ];
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      if (!candidate_id) {
+        setError('Candidate ID not found in localStorage');
+        return;
+      }
 
-  // Challenge progress data
-  const challengeProgress = [
-    { name: 'challenge 1', percentage: 90 },
-    { name: 'challenge 2', percentage: 75 },
-    { name: 'challenge 3', percentage: 27 },
-    { name: 'challenge 4', percentage: 11 },
-  ];
+      try {
+        setError(null);
 
-  // Companies data
-  const companiesData = [
-    { name: 'NTT DATA', email: 'nttdatatetouan@gmail.com', image: '/image-ntt.png' },
-    { name: 'Tech Corp', email: 'contact@techcorp.com', image: '/image-techcorp.png' },
-    { name: 'Innovate Solutions', email: 'info@innovatesol.com', image: '/image-innovate.png' },
-    { name: 'Global Systems', email: 'support@globalsys.com', image: '/image-global.png' },
-  ];
+        // Fetch matched companies
+        let matchedResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          matchedResponse = await api.get(`/dashboard/companies/matched/${candidate_id}`);
+          console.log('Matched Response:', matchedResponse.data);
+        } catch (err) {
+          console.error('Error fetching matched companies:', err.response?.status, err.message);
+          matchedResponse = { data: { count: 0, change: 0 } };
+        }
 
-  // Roadmap details data
-  const roadmapDetails = [
-    { status: 'completed', name: 'Frontend Development', badges: 5, company: 'TechCorp' },
-    { status: 'completed', name: 'Backend Development', badges: 6, company: 'Innovate Solutions' },
-    { status: 'pending', name: 'Backend Development', badges: 3, company: 'NTT DATA' },
-    { status: 'canceled', name: 'Backend Development', badges: 1, company: 'Microsoft' },
-  ];
+        // Fetch selected companies
+        let selectedResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          selectedResponse = await api.get(`/dashboard/companies/selected/${candidate_id}`);
+          console.log('Selected Response:', selectedResponse.data);
+        } catch (err) {
+          console.error('Error fetching selected companies:', err.response?.status, err.message);
+          selectedResponse = { data: { count: 0, change: 0 } };
+        }
 
+        // Fetch completed roadmaps
+        let completedResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          completedResponse = await api.get(`/dashboard/roadmap/completed/${candidate_id}`);
+          console.log('Completed Response:', completedResponse.data);
+        } catch (err) {
+          console.error('Error fetching completed roadmaps:', err.response?.status, err.message);
+          completedResponse = { data: { count: 0, change: 0 } };
+        }
+
+        // Fetch badges
+        let badgesResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          badgesResponse = await api.get(`/dashboard/bages/${candidate_id}`);
+          console.log('Badges Response:', badgesResponse.data);
+        } catch (err) {
+          console.error('Error fetching badges:', err.response?.status, err.message);
+          badgesResponse = { data: { count: 0, change: 0 } };
+        }
+
+        // Fetch active roadmaps
+        let activeResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          activeResponse = await api.get(`/dashboard/all/roadmaps/${candidate_id}`);
+          console.log('Active Response:', activeResponse.data);
+        } catch (err) {
+          console.error('Error fetching active roadmaps:', err.response?.status, err.message);
+          activeResponse = { data: { count: 0, change: 0 } };
+        }
+
+        // Fetch roadmap progress
+        let roadmapProgressResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          roadmapProgressResponse = await api.get(`/candidate/${candidate_id}/roadmaps-progress`);
+          console.log('Roadmap Progress Response:', roadmapProgressResponse.data);
+        } catch (err) {
+          console.error('Error fetching roadmap progress:', err.response?.status, err.message);
+          roadmapProgressResponse = { data: [] };
+        }
+
+        // Fetch tests progress
+        let testsProgressResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          testsProgressResponse = await api.get(`/candidate/${candidate_id}/test-progress`);
+          console.log('Tests Progress Response:', testsProgressResponse.data);
+        } catch (err) {
+          console.error('Error fetching tests progress:', err.response?.status, err.message);
+          testsProgressResponse = { data: [] };
+        }
+
+        // Fetch challenges progress
+        let challengesProgressResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          challengesProgressResponse = await api.get(`/candidate/${candidate_id}/challenges-progress`);
+          console.log('Challenges Progress Response:', challengesProgressResponse.data);
+        } catch (err) {
+          console.error('Error fetching challenges progress:', err.response?.status, err.message);
+          challengesProgressResponse = { data: [] };
+        }
+
+        // Fetch company data
+        let companiesResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          companiesResponse = await api.get(`/candidate/${candidate_id}/company-data`);
+          console.log('Companies Response:', companiesResponse.data);
+        } catch (err) {
+          console.error('Error fetching company data:', err.response?.status, err.message);
+          companiesResponse = { data: [] };
+        }
+
+        // Fetch selected companies
+        let selectedCompaniesResponse;
+        try {
+          await api.get('/sanctum/csrf-cookie');
+          selectedCompaniesResponse = await api.get(`/candidate/${candidate_id}/selected-companies`);
+          console.log('Selected Companies Response:', selectedCompaniesResponse.data);
+        } catch (err) {
+          console.error('Error fetching selected companies:', err.response?.status, err.message);
+          selectedCompaniesResponse = { data: [] };
+        }
+
+        // Set stats cards
+        setStatsCards([
+          {
+            title: 'ENTREPRISE MATCHED',
+            value: matchedResponse.data?.count?.toString() || '0',
+            change: matchedResponse.data?.change?.toString() || '+0',
+            increase: (matchedResponse.data?.change || 0) >= 0,
+          },
+          {
+            title: 'ENTREPRISE SELECTED',
+            value: selectedResponse.data?.count?.toString() || '0',
+            change: selectedResponse.data?.change?.toString() || '+0',
+            increase: (selectedResponse.data?.change || 0) >= 0,
+          },
+          {
+            title: 'ROADMAPS COMPLETED',
+            value: completedResponse.data?.count?.toString() || '0',
+            change: completedResponse.data?.change?.toString() || '+0',
+            increase: (completedResponse.data?.change || 0) >= 0,
+          },
+          {
+            title: 'BADGES EARNED',
+            value: badgesResponse.data?.count?.toString() || '0',
+            change: badgesResponse.data?.change?.toString() || '+0',
+            increase: (badgesResponse.data?.change || 0) >= 0,
+          },
+          {
+            title: 'ACTIVE ROADMAPS',
+            value: activeResponse.data?.count?.toString() || '0',
+            change: activeResponse.data?.change?.toString() || '+0',
+            increase: (activeResponse.data?.change || 0) >= 0,
+          },
+        ]);
+
+        // Set roadmap progress
+        setRoadmapProgress(
+          Array.isArray(roadmapProgressResponse.data)
+            ? roadmapProgressResponse.data.map((item) => ({
+                name: item.name || item.roadmap_name || 'Unknown',
+                percentage: item.progress || item.progress_percentage || 0,
+              }))
+            : []
+        );
+
+        // Set tests progress
+        setTestsProgress(
+          Array.isArray(testsProgressResponse.data)
+            ? testsProgressResponse.data.map((item) => ({
+                name: item.name || item.test_name || 'Unknown',
+                percentage: item.progress || item.progress_percentage || 0,
+              }))
+            : []
+        );
+
+        // Set challenge progress
+        setChallengeProgress(
+          Array.isArray(challengesProgressResponse.data)
+            ? challengesProgressResponse.data.map((item) => ({
+                name: item.name || item.challenge_name || 'Unknown',
+                percentage: item.progress || item.progress_percentage || 0,
+              }))
+            : []
+        );
+
+        // Set companies data
+        setCompaniesData(
+          Array.isArray(companiesResponse.data)
+            ? companiesResponse.data.map((company) => ({
+                name: company.name || 'Unknown',
+                email: company.email || 'N/A',
+                image: company.image_url || company.image || '/default-image.png',
+              }))
+            : []
+        );
+
+        // Set roadmap details
+        setRoadmapDetails(
+          Array.isArray(selectedCompaniesResponse.data)
+            ? selectedCompaniesResponse.data.map((roadmap) => ({
+                status: roadmap.completed ? 'completed' : roadmap.status || 'pending',
+                name: roadmap.name || roadmap.roadmap_name || 'Unknown',
+                badges: roadmap.badges || roadmap.badges_earned || 0,
+                company: roadmap.company_name || 'Unknown',
+              }))
+            : []
+        );
+
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+        setError(`Failed to fetch data: ${error.response?.status || error.message}`);
+      }
+    };
+
+    fetchDashboardData();
+  }, [candidate_id]);
+
+  // Chart rendering (unchanged)
   useEffect(() => {
     if (!chartRef.current) return;
 
@@ -210,7 +391,7 @@ export const Dashboard = () => {
         tooltip.transition().duration(500).style('opacity', 0);
       });
 
-    // Add dots for line2 (without tooltips for simplicity)
+    // Add dots for line2
     g.selectAll('.dot2')
       .data(data)
       .enter()
@@ -242,6 +423,13 @@ export const Dashboard = () => {
   return (
     <div className="w-full min-h-screen bg-gray-100">
       <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-8">
+            {error}
+          </div>
+        )}
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
           {statsCards.map((stat, index) => (

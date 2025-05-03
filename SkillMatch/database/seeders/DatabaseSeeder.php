@@ -308,7 +308,7 @@ class DatabaseSeeder extends Seeder
                 }
             }
         } else {
-            
+
             // If no candidates exist, create some with social media profiles
             for ($i = 0; $i < 10; $i++) { 
                 $candidate = Candidate::factory()->create();
@@ -330,7 +330,6 @@ class DatabaseSeeder extends Seeder
         // Crée des roadmaps et skills avant
         Roadmap::factory()->count(10)->create();
         Skill::factory()->count(10)->create();
-
         // Puis crée les liaisons
         RoadmapSkill::factory()->count(90)->create();
 
