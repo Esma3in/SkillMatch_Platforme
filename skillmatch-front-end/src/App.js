@@ -18,6 +18,7 @@ import { Roadmap } from './pages/Roadmap.js';
 import CompaniesRelated from './pages/CompaniesRelated.jsx';
 import { CandidateTest } from './pages/CandidateTest.jsx';
 import { LandingPage } from './Espaces/LandingPage.jsx';
+import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
 export default function App() {
   return (
     <Router>
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
+        <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><SkillsDataPage /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
