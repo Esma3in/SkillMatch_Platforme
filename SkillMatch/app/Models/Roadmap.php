@@ -40,4 +40,8 @@ class Roadmap extends Model
     public function Tools(){
         return $this->hasMany(Tool::class);
     }
+    // qcm for roadmap
+    public function QcmForRoadmap(){
+        return $this->belongsToMany(QcmForRoadmap::class);
+    }
 }

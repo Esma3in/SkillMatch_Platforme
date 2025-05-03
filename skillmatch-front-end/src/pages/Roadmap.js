@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { api } from "../api/api";
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 
 export const Roadmap = () => {
   // State for active tab
@@ -31,6 +31,11 @@ export const Roadmap = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const candidateId = JSON.parse(localStorage.getItem('candidate_id'));
+  const navigate = useNavigate();
+
+  const handleTakeQuiz = () => {
+    navigate(`/qcm/roadmap/${id}`);
+  };
 
   // Utility function to remove duplicates based on specified criteria
   const removeDuplicates = (array, criteria) => {
@@ -564,9 +569,12 @@ export const Roadmap = () => {
                       </p>
                     </div>
                     <div className="mt-6 flex justify-end">
-                      <button className="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-purple-700 transition-all">
-                        Take the Quiz
-                      </button>
+                    <button
+                      onClick={handleTakeQuiz}
+                      className="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-purple-700 transition-all"
+                    >
+                      Take the Quiz
+                    </button>
                     </div>
                   </div>
                 )}

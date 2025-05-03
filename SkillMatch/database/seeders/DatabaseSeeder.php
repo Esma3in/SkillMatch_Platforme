@@ -20,6 +20,7 @@ use App\Models\Attestation;
 use App\Models\RoadMapTest;
 use App\Models\SocialMedia;
 use App\Models\Notification;
+use App\Models\RoadmapSkill;
 use App\Models\Administrator;
 use App\Models\ProfileCompany;
 use App\Models\QuestionOption;
@@ -32,6 +33,7 @@ use App\Models\CandidateSelected;
 use App\Models\CompaniesSelected;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -86,13 +88,13 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create Administrators
-        
+
         Administrator::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('Admin@12345'), // Strong default password
         ]);
-        
+
 
         // Create Companies and their Profiles, Roadmaps, Challenges
        $companies=Company::factory(5)->create()->each(function ($company) use($skillsCreated) {
@@ -152,7 +154,7 @@ class DatabaseSeeder extends Seeder
             });
         });
         //Insert prerequisites
-     
+
         DB::transaction(function () {
             // Load and validate JSON files
             $files = [
@@ -161,7 +163,7 @@ class DatabaseSeeder extends Seeder
                 'skills' => database_path('data/json/skills.json'),
                 'tools' => database_path('data/json/tools.json'),
             ];
-        
+
             $data = [];
             $decoded = [];
             foreach ($files as $key => $filePath) {
@@ -174,7 +176,7 @@ class DatabaseSeeder extends Seeder
                     throw new \Exception("Invalid JSON in $key.json: " . json_last_error_msg());
                 }
             }
-        
+
             // Validate and insert prerequisites
             $skillNames = [];
             foreach ($decoded['prerequisites'] as $skillGroup) {
@@ -184,10 +186,10 @@ class DatabaseSeeder extends Seeder
                 $skillNames[] = $skillGroup['skill'];
             }
             $skillNames = array_unique($skillNames);
-        
+
             // Check if skill names exist and map to skill_ids
             $skillMap = DB::table('skills')->whereIn('name', $skillNames)->pluck('id', 'name')->toArray();
-        
+
             // Insert prerequisites
             $prerequisitesData = [];
             foreach ($decoded['prerequisites'] as $skillGroup) {
@@ -210,7 +212,7 @@ class DatabaseSeeder extends Seeder
                 throw new \Exception('No valid prerequisites found in prerequisites.json');
             }
             DB::table('prerequisites')->insert($prerequisitesData);
-        
+
             // Insert courses
             if (!isset($decoded['courses']['courses'])) {
                 throw new \Exception('Missing "courses" key in courses.json');
@@ -227,7 +229,7 @@ class DatabaseSeeder extends Seeder
                 ];
             }, $decoded['courses']['courses']);
             DB::table('candidate_courses')->insert($coursesData);
-        
+
             // Insert skills
             if (empty($decoded['skills'])) {
                 throw new \Exception('No skills found in skills.json');
@@ -248,7 +250,7 @@ class DatabaseSeeder extends Seeder
                 throw new \Exception('No valid skills found in skills.json');
             }
             DB::table('roadmap_skills')->insert($skillsData);
-        
+
             // Insert tools
             if (!isset($decoded['tools']['tools'])) {
                 throw new \Exception('Missing "tools" key in tools.json');
@@ -306,8 +308,9 @@ class DatabaseSeeder extends Seeder
                 }
             }
         } else {
+            
             // If no candidates exist, create some with social media profiles
-            for ($i = 0; $i < 10; $i++) {
+            for ($i = 0; $i < 10; $i++) { 
                 $candidate = Candidate::factory()->create();
 
                 // For each platform, 50% chance to create a profile
@@ -323,5 +326,46 @@ class DatabaseSeeder extends Seeder
             }
 
         }
+
+        // Crée des roadmaps et skills avant
+        Roadmap::factory()->count(10)->create();
+        Skill::factory()->count(10)->create();
+
+        // Puis crée les liaisons
+        RoadmapSkill::factory()->count(90)->create();
+
+
+        //qcm for roadmap :
+        $qcmForRoadmap = database_path('data/json/QcmForRoadmap.json');
+
+        if (!File::exists($qcmForRoadmap)) {
+            $this->command->error("Fichier JSON non trouvé à : $qcmForRoadmap");
+            return;
+        }
+
+        $qcmData = json_decode(File::get($qcmForRoadmap), true);
+
+        foreach ($qcmData as $skillName => $questions) {
+            $skill = Skill::where('name', $skillName)->first();
+
+            if (!$skill) {
+                $this->command->warn("Compétence non trouvée dans la base : $skillName");
+                continue;
+            }
+
+            foreach ($questions as $questionData) {
+                DB::table('qcm_for_roadmaps')->insert([
+                    'question' => $questionData['question'],
+                    'options' => json_encode($questionData['options']),
+                    'correct_answer' => $questionData['correctAnswer'],
+                    'skill_id' => $skill->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            $this->command->info("QCM insert with  : $skillName");
+        }
     }
 }
+//testest
