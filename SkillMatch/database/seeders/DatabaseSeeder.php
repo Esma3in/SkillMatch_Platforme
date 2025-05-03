@@ -22,16 +22,16 @@ use App\Models\SocialMedia;
 use App\Models\Notification;
 use App\Models\Administrator;
 use App\Models\ProfileCompany;
-use App\Models\QuestionOption;
+
 use App\Models\SerieChallenge;
 use App\Models\CompaniesSkills;
 use Illuminate\Database\Seeder;
 use App\Models\CandidatesSkills;
 use App\Models\ProfileCandidate;
-use App\Models\CandidateSelected;
+
 use App\Models\CompaniesSelected;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
             "AWS",
             "TypeScript"
         ];
-        $levels = ['easy','meduim','hard','expert'];
+        $levels = ['easy','medium','hard','expert'];
         $skillsCreated = [];
         foreach ($skills as $skillName) {
             $skillsCreated[] = Skill::factory()->create([
