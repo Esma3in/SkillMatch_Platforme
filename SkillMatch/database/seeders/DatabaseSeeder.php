@@ -192,9 +192,9 @@ class DatabaseSeeder extends Seeder
             $prerequisitesData = [];
             foreach ($decoded['prerequisites'] as $skillGroup) {
                 $skillName = $skillGroup['skill'];
-                if (!isset($skillMap[$skillName])) {
-                    throw new \Exception("Skill '$skillName' not found in skills table");
-                }
+                // if (!isset($skillMap[$skillName])) {
+                //     throw new \Exception("Skill '$skillName' not found in skills table");
+                // }
                 $skillId = $skillMap[$skillName];
                 foreach ($skillGroup['prerequisites'] as $prereq) {
                     $prerequisitesData[] = [

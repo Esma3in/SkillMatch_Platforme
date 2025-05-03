@@ -16,6 +16,8 @@ class Roadmap extends Model
     use HasFactory;
     protected $fillable=[
         'skill_id',
+        'name',
+        'completed',
         'candidate_id'
     ];
     // get the candidate correspnonding to this roadmap
