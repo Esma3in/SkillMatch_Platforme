@@ -18,6 +18,7 @@ use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\prerequisitesController;
+use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
 use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\candidateCoursesController;
@@ -86,8 +87,11 @@ Route::get('/selected/companies/{candidate_id}', [CompaniesSelectedController::c
 
 // skills of an companyId
 Route::get('/skills/company/{company_id}' , [CompaniesSelectedController::class , 'getSkillsByCompany']);
-// genrate roadmap 
+// genrate roadmap
 Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
+
+//qcm for roadmap
+Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
 
 
 

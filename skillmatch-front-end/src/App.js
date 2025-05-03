@@ -7,7 +7,6 @@ import ProtectedRoute from './features/session/ProtectedRoute.jsx';
 import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
-import QcmForRoadmap from './pages/qcmForRoadmap';
 import ProfileSettings from './pages/Settings.js';
 
 import AdminHome from './pages/adminHome.jsx';
@@ -19,6 +18,7 @@ import CompaniesRelated from './pages/CompaniesRelated.jsx';
 import { CandidateTest } from './pages/CandidateTest.jsx';
 import { LandingPage } from './Espaces/LandingPage.jsx';
 import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
+import QcmForRoadmap from './pages/QcmForRoadmap.js';
 export default function App() {
   return (
     <Router>
@@ -34,12 +34,13 @@ export default function App() {
         <Route path='/companies/list'  element={<ProtectedRoute><CompaniesMatching/></ProtectedRoute>}></Route> 
         <Route path='/profile' element={<ProtectedRoute><ProfileCandidat/></ProtectedRoute>} />
         {/* <Route path='/companyProfile' element={<ProtectedRoute><CompanyProfile/></ProtectedRoute>}/>  */}
-         <Route path="/QcmRoadMap" element={<ProtectedRoute ><QcmForRoadmap /></ProtectedRoute>} />
+        <Route path="/qcm/roadmap/:id" element={<QcmForRoadmap />} />
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
         <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
-        <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><SkillsDataPage /></ProtectedRoute>} />
+        <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
+
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
