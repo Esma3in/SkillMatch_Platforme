@@ -2,50 +2,33 @@ import React, { useEffect, useState } from "react";
 import { api } from "../api/api";
 import AddLanguageModal from "../components/modals/AddLanguage";
 import Bio from "../components/modals/AddBioCandidate";
-import CreateExperienceModal from '../components/modals/createExperience'
+import CreateExperienceModal from "../components/modals/createExperience";
 import ModalSkill from "../components/modals/createSkillsCandidate";
-// import "../styles/pages/profileCandidate/profileCandidate.css";
 import NavbarCandidate from "../components/common/navbarCandidate";
 
 export default function ProfileCandidate() {
-
   const [candidateInfo, setCandidateInfo] = useState(null);
   const [error, setError] = useState(null);
   const [experiences, setExperiences] = useState([]);
   const [skills, setSkills] = useState([]);
-  const [educations, setEducations] = useState([]);
   const [showSkillModal, setShowSkillModal] = useState(false);
 
-  // Fetch candidate information, experiences, and skills
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Retrieve candidate ID from localStorage
         const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
         if (!candidate_id) {
           throw new Error("Candidate ID not found in localStorage");
         }
 
-        // Fetch candidate profile
         const profileResponse = await api.get(`/api/candidate/${candidate_id}`);
         setCandidateInfo(profileResponse.data);
 
-        
-        // Fetch experiences
-        const expResponse = await api.get(
-          `/api/experiences/candidate/${candidate_id}`
-        );
+        const expResponse = await api.get(`/api/experiences/candidate/${candidate_id}`);
         setExperiences(expResponse.data);
 
-        // Fetch skills
-        const skillsResponse = await api.get(
-          `/api/skills/candidate/${candidate_id}`
-        );
+        const skillsResponse = await api.get(`/api/skills/candidate/${candidate_id}`);
         setSkills(skillsResponse.data);
-
-        // Fetch educations (placeholder for future implementation)
-        // const eduResponse = await api.get(`/api/educations/candidate/${candidate_id}`);
-        // setEducations(eduResponse.data);
       } catch (err) {
         console.error("Failed to fetch data:", err);
         setError("There was an error loading your profile. Please try again later.");
@@ -55,7 +38,6 @@ export default function ProfileCandidate() {
     fetchData();
   }, []);
 
-  // Handle CV download
   const handleDownloadCV = async (id) => {
     try {
       await api.get("/api/sanctum/csrf-cookie", { withCredentials: true });
@@ -65,39 +47,36 @@ export default function ProfileCandidate() {
     }
   };
 
-  // Loading state
   if (!candidateInfo && !error) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-indigo-700"></div>
       </div>
     );
   }
 
-  // Error state
   if (error) {
     return (
       <>
         <NavbarCandidate />
-        <div className="flex flex-col items-center justify-center p-8 bg-red-100 rounded-lg shadow-md mx-auto max-w-3xl mt-12">
-          <p className="text-xl font-medium text-red-700">{error}</p>
+        <div className="flex flex-col items-center justify-center p-4 bg-red-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
+          <p className="text-base font-medium text-red-700">{error}</p>
         </div>
       </>
     );
   }
 
-  // No profile state
   if (candidateInfo && !candidateInfo.profile) {
     return (
       <>
         <NavbarCandidate />
-        <div className="flex flex-col items-center justify-center p-8 bg-gray-100 rounded-lg shadow-md mx-auto max-w-3xl mt-12">
-          <p className="text-xl font-medium text-gray-700 mb-4">
+        <div className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
+          <p className="text-base font-medium text-gray-700 mb-2">
             You don't have a profile yet.
           </p>
           <a
             href="/CreateProfile"
-            className="text-blue-600 hover:text-blue-800 font-medium text-lg transition-colors"
+            className="text-indigo-600 hover:text-blue-800 font-medium text-sm transition-colors"
           >
             Create Your Profile
           </a>
@@ -106,24 +85,22 @@ export default function ProfileCandidate() {
     );
   }
 
-  // Destructure candidate data
   const { name, created_at, email, id } = candidateInfo;
-  const { field, phoneNumber, localisation, photoProfil, description } =
-    candidateInfo.profile;
+  const { field, phoneNumber, localisation, photoProfil, description } = candidateInfo.profile;
 
   return (
     <>
       <NavbarCandidate />
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Profile Information Card */}
-          <div className="col-span-1 lg:col-span-8 bg-white shadow-lg border border-gray-100 rounded-3xl p-8 transition-all duration-300 hover:shadow-xl">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-              {/* Profile Image */}
-              <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">
+      <div className="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        {/* Profile Header */}
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="relative bg-gradient-to-r from-indigo-700 to-blue-500 h-32"></div>
+          <div className="relative px-5 pb-4 -mt-13">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="relative w-24 h-24 flex-shrink-0">
                 <img
-                  className="w-full h-full object-cover rounded-full border-4 border-blue-100 shadow-sm"
-                  alt="User icon"
+                  className="w-full h-full object-cover rounded-full border-4 border-white shadow-sm"
+                  alt="User profile"
                   src={
                     photoProfil
                       ? `http://localhost:8000/storage/${photoProfil}`
@@ -131,222 +108,173 @@ export default function ProfileCandidate() {
                   }
                 />
               </div>
-
-              {/* Profile Details */}
               <div className="flex-1">
-                <div className="flex items-center gap-3">
-                  <h1 className="text-3xl sm:text-4xl font-semibold text-gray-900 tracking-tight">
-                    {name}
-                  </h1>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-2xl font-bold text-gray-900">{name}</h1>
                   <img
-                    className="w-9 h-9 object-cover"
+                    className="w-5 h-5 object-contain"
                     alt="Certification badge"
                     src="/assets/guarantee.png"
                   />
                 </div>
-
-                <div className="mt-5 space-y-2 text-lg text-gray-600 leading-relaxed">
-                  <p className="flex items-center gap-2">
-                    <span className="font-medium text-gray-800">Field:</span>{" "}
-                    {field}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="font-medium text-gray-800">Joined:</span>{" "}
-                    {new Date(created_at).toLocaleDateString()}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="font-medium text-gray-800">Email:</span>{" "}
-                    {email}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="font-medium text-gray-800">Phone:</span>{" "}
-                    {phoneNumber}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="font-medium text-gray-800">Location:</span>{" "}
-                    {localisation}
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-6">
+                <p className="text-sm text-gray-600 mt-1">{field}</p>
+                <p className="text-sm text-gray-600">{localisation}</p>
+                <div className="flex flex-col sm:flex-row gap-2 mt-3">
                   <button
                     onClick={() => handleDownloadCV(id)}
-                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2.5 rounded-full text-base font-medium hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md"
+                    className="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-all duration-300"
                   >
                     Download Resume
                   </button>
-                  <span className="bg-blue-100 text-blue-800 px-4 py-1.5 rounded-full text-sm font-medium shadow-sm">
+                  <span className="bg-blue-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-medium">
                     Certified Professional
                   </span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Bio Section */}
-          <div className="col-span-1 lg:col-span-4 bg-white shadow-lg border border-gray-100 rounded-3xl p-8 transition-all duration-300 hover:shadow-xl">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
-                Bio
-              </h2>
-              <Bio />
+        {/* Main Content with Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+          {/* Sidebar (Left) */}
+          <div className="col-span-1 lg:col-span-4 space-y-6">
+            {/* Bio */}
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold text-gray-900">Bio</h2>
+                <Bio />
+              </div>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {description || "Add a bio to tell your story."}
+              </p>
             </div>
-            <p className="text-base text-gray-600 leading-relaxed">
-              {description || "Add a bio to tell your story."}
-            </p>
-          </div>
 
-          {/* Languages Section */}
-          <div className="col-span-1 lg:col-span-4 bg-white shadow-lg border border-gray-100 rounded-3xl p-8 transition-all duration-300 hover:shadow-xl">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
-                Languages
-              </h2>
-              <AddLanguageModal />
+            {/* Contact Info */}
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">Contact Info</h2>
+              <div className="space-y-2 text-sm text-gray-600">
+                <p><span className="font-medium text-gray-800">Email:</span> {email}</p>
+                <p><span className="font-medium text-gray-800">Phone:</span> {phoneNumber}</p>
+                <p><span className="font-medium text-gray-800">Joined:</span>{" "}
+                  {new Date(created_at).toLocaleDateString()}</p>
+              </div>
             </div>
-            <div className="relative ml-8">
-              <div className="absolute left-2.5 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500"></div>
-              <div className="space-y-5">
-                {Array.isArray(candidateInfo.languages) &&
-                candidateInfo.languages.length > 0 ? (
+
+            {/* Languages */}
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold text-gray-900">Languages</h2>
+                <AddLanguageModal />
+              </div>
+              <div className="space-y-2">
+                {Array.isArray(candidateInfo.languages) && candidateInfo.languages.length > 0 ? (
                   candidateInfo.languages.map((language, index) => (
-                    <div key={index} className="flex items-center gap-5">
-                      <div className="w-5 h-5 rounded-full bg-blue-500 border-3 border-white shadow-md"></div>
-                      <p className="text-lg text-gray-700 font-medium">
-                        {language.language}:{" "}
-                        <span className="text-gray-600">{language.level}</span>
-                      </p>
-                    </div>
+                    <p key={index} className="text-sm text-gray-700">
+                      {language.language}: <span className="text-gray-600">{language.level}</span>
+                    </p>
                   ))
                 ) : (
-                  <div className="text-gray-500 text-base">
-                    Add your first language to showcase your skills.
-                  </div>
+                  <p className="text-sm text-gray-500">Add your first language to showcase your skills.</p>
                 )}
               </div>
             </div>
+
+            {/* Certifications */}
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold text-gray-900">Certifications</h2>
+                <button
+                  onClick={() => alert("Certification modal not implemented yet")}
+                  className="text-indigo-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  Add
+                </button>
+              </div>
+              <p className="text-sm text-gray-500">Add your certifications to highlight your expertise.</p>
+            </div>
+
+            {/* Recommendations */}
+        
           </div>
 
-          {/* Experiences Section */}
-          <div className="col-span-1 lg:col-span-8 bg-white shadow-lg border border-gray-100 rounded-3xl p-8 transition-all duration-300 hover:shadow-xl">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
-                Experiences
-              </h2>
-             <CreateExperienceModal user={candidateInfo.id}/>
-            </div>
-            <div className="relative ml-8 mt-8">
-              <div className="absolute left-2.5 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500"></div>
-              <div className="space-y-10">
+          {/* Main Content (Right) */}
+          <div className="col-span-1 lg:col-span-8 space-y-6">
+            {/* Experiences */}
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold text-gray-900">Experiences</h2>
+                <CreateExperienceModal user={candidateInfo.id} />
+              </div>
+              <div className="space-y-4">
                 {experiences && experiences.length > 0 ? (
                   experiences.map((exp, index) => (
-                    <div key={index} className="flex gap-5">
-                      <div className="relative">
-                        <div className="w-5 h-5 rounded-full bg-blue-500 border-3 border-white shadow-md"></div>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-semibold text-gray-900">
-                          {exp.experience}
-                        </h3>
-                        <p className="text-lg text-gray-700 mt-1 font-medium">
-                          {exp.role} at {exp.employement_type}
-                        </p>
-                        <p className="text-base text-gray-500 mt-1">
-                          {exp.location}
-                        </p>
-                        <p className="text-base text-gray-500 mt-1">
-                          {new Date(exp.start_date).toLocaleDateString()} -{" "}
-                          {exp.end_date
-                            ? new Date(exp.end_date).toLocaleDateString()
-                            : "Present"}
-                        </p>
-                        {exp.description && (
-                          <p className="mt-3 text-base text-gray-600 leading-relaxed">
-                            {exp.description}
-                          </p>
-                        )}
-                      </div>
+                    <div key={index} className="border-l-2 border-indigo-600 pl-4">
+                      <h3 className="text-base font-semibold text-gray-900">{exp.experience}</h3>
+                      <p className="text-sm text-gray-700 font-medium">{exp.role} at {exp.employement_type}</p>
+                      <p className="text-sm text-gray-500">{exp.location}</p>
+                      <p className="text-sm text-gray-500">
+                        {new Date(exp.start_date).toLocaleDateString()} -{" "}
+                        {exp.end_date ? new Date(exp.end_date).toLocaleDateString() : "Present"}
+                      </p>
+                      {exp.description && (
+                        <p className="mt-1 text-sm text-gray-600">{exp.description}</p>
+                      )}
                     </div>
                   ))
                 ) : (
-                  <div className="text-gray-500 text-base">
-                    Share your experiences to build a stronger profile.
-                  </div>
+                  <p className="text-sm text-gray-500">Share your experiences to build a stronger profile.</p>
                 )}
               </div>
             </div>
-          </div>
 
-          {/* Skills Section */}
-          <div className="col-span-1 lg:col-span-8 bg-white shadow-lg border border-gray-100 rounded-3xl p-8 transition-all duration-300 hover:shadow-xl">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
-                Skills
-              </h2>
-              <button
-                    type="button"
-                    onClick={() => setShowSkillModal(true)}
-                    className="flex items-center px-4 py-2 bg-transparent text-white rounded-full focus:outline-none"
+            {/* Skills */}
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold text-gray-900">Skills</h2>
+                <button
+                  type="button"
+                  onClick={() => setShowSkillModal(true)}
+                  className="text-indigo-600 hover:text-blue-700 text-sm font-medium flex items-center"
                 >
-                    <img src="assets/edit.png" alt="Edit icon" className="w-5 h-5 mr-2" />
+                  <img src="/assets/edit.png" alt="Edit icon" className="w-4 h-4 mr-1" />
+                  Edit
                 </button>
-            </div>
-            <div className="relative ml-8 mt-8">
-              <div className="absolute left-2.5 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500"></div>
-              <div className="space-y-10">
+              </div>
+              <div className="space-y-4">
                 {skills && skills.length > 0 ? (
                   skills.map((skill, index) => (
-                    <div key={index} className="flex gap-5">
-                      <div className="relative">
-                        <div className="w-5 h-5 rounded-full bg-blue-500 border-3 border-white shadow-md"></div>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-semibold text-gray-900">
-                          {skill.name}
-                        </h3>
-                        <p className="text-lg text-gray-700 mt-1 font-medium">
-                          {skill.level} at {skill.type}
-                        </p>
-                        <p className="text-base text-gray-500 mt-1">
-                          {skill.usageFrequency}
-                        </p>
-                        {skill.classement && (
-                          <p className="mt-3 text-base text-gray-600 leading-relaxed">
-                            {skill.classement}
-                          </p>
-                        )}
-                      </div>
+                    <div key={index} className="border-l-2 border-indigo-600 pl-4">
+                      <h3 className="text-base font-semibold text-gray-900">{skill.name}</h3>
+                      <p className="text-sm text-gray-700 font-medium">{skill.level} at {skill.type}</p>
+                      <p className="text-sm text-gray-500">{skill.usageFrequency}</p>
+                      {skill.classement && (
+                        <p className="mt-1 text-sm text-gray-600">{skill.classement}</p>
+                      )}
                     </div>
                   ))
                 ) : (
-                  <div className="text-gray-500 text-base">
-                    Share your skills to improve your visibility to companies.
-                  </div>
+                  <p className="text-sm text-gray-500">Share your skills to improve your visibility to companies.</p>
                 )}
               </div>
             </div>
-          </div>
 
-          {/* Placeholder for Education Section */}
-          <div className="col-span-1 lg:col-span-8 bg-white shadow-lg border border-gray-100 rounded-3xl p-8 transition-all duration-300 hover:shadow-xl">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
-                Education
-              </h2>
-              <button
-                onClick={() => alert("Education modal not implemented yet")}
-                className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-6 py-2.5 rounded-full text-base font-medium hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-md flex items-center gap-2"
-              >
-                <span>+ Add Education</span>
-              </button>
-            </div>
-            <div className="text-gray-500 text-base">
-              Add your education details to enhance your profile.
+            {/* Education */}
+            <div className="bg-white shadow-md rounded-lg p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold text-gray-900">Education</h2>
+                <button
+                  onClick={() => alert("Education modal not implemented yet")}
+                  className="text-indigo-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  Add
+                </button>
+              </div>
+              <p className="text-sm text-gray-500">Add your education details to enhance your profile.</p>
             </div>
           </div>
         </div>
 
-        {/* Modals */}
         {showSkillModal && (
           <ModalSkill
             user={candidateInfo.id}
@@ -356,7 +284,7 @@ export default function ProfileCandidate() {
                 api
                   .get(`/api/skills/candidate/${candidateInfo.id}`)
                   .then((response) => {
-                    setSkills(response.data); // Corrected to update skills
+                    setSkills(response.data);
                   })
                   .catch((err) => {
                     console.error("Failed to refresh skills", err);

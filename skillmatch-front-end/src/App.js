@@ -17,6 +17,7 @@ import { Roadmap } from './pages/Roadmap.js';
 import CompaniesRelated from './pages/CompaniesRelated.jsx';
 import { CandidateTest } from './pages/CandidateTest.jsx';
 import { LandingPage } from './Espaces/LandingPage.jsx';
+import { EnhancedLandingPage } from './Espaces/EnhancedLandingPage.jsx';
 import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
 
 import { Dashboard } from './pages/Dashboard.js';
@@ -27,7 +28,7 @@ export default function App() {
     <Router>
       <Routes>
         Page d'authentification (SignIn / SignUp toggle) 
-        <Route path="/" element={<LandingPage/>} />
+        <Route path="/" element={<EnhancedLandingPage/>} />
         {/* Espace candidat après inscription  */}
         <Route path='/signIn' element={<SignPages isSignin={true}/>}/>
         <Route path='/signUp' element={<SignPages isSignin={false}/>}/>

@@ -64,7 +64,7 @@ export default function CompaniesMatching({ id }) {
           <div className="flex gap-4 pt-2">
             <a
               href="/companies"
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="inline-flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
             >
               <Briefcase size={18} /> Explore Companies
             </a>
