@@ -47,9 +47,9 @@ class CandidateController extends Controller
 
         return response()->json($companiesSuggested, 200);
     }
-    
 
-    
+
+
     public function Logout()
     {
         session()->forget('candidate_id'); // Remove the candidate ID from session
@@ -60,7 +60,7 @@ class CandidateController extends Controller
     }
 
 
-    
+
 
     // profile candidate
     public function storeProfile(Request $request)
@@ -73,7 +73,7 @@ class CandidateController extends Controller
             'file' => 'required|file|mimes:pdf,doc,docx|max:2048', // Max 2MB
             'projects' => 'required|string',
             'location' => 'required|string|max:255',
-            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048', 
+            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'candidate_id'=>'required'
         ]);
 
@@ -101,7 +101,7 @@ class CandidateController extends Controller
         ], 201);
     }
 
-    
+
     public function storeExperience(Request $request)
     {
         // Define validation rules for experience and profile fields
@@ -120,8 +120,8 @@ class CandidateController extends Controller
             'phone' => 'required|string|regex:/^\+?[0-9\s\-]{6,20}$/',
             'file' => 'required|file|mimes:pdf,doc,docx|max:2048', // Max 2MB
             'projects' => 'required|string',
-            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048', 
-            
+            'photoProfile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+
         ]);
 
         try {
@@ -272,18 +272,18 @@ class CandidateController extends Controller
                     <p><strong>Phone:</strong> ' . $candidate->profile->phoneNumber . '</p>
                     <p><strong>Location:</strong> ' . $candidate->profile->localisation . '</p>
                 </div>
-    
+
                 <div class="languages">
                     <h2>Languages</h2>
                     <ul>';
 
         foreach ($candidate->languages as $language) {
-            $html .= '<li>' . $language->language . ' - <span>' . $language->level . '</span></li>';
+            $html .= '<li>'. $language->language . ' - <span>' . $language->level . '</span></li>';
         }
 
         $html .= '</ul>
                 </div>
-    
+
                 <div class="bio">
                     <h2>Bio</h2>
                     <p>' . nl2br(e($candidate->profile->description)) . '</p>
