@@ -124,7 +124,7 @@ Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'ge
 
 // Route::get('/admin',[CandidateController::class],'index')->name('admin.index');
 Route::get('/admin/CanidatesList',[CandidateController::class,'AllCandidates']);
-Route::post('/admin/CanidatesList/{id}',[CandidateController::class,'setstate']);
+Route::post('/admin/CanidatesList/setstate',[CandidateController::class,'setstate']);
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
 // Route::get('/admin/CanidatsList/Canidate/{id}',[AdminConroller::class],'Candidate')->name('admin.index');

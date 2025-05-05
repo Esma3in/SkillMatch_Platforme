@@ -155,7 +155,7 @@ const AllCandidate = () => {
         const rawData = await response.data;
   
         const formattedCandidates = rawData.map((item, index) => ({
-          id: item.id ? `#${item.id}` : `#000${index}`,
+          id: item.id,
           name: item.name || 'Unknown',
           email: item.email || 'noemail@example.com',
           avatar: item.avatar || `/avatar-${(index % 5) + 1}.svg`,
@@ -180,8 +180,9 @@ const AllCandidate = () => {
   }, []);
   
   async function updateState(id,state){
+    console.log(id)
     try{
-      await api.post(`api/admin/CanidatesList/${id}`,{state:state});
+      await api.post(`api/admin/CanidatesList/setstate/`,{id:id,state:state});
       window.location.reload()
     }catch(err){
         console.log(err)

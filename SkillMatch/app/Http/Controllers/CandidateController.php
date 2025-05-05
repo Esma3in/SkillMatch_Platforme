@@ -305,11 +305,12 @@ class CandidateController extends Controller
         return response()->json($candidates,200);
     }
 
-    public function setstate(Request $request, $id){
+    public function setstate(Request $request){
         $request->validate([
+            'id'=>'required',
             'state' => 'required|in:BANNED,UNACTIVE,ACTIVE'
         ]);
-        $candidate = Candidate::where('id', $id)->first();
+        $candidate = Candidate::where('id', $request->id)->first();
         if (!$candidate) {
             return response()->json(['error' => 'Candidate not found'], 404);
         }
