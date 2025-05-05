@@ -26,6 +26,7 @@ use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\candidateCoursesController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
+use App\Models\Candidate;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -121,8 +122,9 @@ Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'ge
 
 // admin routes
 
-Route::get('/admin',[AdminController::class],'index')->name('admin.index');
-// Route::get('/admin/CanidatesList',[AdminConroller::class],'Candidates')->name('admin.CanidatesList');
+// Route::get('/admin',[CandidateController::class],'index')->name('admin.index');
+Route::get('/admin/CanidatesList',[CandidateController::class,'AllCandidates']);
+Route::post('/admin/CanidatesList/{id}',[CandidateController::class,'setstate']);
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
 // Route::get('/admin/CanidatsList/Canidate/{id}',[AdminConroller::class],'Candidate')->name('admin.index');

@@ -78,7 +78,7 @@ export const CandidateTest = () => {
           completed: step.completed || false,
         }));
         setSteps(formattedSteps);
-        localStorage.setItem("steps",{'TestId':TestId}; // ✅ correct
+        // localStorage.setItem("steps",{'TestId':TestId}; // ✅ correct
 ;
       }
     } catch (err) {

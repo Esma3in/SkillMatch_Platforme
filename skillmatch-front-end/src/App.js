@@ -8,7 +8,8 @@ import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
 import ProfileSettings from './pages/Settings.js';
-import AdminHome from './pages/adminHome.jsx';
+
+
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
 import { Roadmap } from './pages/Roadmap.js';
@@ -17,6 +18,10 @@ import { CandidateTest } from './pages/CandidateTest.jsx';
 import { LandingPage } from './Espaces/LandingPage.jsx';
 import { EnhancedLandingPage } from './Espaces/EnhancedLandingPage.jsx';
 import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
+
+import AdminHome from './pages/adminHome.jsx';
+import CompaniesList from './pages/manage/companiesList.jsx';
+import CandidatesList from './pages/manage/candidatesList.jsx';
 
 import { Dashboard } from './pages/Dashboard.js';
 
@@ -49,7 +54,11 @@ export default function App() {
        <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>
         <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedRoute><TestsList/></ProtectedRoute>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
+
+        {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
+        <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
+        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
 
       </Routes>
     </Router>

@@ -311,7 +311,7 @@ class DatabaseSeeder extends Seeder
         } else {
 
             // If no candidates exist, create some with social media profiles
-            for ($i = 0; $i < 10; $i++) { 
+            for ($i = 0; $i < 10; $i++) {
                 $candidate = Candidate::factory()->create();
 
                 // For each platform, 50% chance to create a profile
