@@ -175,7 +175,9 @@ function CompaniesRelated() {
       
       // Create the roadmap
       const responseRoadmap = await api.post(`/api/create-roadmap`, {
+       name:"Roadmap just for u",
         skill_id: skillId,
+        completed : 'pending',
         candidate_id: candidate_id
       });
       

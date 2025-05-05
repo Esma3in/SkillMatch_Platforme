@@ -17,14 +17,18 @@ import { Roadmap } from './pages/Roadmap.js';
 import CompaniesRelated from './pages/CompaniesRelated.jsx';
 import { CandidateTest } from './pages/CandidateTest.jsx';
 import { LandingPage } from './Espaces/LandingPage.jsx';
+import { EnhancedLandingPage } from './Espaces/EnhancedLandingPage.jsx';
 import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
-import QcmForRoadmap from './pages/QcmForRoadmap.js';
+
+import { Dashboard } from './pages/Dashboard.js';
+
+import QcmForRoadmap from './pages/qcmForRoadmap.js';
 export default function App() {
   return (
     <Router>
       <Routes>
         Page d'authentification (SignIn / SignUp toggle) 
-        <Route path="/" element={<LandingPage/>} />
+        <Route path="/" element={<EnhancedLandingPage/>} />
         {/* Espace candidat après inscription  */}
         <Route path='/signIn' element={<SignPages isSignin={true}/>}/>
         <Route path='/signUp' element={<SignPages isSignin={false}/>}/>
@@ -38,14 +42,13 @@ export default function App() {
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
         <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
+        <Route path="/performance" element= {<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
         <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
-
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
-
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
 
       </Routes>

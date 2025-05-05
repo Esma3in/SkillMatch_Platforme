@@ -16,6 +16,8 @@ use App\Http\Controllers\RoadmapController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ChallengeController;
+use App\Http\Controllers\dahsboardcontroller;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\prerequisitesController;
 use App\Http\Controllers\QcmForRoadmapController;
@@ -73,6 +75,11 @@ Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsContro
 //company SELECTED
 Route::post('/selected/company/{id}', [CompaniesSelectedController::class, 'selectCompany']);
 
+
+
+
+
+
 // get roadmap
 Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getCompleteRoadmap']);
 
@@ -117,4 +124,13 @@ Route::get('/admin',[AdminController::class],'index')->name('admin.index');
 
 Route::get('/roadmap/{companyId}' , [CompaniesSelectedController::class  , 'getSkillsData']);
 
-
+Route::get('/dashboard/companies/selected/{candidate_id}', [DashboardController::class, 'countSelectedCompanies']);
+Route::get('/dashboard/roadmap/completed/{candidate_id}', [DashboardController::class, 'countCompletedRoadmaps']);
+Route::get('/dashboard/companies/matched/{candidate_id}', [DashboardController::class, 'countMatchedCompaniesBySkill']);
+Route::get('/dashboard/badges/{candidate_id}', [DashboardController::class, 'countBadges']);
+Route::get('/dashboard/all/roadmaps/{candidate_id}', [DashboardController::class, 'countAllRoadmaps']);
+Route::get('/candidate/{candidate_id}/roadmaps-progress', [DashboardController::class, 'getRoadmapsProgressWithCandidates']);
+Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController::class, 'getSelectedCompanies']);
+Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
+Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
+Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);

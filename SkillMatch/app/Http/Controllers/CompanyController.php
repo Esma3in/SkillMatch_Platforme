@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function index(){
-        $companies = Company::with(['skills','profile'])->get();
-        return response()->json($companies,200);
+    public function index()
+    {
+        $companies = Company::with(['skills', 'profile'])->paginate(10);
+        return response()->json($companies, 200);
     }
 
     public function GetCompany($id){

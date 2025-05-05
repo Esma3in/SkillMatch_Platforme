@@ -194,9 +194,9 @@ class DatabaseSeeder extends Seeder
             $prerequisitesData = [];
             foreach ($decoded['prerequisites'] as $skillGroup) {
                 $skillName = $skillGroup['skill'];
-                if (!isset($skillMap[$skillName])) {
-                    throw new \Exception("Skill '$skillName' not found in skills table");
-                }
+                // if (!isset($skillMap[$skillName])) {
+                //     throw new \Exception("Skill '$skillName' not found in skills table");
+                // }
                 $skillId = $skillMap[$skillName];
                 foreach ($skillGroup['prerequisites'] as $prereq) {
                     $prerequisitesData[] = [
@@ -308,8 +308,9 @@ class DatabaseSeeder extends Seeder
                 }
             }
         } else {
+
             // If no candidates exist, create some with social media profiles
-            for ($i = 0; $i < 10; $i++) {
+            for ($i = 0; $i < 10; $i++) { 
                 $candidate = Candidate::factory()->create();
 
                 // For each platform, 50% chance to create a profile
@@ -329,7 +330,6 @@ class DatabaseSeeder extends Seeder
         // Crée des roadmaps et skills avant
         Roadmap::factory()->count(10)->create();
         Skill::factory()->count(10)->create();
-
         // Puis crée les liaisons
         RoadmapSkill::factory()->count(90)->create();
 

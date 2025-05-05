@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('roadmaps' ,function(Blueprint $table){
             $table->id();
+            $table->string('name');
             $table->foreignId('skill_id')->constrained()->cascadeOnDelete();
+            $table->string('completed');
             $table->foreignId('candidate_id')->constrained();
             $table->timestamps();
 
