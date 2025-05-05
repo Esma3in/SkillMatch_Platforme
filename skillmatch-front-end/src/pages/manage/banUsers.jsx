@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { api } from "../api/api";
+// import { api } from "../api/api";
 // import NavbarCandidate from '../components/common/navbarCandidate';
-import Sidebar from "../components/common/sideBars/sidebarPlatforme";
-import UsersList from "./manage/usersList";
+import Sidebar from "../../components/common/sideBars/sidebarPlatforme";
 
-export default function AdminHome(){
+export default function BanUsers(){
     return (
         <>
             {/* <NavbarCandidate /> */}
             <div className='flex' >
                 <Sidebar className='inline' />
-                <UsersList />
+                <h1>helooooooo</h1>
             </div>
         </>
     )

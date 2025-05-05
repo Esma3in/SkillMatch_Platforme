@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('sector')->nullable();
             $table->string('files')->nullable();
             $table->string('logo')->nullable();
+            $table->string('state')->default('waiting');
+            $table->string('docstate')->default('waiting');
             $table->timestamps();
         } );
     }

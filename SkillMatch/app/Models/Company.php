@@ -15,6 +15,8 @@ class Company extends Model
         'logo',
         'sector',
         'files',
+        'state',
+        'documentState'
     ];
 
     // get the notifications send by this company

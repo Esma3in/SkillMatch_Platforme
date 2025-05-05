@@ -1,7 +1,9 @@
 import React from 'react';
 import { Home,BriefcaseBusiness, BarChart2, Users, User, Settings, LogOut, PieChart } from 'lucide-react';
+import UseLogout from '../../../hooks/useLogout';
 
 export default function Sidebar() {
+  const logout = UseLogout();
   return (
     <div className="w-64 min-h-screen bg-white border-r p-4 flex flex-col justify-between">
       <div>
@@ -12,24 +14,23 @@ export default function Sidebar() {
           <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide m-3">PLATFORME ANALYTICS</div>
           <li className="flex items-center space-x-2 text-black font-semibold shadow-sm m-3 pb-5">
             <BarChart2 size={18} />
-            <span >Performance</span>
+            <a href="/admin/Session/:id">Acceuil</a> 
           </li>
 
           <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide m-3">USERS ANALYTICS</div>
           <li className="flex items-center justify-between m-3">
             <div className="flex items-center space-x-2 text-gray-800 hover:font-semibold">
               <PieChart size={18} />
-              <span>Statistics</span>
+              <a href="/admin/usersPerformance"><span>All Users Statistics</span></a>
             </div>
-            <span className="text-xs bg-gray-500 text-white px-2 py-0.5 rounded-full">15</span>
           </li>
           <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
             <BriefcaseBusiness size={18} />
-            <span m-5>Company</span>
+            <a href="/admin/companiesPerformance"><span>Companies</span></a>
           </li>
           <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
             <Users size={18} />
-            <span m-5>Candidate</span>
+            <a href="/admin/candidatesPerformance"><span>candidates</span></a>
           </li>
 
           <hr />
@@ -37,11 +38,11 @@ export default function Sidebar() {
           <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide m-3">USERS Management</div>
           <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
             <BriefcaseBusiness size={18} />
-            <span m-5>Company</span>
+            <a href="/admin/companiesList"><span>companies</span></a>
           </li>
           <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
             <Users size={18} />
-            <span m-5>Candidate</span>
+            <a href="/admin/candidatesList"><span>candidates</span></a>
           </li>
 
           <hr />
@@ -49,19 +50,17 @@ export default function Sidebar() {
           <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide">OTHERS</div>
           <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
             <Users size={18} />
-            <span>Users Banned</span>
+            <a href="/admin/banUsers"><span>candidates</span></a>
           </li>
         </ul>
       </div>
 
       <div className="space-y-4">
         <div className="flex items-center space-x-2 text-gray-800 hover:font-semibold">
-          <Settings size={18} />
-          <span>Settings</span>
-        </div>
-        <div className="flex items-center space-x-2 text-gray-800 hover:font-semibold">
-          <LogOut size={18} />
-          <span>Logout</span>
+          <button onClick={logout} className="profile-option">
+            <LogOut size={18} />
+            Log out
+          </button>
         </div>
       </div>
     </div>
