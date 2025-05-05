@@ -6,7 +6,9 @@ import {
   SearchIcon,
   XIcon,
 } from "lucide-react";
-import React from "react";
+import { api } from "../../../../api/api";
+
+import React, { useState , useEffect} from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -36,109 +38,151 @@ import {
 
 const AllCandidate = () => {
   // Data for candidates
-  const candidates = [
-    {
-      id: "#306685",
-      name: "jack",
-      email: "olivia@untitledui.com",
-      avatar: "/avatar-1.svg",
-      avatarFallback: null,
-      state: "active",
-      date: "Jan 6, 2022",
-      isActive: false,
-    },
-    {
-      id: "#306585",
-      name: "Phoenix Baker",
-      email: "phoenix@untitledui.com",
-      avatar: "/avatar-2.svg",
-      avatarFallback: null,
-      state: "active",
-      date: "Jan 6, 2022",
-      isActive: false,
-    },
-    {
-      id: "#306485",
-      name: "Lana Steiner",
-      email: "lana@untitledui.com",
-      avatar: null,
-      avatarFallback: "LS",
-      state: "active",
-      date: "Jan 6, 2022",
-      isActive: false,
-    },
-    {
-      id: "#306385",
-      name: "Demi Wilkinson",
-      email: "demi@untitledui.com",
-      avatar: null,
-      avatarFallback: "DW",
-      state: "active",
-      date: "Jan 5, 2022",
-      isActive: false,
-    },
-    {
-      id: "#30628",
-      name: "Candice Wu",
-      email: "candice@untitledui.com",
-      avatar: "/avatar-5.svg",
-      avatarFallback: null,
-      state: "waiting",
-      date: "Jan 5, 2022",
-      isActive: true,
-    },
-    {
-      id: "#306185",
-      name: "Natali Craig",
-      email: "natali@untitledui.com",
-      avatar: null,
-      avatarFallback: "NC",
-      state: "active",
-      date: "Jan 5, 2022",
-      isActive: false,
-    },
-    {
-      id: "#306085",
-      name: "Drew Cano",
-      email: "drew@untitledui.com",
-      avatar: "/avatar.svg",
-      avatarFallback: null,
-      state: "inactive",
-      date: "Jan 4, 2022",
-      isActive: true,
-    },
-    {
-      id: "#305985",
-      name: "Orlando Diggs",
-      email: "orlando@untitledui.com",
-      avatar: "/avatar-4.svg",
-      avatarFallback: null,
-      state: "active",
-      date: "Jan 3, 2022",
-      isActive: false,
-    },
-    {
-      id: "#305885",
-      name: "Andi Lane",
-      email: "andi@untitledui.com",
-      avatar: "/avatar-6.svg",
-      avatarFallback: null,
-      state: "active",
-      date: "Jan 3, 2022",
-      isActive: false,
-    },
-    {
-      id: "#308557",
-      name: "Kate Morrison",
-      email: "kate@untitledui.com",
-      avatar: "/avatar-3.svg",
-      avatarFallback: null,
-      state: "active",
-      date: "Jan 3, 2022",
-      isActive: false,
-    },
-  ];
+  // const candidates = [
+  //   {
+  //     id: "#306685",
+  //     name: "jack",
+  //     email: "olivia@untitledui.com",
+  //     avatar: "/avatar-1.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 6, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#306585",
+  //     name: "Phoenix Baker",
+  //     email: "phoenix@untitledui.com",
+  //     avatar: "/avatar-2.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 6, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#306485",
+  //     name: "Lana Steiner",
+  //     email: "lana@untitledui.com",
+  //     avatar: null,
+  //     avatarFallback: "LS",
+  //     state: "active",
+  //     date: "Jan 6, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#306385",
+  //     name: "Demi Wilkinson",
+  //     email: "demi@untitledui.com",
+  //     avatar: null,
+  //     avatarFallback: "DW",
+  //     state: "active",
+  //     date: "Jan 5, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#30628",
+  //     name: "Candice Wu",
+  //     email: "candice@untitledui.com",
+  //     avatar: "/avatar-5.svg",
+  //     avatarFallback: null,
+  //     state: "waiting",
+  //     date: "Jan 5, 2022",
+  //     isActive: true,
+  //   },
+  //   {
+  //     id: "#306185",
+  //     name: "Natali Craig",
+  //     email: "natali@untitledui.com",
+  //     avatar: null,
+  //     avatarFallback: "NC",
+  //     state: "active",
+  //     date: "Jan 5, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#306085",
+  //     name: "Drew Cano",
+  //     email: "drew@untitledui.com",
+  //     avatar: "/avatar.svg",
+  //     avatarFallback: null,
+  //     state: "inactive",
+  //     date: "Jan 4, 2022",
+  //     isActive: true,
+  //   },
+  //   {
+  //     id: "#305985",
+  //     name: "Orlando Diggs",
+  //     email: "orlando@untitledui.com",
+  //     avatar: "/avatar-4.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 3, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#305885",
+  //     name: "Andi Lane",
+  //     email: "andi@untitledui.com",
+  //     avatar: "/avatar-6.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 3, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#308557",
+  //     name: "Kate Morrison",
+  //     email: "kate@untitledui.com",
+  //     avatar: "/avatar-3.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 3, 2022",
+  //     isActive: false,
+  //   },
+  // ];
 
+  const [candidates,setCandidate] = useState([]);
+
+  
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      try {
+        const response = await api.get('api/admin/CanidatesList');
+        if (response.status !== 200) {
+          throw new Error('Failed to fetch candidates');
+        }
+        
+        const rawData = await response.data;
+  
+        const formattedCandidates = rawData.map((item, index) => ({
+          id: item.id ? `#${item.id}` : `#000${index}`,
+          name: item.name || 'Unknown',
+          email: item.email || 'noemail@example.com',
+          avatar: item.avatar || `/avatar-${(index % 5) + 1}.svg`,
+          avatarFallback: null,
+          state: item.state || 'waiting',
+          date: new Date(item.created_at).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+          isActive: false,
+        }));
+        
+        setCandidate(formattedCandidates);
+        
+      } catch (error) {
+        console.error("Error fetching candidates:", error);
+      }
+    };
+    
+    fetchCandidates();
+  }, []);
+  
+  async function updateState(id,state){
+    await api.post(`/admin/CanidatesList/${id}`,{state:state});
+  }
+  
   // Column headers
   const columns = [
     { key: "id", label: "ID Candidate" },
@@ -253,15 +297,13 @@ const AllCandidate = () => {
                         </TableCell>
                         <TableCell className="h-[72px] px-6 py-4">
                           <div className="flex justify-between">
-                            <Button
-                              variant="outline"
-                              className={`w-[103px] h-10 ${candidate.isActive ? "bg-[#42cd2f26] text-[#1bea59] border-none" : "bg-white text-[#ff0a0a] border-[#ff0a0a]"} font-semibold text-base rounded-[10px]`}
-                            >
-                              {candidate.isActive ? "ACTIVE" : "UNACTIVE"}
-                            </Button>
-                            <Button className="w-[103px] h-10 bg-[#ff0a0a26] text-[#ff0a0a] font-semibold text-base rounded-[10px]">
-                              BAN
-                            </Button>
+                          <button onClick={() => updateState(candidate.id, candidate.isActive ? "ACTIVE" : "UNACTIVE")}
+                                variant="outline" className={`w-[103px] h-10 ${candidate.isActive ? "bg-[#42cd2f26] text-[#1bea59] border-none" : "bg-white text-[#ff0a0a] border-[#ff0a0a]"} font-semibold text-base rounded-[10px]`}>
+                                {candidate.isActive ? "ACTIVE" : "UNACTIVE"}
+                          </button>
+                          <button onClick={() => updateState(candidate.id,'BANNED')} className="w-[103px] h-10 bg-[#ff0a0a26] text-[#ff0a0a] font-semibold text-base rounded-[10px]">
+                            BAN
+                          </button>
                           </div>
                         </TableCell>
                       </TableRow>
