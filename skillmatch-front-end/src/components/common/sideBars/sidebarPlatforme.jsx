@@ -32,6 +32,20 @@ export default function Sidebar() {
             <span m-5>Candidate</span>
           </li>
 
+          <hr />
+          
+          <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide m-3">USERS Management</div>
+          <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
+            <BriefcaseBusiness size={18} />
+            <span m-5>Company</span>
+          </li>
+          <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
+            <Users size={18} />
+            <span m-5>Candidate</span>
+          </li>
+
+          <hr />
+
           <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide">OTHERS</div>
           <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
             <Users size={18} />

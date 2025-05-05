@@ -18,9 +18,19 @@ class RoadmapFactory extends Factory
      */
     public function definition(): array
     {
+
+        $completed = [
+            'completed',
+            'pending', 
+            'canceled'
+
+        ];
         return [
              'skill_id'=>Skill::factory(),
+             'name'=>fake()->domainName(),
+             'completed'=>fake()->randomElement($completed),
              'candidate_id'=>Candidate::factory()
         ];
     }
+
 }

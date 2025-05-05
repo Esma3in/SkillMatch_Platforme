@@ -14,11 +14,11 @@ class ProfileCandidateController extends Controller
             'candidate_id' => 'required|exists:candidates,id',
             'description' => 'required|min:10',
         ]);
-    
+
         ProfileCandidate::where('candidate_id', $credentials['candidate_id'])->update([
             'description' => $credentials['description']
         ]);
-    
+
         return response()->json(['message' => 'Description updated successfully.'], 200);
     }
     public function storeProfile(Request $request)
@@ -55,5 +55,5 @@ class ProfileCandidateController extends Controller
             'data' => $profile,
         ], 201);
     }
-    
+
 }

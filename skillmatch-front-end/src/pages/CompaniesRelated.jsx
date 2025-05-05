@@ -12,6 +12,7 @@ function CompaniesRelated() {
   const [retryCount, setRetryCount] = useState(0);
   const [companiesSkills, setCompaniesSkills] = useState([]);
   const [RoadmapData , setRoadmapData] = useState({})
+
   const navigate = useNavigate();
   
   const candidate_id = useState(() => {
@@ -126,6 +127,7 @@ function CompaniesRelated() {
             onClick={() => generateRoadMap(company.company_id)}
 
 
+
           >
             View Career Roadmap
           </button>
@@ -173,7 +175,9 @@ function CompaniesRelated() {
       
       // Create the roadmap
       const responseRoadmap = await api.post(`/api/create-roadmap`, {
+       name:"Roadmap just for u",
         skill_id: skillId,
+        completed : 'pending',
         candidate_id: candidate_id
       });
       
@@ -181,7 +185,7 @@ function CompaniesRelated() {
       
       // Navigate to the roadmap page or handle the roadmap display
       // You might want to uncomment and adjust this based on your routing
-      navigate(`/candidate/roadmap/${responseRoadmap.data.data.id}`);
+      navigate(`/candidate/roadmap/${companyId}`);
      
     } catch (error) {
       console.error("Error generating roadmap:", error);

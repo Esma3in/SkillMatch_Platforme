@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import NavbarCandidate from '../components/common/navbarCandidate';
+import { api } from '../api/api';
 
-const TestList = () => {
+const TestsList = () => {
   const { companyId } = useParams()
   const [Tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ const TestList = () => {
     const fetchTests = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/comapny/${companyId}/tests?page=${currentPage}`, {
+        const response = await api.get(`api/candidate/company/${companyId}/tests?page=${currentPage}`, {
           headers: {
             'Accept': 'application/json'
           }
@@ -28,7 +29,7 @@ const TestList = () => {
         setLoading(false);
 
       } catch (err) {
-        setError(err.response.data.error);
+        setError(err.response.data);
         setLoading(false);
         console.error('Error fetching tests:', err);
       }
@@ -91,12 +92,13 @@ const TestList = () => {
   };
 
   if (loading) return <div className="text-center py-8">Loading Tests...</div>;
-  if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
+  if (error) return <div className="text-center py-4 px-6 mx-auto mt-4 max-w-md rounded-xl bg-red-100 text-red-700 shadow-md border border-red-300">
+  {error}
+</div>
+;
 
   return (
     <>
-
-
       <NavbarCandidate />
       <div className="container mx-auto px-4">
         <div className="flex items-center gap-4 p-4">
@@ -179,4 +181,4 @@ const TestList = () => {
   );
 };
 
-export default TestList;
+export default TestsList;

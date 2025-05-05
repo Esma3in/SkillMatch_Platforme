@@ -20,7 +20,7 @@ class Skill extends Model
         'classement',
     ];
 
-    // get  the recommandede skills by Company 
+    // get  the recommandede skills by Company
     public function Companies(){
         return $this->belongsToMany(Company::class,'companies_skills')
                     ->withTimestamps();
@@ -46,5 +46,10 @@ class Skill extends Model
     public function prerequistes(){
         return $this->hasMany(Prerequiste::class);
     }
-    
+
+    //qcm for roadmap
+    public function QcmForRoadmap(){
+        return $this->belongsToMany(QcmForRoadmap::class);
+    }
+
 }

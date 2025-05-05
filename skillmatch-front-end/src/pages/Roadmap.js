@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { api } from "../api/api";
+import { useParams, useNavigate } from 'react-router';
 
 export const Roadmap = () => {
   // State for active tab
@@ -16,62 +17,79 @@ export const Roadmap = () => {
   ];
 
   // State for dynamic data
-  const [Prerequisites, setPrerequisites] = useState([]);
-  const [candidateCourses, setcandidateCourses] = useState([]);
-  const [roadmapSkills, setroadmapSkills] = useState([]);
-  const [tools, settools] = useState([]);
-  const [competitor, setcompetitor] = useState([]);
-  const [companyselected, setcompanySelected] = useState({ // Assuming company ID for API calls
+  const [data, setData] = useState({
+    skills: [],
+    prerequisites: [],
+    tools: [],
+    candidateCourses: [],
+    roadmapSkills: [],
   });
-  const [skillsCompanySelected, setskillsCompanySelected] = useState([]);
+  const { id } = useParams();
+  const [competitors, setCompetitors] = useState([]);
+  const [companySelected, setCompanySelected] = useState({ name: "Unknown Company" });
+  const [skillsCompanySelected, setSkillsCompanySelected] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const candidate_id= JSON.parse(localStorage.getItem('candidate_id'));
-  console.log(candidate_id)
+  const candidateId = JSON.parse(localStorage.getItem('candidate_id'));
+  const navigate = useNavigate();
+
+  const handleTakeQuiz = () => {
+    navigate(`/qcm/roadmap/${id}`);
+  };
+
+  // Utility function to remove duplicates based on specified criteria
+  const removeDuplicates = (array, criteria) => {
+    const seen = new Set();
+    return array.filter(item => {
+      // Handle single property or multiple properties as criteria
+      const value = typeof criteria === 'string'
+        ? item[criteria]
+        : criteria.map(key => item[key]).join('|');
+      
+      // Skip if value is undefined or null
+      if (value === undefined || value === null) return false;
+      
+      // Convert to lowercase for case-insensitive comparison if value is a string
+      const dedupeKey = typeof value === 'string' ? value.toLowerCase() : value;
+      
+      if (seen.has(dedupeKey)) return false;
+      seen.add(dedupeKey);
+      return true;
+    });
+  };
 
   // Fetch company skills and roadmap data on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        setError(null);
-
-        // Step 1: Fetch company skills
-        const skillsResponse = await api.get(
-          `/api/company/${companyselected}/skills`
-        );
-        if (!skillsResponse.ok) {
-          throw new Error("Failed to fetch company skills");
-        }
-        const skillsData = skillsResponse.data.skills
-        setskillsCompanySelected(skillsData);
-        console.log(skillsData)
-
-        // Step 2: Fetch roadmap data based on skills
-        const skillIds = skillsData.skills.map((skill) => skill.id).join(",");
-        const roadmapResponse = await fetch(
-          `/api/roadmap-data?skills=${skillIds}`
-        );
-        if (!roadmapResponse.ok) {
-          throw new Error("Failed to fetch roadmap data");
-        }
-        const roadmapData = await roadmapResponse.json();
-
-        // Update state with fetched data
-        setPrerequisites(roadmapData.prerequisites || []);
-        setcandidateCourses(roadmapData.courses || []);
-        setroadmapSkills(roadmapData.skills || []);
-        settools(roadmapData.tools || []);
-        setcompetitor(roadmapData.competitors || []);
+        const response = await api.get(`/api/roadmap/${id}`);
+        const uniqueData = {
+          skills: removeDuplicates(response.data.skills || [], 'id'),
+          prerequisites: removeDuplicates(response.data.prerequisites || [], 'id'),
+          tools: removeDuplicates(response.data.tools || [], 'name'), // Deduplicate tools by name
+          candidateCourses: removeDuplicates(response.data.candidateCourses || [], 'id'),
+          roadmapSkills: removeDuplicates(response.data.roadmapSkills || [], 'text'), // Deduplicate roadmapSkills by text
+        };
+        setData(uniqueData);
+        setCompanySelected(response.data.company || { name: "Unknown Company" });
+        setSkillsCompanySelected(removeDuplicates(response.data.skills || [], 'id'));
+        setCompetitors(removeDuplicates(response.data.competitors || [], 'id'));
+        setLoading(false);
       } catch (err) {
-        setError(err.message);
-      } finally {
+        setError(err.response?.data?.message || 'Error fetching data');
         setLoading(false);
       }
     };
-
     fetchData();
-  }, [companyselected.id]);
+  }, [id]);
+
+  // Memoized filtered data for performance
+  const filteredTools = useMemo(() => data.tools, [data.tools]);
+  const filteredPrerequisites = useMemo(() => data.prerequisites, [data.prerequisites]);
+  const filteredCourses = useMemo(() => data.candidateCourses, [data.candidateCourses]);
+  const filteredRoadmapSkills = useMemo(() => data.roadmapSkills, [data.roadmapSkills]);
+  const filteredSkillsCompanySelected = useMemo(() => skillsCompanySelected, [skillsCompanySelected]);
+  const filteredCompetitors = useMemo(() => competitors, [competitors]);
 
   return (
     <>
@@ -82,7 +100,7 @@ export const Roadmap = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold text-white">Your Roadmap</h1>
             <p className="mt-2 text-sm text-white">
-              Chosen Company: <span className="font-semibold">{companyselected.name}</span>
+              Chosen Company: <span className="font-semibold">{companySelected.name || "Unknown Company"}</span>
             </p>
           </div>
         </div>
@@ -110,8 +128,8 @@ export const Roadmap = () => {
                   How to Follow Your Roadmap
                 </h3>
                 <p className="text-sm text-gray-600 mb-4">
-                  This roadmap is designed to prepare you for a role at {companyselected.name} by
-                  building key skills in {skillsCompanySelected.map(skill => skill.name).join(", ")}.
+                  This roadmap is designed to prepare you for a role at {companySelected.name || "your chosen company"} by
+                  building key skills in {filteredSkillsCompanySelected.length > 0 ? filteredSkillsCompanySelected.map(skill => skill.name).join(", ") : "various areas"}.
                   Follow these steps to succeed:
                 </p>
                 <ul className="space-y-3 text-sm text-gray-600">
@@ -210,7 +228,7 @@ export const Roadmap = () => {
                     </svg>
                     <span>
                       <strong>Badge:</strong> Earn a badge by passing the quiz.
-                      Display it on your profile to impress employers like {companyselected.name}.
+                      Display it on your profile to impress employers like {companySelected.name || "your chosen company"}.
                     </span>
                   </li>
                 </ul>
@@ -240,7 +258,7 @@ export const Roadmap = () => {
                         What is a Badge?
                       </h4>
                       <p className="text-xs text-gray-600">
-                        A badge certifies your mastery of skills required for {companyselected.name} roles.
+                        A badge certifies your mastery of skills required for {companySelected.name || "company"} roles.
                         It’s shareable on your SkillMatch profile and LinkedIn.
                       </p>
                     </div>
@@ -320,7 +338,7 @@ export const Roadmap = () => {
             )}
 
             {/* Tools and Resources Section */}
-            {!loading && !error && tools.length > 0 && (
+            {!loading && !error && filteredTools.length > 0 && (
               <div className="bg-white rounded-xl shadow-md p-6 mb-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Tools & Resources You'll Need
@@ -329,23 +347,23 @@ export const Roadmap = () => {
                   Prepare your development environment with these essential tools to complete your roadmap.
                 </p>
                 <div className="space-y-4">
-                  {tools.map((tool) => (
+                  {filteredTools.map((tool) => (
                     <div
                       key={tool.id}
                       className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all"
                     >
                       <img
-                        src={tool.image}
-                        alt={tool.name}
+                        src={tool.image || "https://via.placeholder.com/40"}
+                        alt={tool.name || "Tool"}
                         className="w-10 h-10 rounded-full mr-4"
                       />
                       <div>
                         <h4 className="text-sm font-medium text-gray-800">
-                          {tool.name}
+                          {tool.name || "Unknown Tool"}
                         </h4>
-                        <p className="text-xs text-gray-600">{tool.description}</p>
+                        <p className="text-xs text-gray-600">{tool.description || "No description available"}</p>
                         <a
-                          href={tool.link}
+                          href={tool.link || "#"}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-purple-600 text-xs font-medium hover:underline"
@@ -377,9 +395,9 @@ export const Roadmap = () => {
                       </button>
                     </div>
                     <div className="mt-4 ml-9 p-4 bg-gray-50 rounded-lg">
-                      {Prerequisites.length > 0 ? (
+                      {filteredPrerequisites.length > 0 ? (
                         <ul className="space-y-2 text-sm text-gray-600">
-                          {Prerequisites.map((prereq) => (
+                          {filteredPrerequisites.map((prereq) => (
                             <li key={prereq.id} className="flex items-start">
                               <svg
                                 className="w-4 h-4 text-purple-600 mr-2 mt-1"
@@ -394,7 +412,7 @@ export const Roadmap = () => {
                                   d="M9 12l2 2 4-4"
                                 />
                               </svg>
-                              <span>{prereq.description}</span>
+                              <span>{prereq.description || "No description available"}</span>
                             </li>
                           ))}
                         </ul>
@@ -423,25 +441,27 @@ export const Roadmap = () => {
                       </button>
                     </div>
                     <div className="mt-4 ml-9 p-4 bg-gray-50 rounded-lg">
-                      {candidateCourses.length > 0 ? (
+                      {filteredCourses.length > 0 ? (
                         <div className="space-y-4">
-                          {candidateCourses.map((course) => (
+                          {filteredCourses.map((course) => (
                             <div
                               key={course.id}
                               className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all"
                             >
                               <img
-                                src={course.image}
-                                alt={course.title}
+                                src={course.image || "https://via.placeholder.com/40"}
+                                alt={course.name || "Course"}
                                 className="w-10 h-10 rounded-full mr-4"
                               />
                               <div>
                                 <h4 className="text-sm font-medium text-gray-800">
-                                  {course.title}
+                                  {course.name || "Unknown Course"}
                                 </h4>
-                                <p className="text-xs text-gray-600">{course.description}</p>
+                                <h5 className="text-sm font-small text-gray-600">{course.provider}</h5>
+                                <p className="text-xs text-gray-600 font-bold">{course.duration || "No description available"}</p>
+                                <p className="text-xs text-indigo-600 text-xs font-medium ">{course.level}</p>
                                 <a
-                                  href={course.link}
+                                  href={course.link || "#"}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="text-purple-600 text-xs font-medium hover:underline"
@@ -484,8 +504,8 @@ export const Roadmap = () => {
                         </span>
                       </div>
                       <div className="mt-4 ml-6 space-y-4">
-                        {roadmapSkills.length > 0 ? (
-                          roadmapSkills.map((skill, index) => (
+                        {filteredRoadmapSkills.length > 0 ? (
+                          filteredRoadmapSkills.map((skill, index) => (
                             <div key={skill.id} className="flex items-start">
                               <div className="relative mr-4">
                                 <div
@@ -511,11 +531,11 @@ export const Roadmap = () => {
                                     </svg>
                                   )}
                                 </div>
-                                {index < roadmapSkills.length - 1 && (
+                                {index < filteredRoadmapSkills.length - 1 && (
                                   <div className="absolute top-5 left-2.5 w-px h-6 bg-gray-300"></div>
                                 )}
                               </div>
-                              <p className="text-sm text-gray-600">{skill.text}</p>
+                              <p className="text-sm text-gray-600">{skill.text || "No skill description"}</p>
                             </div>
                           ))
                         ) : (
@@ -544,14 +564,17 @@ export const Roadmap = () => {
                         Before You Start the Quiz
                       </h4>
                       <p className="text-xs text-yellow-700 mt-2">
-                        This quiz assesses your skills in {skillsCompanySelected.map(skill => skill.name).join(", ")}.
+                        This quiz assesses your skills in {filteredSkillsCompanySelected.length > 0 ? filteredSkillsCompanySelected.map(skill => skill.name).join(", ") : "various areas"}.
                         Pass to earn a badge for your profile. Take your time and good luck!
                       </p>
                     </div>
                     <div className="mt-6 flex justify-end">
-                      <button className="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-purple-700 transition-all">
-                        Take the Quiz
-                      </button>
+                    <button
+                      onClick={handleTakeQuiz}
+                      className="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-purple-700 transition-all"
+                    >
+                      Take the Quiz
+                    </button>
                     </div>
                   </div>
                 )}
@@ -570,7 +593,7 @@ export const Roadmap = () => {
                     <div className="mt-4 ml-9 p-4 bg-gray-50 rounded-lg">
                       <p className="text-sm text-gray-600">
                         Complete the quiz to earn a badge showcasing your skills to
-                        employers like {companyselected.name}.
+                        employers like {companySelected.name || "your chosen company"}.
                       </p>
                     </div>
                   </div>
@@ -613,8 +636,8 @@ export const Roadmap = () => {
               <p className="text-xs text-gray-600 mb-4">
                 See how you compare to other candidates.
               </p>
-              {competitor.length > 0 ? (
-                competitor.map((competitor) => (
+              {filteredCompetitors.length > 0 ? (
+                filteredCompetitors.map((competitor) => (
                   <div
                     key={competitor.id}
                     className="flex items-center justify-between mb-4"
@@ -622,24 +645,24 @@ export const Roadmap = () => {
                     <div className="flex items-center">
                       <img
                         className="w-8 h-8 rounded-full mr-2"
-                        src={competitor.image}
-                        alt={competitor.name}
+                        src={competitor.image || "https://via.placeholder.com/32"}
+                        alt={competitor.name || "Competitor"}
                       />
                       <div>
                         <p className="text-xs font-medium text-gray-900">
-                          {competitor.name}
+                          {competitor.name || "Unknown"}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {competitor.email}
+                          {competitor.email || "No email"}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="text-xs font-medium text-gray-900">
-                        {competitor.badges} Badges
+                        {competitor.badges || 0} Badges
                       </p>
                       <p className="text-xs text-gray-500">
-                        {competitor.location}
+                        {competitor.location || "Unknown"}
                       </p>
                     </div>
                   </div>

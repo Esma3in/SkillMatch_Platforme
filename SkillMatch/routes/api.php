@@ -16,8 +16,11 @@ use App\Http\Controllers\RoadmapController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ChallengeController;
+use App\Http\Controllers\dahsboardcontroller;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\prerequisitesController;
+use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
 use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\candidateCoursesController;
@@ -28,6 +31,8 @@ use App\Http\Controllers\CompaniesSelectedController;
 Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['csrf' => csrf_token()]);
 });
+
+
 
 // Candidate Routes
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);
@@ -42,6 +47,8 @@ Route::post('/candidate/signin', [UserController::class, 'SignIn']);
 Route::get('/logout', [CandidateController::class, 'Logout']);
 Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);
 Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);
+
+
 
 // get the selected companies by an candidate :
 Route::get('/selected/companies/{candidate_id}' , [CompaniesSelectedController::class , 'CompaniesSelected']);
@@ -72,6 +79,14 @@ Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsContro
 //company SELECTED
 Route::post('/selected/company/{id}', [CompaniesSelectedController::class, 'selectCompany']);
 
+
+//Candidate Test Routes:
+Route::get('/candidate/company/{id}/tests', [TestController::class, 'GetTestsCompanySelected']);
+Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
+
+
+
+
 // get roadmap
 Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getCompleteRoadmap']);
 
@@ -86,16 +101,17 @@ Route::get('/selected/companies/{candidate_id}', [CompaniesSelectedController::c
 
 // skills of an companyId
 Route::get('/skills/company/{company_id}' , [CompaniesSelectedController::class , 'getSkillsByCompany']);
-// genrate roadmap 
+// genrate roadmap
 Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
+//qcm for roadmap
+Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
 
 
 
-//Candidate Test Routes:
 
-Route::get('/comapny/{id}/tests',[TestController::class,'GetTestsCompanieSelected']);
-Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
+
+
 
 //Select Company Route:
 // Route::post('/candidate/select/company',[CompaniesSelectedController::class,'SelectCompany']);
@@ -113,4 +129,13 @@ Route::get('/admin',[AdminController::class],'index')->name('admin.index');
 
 Route::get('/roadmap/{companyId}' , [CompaniesSelectedController::class  , 'getSkillsData']);
 
-
+Route::get('/dashboard/companies/selected/{candidate_id}', [DashboardController::class, 'countSelectedCompanies']);
+Route::get('/dashboard/roadmap/completed/{candidate_id}', [DashboardController::class, 'countCompletedRoadmaps']);
+Route::get('/dashboard/companies/matched/{candidate_id}', [DashboardController::class, 'countMatchedCompaniesBySkill']);
+Route::get('/dashboard/badges/{candidate_id}', [DashboardController::class, 'countBadges']);
+Route::get('/dashboard/all/roadmaps/{candidate_id}', [DashboardController::class, 'countAllRoadmaps']);
+Route::get('/candidate/{candidate_id}/roadmaps-progress', [DashboardController::class, 'getRoadmapsProgressWithCandidates']);
+Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController::class, 'getSelectedCompanies']);
+Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
+Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
+Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);

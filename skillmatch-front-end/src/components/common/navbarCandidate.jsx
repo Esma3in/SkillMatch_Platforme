@@ -168,7 +168,7 @@ const NavbarCandidate = () => {
                       <i className="option-icon profile-icon"></i>
                       Profile
                     </a>
-                    <a href="/settings" className="profile-option">
+                    <a href="/profile-settings" className="profile-option">
                       <i className="option-icon settings-icon"></i>
                       Settings
                     </a>

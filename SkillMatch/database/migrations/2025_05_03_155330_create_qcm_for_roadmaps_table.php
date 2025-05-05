@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roadmaps' ,function(Blueprint $table){
+        Schema::create('qcm_for_roadmaps', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('skill_id')->constrained()->cascadeOnDelete();
-            $table->string('completed');
-            $table->foreignId('candidate_id')->constrained();
+            $table->string('question');
+            $table->json('options');
+            $table->string('correct_answer');
+            $table->foreignId('skill_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
         });
@@ -27,7 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Roadmaps');
-        
+        Schema::dropIfExists('qcm_for_roadmaps');
     }
 };

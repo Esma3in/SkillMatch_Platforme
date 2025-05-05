@@ -16,6 +16,8 @@ class Roadmap extends Model
     use HasFactory;
     protected $fillable=[
         'skill_id',
+        'name',
+        'completed',
         'candidate_id'
     ];
     // get the candidate correspnonding to this roadmap
@@ -37,5 +39,9 @@ class Roadmap extends Model
     }
     public function Tools(){
         return $this->hasMany(Tool::class);
+    }
+    // qcm for roadmap
+    public function QcmForRoadmap(){
+        return $this->belongsToMany(QcmForRoadmap::class);
     }
 }

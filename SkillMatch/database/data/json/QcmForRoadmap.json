@@ -1,0 +1,5216 @@
+{
+    "HTML": [
+  {
+    "question": "Which HTML tag is used to create a hyperlink?",
+    "options": [
+      "<a>",
+      "<link>",
+      "<href>"
+    ],
+    "correctAnswer": "<a>"
+  },
+  {
+    "question": "Which HTML attribute is used to specify the alternative text for an image?",
+    "options": [
+      "src",
+      "alt",
+      "title"
+    ],
+    "correctAnswer": "alt"
+  },
+  {
+    "question": "Which tag is used to define a table in HTML?",
+    "options": [
+      "<table>",
+      "<tr>",
+      "<th>"
+    ],
+    "correctAnswer": "<table>"
+  },
+  {
+    "question": "What is the correct HTML element for inserting a line break?",
+    "options": [
+      "<break>",
+      "<br>",
+      "<lb>"
+    ],
+    "correctAnswer": "<br>"
+  },
+  {
+    "question": "Which HTML tag is used to create a paragraph?",
+    "options": [
+      "<p>",
+      "<div>",
+      "<span>"
+    ],
+    "correctAnswer": "<p>"
+  },
+  {
+    "question": "Which HTML element is used to define important text?",
+    "options": [
+      "<strong>",
+      "<em>",
+      "<b>"
+    ],
+    "correctAnswer": "<strong>"
+  },
+  {
+    "question": "What is the default value of the `position` property in HTML?",
+    "options": [
+      "absolute",
+      "relative",
+      "static"
+    ],
+    "correctAnswer": "static"
+  },
+  {
+    "question": "Which HTML tag is used to create a list of items with bullet points?",
+    "options": [
+      "<ol>",
+      "<ul>",
+      "<li>"
+    ],
+    "correctAnswer": "<ul>"
+  },
+  {
+    "question": "Which tag is used to define an ordered list in HTML?",
+    "options": [
+      "<ol>",
+      "<ul>",
+      "<li>"
+    ],
+    "correctAnswer": "<ol>"
+  },
+  {
+    "question": "What does the `alt` attribute of an `<img>` tag provide?",
+    "options": [
+      "A description of the image",
+      "The URL of the image",
+      "The image source path"
+    ],
+    "correctAnswer": "A description of the image"
+  },
+  {
+    "question": "Which HTML element is used to define a hyperlink?",
+    "options": [
+      "<a>",
+      "<href>",
+      "<link>"
+    ],
+    "correctAnswer": "<a>"
+  },
+  {
+    "question": "What is the correct HTML for inserting an image?",
+    "options": [
+      "<img src='image.jpg' alt='image'>",
+      "<image src='image.jpg' alt='image'>",
+      "<img href='image.jpg' alt='image'>"
+    ],
+    "correctAnswer": "<img src='image.jpg' alt='image'>"
+  },
+  {
+    "question": "Which HTML tag is used to display a horizontal line?",
+    "options": [
+      "<hr>",
+      "<line>",
+      "<br>"
+    ],
+    "correctAnswer": "<hr>"
+  },
+  {
+    "question": "Which HTML element is used to define a form?",
+    "options": [
+      "<form>",
+      "<input>",
+      "<textarea>"
+    ],
+    "correctAnswer": "<form>"
+  },
+  {
+    "question": "What does the `target='_blank'` attribute in an anchor tag do?",
+    "options": [
+      "Opens the link in the same tab",
+      "Opens the link in a new tab",
+      "Opens the link in a new window"
+    ],
+    "correctAnswer": "Opens the link in a new tab"
+  },
+  {
+    "question": "What is the correct HTML for embedding a YouTube video?",
+    "options": [
+      "<iframe src='https://www.youtube.com/embed/videoID'></iframe>",
+      "<video src='https://www.youtube.com/embed/videoID'></video>",
+      "<embed src='https://www.youtube.com/embed/videoID'></embed>"
+    ],
+    "correctAnswer": "<iframe src='https://www.youtube.com/embed/videoID'></iframe>"
+  },
+  {
+    "question": "Which HTML tag is used to define an input field in a form?",
+    "options": [
+      "<input>",
+      "<textarea>",
+      "<button>"
+    ],
+    "correctAnswer": "<input>"
+  },
+  {
+    "question": "Which attribute is used to specify the URL in an anchor tag?",
+    "options": [
+      "src",
+      "href",
+      "url"
+    ],
+    "correctAnswer": "href"
+  },
+  {
+    "question": "Which HTML tag is used to define a heading?",
+    "options": [
+      "<h1>",
+      "<head>",
+      "<header>"
+    ],
+    "correctAnswer": "<h1>"
+  },
+  {
+    "question": "What is the correct way to define a comment in HTML?",
+    "options": [
+      "<!-- This is a comment -->",
+      "<comment>This is a comment</comment>",
+      "<// This is a comment //>"
+    ],
+    "correctAnswer": "<!-- This is a comment -->"
+  },
+  {
+    "question": "Which tag is used to define a table row in HTML?",
+    "options": [
+      "<row>",
+      "<tr>",
+      "<th>"
+    ],
+    "correctAnswer": "<tr>"
+  },
+  {
+    "question": "What is the correct HTML tag to define a table header?",
+    "options": [
+      "<thead>",
+      "<th>",
+      "<header>"
+    ],
+    "correctAnswer": "<th>"
+  },
+  {
+    "question": "What does the `rel='stylesheet'` attribute in the `<link>` tag do?",
+    "options": [
+      "Links to an external CSS file",
+      "Links to an external JavaScript file",
+      "Defines the relationship between the document and the linked file"
+    ],
+    "correctAnswer": "Links to an external CSS file"
+  },
+  {
+    "question": "Which HTML element is used to define an inline frame?",
+    "options": [
+      "<frame>",
+      "<iframe>",
+      "<inline>"
+    ],
+    "correctAnswer": "<iframe>"
+  },
+  {
+    "question": "Which HTML element is used to define a semantic section of content?",
+    "options": [
+      "<section>",
+      "<div>",
+      "<article>"
+    ],
+    "correctAnswer": "<section>"
+  },
+  {
+    "question": "Which tag is used to define a footer in HTML?",
+    "options": [
+      "<footer>",
+      "<bottom>",
+      "<section>"
+    ],
+    "correctAnswer": "<footer>"
+  },
+  {
+    "question": "Which HTML element is used to define an unordered list?",
+    "options": [
+      "<ol>",
+      "<ul>",
+      "<li>"
+    ],
+    "correctAnswer": "<ul>"
+  },
+  {
+    "question": "What is the correct HTML tag to define an input field for password?",
+    "options": [
+      "<input type='password'>",
+      "<input type='text'>",
+      "<input type='passwordField'>"
+    ],
+    "correctAnswer": "<input type='password'>"
+  }
+],
+    "JavaScript": [
+  {
+    "question": "Which method is used to parse a string into an integer in JavaScript?",
+    "options": [
+      "parseInt()",
+      "parseInteger()",
+      "toInt()"
+    ],
+    "correctAnswer": "parseInt()"
+  },
+  {
+    "question": "What does the `===` operator check in JavaScript?",
+    "options": [
+      "Equality of value only",
+      "Equality of value and type",
+      "Equality of type only"
+    ],
+    "correctAnswer": "Equality of value and type"
+  },
+  {
+    "question": "Which method is used to add an element to the end of an array in JavaScript?",
+    "options": [
+      "push()",
+      "add()",
+      "append()"
+    ],
+    "correctAnswer": "push()"
+  },
+  {
+    "question": "How do you declare a constant variable in JavaScript?",
+    "options": [
+      "const variableName",
+      "let variableName",
+      "var variableName"
+    ],
+    "correctAnswer": "const variableName"
+  },
+  {
+    "question": "Which method is used to remove the last element from an array in JavaScript?",
+    "options": [
+      "pop()",
+      "remove()",
+      "delete()"
+    ],
+    "correctAnswer": "pop()"
+  },
+  {
+    "question": "What will the following code output? `console.log(5 + '5')`",
+    "options": [
+      "55",
+      "10",
+      "Error"
+    ],
+    "correctAnswer": "55"
+  },
+  {
+    "question": "Which keyword is used to define a block-scoped variable in JavaScript?",
+    "options": [
+      "let",
+      "var",
+      "const"
+    ],
+    "correctAnswer": "let"
+  },
+  {
+    "question": "What is the result of `typeof null` in JavaScript?",
+    "options": [
+      "null",
+      "object",
+      "undefined"
+    ],
+    "correctAnswer": "object"
+  },
+  {
+    "question": "Which function is used to display a message in a pop-up alert box in JavaScript?",
+    "options": [
+      "alert()",
+      "message()",
+      "notify()"
+    ],
+    "correctAnswer": "alert()"
+  },
+  {
+    "question": "Which method is used to remove the first element from an array in JavaScript?",
+    "options": [
+      "shift()",
+      "unshift()",
+      "pop()"
+    ],
+    "correctAnswer": "shift()"
+  },
+  {
+    "question": "Which operator is used to assign a value to a variable in JavaScript?",
+    "options": [
+      "=",
+      "==",
+      "==="
+    ],
+    "correctAnswer": "="
+  },
+  {
+    "question": "How do you define a function in JavaScript?",
+    "options": [
+      "function myFunction() {}",
+      "def myFunction() {}",
+      "func myFunction() {}"
+    ],
+    "correctAnswer": "function myFunction() {}"
+  },
+  {
+    "question": "What will the following code output? `console.log(2 == '2')`",
+    "options": [
+      "true",
+      "false",
+      "Error"
+    ],
+    "correctAnswer": "true"
+  },
+  {
+    "question": "Which method is used to convert a string to lowercase in JavaScript?",
+    "options": [
+      "toLowerCase()",
+      "lowerCase()",
+      "convertLower()"
+    ],
+    "correctAnswer": "toLowerCase()"
+  },
+  {
+    "question": "What is the purpose of the `this` keyword in JavaScript?",
+    "options": [
+      "Refers to the current function",
+      "Refers to the current object",
+      "Refers to the global object"
+    ],
+    "correctAnswer": "Refers to the current object"
+  },
+  {
+    "question": "What does `NaN` stand for in JavaScript?",
+    "options": [
+      "Not a Number",
+      "Null and Not",
+      "Not Available Number"
+    ],
+    "correctAnswer": "Not a Number"
+  },
+  {
+    "question": "How do you call a function in JavaScript?",
+    "options": [
+      "myFunction()",
+      "call myFunction()",
+      "invoke myFunction()"
+    ],
+    "correctAnswer": "myFunction()"
+  },
+  {
+    "question": "Which method is used to join all elements of an array into a string in JavaScript?",
+    "options": [
+      "join()",
+      "concat()",
+      "merge()"
+    ],
+    "correctAnswer": "join()"
+  },
+  {
+    "question": "Which operator is used to compare values and types in JavaScript?",
+    "options": [
+      "===",
+      "==",
+      "="
+    ],
+    "correctAnswer": "==="
+  },
+  {
+    "question": "What is the default return value of a function in JavaScript if no `return` statement is used?",
+    "options": [
+      "undefined",
+      "null",
+      "0"
+    ],
+    "correctAnswer": "undefined"
+  },
+  {
+    "question": "Which of the following is the correct way to create an object in JavaScript?",
+    "options": [
+      "let obj = {}",
+      "let obj = []",
+      "let obj = ()"
+    ],
+    "correctAnswer": "let obj = {}"
+  },
+  {
+    "question": "How do you prevent a form from submitting in JavaScript?",
+    "options": [
+      "event.preventDefault()",
+      "form.stopSubmit()",
+      "event.stopPropagation()"
+    ],
+    "correctAnswer": "event.preventDefault()"
+  },
+  {
+    "question": "Which method is used to round a number to the nearest integer in JavaScript?",
+    "options": [
+      "Math.round()",
+      "Math.ceil()",
+      "Math.floor()"
+    ],
+    "correctAnswer": "Math.round()"
+  },
+  {
+    "question": "Which of the following is not a valid data type in JavaScript?",
+    "options": [
+      "Number",
+      "String",
+      "Character"
+    ],
+    "correctAnswer": "Character"
+  },
+  {
+    "question": "What is the result of `false + 1` in JavaScript?",
+    "options": [
+      "0",
+      "1",
+      "false"
+    ],
+    "correctAnswer": "1"
+  },
+  {
+    "question": "How do you create a new array in JavaScript?",
+    "options": [
+      "let arr = []",
+      "let arr = new Array()",
+      "let arr = array()"
+    ],
+    "correctAnswer": "let arr = []"
+  },
+  {
+    "question": "Which event is fired when an element loses focus in JavaScript?",
+    "options": [
+      "blur",
+      "focus",
+      "focusout"
+    ],
+    "correctAnswer": "blur"
+  }
+],
+    "PHP": [
+  {
+    "question": "Which function is used to include a PHP file within another PHP file?",
+    "options": [
+      "include()",
+      "require()",
+      "import()"
+    ],
+    "correctAnswer": "include()"
+  },
+  {
+    "question": "What is the correct way to declare a variable in PHP?",
+    "options": [
+      "$variableName = value;",
+      "var variableName = value;",
+      "variableName = value;"
+    ],
+    "correctAnswer": "$variableName = value;"
+  },
+  {
+    "question": "Which function is used to get the length of a string in PHP?",
+    "options": [
+      "strlen()",
+      "stringLength()",
+      "getLength()"
+    ],
+    "correctAnswer": "strlen()"
+  },
+  {
+    "question": "How do you define a constant in PHP?",
+    "options": [
+      "define('CONSTANT_NAME', value);",
+      "constant('CONSTANT_NAME', value);",
+      "CONSTANT('CONSTANT_NAME', value);"
+    ],
+    "correctAnswer": "define('CONSTANT_NAME', value);"
+  },
+  {
+    "question": "Which function is used to check if a variable is set in PHP?",
+    "options": [
+      "isset()",
+      "defined()",
+      "check()"
+    ],
+    "correctAnswer": "isset()"
+  },
+  {
+    "question": "What does `$_POST` do in PHP?",
+    "options": [
+      "It retrieves data sent via the HTTP POST method.",
+      "It retrieves data sent via the HTTP GET method.",
+      "It stores session data."
+    ],
+    "correctAnswer": "It retrieves data sent via the HTTP POST method."
+  },
+  {
+    "question": "How do you start a session in PHP?",
+    "options": [
+      "session_start()",
+      "start_session()",
+      "session_begin()"
+    ],
+    "correctAnswer": "session_start()"
+  },
+  {
+    "question": "Which PHP function is used to connect to a MySQL database?",
+    "options": [
+      "mysqli_connect()",
+      "mysql_connect()",
+      "connect()"
+    ],
+    "correctAnswer": "mysqli_connect()"
+  },
+  {
+    "question": "Which symbol is used to represent a variable in PHP?",
+    "options": [
+      "$",
+      "@",
+      "&"
+    ],
+    "correctAnswer": "$"
+  },
+  {
+    "question": "What is the correct way to comment a single line in PHP?",
+    "options": [
+      "// This is a comment",
+      "# This is a comment",
+      "/* This is a comment */"
+    ],
+    "correctAnswer": "// This is a comment"
+  },
+  {
+    "question": "Which function is used to redirect the browser to another page in PHP?",
+    "options": [
+      "header()",
+      "redirect()",
+      "location()"
+    ],
+    "correctAnswer": "header()"
+  },
+  {
+    "question": "Which PHP function is used to get the value of a specific element from the query string?",
+    "options": [
+      "$_GET",
+      "query_string()",
+      "$_REQUEST"
+    ],
+    "correctAnswer": "$_GET"
+  },
+  {
+    "question": "What does the `echo` statement do in PHP?",
+    "options": [
+      "Displays output to the browser",
+      "Prints a variable",
+      "Returns a string"
+    ],
+    "correctAnswer": "Displays output to the browser"
+  },
+  {
+    "question": "How do you declare an array in PHP?",
+    "options": [
+      "$arrayName = array();",
+      "$arrayName[] = ;",
+      "array[] = ;"
+    ],
+    "correctAnswer": "$arrayName = array();"
+  },
+  {
+    "question": "Which function is used to sort an array in ascending order in PHP?",
+    "options": [
+      "sort()",
+      "ascend()",
+      "order()"
+    ],
+    "correctAnswer": "sort()"
+  },
+  {
+    "question": "Which function is used to check if a file exists in PHP?",
+    "options": [
+      "file_exists()",
+      "is_file()",
+      "exists()"
+    ],
+    "correctAnswer": "file_exists()"
+  },
+  {
+    "question": "Which function is used to escape special characters in a string for use in an SQL query in PHP?",
+    "options": [
+      "mysqli_real_escape_string()",
+      "escape_string()",
+      "sanitize()"
+    ],
+    "correctAnswer": "mysqli_real_escape_string()"
+  },
+  {
+    "question": "How do you include a PHP file once, regardless of how many times it is included?",
+    "options": [
+      "include_once()",
+      "require_once()",
+      "include()"
+    ],
+    "correctAnswer": "include_once()"
+  },
+  {
+    "question": "What is the result of the following expression: `3 + '3'` in PHP?",
+    "options": [
+      "33",
+      "6",
+      "Error"
+    ],
+    "correctAnswer": "6"
+  },
+  {
+    "question": "Which function is used to get the current date and time in PHP?",
+    "options": [
+      "date()",
+      "current_time()",
+      "now()"
+    ],
+    "correctAnswer": "date()"
+  },
+  {
+    "question": "Which function is used to send an email in PHP?",
+    "options": [
+      "mail()",
+      "send_email()",
+      "email_send()"
+    ],
+    "correctAnswer": "mail()"
+  },
+  {
+    "question": "Which PHP function is used to get the current user agent string?",
+    "options": [
+      "$_SERVER['HTTP_USER_AGENT']",
+      "get_user_agent()",
+      "user_agent()"
+    ],
+    "correctAnswer": "$_SERVER['HTTP_USER_AGENT']"
+  },
+  {
+    "question": "Which operator is used to concatenate two strings in PHP?",
+    "options": [
+      ".",
+      "+",
+      "&"
+    ],
+    "correctAnswer": "."
+  },
+  {
+    "question": "How do you prevent code from executing if a condition is true in PHP?",
+    "options": [
+      "exit;",
+      "stop;",
+      "break;"
+    ],
+    "correctAnswer": "exit;"
+  },
+  {
+    "question": "What function is used to change the value of a variable passed by reference in PHP?",
+    "options": [
+      "isset()",
+      "define()",
+      "global()"
+    ],
+    "correctAnswer": "global()"
+  },
+  {
+    "question": "What is the correct way to check if a number is an integer in PHP?",
+    "options": [
+      "is_int()",
+      "is_integer()",
+      "check_integer()"
+    ],
+    "correctAnswer": "is_int()"
+  }
+],
+    "Laravel": [
+  {
+    "question": "Which artisan command is used to create a new controller in Laravel?",
+    "options": [
+      "php artisan make:controller UserController",
+      "php artisan create:controller UserController",
+      "laravel make:controller UserController"
+    ],
+    "correctAnswer": "php artisan make:controller UserController"
+  },
+  {
+    "question": "What is the correct method to retrieve all records from a model in Laravel?",
+    "options": [
+      "Model::all()",
+      "Model::get()",
+      "Model::fetch()"
+    ],
+    "correctAnswer": "Model::all()"
+  },
+  {
+    "question": "What is the purpose of the `routes/web.php` file in Laravel?",
+    "options": [
+      "It defines the routes for the application that respond to web requests.",
+      "It handles database migrations.",
+      "It contains the application configuration settings."
+    ],
+    "correctAnswer": "It defines the routes for the application that respond to web requests."
+  },
+  {
+    "question": "Which artisan command is used to create a new migration in Laravel?",
+    "options": [
+      "php artisan make:migration create_users_table",
+      "php artisan create:migration create_users_table",
+      "php artisan generate:migration create_users_table"
+    ],
+    "correctAnswer": "php artisan make:migration create_users_table"
+  },
+  {
+    "question": "Which method is used to validate input data in a Laravel controller?",
+    "options": [
+      "validate()",
+      "check()",
+      "validateInput()"
+    ],
+    "correctAnswer": "validate()"
+  },
+  {
+    "question": "How can you generate a new model in Laravel?",
+    "options": [
+      "php artisan make:model User",
+      "php artisan create:model User",
+      "php artisan model:create User"
+    ],
+    "correctAnswer": "php artisan make:model User"
+  },
+  {
+    "question": "What is the purpose of `composer.json` in a Laravel project?",
+    "options": [
+      "It defines the PHP dependencies required for the project.",
+      "It contains the application's environment settings.",
+      "It defines the routes for the application."
+    ],
+    "correctAnswer": "It defines the PHP dependencies required for the project."
+  },
+  {
+    "question": "Which method is used to redirect to a specific route in Laravel?",
+    "options": [
+      "redirect()->route('route.name')",
+      "return route('route.name')",
+      "route('route.name')"
+    ],
+    "correctAnswer": "redirect()->route('route.name')"
+  },
+  {
+    "question": "How do you add authentication to a Laravel application?",
+    "options": [
+      "php artisan make:auth",
+      "php artisan make:auth-login",
+      "php artisan create:auth"
+    ],
+    "correctAnswer": "php artisan make:auth"
+  },
+  {
+    "question": "What is the purpose of the `env()` function in Laravel?",
+    "options": [
+      "It retrieves environment variables from the `.env` file.",
+      "It sets configuration values for the application.",
+      "It stores session data."
+    ],
+    "correctAnswer": "It retrieves environment variables from the `.env` file."
+  },
+  {
+    "question": "What does the `php artisan migrate` command do in Laravel?",
+    "options": [
+      "It runs all pending migrations in the database.",
+      "It installs the application dependencies.",
+      "It generates database seeders."
+    ],
+    "correctAnswer": "It runs all pending migrations in the database."
+  },
+  {
+    "question": "What is the function of `artisan tinker` in Laravel?",
+    "options": [
+      "It opens an interactive shell to interact with the application.",
+      "It runs database migrations.",
+      "It tests routes in the application."
+    ],
+    "correctAnswer": "It opens an interactive shell to interact with the application."
+  },
+  {
+    "question": "How do you define a route in Laravel that accepts a parameter?",
+    "options": [
+      "Route::get('/user/{id}', function($id) {...})",
+      "Route::get('/user?id={id}', function($id) {...})",
+      "Route::get('/user/<id>', function($id) {...})"
+    ],
+    "correctAnswer": "Route::get('/user/{id}', function($id) {...})"
+  },
+  {
+    "question": "What is the default location for storing migrations in a Laravel project?",
+    "options": [
+      "database/migrations",
+      "app/database/migrations",
+      "storage/migrations"
+    ],
+    "correctAnswer": "database/migrations"
+  },
+  {
+    "question": "How can you add a database seeder in Laravel?",
+    "options": [
+      "php artisan make:seeder UserSeeder",
+      "php artisan create:seeder UserSeeder",
+      "php artisan generate:seeder UserSeeder"
+    ],
+    "correctAnswer": "php artisan make:seeder UserSeeder"
+  },
+  {
+    "question": "Which class is used to define database relationships in Laravel?",
+    "options": [
+      "Eloquent",
+      "Model",
+      "Database"
+    ],
+    "correctAnswer": "Model"
+  },
+  {
+    "question": "What is the purpose of the `@foreach` directive in Blade templates?",
+    "options": [
+      "It iterates over an array or collection.",
+      "It defines a route.",
+      "It validates input data."
+    ],
+    "correctAnswer": "It iterates over an array or collection."
+  },
+  {
+    "question": "Which Laravel function is used to retrieve all values from a form request?",
+    "options": [
+      "request()->all()",
+      "form()->all()",
+      "input()->all()"
+    ],
+    "correctAnswer": "request()->all()"
+  },
+  {
+    "question": "What is the purpose of the `artisan serve` command in Laravel?",
+    "options": [
+      "It starts the Laravel development server.",
+      "It installs dependencies.",
+      "It runs database migrations."
+    ],
+    "correctAnswer": "It starts the Laravel development server."
+  },
+  {
+    "question": "What is the use of the `with()` method in Laravel?",
+    "options": [
+      "It passes data to views.",
+      "It redirects a route.",
+      "It adds validation to a request."
+    ],
+    "correctAnswer": "It passes data to views."
+  },
+  {
+    "question": "Which method is used to validate a request in Laravel?",
+    "options": [
+      "$request->validate()",
+      "validate()",
+      "$request->check()"
+    ],
+    "correctAnswer": "$request->validate()"
+  },
+  {
+    "question": "What is the purpose of the `app/Providers` directory in Laravel?",
+    "options": [
+      "It contains service providers for the application.",
+      "It contains database migrations.",
+      "It stores authentication details."
+    ],
+    "correctAnswer": "It contains service providers for the application."
+  },
+  {
+    "question": "How do you define a custom validation rule in Laravel?",
+    "options": [
+      "By creating a custom rule class that implements the Rule interface.",
+      "By editing the `validate` method in the controller.",
+      "By using regular expressions in the request validation."
+    ],
+    "correctAnswer": "By creating a custom rule class that implements the Rule interface."
+  },
+  {
+    "question": "What command is used to clear the application cache in Laravel?",
+    "options": [
+      "php artisan cache:clear",
+      "php artisan clear:cache",
+      "php artisan cache:flush"
+    ],
+    "correctAnswer": "php artisan cache:clear"
+  },
+  {
+    "question": "Which function is used to generate a URL to a named route in Laravel?",
+    "options": [
+      "route('route.name')",
+      "url('route.name')",
+      "generate('route.name')"
+    ],
+    "correctAnswer": "route('route.name')"
+  }
+],
+    "CSS": [
+  {
+    "question": "Which CSS property is used to define the inner spacing of an element?",
+    "options": [
+      "margin",
+      "padding",
+      "border-spacing"
+    ],
+    "correctAnswer": "padding"
+  },
+  {
+    "question": "Which CSS property controls the size of the text?",
+    "options": [
+      "text-size",
+      "font-size",
+      "size"
+    ],
+    "correctAnswer": "font-size"
+  },
+  {
+    "question": "Which CSS selector targets all elements on a page?",
+    "options": [
+      "*",
+      "all",
+      "html"
+    ],
+    "correctAnswer": "*"
+  },
+  {
+    "question": "Which CSS property is used to change the font style?",
+    "options": [
+      "font-family",
+      "font-style",
+      "font-weight"
+    ],
+    "correctAnswer": "font-style"
+  },
+  {
+    "question": "Which value of the `position` property allows positioning an element relative to its first positioned ancestor?",
+    "options": [
+      "absolute",
+      "relative",
+      "fixed"
+    ],
+    "correctAnswer": "relative"
+  },
+  {
+    "question": "What is the default value of the `display` property in CSS?",
+    "options": [
+      "none",
+      "block",
+      "inline"
+    ],
+    "correctAnswer": "block"
+  },
+  {
+    "question": "Which CSS property is used to set the space between words in a text?",
+    "options": [
+      "letter-spacing",
+      "line-height",
+      "word-spacing"
+    ],
+    "correctAnswer": "word-spacing"
+  },
+  {
+    "question": "Which property would you use to change the background color of an element?",
+    "options": [
+      "background-color",
+      "color",
+      "background"
+    ],
+    "correctAnswer": "background-color"
+  },
+  {
+    "question": "Which of the following is the correct way to make an element's text bold using CSS?",
+    "options": [
+      "font-weight: bold;",
+      "font-style: bold;",
+      "text-weight: bold;"
+    ],
+    "correctAnswer": "font-weight: bold;"
+  },
+  {
+    "question": "Which CSS property is used to control the layout of a flex container?",
+    "options": [
+      "flex-direction",
+      "align-items",
+      "justify-content"
+    ],
+    "correctAnswer": "flex-direction"
+  },
+  {
+    "question": "Which CSS property is used to control the alignment of an element's text?",
+    "options": [
+      "text-align",
+      "vertical-align",
+      "align-items"
+    ],
+    "correctAnswer": "text-align"
+  },
+  {
+    "question": "Which property is used to change the border of an element?",
+    "options": [
+      "border-style",
+      "border-width",
+      "border-color"
+    ],
+    "correctAnswer": "border-style"
+  },
+  {
+    "question": "What is the CSS property to add shadows to text?",
+    "options": [
+      "text-shadow",
+      "box-shadow",
+      "shadow"
+    ],
+    "correctAnswer": "text-shadow"
+  },
+  {
+    "question": "What does the `z-index` property in CSS do?",
+    "options": [
+      "Sets the vertical position of an element",
+      "Sets the stacking order of elements",
+      "Sets the opacity of an element"
+    ],
+    "correctAnswer": "Sets the stacking order of elements"
+  },
+  {
+    "question": "Which of the following values does the `position` property accept in CSS?",
+    "options": [
+      "absolute",
+      "relative",
+      "fixed",
+      "sticky",
+      "all of the above"
+    ],
+    "correctAnswer": "all of the above"
+  },
+  {
+    "question": "Which CSS property controls the font weight?",
+    "options": [
+      "font-weight",
+      "font-size",
+      "font-family"
+    ],
+    "correctAnswer": "font-weight"
+  },
+  {
+    "question": "Which of the following CSS properties is used for grid layout?",
+    "options": [
+      "grid-template-columns",
+      "flex-direction",
+      "align-items"
+    ],
+    "correctAnswer": "grid-template-columns"
+  },
+  {
+    "question": "What is the default value for the `box-sizing` property?",
+    "options": [
+      "content-box",
+      "border-box",
+      "padding-box"
+    ],
+    "correctAnswer": "content-box"
+  },
+  {
+    "question": "Which CSS property is used to set the width of an element?",
+    "options": [
+      "width",
+      "height",
+      "size"
+    ],
+    "correctAnswer": "width"
+  },
+  {
+    "question": "Which of the following properties is used to add a transparent background to an element?",
+    "options": [
+      "background-opacity",
+      "opacity",
+      "transparent-background"
+    ],
+    "correctAnswer": "opacity"
+  },
+  {
+    "question": "Which CSS property is used to make an element visible or hidden?",
+    "options": [
+      "visibility",
+      "opacity",
+      "display"
+    ],
+    "correctAnswer": "visibility"
+  },
+  {
+    "question": "How do you make a list appear horizontally in CSS?",
+    "options": [
+      "list-style-type: none;",
+      "display: inline;",
+      "display: inline-block;"
+    ],
+    "correctAnswer": "display: inline;"
+  },
+  {
+    "question": "Which CSS property is used to make text uppercase?",
+    "options": [
+      "text-transform",
+      "font-size",
+      "text-align"
+    ],
+    "correctAnswer": "text-transform"
+  },
+  {
+    "question": "Which property is used to change the position of a background image in CSS?",
+    "options": [
+      "background-image",
+      "background-position",
+      "background-size"
+    ],
+    "correctAnswer": "background-position"
+  },
+  {
+    "question": "Which value does the `float` property accept in CSS?",
+    "options": [
+      "left",
+      "right",
+      "none",
+      "all of the above"
+    ],
+    "correctAnswer": "all of the above"
+  },
+  {
+    "question": "What does the `@media` rule in CSS do?",
+    "options": [
+      "Applies styles based on the screen size",
+      "Defines global styles for the whole page",
+      "Creates reusable CSS components"
+    ],
+    "correctAnswer": "Applies styles based on the screen size"
+  },
+  {
+    "question": "Which CSS property is used to control the order of flex items?",
+    "options": [
+      "order",
+      "flex-order",
+      "align-items"
+    ],
+    "correctAnswer": "order"
+  }
+],
+"React": [
+  {
+    "question": "What is JSX in React?",
+    "options": [
+      "A syntax extension for JavaScript that allows you to write HTML in JavaScript.",
+      "A JavaScript function that creates elements in the DOM.",
+      "A CSS preprocessor."
+    ],
+    "correctAnswer": "A syntax extension for JavaScript that allows you to write HTML in JavaScript."
+  },
+  {
+    "question": "What is the purpose of the `useState` hook in React?",
+    "options": [
+      "To manage local component state.",
+      "To manage side effects.",
+      "To create new components."
+    ],
+    "correctAnswer": "To manage local component state."
+  },
+  {
+    "question": "How do you pass data from a parent component to a child component in React?",
+    "options": [
+      "Using props.",
+      "Using state.",
+      "Using Redux."
+    ],
+    "correctAnswer": "Using props."
+  },
+  {
+    "question": "What is the purpose of the `useEffect` hook in React?",
+    "options": [
+      "To handle side effects like fetching data or updating the DOM.",
+      "To manage local state.",
+      "To define event handlers."
+    ],
+    "correctAnswer": "To handle side effects like fetching data or updating the DOM."
+  },
+  {
+    "question": "What is a functional component in React?",
+    "options": [
+      "A component that is a function and returns JSX.",
+      "A component that uses class syntax.",
+      "A component that can only render static HTML."
+    ],
+    "correctAnswer": "A component that is a function and returns JSX."
+  },
+  {
+    "question": "How do you update the state in a class component in React?",
+    "options": [
+      "By using `this.setState()`.",
+      "By using the `useState` hook.",
+      "By directly modifying the state variable."
+    ],
+    "correctAnswer": "By using `this.setState()`."
+  },
+  {
+    "question": "What is a controlled component in React?",
+    "options": [
+      "A component that manages its state via React's `useState` or `setState`.",
+      "A component that manages its own lifecycle.",
+      "A component that uses props to manage state."
+    ],
+    "correctAnswer": "A component that manages its state via React's `useState` or `setState`."
+  },
+  {
+    "question": "What is the purpose of `ReactDOM.render()`?",
+    "options": [
+      "To render a component to the DOM.",
+      "To manage component state.",
+      "To handle events."
+    ],
+    "correctAnswer": "To render a component to the DOM."
+  },
+  {
+    "question": "What is the `key` prop used for in React?",
+    "options": [
+      "To uniquely identify elements in a list to optimize re-rendering.",
+      "To pass data to child components.",
+      "To define the style of elements."
+    ],
+    "correctAnswer": "To uniquely identify elements in a list to optimize re-rendering."
+  },
+  {
+    "question": "What is the difference between a stateless and stateful component?",
+    "options": [
+      "A stateful component has a local state, while a stateless component does not.",
+      "A stateless component cannot receive props.",
+      "There is no difference."
+    ],
+    "correctAnswer": "A stateful component has a local state, while a stateless component does not."
+  },
+  {
+    "question": "What is the purpose of `React.createElement()`?",
+    "options": [
+      "To create a new element or component in React.",
+      "To create an event handler for an element.",
+      "To define a CSS class."
+    ],
+    "correctAnswer": "To create a new element or component in React."
+  },
+  {
+    "question": "How do you conditionally render components in React?",
+    "options": [
+      "Using conditional operators like `if` or ternary operators.",
+      "Using `setState()`.",
+      "Using `useEffect()`."
+    ],
+    "correctAnswer": "Using conditional operators like `if` or ternary operators."
+  },
+  {
+    "question": "What is the difference between `componentDidMount()` and `useEffect()`?",
+    "options": [
+      "`componentDidMount()` is for class components, while `useEffect()` is for functional components.",
+      "`componentDidMount()` runs every time the component updates, while `useEffect()` runs only once.",
+      "There is no difference."
+    ],
+    "correctAnswer": "`componentDidMount()` is for class components, while `useEffect()` is for functional components."
+  },
+  {
+    "question": "What does `React.Fragment` do?",
+    "options": [
+      "It groups multiple elements without adding an extra node to the DOM.",
+      "It wraps a component in a separate div.",
+      "It helps in optimizing the component performance."
+    ],
+    "correctAnswer": "It groups multiple elements without adding an extra node to the DOM."
+  },
+  {
+    "question": "What is the purpose of the `useContext` hook?",
+    "options": [
+      "It provides a way to share values across components without passing props manually.",
+      "It manages component state.",
+      "It handles side effects."
+    ],
+    "correctAnswer": "It provides a way to share values across components without passing props manually."
+  },
+  {
+    "question": "What is React Router used for?",
+    "options": [
+      "To manage navigation in single-page applications.",
+      "To handle state management.",
+      "To optimize performance."
+    ],
+    "correctAnswer": "To manage navigation in single-page applications."
+  },
+  {
+    "question": "What is the purpose of `useReducer` in React?",
+    "options": [
+      "It is used to manage more complex state logic in functional components.",
+      "It is used to handle side effects.",
+      "It is used to optimize performance."
+    ],
+    "correctAnswer": "It is used to manage more complex state logic in functional components."
+  },
+  {
+    "question": "What is the `useCallback` hook used for in React?",
+    "options": [
+      "It memoizes functions to prevent unnecessary re-renders.",
+      "It fetches data from an API.",
+      "It manages component state."
+    ],
+    "correctAnswer": "It memoizes functions to prevent unnecessary re-renders."
+  },
+  {
+    "question": "What is the `useRef` hook used for in React?",
+    "options": [
+      "It provides a way to persist values across renders without causing re-renders.",
+      "It updates the component's state.",
+      "It triggers a component re-render."
+    ],
+    "correctAnswer": "It provides a way to persist values across renders without causing re-renders."
+  },
+  {
+    "question": "What is the purpose of `PropTypes` in React?",
+    "options": [
+      "To validate the types of props passed to components.",
+      "To manage component state.",
+      "To handle side effects."
+    ],
+    "correctAnswer": "To validate the types of props passed to components."
+  },
+  {
+    "question": "What is the purpose of `useLayoutEffect` in React?",
+    "options": [
+      "It runs synchronously after all DOM mutations, useful for reading layout and synchronizing re-renders.",
+      "It is used to handle side effects asynchronously.",
+      "It is used to update the component state."
+    ],
+    "correctAnswer": "It runs synchronously after all DOM mutations, useful for reading layout and synchronizing re-renders."
+  },
+  {
+    "question": "How do you handle forms in React?",
+    "options": [
+      "By using controlled components that handle the state of form inputs.",
+      "By directly manipulating the DOM.",
+      "By using `document.getElementById()`."
+    ],
+    "correctAnswer": "By using controlled components that handle the state of form inputs."
+  },
+  {
+    "question": "What is `useMemo` used for in React?",
+    "options": [
+      "It memoizes the result of a function to prevent unnecessary recalculations.",
+      "It creates new components.",
+      "It manages the component lifecycle."
+    ],
+    "correctAnswer": "It memoizes the result of a function to prevent unnecessary recalculations."
+  }
+],
+"Python": [
+  {
+    "question": "What is the correct way to define a function in Python?",
+    "options": [
+      "function myFunction():",
+      "def myFunction():",
+      "def function myFunction():"
+    ],
+    "correctAnswer": "def myFunction():"
+  },
+  {
+    "question": "What is the output of `print(2 ** 3)` in Python?",
+    "options": [
+      "8",
+      "6",
+      "23"
+    ],
+    "correctAnswer": "8"
+  },
+  {
+    "question": "Which of the following is used to create an empty set in Python?",
+    "options": [
+      "{}",
+      "set()",
+      "[]"
+    ],
+    "correctAnswer": "set()"
+  },
+  {
+    "question": "Which of the following data types is immutable in Python?",
+    "options": [
+      "list",
+      "set",
+      "tuple"
+    ],
+    "correctAnswer": "tuple"
+  },
+  {
+    "question": "How do you create a list in Python?",
+    "options": [
+      "[]",
+      "()",
+      "{}"
+    ],
+    "correctAnswer": "[]"
+  },
+  {
+    "question": "What is the purpose of `self` in Python?",
+    "options": [
+      "To refer to the instance of the class.",
+      "To refer to the class itself.",
+      "To refer to a global variable."
+    ],
+    "correctAnswer": "To refer to the instance of the class."
+  },
+  {
+    "question": "What does the `range()` function do in Python?",
+    "options": [
+      "Generates a sequence of numbers.",
+      "Returns a list of random numbers.",
+      "Stops the loop execution."
+    ],
+    "correctAnswer": "Generates a sequence of numbers."
+  },
+  {
+    "question": "What is the correct way to handle exceptions in Python?",
+    "options": [
+      "try...catch",
+      "try...except",
+      "catch...finally"
+    ],
+    "correctAnswer": "try...except"
+  },
+  {
+    "question": "How do you add a key-value pair to a dictionary in Python?",
+    "options": [
+      "myDict.add(key, value)",
+      "myDict[key] = value",
+      "myDict.put(key, value)"
+    ],
+    "correctAnswer": "myDict[key] = value"
+  },
+  {
+    "question": "What is the output of `print('Python'.lower())`?",
+    "options": [
+      "python",
+      "Python",
+      "PYTHON"
+    ],
+    "correctAnswer": "python"
+  },
+  {
+    "question": "What is the correct way to comment a line in Python?",
+    "options": [
+      "# This is a comment",
+      "// This is a comment",
+      "-- This is a comment"
+    ],
+    "correctAnswer": "# This is a comment"
+  },
+  {
+    "question": "Which of the following is not a valid Python keyword?",
+    "options": [
+      "def",
+      "lambda",
+      "function"
+    ],
+    "correctAnswer": "function"
+  },
+  {
+    "question": "What is the output of `len([1, 2, 3])` in Python?",
+    "options": [
+      "3",
+      "2",
+      "1"
+    ],
+    "correctAnswer": "3"
+  },
+  {
+    "question": "What is the purpose of the `__init__()` method in Python?",
+    "options": [
+      "To initialize class attributes when an object is created.",
+      "To initialize global variables.",
+      "To execute code before class methods."
+    ],
+    "correctAnswer": "To initialize class attributes when an object is created."
+  },
+  {
+    "question": "What will the following code output? `print(type(3.14))`",
+    "options": [
+      "<class 'float'>",
+      "<class 'int'>",
+      "<class 'str'>"
+    ],
+    "correctAnswer": "<class 'float'>"
+  },
+  {
+    "question": "Which of the following is the correct way to import a module in Python?",
+    "options": [
+      "import module",
+      "import module as mod",
+      "both of the above"
+    ],
+    "correctAnswer": "both of the above"
+  },
+  {
+    "question": "What is the result of `5 // 2` in Python?",
+    "options": [
+      "2",
+      "2.5",
+      "3"
+    ],
+    "correctAnswer": "2"
+  },
+  {
+    "question": "Which of the following functions can be used to convert a string to an integer in Python?",
+    "options": [
+      "int()",
+      "str()",
+      "float()"
+    ],
+    "correctAnswer": "int()"
+  },
+  {
+    "question": "Which function is used to remove an item from a list in Python?",
+    "options": [
+      "remove()",
+      "pop()",
+      "delete()"
+    ],
+    "correctAnswer": "remove()"
+  },
+  {
+    "question": "What is the difference between `is` and `==` in Python?",
+    "options": [
+      "`is` checks if two variables point to the same object in memory, `==` checks if two values are equal.",
+      "`is` checks if two values are equal, `==` checks if two variables point to the same object.",
+      "There is no difference."
+    ],
+    "correctAnswer": "`is` checks if two variables point to the same object in memory, `==` checks if two values are equal."
+  },
+  {
+    "question": "What does the `sorted()` function do in Python?",
+    "options": [
+      "Sorts an iterable and returns a new sorted list.",
+      "Sorts an iterable in-place.",
+      "Returns a sorted tuple."
+    ],
+    "correctAnswer": "Sorts an iterable and returns a new sorted list."
+  },
+  {
+    "question": "What will `print('Hello, World!'[0])` output in Python?",
+    "options": [
+      "H",
+      "e",
+      "o"
+    ],
+    "correctAnswer": "H"
+  },
+  {
+    "question": "What is a lambda function in Python?",
+    "options": [
+      "A function defined using the `def` keyword.",
+      "An anonymous function defined using the `lambda` keyword.",
+      "A function that returns multiple values."
+    ],
+    "correctAnswer": "An anonymous function defined using the `lambda` keyword."
+  },
+  {
+    "question": "Which of the following methods can be used to add an item to the end of a list in Python?",
+    "options": [
+      "append()",
+      "insert()",
+      "extend()"
+    ],
+    "correctAnswer": "append()"
+  },
+  {
+    "question": "Which Python module provides functions for working with regular expressions?",
+    "options": [
+      "regex",
+      "re",
+      "reg"
+    ],
+    "correctAnswer": "re"
+  },
+  {
+    "question": "What is the default value of `max()` if no iterable is provided in Python?",
+    "options": [
+      "None",
+      "0",
+      "It raises an error."
+    ],
+    "correctAnswer": "It raises an error."
+  },
+  {
+    "question": "How do you define a class in Python?",
+    "options": [
+      "class MyClass():",
+      "class MyClass:",
+      "class MyClass[]:"
+    ],
+    "correctAnswer": "class MyClass:"
+  },
+  {
+    "question": "What is the output of `print(2 == 2)`?",
+    "options": [
+      "True",
+      "False",
+      "Error"
+    ],
+    "correctAnswer": "True"
+  }
+],
+"Ruby": [
+  {
+    "question": "What is the correct way to define a function in Ruby?",
+    "options": [
+      "def myFunction()",
+      "function myFunction()",
+      "def my_function"
+    ],
+    "correctAnswer": "def my_function"
+  },
+  {
+    "question": "Which of the following is used to create an array in Ruby?",
+    "options": [
+      "[]",
+      "()",
+      "{}"
+    ],
+    "correctAnswer": "[]"
+  },
+  {
+    "question": "What is the correct syntax for a single-line comment in Ruby?",
+    "options": [
+      "# This is a comment",
+      "// This is a comment",
+      "/* This is a comment */"
+    ],
+    "correctAnswer": "# This is a comment"
+  },
+  {
+    "question": "What is the output of `puts 5 + 3` in Ruby?",
+    "options": [
+      "8",
+      "53",
+      "Error"
+    ],
+    "correctAnswer": "8"
+  },
+  {
+    "question": "Which of the following is used to define a class in Ruby?",
+    "options": [
+      "class MyClass",
+      "def MyClass",
+      "class MyClass()"
+    ],
+    "correctAnswer": "class MyClass"
+  },
+  {
+    "question": "What method is used to define an instance variable in Ruby?",
+    "options": [
+      "self.variable",
+      "@variable",
+      "this.variable"
+    ],
+    "correctAnswer": "@variable"
+  },
+  {
+    "question": "What is the output of `puts 'Hello'.reverse` in Ruby?",
+    "options": [
+      "Hello",
+      "olleH",
+      "Error"
+    ],
+    "correctAnswer": "olleH"
+  },
+  {
+    "question": "How do you define a hash in Ruby?",
+    "options": [
+      "{}",
+      "[]",
+      "()"
+    ],
+    "correctAnswer": "{}"
+  },
+  {
+    "question": "Which operator is used for string concatenation in Ruby?",
+    "options": [
+      "+",
+      "&",
+      "concat"
+    ],
+    "correctAnswer": "+"
+  },
+  {
+    "question": "What is the purpose of the `initialize` method in Ruby?",
+    "options": [
+      "To define a method.",
+      "To initialize an object's state.",
+      "To create a new class."
+    ],
+    "correctAnswer": "To initialize an object's state."
+  },
+  {
+    "question": "Which of the following is used to include a module in Ruby?",
+    "options": [
+      "include ModuleName",
+      "use ModuleName",
+      "require ModuleName"
+    ],
+    "correctAnswer": "include ModuleName"
+  },
+  {
+    "question": "What is the output of `puts [1, 2, 3].length` in Ruby?",
+    "options": [
+      "3",
+      "6",
+      "Error"
+    ],
+    "correctAnswer": "3"
+  },
+  {
+    "question": "How do you create a new object from a class in Ruby?",
+    "options": [
+      "new MyClass",
+      "MyClass.new",
+      "MyClass()"
+    ],
+    "correctAnswer": "MyClass.new"
+  },
+  {
+    "question": "How do you define a class method in Ruby?",
+    "options": [
+      "def self.my_method",
+      "def my_method",
+      "class my_method"
+    ],
+    "correctAnswer": "def self.my_method"
+  },
+  {
+    "question": "Which of the following is used to break a loop in Ruby?",
+    "options": [
+      "break",
+      "exit",
+      "continue"
+    ],
+    "correctAnswer": "break"
+  },
+  {
+    "question": "What is the correct way to raise an exception in Ruby?",
+    "options": [
+      "raise 'Error message'",
+      "throw 'Error message'",
+      "error 'Error message'"
+    ],
+    "correctAnswer": "raise 'Error message'"
+  },
+  {
+    "question": "How do you iterate over an array in Ruby?",
+    "options": [
+      "array.each",
+      "array.map",
+      "array.forEach"
+    ],
+    "correctAnswer": "array.each"
+  },
+  {
+    "question": "What is the output of `puts 'abc'.length` in Ruby?",
+    "options": [
+      "3",
+      "6",
+      "Error"
+    ],
+    "correctAnswer": "3"
+  },
+  {
+    "question": "Which of the following is used to open a file in Ruby?",
+    "options": [
+      "File.open",
+      "open.File",
+      "File.new"
+    ],
+    "correctAnswer": "File.open"
+  },
+  {
+    "question": "Which of the following is a Ruby block syntax?",
+    "options": [
+      "do...end",
+      "begin...end",
+      "{...}"
+    ],
+    "correctAnswer": "do...end"
+  },
+  {
+    "question": "What is the output of `puts [1, 2, 3].map { |n| n * 2 }` in Ruby?",
+    "options": [
+      "[2, 4, 6]",
+      "[1, 2, 3]",
+      "Error"
+    ],
+    "correctAnswer": "[2, 4, 6]"
+  },
+  {
+    "question": "What does `nil` represent in Ruby?",
+    "options": [
+      "A false value",
+      "An undefined value",
+      "A null value"
+    ],
+    "correctAnswer": "A null value"
+  },
+  {
+    "question": "How do you define a constant in Ruby?",
+    "options": [
+      "const MY_CONSTANT",
+      "MY_CONSTANT = value",
+      "def MY_CONSTANT = value"
+    ],
+    "correctAnswer": "MY_CONSTANT = value"
+  },
+  {
+    "question": "Which of the following is used to check if a value is included in an array in Ruby?",
+    "options": [
+      "array.include?",
+      "array.has_value?",
+      "array.exists?"
+    ],
+    "correctAnswer": "array.include?"
+  },
+  {
+    "question": "How do you define a private method in Ruby?",
+    "options": [
+      "private def my_method",
+      "def private my_method",
+      "private my_method"
+    ],
+    "correctAnswer": "private def my_method"
+  },
+  {
+    "question": "What is the output of `puts '2' + 2` in Ruby?",
+    "options": [
+      "22",
+      "4",
+      "Error"
+    ],
+    "correctAnswer": "Error"
+  },
+  {
+    "question": "Which of the following is used to define a symbol in Ruby?",
+    "options": [
+      ":symbol",
+      "'symbol'",
+      "\"symbol\""
+    ],
+    "correctAnswer": ":symbol"
+  },
+  {
+    "question": "How do you remove an element from an array in Ruby?",
+    "options": [
+      "array.delete(element)",
+      "array.remove(element)",
+      "array.pop(element)"
+    ],
+    "correctAnswer": "array.delete(element)"
+  }
+],
+"Docker": [
+  {
+    "question": "What is the command to build a Docker image?",
+    "options": [
+      "docker build",
+      "docker create",
+      "docker run"
+    ],
+    "correctAnswer": "docker build"
+  },
+  {
+    "question": "What is the purpose of a Dockerfile?",
+    "options": [
+      "To define a set of instructions to create a Docker image",
+      "To run a Docker container",
+      "To manage Docker volumes"
+    ],
+    "correctAnswer": "To define a set of instructions to create a Docker image"
+  },
+  {
+    "question": "How do you list all running Docker containers?",
+    "options": [
+      "docker ps",
+      "docker list",
+      "docker containers"
+    ],
+    "correctAnswer": "docker ps"
+  },
+  {
+    "question": "Which command is used to start a Docker container?",
+    "options": [
+      "docker run",
+      "docker start",
+      "docker create"
+    ],
+    "correctAnswer": "docker run"
+  },
+  {
+    "question": "What is the default port exposed by a Docker container?",
+    "options": [
+      "8080",
+      "80",
+      "443"
+    ],
+    "correctAnswer": "80"
+  },
+  {
+    "question": "How can you check the logs of a running Docker container?",
+    "options": [
+      "docker logs <container_id>",
+      "docker status <container_id>",
+      "docker inspect <container_id>"
+    ],
+    "correctAnswer": "docker logs <container_id>"
+  },
+  {
+    "question": "Which of the following is used to manage persistent data in Docker?",
+    "options": [
+      "Docker volumes",
+      "Docker networks",
+      "Docker images"
+    ],
+    "correctAnswer": "Docker volumes"
+  },
+  {
+    "question": "How do you stop a running Docker container?",
+    "options": [
+      "docker stop <container_id>",
+      "docker kill <container_id>",
+      "docker pause <container_id>"
+    ],
+    "correctAnswer": "docker stop <container_id>"
+  },
+  {
+    "question": "What is the command to pull an image from Docker Hub?",
+    "options": [
+      "docker pull <image_name>",
+      "docker get <image_name>",
+      "docker download <image_name>"
+    ],
+    "correctAnswer": "docker pull <image_name>"
+  },
+  {
+    "question": "Which command is used to remove a Docker container?",
+    "options": [
+      "docker rm <container_id>",
+      "docker remove <container_id>",
+      "docker delete <container_id>"
+    ],
+    "correctAnswer": "docker rm <container_id>"
+  },
+  {
+    "question": "What is a Docker volume used for?",
+    "options": [
+      "To store persistent data",
+      "To expose network ports",
+      "To run background processes"
+    ],
+    "correctAnswer": "To store persistent data"
+  },
+  {
+    "question": "How do you build an image from a Dockerfile?",
+    "options": [
+      "docker build -t <image_name> .",
+      "docker image create <image_name>",
+      "docker image build -t <image_name> ."
+    ],
+    "correctAnswer": "docker build -t <image_name> ."
+  },
+  {
+    "question": "What does the `docker exec` command do?",
+    "options": [
+      "Executes a command in a running container",
+      "Starts a new container",
+      "Executes a script in the Dockerfile"
+    ],
+    "correctAnswer": "Executes a command in a running container"
+  },
+  {
+    "question": "What is Docker Compose used for?",
+    "options": [
+      "To define and run multi-container Docker applications",
+      "To monitor Docker containers",
+      "To create Docker images"
+    ],
+    "correctAnswer": "To define and run multi-container Docker applications"
+  },
+  {
+    "question": "What command is used to list all Docker images?",
+    "options": [
+      "docker images",
+      "docker list",
+      "docker ls"
+    ],
+    "correctAnswer": "docker images"
+  },
+  {
+    "question": "What is the command to view all Docker networks?",
+    "options": [
+      "docker network ls",
+      "docker networks",
+      "docker list networks"
+    ],
+    "correctAnswer": "docker network ls"
+  },
+  {
+    "question": "Which file is used to define a multi-container application in Docker Compose?",
+    "options": [
+      "docker-compose.yml",
+      "Dockerfile",
+      "compose.yml"
+    ],
+    "correctAnswer": "docker-compose.yml"
+  },
+  {
+    "question": "Which of the following is a valid way to tag a Docker image?",
+    "options": [
+      "docker build -t <username>/<image_name>:<tag>",
+      "docker image tag <image_name>:<tag>",
+      "docker tag <image_name> <tag>"
+    ],
+    "correctAnswer": "docker build -t <username>/<image_name>:<tag>"
+  },
+  {
+    "question": "Which command is used to show detailed information about a container?",
+    "options": [
+      "docker inspect <container_id>",
+      "docker info <container_id>",
+      "docker show <container_id>"
+    ],
+    "correctAnswer": "docker inspect <container_id>"
+  },
+  {
+    "question": "How do you remove an image in Docker?",
+    "options": [
+      "docker rmi <image_name>",
+      "docker remove <image_name>",
+      "docker delete <image_name>"
+    ],
+    "correctAnswer": "docker rmi <image_name>"
+  },
+  {
+    "question": "What is the command to run a Docker container in detached mode?",
+    "options": [
+      "docker run -d <image_name>",
+      "docker run -t <image_name>",
+      "docker run -p <image_name>"
+    ],
+    "correctAnswer": "docker run -d <image_name>"
+  },
+  {
+    "question": "What is Docker Swarm used for?",
+    "options": [
+      "Orchestrating and managing Docker containers",
+      "Running Docker containers locally",
+      "Building Docker images"
+    ],
+    "correctAnswer": "Orchestrating and managing Docker containers"
+  },
+  {
+    "question": "Which of the following is true about Docker images?",
+    "options": [
+      "They are read-only and contain all the dependencies for a container",
+      "They are editable and contain only the application code",
+      "They are used to manage container storage"
+    ],
+    "correctAnswer": "They are read-only and contain all the dependencies for a container"
+  },
+  {
+    "question": "How can you see the running processes inside a Docker container?",
+    "options": [
+      "docker top <container_id>",
+      "docker ps -a <container_id>",
+      "docker exec <container_id> ps"
+    ],
+    "correctAnswer": "docker top <container_id>"
+  },
+  {
+    "question": "What is the purpose of the `docker pull` command?",
+    "options": [
+      "To download an image from Docker Hub",
+      "To upload an image to Docker Hub",
+      "To run a container"
+    ],
+    "correctAnswer": "To download an image from Docker Hub"
+  },
+  {
+    "question": "How do you check the version of Docker installed?",
+    "options": [
+      "docker --version",
+      "docker version",
+      "docker info"
+    ],
+    "correctAnswer": "docker --version"
+  },
+  {
+    "question": "What is the command to run a container interactively in Docker?",
+    "options": [
+      "docker run -it <image_name>",
+      "docker run -d <image_name>",
+      "docker exec -it <container_id> bash"
+    ],
+    "correctAnswer": "docker run -it <image_name>"
+  },
+  {
+    "question": "What is Docker Hub?",
+    "options": [
+      "A cloud-based registry for storing and sharing Docker images",
+      "A container orchestrator",
+      "A tool for monitoring Docker containers"
+    ],
+    "correctAnswer": "A cloud-based registry for storing and sharing Docker images"
+  }
+],
+"Vue.js": [
+  {
+    "question": "What is Vue.js?",
+    "options": [
+      "A JavaScript framework for building user interfaces",
+      "A CSS framework",
+      "A database management system"
+    ],
+    "correctAnswer": "A JavaScript framework for building user interfaces"
+  },
+  {
+    "question": "What does the v-bind directive do in Vue.js?",
+    "options": [
+      "Binds an attribute to an expression",
+      "Loops over an array",
+      "Toggles visibility of an element"
+    ],
+    "correctAnswer": "Binds an attribute to an expression"
+  },
+  {
+    "question": "What is the purpose of the v-for directive in Vue.js?",
+    "options": [
+      "To iterate over a list of items",
+      "To bind data to an element",
+      "To listen for events"
+    ],
+    "correctAnswer": "To iterate over a list of items"
+  },
+  {
+    "question": "How do you define a method in a Vue.js component?",
+    "options": [
+      "methods: { methodName() { } }",
+      "method: { methodName() { } }",
+      "function methodName() { }"
+    ],
+    "correctAnswer": "methods: { methodName() { } }"
+  },
+  {
+    "question": "What is the Vue instance used for?",
+    "options": [
+      "To create and manage the Vue app",
+      "To define a component",
+      "To bind data to the DOM"
+    ],
+    "correctAnswer": "To create and manage the Vue app"
+  },
+  {
+    "question": "What is the default value of `v-if` when it evaluates to a falsy value?",
+    "options": [
+      "The element is removed from the DOM",
+      "The element remains but is hidden",
+      "The element is displayed with a default style"
+    ],
+    "correctAnswer": "The element is removed from the DOM"
+  },
+  {
+    "question": "Which lifecycle hook is called after the Vue instance is mounted?",
+    "options": [
+      "mounted",
+      "created",
+      "updated"
+    ],
+    "correctAnswer": "mounted"
+  },
+  {
+    "question": "What is the v-model directive used for in Vue.js?",
+    "options": [
+      "To create two-way data binding between input and data",
+      "To loop over a list of items",
+      "To define an event listener"
+    ],
+    "correctAnswer": "To create two-way data binding between input and data"
+  },
+  {
+    "question": "How do you pass props to a child component in Vue.js?",
+    "options": [
+      "By using the v-bind directive",
+      "By using the v-model directive",
+      "By using the props attribute"
+    ],
+    "correctAnswer": "By using the v-bind directive"
+  },
+  {
+    "question": "How do you define a computed property in Vue.js?",
+    "options": [
+      "computed: { propertyName() { } }",
+      "methods: { propertyName() { } }",
+      "data: { propertyName() { } }"
+    ],
+    "correctAnswer": "computed: { propertyName() { } }"
+  },
+  {
+    "question": "Which Vue.js directive is used to listen for events?",
+    "options": [
+      "v-on",
+      "v-bind",
+      "v-for"
+    ],
+    "correctAnswer": "v-on"
+  },
+  {
+    "question": "What is the `v-show` directive used for in Vue.js?",
+    "options": [
+      "To toggle the visibility of an element",
+      "To bind data to an element",
+      "To iterate over an array"
+    ],
+    "correctAnswer": "To toggle the visibility of an element"
+  },
+  {
+    "question": "What is the purpose of `v-if` in Vue.js?",
+    "options": [
+      "To conditionally render an element",
+      "To bind a value to an element",
+      "To listen for an event"
+    ],
+    "correctAnswer": "To conditionally render an element"
+  },
+  {
+    "question": "How can you bind an element's class to a variable in Vue.js?",
+    "options": [
+      "v-bind:class",
+      "v-model:class",
+      "v-for:class"
+    ],
+    "correctAnswer": "v-bind:class"
+  },
+  {
+    "question": "How do you handle a click event in Vue.js?",
+    "options": [
+      "v-on:click",
+      "v-click",
+      "on-click"
+    ],
+    "correctAnswer": "v-on:click"
+  },
+  {
+    "question": "What is the purpose of the `v-bind` directive in Vue.js?",
+    "options": [
+      "To bind an attribute to an expression",
+      "To bind data to an element",
+      "To add event listeners"
+    ],
+    "correctAnswer": "To bind an attribute to an expression"
+  },
+  {
+    "question": "What is a Vue component?",
+    "options": [
+      "A reusable, self-contained unit of code that defines a part of the user interface",
+      "A JavaScript function for handling data",
+      "A special type of event listener"
+    ],
+    "correctAnswer": "A reusable, self-contained unit of code that defines a part of the user interface"
+  },
+  {
+    "question": "How do you define a method in Vue.js?",
+    "options": [
+      "methods: { methodName() { } }",
+      "methods: methodName() { }",
+      "function methodName() { }"
+    ],
+    "correctAnswer": "methods: { methodName() { } }"
+  },
+  {
+    "question": "How can you create a custom event in Vue.js?",
+    "options": [
+      "this.$emit('eventName')",
+      "this.emit('eventName')",
+      "this.trigger('eventName')"
+    ],
+    "correctAnswer": "this.$emit('eventName')"
+  },
+  {
+    "question": "What is the difference between `v-if` and `v-show`?",
+    "options": [
+      "v-if removes the element from the DOM, v-show toggles visibility",
+      "v-if toggles visibility, v-show removes the element from the DOM",
+      "There is no difference"
+    ],
+    "correctAnswer": "v-if removes the element from the DOM, v-show toggles visibility"
+  },
+  {
+    "question": "How can you make a Vue component reactive?",
+    "options": [
+      "By using the `data` option",
+      "By using the `reactive` function",
+      "By using `computed` properties"
+    ],
+    "correctAnswer": "By using the `data` option"
+  },
+  {
+    "question": "What is the purpose of the `mounted` lifecycle hook in Vue.js?",
+    "options": [
+      "To execute code after the component has been added to the DOM",
+      "To initialize data before rendering",
+      "To watch for changes in data"
+    ],
+    "correctAnswer": "To execute code after the component has been added to the DOM"
+  },
+  {
+    "question": "Which of the following is true about Vue.js computed properties?",
+    "options": [
+      "They are cached based on their dependencies",
+      "They are always re-evaluated when data changes",
+      "They can only return a static value"
+    ],
+    "correctAnswer": "They are cached based on their dependencies"
+  },
+  {
+    "question": "How do you use a prop in a Vue.js component?",
+    "options": [
+      "this.propName",
+      "this.$props.propName",
+      "props: { propName: String }"
+    ],
+    "correctAnswer": "this.$props.propName"
+  },
+  {
+    "question": "How do you pass data from a parent to a child component in Vue.js?",
+    "options": [
+      "Through props",
+      "Through events",
+      "Through the $emit method"
+    ],
+    "correctAnswer": "Through props"
+  },
+  {
+    "question": "What is the Vuex store used for in Vue.js?",
+    "options": [
+      "To manage application state in a centralized store",
+      "To manage routing between components",
+      "To handle lifecycle events"
+    ],
+    "correctAnswer": "To manage application state in a centralized store"
+  },
+  {
+    "question": "What does the `v-model` directive do in Vue.js?",
+    "options": [
+      "Creates two-way data binding",
+      "Binds a value to an input field",
+      "Triggers an event on change"
+    ],
+    "correctAnswer": "Creates two-way data binding"
+  }
+],
+"TypeScript": [
+  {
+    "question": "What is TypeScript?",
+    "options": [
+      "A superset of JavaScript that adds static types",
+      "A JavaScript framework",
+      "A library for DOM manipulation"
+    ],
+    "correctAnswer": "A superset of JavaScript that adds static types"
+  },
+  {
+    "question": "How do you declare a variable in TypeScript?",
+    "options": [
+      "let variableName: type;",
+      "var variableName: type;",
+      "type variableName;"
+    ],
+    "correctAnswer": "let variableName: type;"
+  },
+  {
+    "question": "What is the purpose of `: any` in TypeScript?",
+    "options": [
+      "It allows any type to be assigned to a variable",
+      "It creates a new type",
+      "It defines an array"
+    ],
+    "correctAnswer": "It allows any type to be assigned to a variable"
+  },
+  {
+    "question": "How do you define a function in TypeScript with a return type?",
+    "options": [
+      "function functionName(): type { }",
+      "function functionName() { return type; }",
+      "function functionName: type { }"
+    ],
+    "correctAnswer": "function functionName(): type { }"
+  },
+  {
+    "question": "What does `interface` do in TypeScript?",
+    "options": [
+      "It defines the structure of an object",
+      "It defines the type of a function",
+      "It creates a new class"
+    ],
+    "correctAnswer": "It defines the structure of an object"
+  },
+  {
+    "question": "How do you create a class in TypeScript?",
+    "options": [
+      "class ClassName { }",
+      "class ClassName(): void { }",
+      "class ClassName() { }"
+    ],
+    "correctAnswer": "class ClassName { }"
+  },
+  {
+    "question": "What is the purpose of the `readonly` modifier in TypeScript?",
+    "options": [
+      "It makes a property immutable after initialization",
+      "It makes a property public",
+      "It sets a property to null"
+    ],
+    "correctAnswer": "It makes a property immutable after initialization"
+  },
+  {
+    "question": "What is the correct way to define a tuple in TypeScript?",
+    "options": [
+      "let tupleName: [type1, type2];",
+      "let tupleName: (type1, type2);",
+      "let tupleName: [type1 | type2];"
+    ],
+    "correctAnswer": "let tupleName: [type1, type2];"
+  },
+  {
+    "question": "What is the purpose of the `never` type in TypeScript?",
+    "options": [
+      "It represents values that never occur",
+      "It represents any value",
+      "It represents a number"
+    ],
+    "correctAnswer": "It represents values that never occur"
+  },
+  {
+    "question": "What is the syntax to define an optional property in an interface?",
+    "options": [
+      "propertyName?: type;",
+      "propertyName: type | null;",
+      "propertyName: type[];"
+    ],
+    "correctAnswer": "propertyName?: type;"
+  },
+  {
+    "question": "How do you specify that a function parameter can be of multiple types in TypeScript?",
+    "options": [
+      "parameterName: type1 | type2",
+      "parameterName: (type1, type2)",
+      "parameterName: type1[]"
+    ],
+    "correctAnswer": "parameterName: type1 | type2"
+  },
+  {
+    "question": "What does the `as` keyword do in TypeScript?",
+    "options": [
+      "It casts a variable to a specific type",
+      "It creates a new type",
+      "It defines an array"
+    ],
+    "correctAnswer": "It casts a variable to a specific type"
+  },
+  {
+    "question": "How do you declare a function that returns a promise in TypeScript?",
+    "options": [
+      "function functionName(): Promise<type> { }",
+      "function functionName(): type { return new Promise(); }",
+      "function functionName(): Promise { return new Promise(); }"
+    ],
+    "correctAnswer": "function functionName(): Promise<type> { }"
+  },
+  {
+    "question": "What is a TypeScript enum?",
+    "options": [
+      "A set of named constants",
+      "A function to generate random values",
+      "A type of object"
+    ],
+    "correctAnswer": "A set of named constants"
+  },
+  {
+    "question": "How do you make a property readonly in a class in TypeScript?",
+    "options": [
+      "readonly propertyName;",
+      "propertyName readonly;",
+      "const propertyName;"
+    ],
+    "correctAnswer": "readonly propertyName;"
+  },
+  {
+    "question": "How do you make a property optional in TypeScript?",
+    "options": [
+      "propertyName?: type",
+      "propertyName: type?",
+      "propertyName: type | undefined"
+    ],
+    "correctAnswer": "propertyName?: type"
+  },
+  {
+    "question": "What is the purpose of the `type` keyword in TypeScript?",
+    "options": [
+      "To define a new type alias",
+      "To define a class",
+      "To define a function"
+    ],
+    "correctAnswer": "To define a new type alias"
+  },
+  {
+    "question": "How do you extend an interface in TypeScript?",
+    "options": [
+      "interface ChildInterface extends ParentInterface { }",
+      "interface ChildInterface inherits ParentInterface { }",
+      "interface ChildInterface: ParentInterface { }"
+    ],
+    "correctAnswer": "interface ChildInterface extends ParentInterface { }"
+  },
+  {
+    "question": "How do you use destructuring to extract properties from an object in TypeScript?",
+    "options": [
+      "let { propertyName } = object;",
+      "let propertyName = object.propertyName;",
+      "let propertyName: type = object.propertyName;"
+    ],
+    "correctAnswer": "let { propertyName } = object;"
+  },
+  {
+    "question": "How do you enforce a strict null check in TypeScript?",
+    "options": [
+      "By setting `strictNullChecks: true` in the tsconfig.json file",
+      "By using `null` explicitly",
+      "By defining variables as `undefined`"
+    ],
+    "correctAnswer": "By setting `strictNullChecks: true` in the tsconfig.json file"
+  },
+  {
+    "question": "What is the `unknown` type in TypeScript?",
+    "options": [
+      "It represents any value but requires a type check before usage",
+      "It represents any value",
+      "It represents a number or string"
+    ],
+    "correctAnswer": "It represents any value but requires a type check before usage"
+  },
+  {
+    "question": "What is the syntax for defining a method inside a class in TypeScript?",
+    "options": [
+      "methodName(): returnType { }",
+      "def methodName(): returnType { }",
+      "function methodName(): returnType { }"
+    ],
+    "correctAnswer": "methodName(): returnType { }"
+  },
+  {
+    "question": "What does the `void` return type indicate in TypeScript?",
+    "options": [
+      "The function does not return a value",
+      "The function returns null",
+      "The function returns any type"
+    ],
+    "correctAnswer": "The function does not return a value"
+  },
+  {
+    "question": "How do you use TypeScript with third-party JavaScript libraries?",
+    "options": [
+      "By installing type definitions from DefinitelyTyped",
+      "By importing the library directly",
+      "By using `require` statements"
+    ],
+    "correctAnswer": "By installing type definitions from DefinitelyTyped"
+  },
+  {
+    "question": "What does `strict` mode in TypeScript enable?",
+    "options": [
+      "It enables strict type-checking options",
+      "It makes code run faster",
+      "It prevents all warnings"
+    ],
+    "correctAnswer": "It enables strict type-checking options"
+  }
+],
+"Git": [
+  {
+    "question": "What is Git?",
+    "options": [
+      "A distributed version control system",
+      "A tool for managing databases",
+      "A programming language"
+    ],
+    "correctAnswer": "A distributed version control system"
+  },
+  {
+    "question": "What command is used to create a new Git repository?",
+    "options": [
+      "git init",
+      "git create",
+      "git start"
+    ],
+    "correctAnswer": "git init"
+  },
+  {
+    "question": "How do you clone an existing Git repository?",
+    "options": [
+      "git clone <repository_url>",
+      "git fork <repository_url>",
+      "git copy <repository_url>"
+    ],
+    "correctAnswer": "git clone <repository_url>"
+  },
+  {
+    "question": "What command do you use to check the status of your Git repository?",
+    "options": [
+      "git status",
+      "git check",
+      "git log"
+    ],
+    "correctAnswer": "git status"
+  },
+  {
+    "question": "How do you add files to the staging area in Git?",
+    "options": [
+      "git add <file_name>",
+      "git stage <file_name>",
+      "git commit <file_name>"
+    ],
+    "correctAnswer": "git add <file_name>"
+  },
+  {
+    "question": "What command is used to commit changes in Git?",
+    "options": [
+      "git commit -m 'message'",
+      "git add -m 'message'",
+      "git push -m 'message'"
+    ],
+    "correctAnswer": "git commit -m 'message'"
+  },
+  {
+    "question": "How do you push your changes to a remote repository in Git?",
+    "options": [
+      "git push",
+      "git upload",
+      "git sync"
+    ],
+    "correctAnswer": "git push"
+  },
+  {
+    "question": "What command is used to pull the latest changes from a remote repository?",
+    "options": [
+      "git pull",
+      "git fetch",
+      "git update"
+    ],
+    "correctAnswer": "git pull"
+  },
+  {
+    "question": "How do you check the commit history in Git?",
+    "options": [
+      "git log",
+      "git history",
+      "git commits"
+    ],
+    "correctAnswer": "git log"
+  },
+  {
+    "question": "What command creates a new branch in Git?",
+    "options": [
+      "git branch <branch_name>",
+      "git create <branch_name>",
+      "git checkout -b <branch_name>"
+    ],
+    "correctAnswer": "git branch <branch_name>"
+  },
+  {
+    "question": "How do you switch to a different branch in Git?",
+    "options": [
+      "git checkout <branch_name>",
+      "git switch <branch_name>",
+      "git change <branch_name>"
+    ],
+    "correctAnswer": "git checkout <branch_name>"
+  },
+  {
+    "question": "What is the command to merge a branch in Git?",
+    "options": [
+      "git merge <branch_name>",
+      "git join <branch_name>",
+      "git combine <branch_name>"
+    ],
+    "correctAnswer": "git merge <branch_name>"
+  },
+  {
+    "question": "What is the purpose of the `.gitignore` file?",
+    "options": [
+      "It specifies files or directories Git should ignore",
+      "It lists all files that should be committed",
+      "It tracks changes in files"
+    ],
+    "correctAnswer": "It specifies files or directories Git should ignore"
+  },
+  {
+    "question": "How do you delete a branch in Git?",
+    "options": [
+      "git branch -d <branch_name>",
+      "git delete <branch_name>",
+      "git remove <branch_name>"
+    ],
+    "correctAnswer": "git branch -d <branch_name>"
+  },
+  {
+    "question": "What does the `git pull` command do?",
+    "options": [
+      "Fetches changes from the remote repository and merges them",
+      "Pushes local changes to the remote repository",
+      "Creates a new branch"
+    ],
+    "correctAnswer": "Fetches changes from the remote repository and merges them"
+  },
+  {
+    "question": "How do you see the differences between your local changes and the last commit in Git?",
+    "options": [
+      "git diff",
+      "git changes",
+      "git status"
+    ],
+    "correctAnswer": "git diff"
+  },
+  {
+    "question": "What does the `git reset` command do?",
+    "options": [
+      "Resets the current state of your working directory and staging area",
+      "Commits changes",
+      "Creates a new branch"
+    ],
+    "correctAnswer": "Resets the current state of your working directory and staging area"
+  },
+  {
+    "question": "What is the purpose of the `git fetch` command?",
+    "options": [
+      "Downloads changes from the remote repository but does not merge them",
+      "Commits changes to the repository",
+      "Pushes changes to the remote repository"
+    ],
+    "correctAnswer": "Downloads changes from the remote repository but does not merge them"
+  },
+  {
+    "question": "How do you view all branches in a Git repository?",
+    "options": [
+      "git branch",
+      "git show branches",
+      "git list branches"
+    ],
+    "correctAnswer": "git branch"
+  },
+  {
+    "question": "What is the difference between `git merge` and `git rebase`?",
+    "options": [
+      "git merge creates a merge commit, git rebase rewrites history",
+      "git merge rewrites history, git rebase creates a merge commit",
+      "There is no difference"
+    ],
+    "correctAnswer": "git merge creates a merge commit, git rebase rewrites history"
+  },
+  {
+    "question": "What is the purpose of `git stash`?",
+    "options": [
+      "Temporarily stores changes that are not yet ready to be committed",
+      "Commits changes to the repository",
+      "Pushes local changes to the remote repository"
+    ],
+    "correctAnswer": "Temporarily stores changes that are not yet ready to be committed"
+  },
+  {
+    "question": "What does `git checkout -- <file>` do?",
+    "options": [
+      "Restores a file to the state of the last commit",
+      "Changes the branch",
+      "Deletes the file"
+    ],
+    "correctAnswer": "Restores a file to the state of the last commit"
+  },
+  {
+    "question": "What command is used to create a tag in Git?",
+    "options": [
+      "git tag <tag_name>",
+      "git create tag <tag_name>",
+      "git commit --tag <tag_name>"
+    ],
+    "correctAnswer": "git tag <tag_name>"
+  },
+  {
+    "question": "What is a Git remote?",
+    "options": [
+      "A reference to a repository hosted elsewhere",
+      "A backup of the repository",
+      "A feature for staging files"
+    ],
+    "correctAnswer": "A reference to a repository hosted elsewhere"
+  },
+  {
+    "question": "How do you remove a file from the staging area in Git?",
+    "options": [
+      "git reset <file_name>",
+      "git remove <file_name>",
+      "git unstage <file_name>"
+    ],
+    "correctAnswer": "git reset <file_name>"
+  },
+  {
+    "question": "What does `git config` do?",
+    "options": [
+      "Sets configuration options for Git",
+      "Commits changes",
+      "Pushes local changes"
+    ],
+    "correctAnswer": "Sets configuration options for Git"
+  },
+  {
+    "question": "How do you rename a branch in Git?",
+    "options": [
+      "git branch -m <new_branch_name>",
+      "git rename <old_branch_name> <new_branch_name>",
+      "git change-branch <old_branch_name> <new_branch_name>"
+    ],
+    "correctAnswer": "git branch -m <new_branch_name>"
+  }
+],
+"Django": [
+  {
+    "question": "What is Django?",
+    "options": [
+      "A Python web framework",
+      "A database management system",
+      "A front-end framework"
+    ],
+    "correctAnswer": "A Python web framework"
+  },
+  {
+    "question": "What command is used to create a new Django project?",
+    "options": [
+      "django-admin startproject <project_name>",
+      "django create project <project_name>",
+      "django startproject <project_name>"
+    ],
+    "correctAnswer": "django-admin startproject <project_name>"
+  },
+  {
+    "question": "What is the default database used in Django?",
+    "options": [
+      "SQLite",
+      "MySQL",
+      "PostgreSQL"
+    ],
+    "correctAnswer": "SQLite"
+  },
+  {
+    "question": "Which file contains the settings for a Django project?",
+    "options": [
+      "settings.py",
+      "config.py",
+      "django_settings.py"
+    ],
+    "correctAnswer": "settings.py"
+  },
+  {
+    "question": "What is the purpose of Django's ORM (Object-Relational Mapping)?",
+    "options": [
+      "To map models to database tables",
+      "To manage static files",
+      "To handle user authentication"
+    ],
+    "correctAnswer": "To map models to database tables"
+  },
+  {
+    "question": "How do you create a new Django app within a project?",
+    "options": [
+      "python manage.py startapp <app_name>",
+      "django-admin create app <app_name>",
+      "python manage.py createapp <app_name>"
+    ],
+    "correctAnswer": "python manage.py startapp <app_name>"
+  },
+  {
+    "question": "Which Django command is used to apply database migrations?",
+    "options": [
+      "python manage.py migrate",
+      "python manage.py applymigrations",
+      "django-admin migrate"
+    ],
+    "correctAnswer": "python manage.py migrate"
+  },
+  {
+    "question": "What is a Django model?",
+    "options": [
+      "A Python class that defines the structure of a database table",
+      "A HTML template for the views",
+      "A static file in the project"
+    ],
+    "correctAnswer": "A Python class that defines the structure of a database table"
+  },
+  {
+    "question": "What is the role of Django's `views.py` file?",
+    "options": [
+      "To define the logic for rendering HTTP responses",
+      "To define the database models",
+      "To handle the user authentication"
+    ],
+    "correctAnswer": "To define the logic for rendering HTTP responses"
+  },
+  {
+    "question": "What is Django's `urls.py` used for?",
+    "options": [
+      "To map URLs to views",
+      "To configure the database",
+      "To store user authentication data"
+    ],
+    "correctAnswer": "To map URLs to views"
+  },
+  {
+    "question": "What is the purpose of Django's `admin.py`?",
+    "options": [
+      "To configure the Django admin interface",
+      "To manage user authentication",
+      "To configure URLs for the project"
+    ],
+    "correctAnswer": "To configure the Django admin interface"
+  },
+  {
+    "question": "Which command is used to create a Django superuser?",
+    "options": [
+      "python manage.py createsuperuser",
+      "django-admin createuser",
+      "python manage.py adminuser"
+    ],
+    "correctAnswer": "python manage.py createsuperuser"
+  },
+  {
+    "question": "What is a Django migration?",
+    "options": [
+      "A way to apply changes to the database schema",
+      "A template for rendering HTML pages",
+      "A static file handler"
+    ],
+    "correctAnswer": "A way to apply changes to the database schema"
+  },
+  {
+    "question": "What is Django's `static` folder used for?",
+    "options": [
+      "To store static files like CSS, JavaScript, and images",
+      "To store database migrations",
+      "To store dynamic content"
+    ],
+    "correctAnswer": "To store static files like CSS, JavaScript, and images"
+  },
+  {
+    "question": "What is the purpose of Django's `templates` directory?",
+    "options": [
+      "To store HTML files used for rendering views",
+      "To store the project settings",
+      "To store the database models"
+    ],
+    "correctAnswer": "To store HTML files used for rendering views"
+  },
+  {
+    "question": "What is the default user authentication backend used by Django?",
+    "options": [
+      "Django's built-in authentication system",
+      "OAuth2",
+      "JWT"
+    ],
+    "correctAnswer": "Django's built-in authentication system"
+  },
+  {
+    "question": "How do you define a foreign key relationship between two models in Django?",
+    "options": [
+      "Using the `ForeignKey` field in the model",
+      "Using the `ManyToOne` field",
+      "Using the `OneToMany` field"
+    ],
+    "correctAnswer": "Using the `ForeignKey` field in the model"
+  }
+],
+"SQL": [
+  {
+    "question": "What does SQL stand for?",
+    "options": [
+      "Structured Query Language",
+      "Simple Query Language",
+      "Structured Question Language"
+    ],
+    "correctAnswer": "Structured Query Language"
+  },
+  {
+    "question": "Which of the following is used to fetch data from a database?",
+    "options": [
+      "SELECT",
+      "FETCH",
+      "GET"
+    ],
+    "correctAnswer": "SELECT"
+  },
+  {
+    "question": "Which clause is used to filter records in SQL?",
+    "options": [
+      "WHERE",
+      "FILTER",
+      "HAVING"
+    ],
+    "correctAnswer": "WHERE"
+  },
+  {
+    "question": "What is the purpose of the `ORDER BY` clause in SQL?",
+    "options": [
+      "To sort the result set",
+      "To filter the result set",
+      "To group the result set"
+    ],
+    "correctAnswer": "To sort the result set"
+  },
+  {
+    "question": "Which keyword is used to eliminate duplicate records in SQL?",
+    "options": [
+      "DISTINCT",
+      "UNIQUE",
+      "NO_DUPLICATE"
+    ],
+    "correctAnswer": "DISTINCT"
+  },
+  {
+    "question": "Which of the following SQL statements is used to update data in a table?",
+    "options": [
+      "UPDATE",
+      "SET",
+      "CHANGE"
+    ],
+    "correctAnswer": "UPDATE"
+  },
+  {
+    "question": "Which SQL clause is used to combine the results of two or more SELECT statements?",
+    "options": [
+      "JOIN",
+      "UNION",
+      "INTERSECT"
+    ],
+    "correctAnswer": "UNION"
+  },
+  {
+    "question": "Which SQL statement is used to delete data from a table?",
+    "options": [
+      "DELETE",
+      "REMOVE",
+      "DROP"
+    ],
+    "correctAnswer": "DELETE"
+  },
+  {
+    "question": "What is the purpose of the `GROUP BY` clause in SQL?",
+    "options": [
+      "To group rows that have the same values into summary rows",
+      "To filter the result set",
+      "To sort the result set"
+    ],
+    "correctAnswer": "To group rows that have the same values into summary rows"
+  },
+  {
+    "question": "Which clause is used to group records in SQL?",
+    "options": [
+      "GROUP BY",
+      "ORDER BY",
+      "HAVING"
+    ],
+    "correctAnswer": "GROUP BY"
+  },
+  {
+    "question": "What does the `HAVING` clause do in SQL?",
+    "options": [
+      "Filters groups after the `GROUP BY`",
+      "Sorts the result set",
+      "Filters records before grouping"
+    ],
+    "correctAnswer": "Filters groups after the `GROUP BY`"
+  },
+  {
+    "question": "What is a foreign key in SQL?",
+    "options": [
+      "A key used to link two tables together",
+      "A key that uniquely identifies a record in the table",
+      "A key used for sorting"
+    ],
+    "correctAnswer": "A key used to link two tables together"
+  },
+  {
+    "question": "Which SQL statement is used to create a new table?",
+    "options": [
+      "CREATE TABLE",
+      "NEW TABLE",
+      "ADD TABLE"
+    ],
+    "correctAnswer": "CREATE TABLE"
+  },
+  {
+    "question": "Which data type is used to store text in SQL?",
+    "options": [
+      "VARCHAR",
+      "TEXT",
+      "STRING"
+    ],
+    "correctAnswer": "VARCHAR"
+  },
+  {
+    "question": "Which operator is used in SQL to compare a value to a list of values?",
+    "options": [
+      "IN",
+      "BETWEEN",
+      "LIKE"
+    ],
+    "correctAnswer": "IN"
+  },
+  {
+    "question": "Which operator is used in SQL to search for a specified pattern in a column?",
+    "options": [
+      "LIKE",
+      "IN",
+      "BETWEEN"
+    ],
+    "correctAnswer": "LIKE"
+  },
+  {
+    "question": "Which SQL function is used to calculate the total of a numeric column?",
+    "options": [
+      "SUM()",
+      "TOTAL()",
+      "COUNT()"
+    ],
+    "correctAnswer": "SUM()"
+  },
+  {
+    "question": "Which SQL function is used to return the number of records in a result set?",
+    "options": [
+      "COUNT()",
+      "SUM()",
+      "MAX()"
+    ],
+    "correctAnswer": "COUNT()"
+  },
+  {
+    "question": "What is an index in SQL?",
+    "options": [
+      "A performance optimization for fast data retrieval",
+      "A table that stores primary keys",
+      "A way to delete records"
+    ],
+    "correctAnswer": "A performance optimization for fast data retrieval"
+  },
+  {
+    "question": "Which of the following is the correct syntax to add a primary key to a table?",
+    "options": [
+      "ALTER TABLE table_name ADD PRIMARY KEY (column_name)",
+      "ADD PRIMARY KEY (column_name) TO table_name",
+      "ALTER TABLE table_name SET PRIMARY KEY (column_name)"
+    ],
+    "correctAnswer": "ALTER TABLE table_name ADD PRIMARY KEY (column_name)"
+  },
+  {
+    "question": "Which SQL statement is used to remove a table from a database?",
+    "options": [
+      "DROP TABLE",
+      "DELETE TABLE",
+      "REMOVE TABLE"
+    ],
+    "correctAnswer": "DROP TABLE"
+  },
+  {
+    "question": "Which SQL keyword is used to limit the number of records returned in a result set?",
+    "options": [
+      "LIMIT",
+      "TOP",
+      "RANGE"
+    ],
+    "correctAnswer": "LIMIT"
+  },
+  {
+    "question": "Which SQL keyword is used to combine rows from two or more tables based on a related column?",
+    "options": [
+      "JOIN",
+      "UNION",
+      "INTERSECT"
+    ],
+    "correctAnswer": "JOIN"
+  },
+  {
+    "question": "Which SQL command is used to modify an existing database table?",
+    "options": [
+      "ALTER TABLE",
+      "MODIFY TABLE",
+      "CHANGE TABLE"
+    ],
+    "correctAnswer": "ALTER TABLE"
+  },
+  {
+    "question": "Which of the following is used to ensure that all changes within a transaction are committed to the database?",
+    "options": [
+      "COMMIT",
+      "SAVE",
+      "FINISH"
+    ],
+    "correctAnswer": "COMMIT"
+  },
+  {
+    "question": "Which of the following is used to undo changes in a transaction?",
+    "options": [
+      "ROLLBACK",
+      "UNDO",
+      "REVERT"
+    ],
+    "correctAnswer": "ROLLBACK"
+  }
+],
+"PostgreSQL": [
+  {
+    "question": "What is PostgreSQL?",
+    "options": [
+      "A relational database management system",
+      "A web framework",
+      "A programming language"
+    ],
+    "correctAnswer": "A relational database management system"
+  },
+  {
+    "question": "Which of the following is used to create a new database in PostgreSQL?",
+    "options": [
+      "CREATE DATABASE",
+      "NEW DATABASE",
+      "ADD DATABASE"
+    ],
+    "correctAnswer": "CREATE DATABASE"
+  },
+  {
+    "question": "Which SQL command is used to add a new column to an existing table in PostgreSQL?",
+    "options": [
+      "ALTER TABLE table_name ADD column_name datatype",
+      "ADD COLUMN table_name column_name",
+      "ALTER COLUMN table_name ADD"
+    ],
+    "correctAnswer": "ALTER TABLE table_name ADD column_name datatype"
+  },
+  {
+    "question": "What is the purpose of `VACUUM` in PostgreSQL?",
+    "options": [
+      "Reclaims storage occupied by dead tuples",
+      "Reindexes the table",
+      "Backups the database"
+    ],
+    "correctAnswer": "Reclaims storage occupied by dead tuples"
+  },
+  {
+    "question": "Which command is used to list all the databases in PostgreSQL?",
+    "options": [
+      "SHOW DATABASES",
+      "LIST DATABASES",
+      "\\l"
+    ],
+    "correctAnswer": "\\l"
+  },
+  {
+    "question": "What is the function of `pg_dump` in PostgreSQL?",
+    "options": [
+      "To dump data from a table into a file",
+      "To query the database",
+      "To monitor database performance"
+    ],
+    "correctAnswer": "To dump data from a table into a file"
+  },
+  {
+    "question": "Which of the following is a valid data type in PostgreSQL?",
+    "options": [
+      "TEXT",
+      "STRING",
+      "CHARACTER"
+    ],
+    "correctAnswer": "TEXT"
+  },
+  {
+    "question": "Which operator is used for pattern matching in PostgreSQL?",
+    "options": [
+      "LIKE",
+      "MATCH",
+      "REGEX"
+    ],
+    "correctAnswer": "LIKE"
+  },
+  {
+    "question": "Which of the following is used to create an index in PostgreSQL?",
+    "options": [
+      "CREATE INDEX index_name ON table_name(column_name)",
+      "CREATE TABLE INDEX index_name",
+      "INDEX table_name USING index_name"
+    ],
+    "correctAnswer": "CREATE INDEX index_name ON table_name(column_name)"
+  },
+  {
+    "question": "Which function is used to find the length of a string in PostgreSQL?",
+    "options": [
+      "LENGTH()",
+      "CHAR_LENGTH()",
+      "STRLEN()"
+    ],
+    "correctAnswer": "LENGTH()"
+  },
+  {
+    "question": "Which command is used to remove a table from a database in PostgreSQL?",
+    "options": [
+      "DROP TABLE",
+      "DELETE TABLE",
+      "REMOVE TABLE"
+    ],
+    "correctAnswer": "DROP TABLE"
+  },
+  {
+    "question": "How do you define a primary key constraint in PostgreSQL?",
+    "options": [
+      "PRIMARY KEY(column_name)",
+      "PRIMARY (column_name)",
+      "UNIQUE KEY(column_name)"
+    ],
+    "correctAnswer": "PRIMARY KEY(column_name)"
+  },
+  {
+    "question": "What is the purpose of `EXPLAIN` in PostgreSQL?",
+    "options": [
+      "To show the execution plan of a query",
+      "To update a table",
+      "To delete a record"
+    ],
+    "correctAnswer": "To show the execution plan of a query"
+  },
+  {
+    "question": "Which of the following is used to create a foreign key constraint in PostgreSQL?",
+    "options": [
+      "FOREIGN KEY (column_name) REFERENCES table_name",
+      "REFERENCES table_name FOREIGN KEY (column_name)",
+      "FOREIGN(column_name) IN table_name"
+    ],
+    "correctAnswer": "FOREIGN KEY (column_name) REFERENCES table_name"
+  },
+  {
+    "question": "Which command is used to display the current user in PostgreSQL?",
+    "options": [
+      "SELECT CURRENT_USER;",
+      "SHOW CURRENT_USER;",
+      "USER CURRENT_USER;"
+    ],
+    "correctAnswer": "SELECT CURRENT_USER;"
+  },
+  {
+    "question": "How do you define a `CHECK` constraint in PostgreSQL?",
+    "options": [
+      "CHECK (condition)",
+      "CONSTRAINT CHECK (condition)",
+      "VALIDATE (condition)"
+    ],
+    "correctAnswer": "CHECK (condition)"
+  },
+  {
+    "question": "What is the purpose of the `WITH` clause in PostgreSQL?",
+    "options": [
+      "To create temporary result sets for complex queries",
+      "To define table constraints",
+      "To filter results from a SELECT query"
+    ],
+    "correctAnswer": "To create temporary result sets for complex queries"
+  },
+  {
+    "question": "Which of the following SQL statements is used to remove a database in PostgreSQL?",
+    "options": [
+      "DROP DATABASE",
+      "REMOVE DATABASE",
+      "DELETE DATABASE"
+    ],
+    "correctAnswer": "DROP DATABASE"
+  },
+  {
+    "question": "Which function is used to generate random numbers in PostgreSQL?",
+    "options": [
+      "RANDOM()",
+      "RAND()",
+      "GEN_RANDOM()"
+    ],
+    "correctAnswer": "RANDOM()"
+  },
+  {
+    "question": "What is the purpose of the `LIMIT` clause in PostgreSQL?",
+    "options": [
+      "To restrict the number of records returned by a query",
+      "To group records in a query",
+      "To delete records from the result set"
+    ],
+    "correctAnswer": "To restrict the number of records returned by a query"
+  },
+  {
+    "question": "Which PostgreSQL command is used to rename a column in a table?",
+    "options": [
+      "ALTER TABLE table_name RENAME column old_name TO new_name",
+      "RENAME COLUMN table_name column_name TO new_name",
+      "CHANGE COLUMN table_name column_name TO new_name"
+    ],
+    "correctAnswer": "ALTER TABLE table_name RENAME column old_name TO new_name"
+  },
+  {
+    "question": "Which of the following is used to perform a join operation in PostgreSQL?",
+    "options": [
+      "JOIN",
+      "COMBINE",
+      "LINK"
+    ],
+    "correctAnswer": "JOIN"
+  },
+  {
+    "question": "What does the `RETURNING` clause in PostgreSQL do?",
+    "options": [
+      "Returns values after an insert, update, or delete operation",
+      "Returns the result of a select query",
+      "Returns metadata for a table"
+    ],
+    "correctAnswer": "Returns values after an insert, update, or delete operation"
+  },
+  {
+    "question": "Which of the following PostgreSQL data types can store large binary data?",
+    "options": [
+      "BYTEA",
+      "TEXT",
+      "BLOB"
+    ],
+    "correctAnswer": "BYTEA"
+  },
+  {
+    "question": "Which PostgreSQL function is used to convert a string to lowercase?",
+    "options": [
+      "LOWER()",
+      "TO_LOWER()",
+      "CONVERT_LOWER()"
+    ],
+    "correctAnswer": "LOWER()"
+  },
+  {
+    "question": "Which command is used to check the status of PostgreSQL service?",
+    "options": [
+      "systemctl status postgresql",
+      "service postgresql status",
+      "pg_ctl status"
+    ],
+    "correctAnswer": "systemctl status postgresql"
+  },
+  {
+    "question": "How do you grant privileges to a user in PostgreSQL?",
+    "options": [
+      "GRANT privilege ON object TO user",
+      "ALLOW privilege ON object TO user",
+      "PERMIT privilege ON object TO user"
+    ],
+    "correctAnswer": "GRANT privilege ON object TO user"
+  }
+],
+"Swift": [
+  {
+    "question": "What is the keyword used to declare a constant in Swift?",
+    "options": [
+      "let",
+      "var",
+      "const"
+    ],
+    "correctAnswer": "let"
+  },
+  {
+    "question": "What is the default type of a variable declared in Swift without an explicit type?",
+    "options": [
+      "Any",
+      "Int",
+      "String"
+    ],
+    "correctAnswer": "Any"
+  },
+  {
+    "question": "How do you define a function in Swift?",
+    "options": [
+      "func functionName()",
+      "def functionName()",
+      "function functionName()"
+    ],
+    "correctAnswer": "func functionName()"
+  },
+  {
+    "question": "Which operator is used to safely unwrap an optional in Swift?",
+    "options": [
+      "??",
+      "?",
+      "!"
+    ],
+    "correctAnswer": "?"
+  },
+  {
+    "question": "What is the purpose of the `guard` statement in Swift?",
+    "options": [
+      "To unwrap optionals safely and exit early",
+      "To handle errors in a catch block",
+      "To loop through arrays"
+    ],
+    "correctAnswer": "To unwrap optionals safely and exit early"
+  },
+  {
+    "question": "What is the default value of a `Bool` in Swift?",
+    "options": [
+      "false",
+      "true",
+      "nil"
+    ],
+    "correctAnswer": "false"
+  },
+  {
+    "question": "Which of the following is a valid collection type in Swift?",
+    "options": [
+      "Array",
+      "HashMap",
+      "Set",
+      "All of the above"
+    ],
+    "correctAnswer": "All of the above"
+  },
+  {
+    "question": "How do you create an optional variable in Swift?",
+    "options": [
+      "var name: String?",
+      "var name: Optional<String>",
+      "var name: String!"
+    ],
+    "correctAnswer": "var name: String?"
+  },
+  {
+    "question": "What is the purpose of the `defer` statement in Swift?",
+    "options": [
+      "To execute code after the scope finishes",
+      "To loop through arrays",
+      "To handle errors"
+    ],
+    "correctAnswer": "To execute code after the scope finishes"
+  },
+  {
+    "question": "What is the result of dividing a `Double` by zero in Swift?",
+    "options": [
+      "Infinity",
+      "NaN (Not a Number)",
+      "Crash"
+    ],
+    "correctAnswer": "NaN (Not a Number)"
+  },
+  {
+    "question": "Which keyword is used to define a class in Swift?",
+    "options": [
+      "class",
+      "struct",
+      "type"
+    ],
+    "correctAnswer": "class"
+  },
+  {
+    "question": "How do you define a closure in Swift?",
+    "options": [
+      "{ (parameters) -> returnType in }",
+      "closure(parameters) { }",
+      "func closure() { }"
+    ],
+    "correctAnswer": "{ (parameters) -> returnType in }"
+  },
+  {
+    "question": "What is the difference between a `class` and a `struct` in Swift?",
+    "options": [
+      "Classes are reference types, structs are value types",
+      "Classes can store constants, structs cannot",
+      "Structs can inherit from other structs, but classes cannot"
+    ],
+    "correctAnswer": "Classes are reference types, structs are value types"
+  },
+  {
+    "question": "What is the purpose of the `enum` type in Swift?",
+    "options": [
+      "To define a type with a finite set of possible values",
+      "To define an object with properties and methods",
+      "To create an array of elements"
+    ],
+    "correctAnswer": "To define a type with a finite set of possible values"
+  },
+  {
+    "question": "How do you implement protocol conformance in Swift?",
+    "options": [
+      "class SomeClass: SomeProtocol",
+      "class SomeClass implements SomeProtocol",
+      "class SomeClass conforms to SomeProtocol"
+    ],
+    "correctAnswer": "class SomeClass: SomeProtocol"
+  },
+  {
+    "question": "What is the `Optional` type in Swift?",
+    "options": [
+      "A type that can contain a value or be nil",
+      "A type that holds a reference to an object",
+      "A type that is always set to a default value"
+    ],
+    "correctAnswer": "A type that can contain a value or be nil"
+  },
+  {
+    "question": "Which method is used to compare two strings in Swift?",
+    "options": [
+      "==",
+      "compare()",
+      "equal()"
+    ],
+    "correctAnswer": "=="
+  },
+  {
+    "question": "What is the purpose of the `self` keyword in Swift?",
+    "options": [
+      "Refers to the current instance of the class or struct",
+      "Refers to a global variable",
+      "Refers to a method in another class"
+    ],
+    "correctAnswer": "Refers to the current instance of the class or struct"
+  },
+  {
+    "question": "How do you concatenate two strings in Swift?",
+    "options": [
+      "string1 + string2",
+      "string1.append(string2)",
+      "concat(string1, string2)"
+    ],
+    "correctAnswer": "string1 + string2"
+  },
+  {
+    "question": "What is a `weak` reference in Swift?",
+    "options": [
+      "A reference that does not prevent the object from being deallocated",
+      "A reference that prevents an object from being deallocated",
+      "A reference to a private property"
+    ],
+    "correctAnswer": "A reference that does not prevent the object from being deallocated"
+  },
+  {
+    "question": "Which operator is used to force unwrap an optional in Swift?",
+    "options": [
+      "!",
+      "?",
+      "&"
+    ],
+    "correctAnswer": "!"
+  },
+  {
+    "question": "What does `nil` represent in Swift?",
+    "options": [
+      "Absence of a value",
+      "A reference to an object",
+      "A type of integer"
+    ],
+    "correctAnswer": "Absence of a value"
+  },
+  {
+    "question": "Which method is used to remove an element from an array in Swift?",
+    "options": [
+      "remove()",
+      "delete()",
+      "remove(at: index)"
+    ],
+    "correctAnswer": "remove(at: index)"
+  },
+  {
+    "question": "How do you handle errors in Swift?",
+    "options": [
+      "do-catch block",
+      "try-catch block",
+      "error() block"
+    ],
+    "correctAnswer": "do-catch block"
+  },
+  {
+    "question": "What is the `guard` statement used for in Swift?",
+    "options": [
+      "To validate conditions and exit early if they are not met",
+      "To perform error handling",
+      "To define an optional variable"
+    ],
+    "correctAnswer": "To validate conditions and exit early if they are not met"
+  },
+  {
+    "question": "How do you define an immutable array in Swift?",
+    "options": [
+      "let array = [1, 2, 3]",
+      "var array = [1, 2, 3]",
+      "array = [1, 2, 3]"
+    ],
+    "correctAnswer": "let array = [1, 2, 3]"
+  }
+],
+"React Native": [
+  {
+    "question": "What is the default language used to write React Native applications?",
+    "options": [
+      "JavaScript",
+      "TypeScript",
+      "Swift"
+    ],
+    "correctAnswer": "JavaScript"
+  },
+  {
+    "question": "Which of the following is used to style components in React Native?",
+    "options": [
+      "CSS",
+      "Inline Styles",
+      "StyleSheet"
+    ],
+    "correctAnswer": "StyleSheet"
+  },
+  {
+    "question": "Which command is used to create a new React Native project?",
+    "options": [
+      "npx react-native init ProjectName",
+      "npm create-react-native ProjectName",
+      "react-native create ProjectName"
+    ],
+    "correctAnswer": "npx react-native init ProjectName"
+  },
+  {
+    "question": "Which component is used to navigate between screens in React Native?",
+    "options": [
+      "NavigationContainer",
+      "ScreenNavigator",
+      "RouteNavigator"
+    ],
+    "correctAnswer": "NavigationContainer"
+  },
+  {
+    "question": "How do you access a component's props in React Native?",
+    "options": [
+      "this.props",
+      "this.getProps()",
+      "props()"
+    ],
+    "correctAnswer": "this.props"
+  },
+  {
+    "question": "Which of the following is used to handle gestures in React Native?",
+    "options": [
+      "GestureHandler",
+      "PanResponder",
+      "Touchable"
+    ],
+    "correctAnswer": "PanResponder"
+  },
+  {
+    "question": "What is the purpose of `useEffect` hook in React Native?",
+    "options": [
+      "To handle side effects like data fetching, subscriptions, and manual DOM manipulation",
+      "To update the component's state",
+      "To manage props in a component"
+    ],
+    "correctAnswer": "To handle side effects like data fetching, subscriptions, and manual DOM manipulation"
+  },
+  {
+    "question": "How do you update the state in a functional React Native component?",
+    "options": [
+      "setState()",
+      "this.setState()",
+      "useState()"
+    ],
+    "correctAnswer": "useState()"
+  },
+  {
+    "question": "What is the purpose of `useState` hook in React Native?",
+    "options": [
+      "To define and manage state in a functional component",
+      "To pass state from parent to child components",
+      "To store data in Redux"
+    ],
+    "correctAnswer": "To define and manage state in a functional component"
+  },
+  {
+    "question": "Which property is used to define the background color of a View in React Native?",
+    "options": [
+      "backgroundColor",
+      "color",
+      "bgColor"
+    ],
+    "correctAnswer": "backgroundColor"
+  },
+  {
+    "question": "Which component is used to display text in React Native?",
+    "options": [
+      "Text",
+      "Label",
+      "Paragraph"
+    ],
+    "correctAnswer": "Text"
+  },
+  {
+    "question": "How do you handle network requests in React Native?",
+    "options": [
+      "XMLHttpRequest",
+      "fetch",
+      "axios"
+    ],
+    "correctAnswer": "fetch"
+  },
+  {
+    "question": "Which function is used to listen for a change in an input field in React Native?",
+    "options": [
+      "onChangeText",
+      "onChange",
+      "onInputChange"
+    ],
+    "correctAnswer": "onChangeText"
+  },
+  {
+    "question": "How do you style text in React Native?",
+    "options": [
+      "style={styles.text}",
+      "textStyle={styles.text}",
+      "text={styles.text}"
+    ],
+    "correctAnswer": "style={styles.text}"
+  },
+  {
+    "question": "Which component is used to make an element touchable in React Native?",
+    "options": [
+      "TouchableOpacity",
+      "TouchableHighlight",
+      "TouchableWithoutFeedback"
+    ],
+    "correctAnswer": "TouchableOpacity"
+  },
+  {
+    "question": "What is the purpose of `Flexbox` in React Native?",
+    "options": [
+      "To layout components in a flexible and responsive manner",
+      "To handle animations in React Native",
+      "To display data in a tabular form"
+    ],
+    "correctAnswer": "To layout components in a flexible and responsive manner"
+  },
+  {
+    "question": "Which function is used to navigate to another screen in React Native?",
+    "options": [
+      "navigation.navigate()",
+      "navigateTo()",
+      "this.props.navigation.push()"
+    ],
+    "correctAnswer": "navigation.navigate()"
+  },
+  {
+    "question": "Which property is used to define the height of an element in React Native?",
+    "options": [
+      "height",
+      "h",
+      "size"
+    ],
+    "correctAnswer": "height"
+  },
+  {
+    "question": "Which of the following libraries is commonly used for state management in React Native?",
+    "options": [
+      "Redux",
+      "React Router",
+      "React Context API"
+    ],
+    "correctAnswer": "Redux"
+  },
+  {
+    "question": "How do you add icons in React Native?",
+    "options": [
+      "react-native-vector-icons",
+      "react-native-icons",
+      "react-native-svg-icons"
+    ],
+    "correctAnswer": "react-native-vector-icons"
+  },
+  {
+    "question": "Which component is used to create a scrollable view in React Native?",
+    "options": [
+      "ScrollView",
+      "Scrollable",
+      "ListView"
+    ],
+    "correctAnswer": "ScrollView"
+  },
+  {
+    "question": "What is the purpose of `useReducer` hook in React Native?",
+    "options": [
+      "To manage more complex state logic in functional components",
+      "To simplify state management in functional components",
+      "To handle user inputs in functional components"
+    ],
+    "correctAnswer": "To manage more complex state logic in functional components"
+  },
+  {
+    "question": "Which of the following can be used to test React Native components?",
+    "options": [
+      "Jest",
+      "Mocha",
+      "Enzyme"
+    ],
+    "correctAnswer": "Jest"
+  },
+  {
+    "question": "What is the difference between `TouchableOpacity` and `TouchableHighlight` in React Native?",
+    "options": [
+      "TouchableOpacity creates a fading effect when clicked, while TouchableHighlight creates a highlight effect",
+      "There is no difference",
+      "TouchableOpacity is used for text elements, and TouchableHighlight is used for images"
+    ],
+    "correctAnswer": "TouchableOpacity creates a fading effect when clicked, while TouchableHighlight creates a highlight effect"
+  },
+  {
+    "question": "What is the purpose of `React Navigation` in React Native?",
+    "options": [
+      "To handle navigation between screens",
+      "To manage API calls",
+      "To handle application state"
+    ],
+    "correctAnswer": "To handle navigation between screens"
+  }
+],
+"MongoDB": [
+  {
+    "question": "What is MongoDB?",
+    "options": [
+      "A relational database",
+      "A document-oriented NoSQL database",
+      "An object-oriented database"
+    ],
+    "correctAnswer": "A document-oriented NoSQL database"
+  },
+  {
+    "question": "Which data format does MongoDB use to store data?",
+    "options": [
+      "JSON",
+      "BSON",
+      "XML"
+    ],
+    "correctAnswer": "BSON"
+  },
+  {
+    "question": "What is a collection in MongoDB?",
+    "options": [
+      "A single document",
+      "A group of collections",
+      "A group of documents"
+    ],
+    "correctAnswer": "A group of documents"
+  },
+  {
+    "question": "What is a document in MongoDB?",
+    "options": [
+      "A record that represents data",
+      "A set of tables",
+      "A group of collections"
+    ],
+    "correctAnswer": "A record that represents data"
+  },
+  {
+    "question": "Which command is used to start a MongoDB server?",
+    "options": [
+      "mongod",
+      "mongo",
+      "startdb"
+    ],
+    "correctAnswer": "mongod"
+  },
+  {
+    "question": "What is the default port for MongoDB?",
+    "options": [
+      "27017",
+      "3306",
+      "5432"
+    ],
+    "correctAnswer": "27017"
+  },
+  {
+    "question": "Which operator in MongoDB is used for equality comparison?",
+    "options": [
+      "$eq",
+      "$gt",
+      "$lt"
+    ],
+    "correctAnswer": "$eq"
+  },
+  {
+    "question": "What is the MongoDB query language called?",
+    "options": [
+      "Mongo Query Language (MQL)",
+      "SQL",
+      "MongoShell"
+    ],
+    "correctAnswer": "Mongo Query Language (MQL)"
+  },
+  {
+    "question": "How do you insert a document into a MongoDB collection?",
+    "options": [
+      "db.collection.insert()",
+      "db.collection.insertOne()",
+      "db.insert()"
+    ],
+    "correctAnswer": "db.collection.insertOne()"
+  },
+  {
+    "question": "Which of the following is a valid MongoDB query operator for greater than?",
+    "options": [
+      "$gt",
+      "$lt",
+      "$eq"
+    ],
+    "correctAnswer": "$gt"
+  },
+  {
+    "question": "How do you update a document in MongoDB?",
+    "options": [
+      "db.collection.update()",
+      "db.collection.updateOne()",
+      "db.update()"
+    ],
+    "correctAnswer": "db.collection.updateOne()"
+  },
+  {
+    "question": "Which command is used to show all collections in MongoDB?",
+    "options": [
+      "show collections",
+      "list collections",
+      "db.getCollectionNames()"
+    ],
+    "correctAnswer": "show collections"
+  },
+  {
+    "question": "What is an index in MongoDB?",
+    "options": [
+      "A list of records",
+      "A structure that improves query performance",
+      "A document"
+    ],
+    "correctAnswer": "A structure that improves query performance"
+  },
+  {
+    "question": "Which method in MongoDB is used to find documents in a collection?",
+    "options": [
+      "find()",
+      "query()",
+      "get()"
+    ],
+    "correctAnswer": "find()"
+  },
+  {
+    "question": "Which operator is used to sort documents in MongoDB?",
+    "options": [
+      "$sort",
+      "$order",
+      "$rank"
+    ],
+    "correctAnswer": "$sort"
+  },
+  {
+    "question": "How do you delete a document in MongoDB?",
+    "options": [
+      "db.collection.remove()",
+      "db.collection.delete()",
+      "db.collection.deleteOne()"
+    ],
+    "correctAnswer": "db.collection.deleteOne()"
+  },
+  {
+    "question": "What is the purpose of the _id field in MongoDB?",
+    "options": [
+      "To store the primary key of the document",
+      "To store the document's timestamp",
+      "To store a reference to another collection"
+    ],
+    "correctAnswer": "To store the primary key of the document"
+  },
+  {
+    "question": "Which of the following is a valid operator in MongoDB for a logical AND operation?",
+    "options": [
+      "$and",
+      "$or",
+      "$not"
+    ],
+    "correctAnswer": "$and"
+  },
+  {
+    "question": "What is the purpose of MongoDB's aggregation framework?",
+    "options": [
+      "To perform complex queries, transformations, and computations on data",
+      "To index collections",
+      "To perform real-time data analysis"
+    ],
+    "correctAnswer": "To perform complex queries, transformations, and computations on data"
+  },
+  {
+    "question": "Which command is used to create an index in MongoDB?",
+    "options": [
+      "db.collection.createIndex()",
+      "db.createIndex()",
+      "db.index()"
+    ],
+    "correctAnswer": "db.collection.createIndex()"
+  },
+  {
+    "question": "Which method is used to count the number of documents in a MongoDB collection?",
+    "options": [
+      "count()",
+      "size()",
+      "length()"
+    ],
+    "correctAnswer": "count()"
+  },
+  {
+    "question": "Which type of database is MongoDB?",
+    "options": [
+      "Relational database",
+      "Document-oriented NoSQL database",
+      "Graph database"
+    ],
+    "correctAnswer": "Document-oriented NoSQL database"
+  },
+  {
+    "question": "Which command is used to create a new database in MongoDB?",
+    "options": [
+      "use database_name",
+      "create database_name",
+      "db.createDatabase()"
+    ],
+    "correctAnswer": "use database_name"
+  },
+  {
+    "question": "How do you limit the number of documents returned in a query in MongoDB?",
+    "options": [
+      "limit()",
+      "skip()",
+      "take()"
+    ],
+    "correctAnswer": "limit()"
+  },
+  {
+    "question": "Which method is used to join collections in MongoDB?",
+    "options": [
+      "aggregate()",
+      "join()",
+      "lookup()"
+    ],
+    "correctAnswer": "lookup()"
+  }
+],
+"Azure": [
+  {
+    "question": "What is Microsoft Azure?",
+    "options": [
+      "A cloud computing platform",
+      "A relational database management system",
+      "A web development framework"
+    ],
+    "correctAnswer": "A cloud computing platform"
+  },
+  {
+    "question": "Which of the following is NOT a service offered by Microsoft Azure?",
+    "options": [
+      "Azure Blob Storage",
+      "Azure Functions",
+      "Azure PostgreSQL"
+    ],
+    "correctAnswer": "Azure PostgreSQL"
+  },
+  {
+    "question": "What is Azure Blob Storage primarily used for?",
+    "options": [
+      "Storing unstructured data",
+      "Running SQL queries",
+      "Storing relational databases"
+    ],
+    "correctAnswer": "Storing unstructured data"
+  },
+  {
+    "question": "What is an Azure Virtual Machine (VM)?",
+    "options": [
+      "A service for running applications",
+      "A service for running virtualized server instances",
+      "A service for managing databases"
+    ],
+    "correctAnswer": "A service for running virtualized server instances"
+  },
+  {
+    "question": "Which Azure service is used for managing and deploying containers?",
+    "options": [
+      "Azure Kubernetes Service",
+      "Azure Virtual Machines",
+      "Azure SQL Database"
+    ],
+    "correctAnswer": "Azure Kubernetes Service"
+  },
+  {
+    "question": "What is the Azure Active Directory (Azure AD) used for?",
+    "options": [
+      "Managing identities and access",
+      "Running virtual machines",
+      "Storing files"
+    ],
+    "correctAnswer": "Managing identities and access"
+  },
+  {
+    "question": "Which service is used in Azure to host scalable web applications?",
+    "options": [
+      "Azure App Service",
+      "Azure Blob Storage",
+      "Azure Virtual Machine"
+    ],
+    "correctAnswer": "Azure App Service"
+  },
+  {
+    "question": "What is Azure Resource Manager (ARM)?",
+    "options": [
+      "A service for managing and deploying resources",
+      "A tool for creating virtual machines",
+      "A database management service"
+    ],
+    "correctAnswer": "A service for managing and deploying resources"
+  },
+  {
+    "question": "Which of the following is an Azure database service?",
+    "options": [
+      "Azure SQL Database",
+      "Azure Kubernetes Service",
+      "Azure Blob Storage"
+    ],
+    "correctAnswer": "Azure SQL Database"
+  },
+  {
+    "question": "Which Azure service can be used to implement serverless computing?",
+    "options": [
+      "Azure Functions",
+      "Azure Kubernetes Service",
+      "Azure App Service"
+    ],
+    "correctAnswer": "Azure Functions"
+  },
+  {
+    "question": "What is Azure DevOps used for?",
+    "options": [
+      "Managing development pipelines",
+      "Managing identities and access",
+      "Hosting virtual machines"
+    ],
+    "correctAnswer": "Managing development pipelines"
+  },
+  {
+    "question": "What is the Azure Content Delivery Network (CDN) used for?",
+    "options": [
+      "Distributing content globally",
+      "Managing web applications",
+      "Storing unstructured data"
+    ],
+    "correctAnswer": "Distributing content globally"
+  },
+  {
+    "question": "Which Azure service is used to automate cloud infrastructure management?",
+    "options": [
+      "Azure Automation",
+      "Azure Functions",
+      "Azure App Service"
+    ],
+    "correctAnswer": "Azure Automation"
+  },
+  {
+    "question": "Which of the following is a benefit of using Azure's public cloud?",
+    "options": [
+      "Scalability and flexibility",
+      "High cost for basic services",
+      "No need for internet connectivity"
+    ],
+    "correctAnswer": "Scalability and flexibility"
+  },
+  {
+    "question": "What is Azure's tool for building and deploying artificial intelligence models?",
+    "options": [
+      "Azure Machine Learning",
+      "Azure Cognitive Services",
+      "Azure AI Services"
+    ],
+    "correctAnswer": "Azure Machine Learning"
+  },
+  {
+    "question": "Which Azure service is used for managing large-scale distributed databases?",
+    "options": [
+      "Azure Cosmos DB",
+      "Azure SQL Database",
+      "Azure Virtual Machines"
+    ],
+    "correctAnswer": "Azure Cosmos DB"
+  },
+  {
+    "question": "Which Azure service allows you to manage secrets and keys securely?",
+    "options": [
+      "Azure Key Vault",
+      "Azure Active Directory",
+      "Azure App Service"
+    ],
+    "correctAnswer": "Azure Key Vault"
+  },
+  {
+    "question": "Which of the following Azure services can be used for monitoring and troubleshooting cloud applications?",
+    "options": [
+      "Azure Monitor",
+      "Azure Functions",
+      "Azure Virtual Machines"
+    ],
+    "correctAnswer": "Azure Monitor"
+  },
+  {
+    "question": "What is the Azure Site Recovery service used for?",
+    "options": [
+      "Disaster recovery for applications",
+      "Scaling virtual machines",
+      "Hosting content delivery"
+    ],
+    "correctAnswer": "Disaster recovery for applications"
+  },
+  {
+    "question": "Which service is used for managing network traffic in Azure?",
+    "options": [
+      "Azure Load Balancer",
+      "Azure App Service",
+      "Azure SQL Database"
+    ],
+    "correctAnswer": "Azure Load Balancer"
+  },
+  {
+    "question": "Which of the following Azure services is used for monitoring the health of a virtual machine?",
+    "options": [
+      "Azure Monitor",
+      "Azure Resource Manager",
+      "Azure Security Center"
+    ],
+    "correctAnswer": "Azure Monitor"
+  },
+  {
+    "question": "What is the purpose of Azure Logic Apps?",
+    "options": [
+      "Automating workflows and integrating apps",
+      "Scaling virtual machines",
+      "Storing unstructured data"
+    ],
+    "correctAnswer": "Automating workflows and integrating apps"
+  },
+  {
+    "question": "Which Azure service provides built-in machine learning models for developers?",
+    "options": [
+      "Azure Cognitive Services",
+      "Azure Machine Learning",
+      "Azure App Service"
+    ],
+    "correctAnswer": "Azure Cognitive Services"
+  },
+  {
+    "question": "What is Azure Storage used for?",
+    "options": [
+      "Storing data in various formats",
+      "Running virtual machines",
+      "Deploying containers"
+    ],
+    "correctAnswer": "Storing data in various formats"
+  },
+  {
+    "question": "Which service is used to deploy containers in Azure?",
+    "options": [
+      "Azure Kubernetes Service",
+      "Azure App Service",
+      "Azure SQL Database"
+    ],
+    "correctAnswer": "Azure Kubernetes Service"
+  },
+  {
+    "question": "What is the Azure Resource Manager (ARM) template used for?",
+    "options": [
+      "Defining and deploying Azure resources",
+      "Managing virtual machines",
+      "Running machine learning models"
+    ],
+    "correctAnswer": "Defining and deploying Azure resources"
+  },
+  {
+    "question": "What is the Azure Virtual Network used for?",
+    "options": [
+      "Creating isolated network environments in the cloud",
+      "Hosting virtual machines",
+      "Storing unstructured data"
+    ],
+    "correctAnswer": "Creating isolated network environments in the cloud"
+  }
+],
+"REST APIs": [
+  {
+    "question": "What does REST stand for?",
+    "options": [
+      "Representational State Transfer",
+      "Resource Engine for Secure Transactions",
+      "Real-time State Transport"
+    ],
+    "correctAnswer": "Representational State Transfer"
+  },
+  {
+    "question": "Which HTTP method is used to retrieve data from a REST API?",
+    "options": [
+      "POST",
+      "GET",
+      "PUT"
+    ],
+    "correctAnswer": "GET"
+  },
+  {
+    "question": "Which HTTP method is used to send data to a REST API to create a new resource?",
+    "options": [
+      "POST",
+      "GET",
+      "PUT"
+    ],
+    "correctAnswer": "POST"
+  },
+  {
+    "question": "What is the purpose of a status code in an HTTP response?",
+    "options": [
+      "Indicate the result of the request",
+      "Provide a log for the server",
+      "Specify the data type of the response"
+    ],
+    "correctAnswer": "Indicate the result of the request"
+  },
+  {
+    "question": "What is the default HTTP status code for a successful GET request?",
+    "options": [
+      "200",
+      "400",
+      "500"
+    ],
+    "correctAnswer": "200"
+  },
+  {
+    "question": "Which HTTP method is used to update an existing resource in a REST API?",
+    "options": [
+      "POST",
+      "GET",
+      "PUT"
+    ],
+    "correctAnswer": "PUT"
+  },
+  {
+    "question": "What does an HTTP status code of 404 indicate?",
+    "options": [
+      "Page not found",
+      "Request is successful",
+      "Internal server error"
+    ],
+    "correctAnswer": "Page not found"
+  },
+  {
+    "question": "What is the primary function of an HTTP header in a REST API request?",
+    "options": [
+      "Provide metadata about the request or response",
+      "Provide the body content of the request",
+      "Authenticate the user"
+    ],
+    "correctAnswer": "Provide metadata about the request or response"
+  },
+  {
+    "question": "Which of the following is an example of a RESTful URL?",
+    "options": [
+      "https://api.example.com/users/123",
+      "https://api.example.com/users?id=123",
+      "https://example.com/api/users/123"
+    ],
+    "correctAnswer": "https://api.example.com/users/123"
+  },
+  {
+    "question": "What is the purpose of the 'Accept' header in a REST API request?",
+    "options": [
+      "Indicates the response format the client expects",
+      "Specifies the request type",
+      "Indicates the request body format"
+    ],
+    "correctAnswer": "Indicates the response format the client expects"
+  },
+  {
+    "question": "Which HTTP status code is typically used for a successful POST request?",
+    "options": [
+      "201",
+      "200",
+      "400"
+    ],
+    "correctAnswer": "201"
+  },
+  {
+    "question": "What does it mean if a REST API is 'stateless'?",
+    "options": [
+      "Each request is independent and doesn't rely on previous requests",
+      "The server keeps track of the client's session",
+      "Data is stored locally on the client side"
+    ],
+    "correctAnswer": "Each request is independent and doesn't rely on previous requests"
+  },
+  {
+    "question": "What is an example of a REST API response header?",
+    "options": [
+      "Content-Type",
+      "User-Agent",
+      "Authorization"
+    ],
+    "correctAnswer": "Content-Type"
+  },
+  {
+    "question": "Which HTTP method would you use to delete a resource in a REST API?",
+    "options": [
+      "DELETE",
+      "PATCH",
+      "POST"
+    ],
+    "correctAnswer": "DELETE"
+  },
+  {
+    "question": "What does the 'Content-Type' header specify in a REST API request?",
+    "options": [
+      "The format of the request body",
+      "The type of response",
+      "The server's authorization token"
+    ],
+    "correctAnswer": "The format of the request body"
+  },
+  {
+    "question": "Which of the following is NOT a characteristic of RESTful APIs?",
+    "options": [
+      "Stateless communication",
+      "Uses a fixed set of commands",
+      "Uses HTTP methods"
+    ],
+    "correctAnswer": "Uses a fixed set of commands"
+  },
+  {
+    "question": "What is the meaning of the HTTP status code 500?",
+    "options": [
+      "Internal server error",
+      "Page not found",
+      "Forbidden"
+    ],
+    "correctAnswer": "Internal server error"
+  },
+  {
+    "question": "What is a 'resource' in the context of a REST API?",
+    "options": [
+      "A specific object or entity that the API manages",
+      "A method that the API exposes",
+      "A security token"
+    ],
+    "correctAnswer": "A specific object or entity that the API manages"
+  },
+  {
+    "question": "Which method is used in a REST API to partially update a resource?",
+    "options": [
+      "PATCH",
+      "PUT",
+      "POST"
+    ],
+    "correctAnswer": "PATCH"
+  },
+  {
+    "question": "What is an API endpoint?",
+    "options": [
+      "A specific URL where an API can be accessed",
+      "A security measure for an API",
+      "A data format used by the API"
+    ],
+    "correctAnswer": "A specific URL where an API can be accessed"
+  },
+  {
+    "question": "Which of the following describes a RESTful API's statelessness?",
+    "options": [
+      "Each request must contain all the necessary information",
+      "The server remembers the user's state between requests",
+      "The API maintains session information for each user"
+    ],
+    "correctAnswer": "Each request must contain all the necessary information"
+  },
+  {
+    "question": "Which status code indicates that the request was successful but the response has no content?",
+    "options": [
+      "204",
+      "200",
+      "403"
+    ],
+    "correctAnswer": "204"
+  },
+  {
+    "question": "Which HTTP method is idempotent, meaning it can be safely retried without causing any side effects?",
+    "options": [
+      "PUT",
+      "POST",
+      "DELETE"
+    ],
+    "correctAnswer": "PUT"
+  },
+  {
+    "question": "What is the purpose of the 'Authorization' header in a REST API request?",
+    "options": [
+      "To send authentication credentials",
+      "To specify the content type of the request",
+      "To request a specific type of response"
+    ],
+    "correctAnswer": "To send authentication credentials"
+  },
+  {
+    "question": "Which HTTP method is used to update a resource partially in a REST API?",
+    "options": [
+      "PATCH",
+      "PUT",
+      "GET"
+    ],
+    "correctAnswer": "PATCH"
+  },
+  {
+    "question": "Which status code is returned when the client does not have permission to access a resource?",
+    "options": [
+      "403",
+      "401",
+      "404"
+    ],
+    "correctAnswer": "403"
+  },
+  {
+    "question": "Which HTTP status code indicates that the request was successful and the server has created a new resource?",
+    "options": [
+      "201",
+      "200",
+      "404"
+    ],
+    "correctAnswer": "201"
+  },
+  {
+    "question": "What does the 'User-Agent' header in an HTTP request specify?",
+    "options": [
+      "The browser or client making the request",
+      "The server's name",
+      "The type of data the client expects"
+    ],
+    "correctAnswer": "The browser or client making the request"
+  }
+],
+"Java": [
+  {
+    "question": "What is the default value of a boolean variable in Java?",
+    "options": [
+      "true",
+      "false",
+      "null"
+    ],
+    "correctAnswer": "false"
+  },
+  {
+    "question": "Which of the following is the correct way to declare a constant in Java?",
+    "options": [
+      "final int x = 5;",
+      "int final x = 5;",
+      "constant int x = 5;"
+    ],
+    "correctAnswer": "final int x = 5;"
+  },
+  {
+    "question": "Which of the following is used to define a method that doesn't return any value?",
+    "options": [
+      "void",
+      "return",
+      "null"
+    ],
+    "correctAnswer": "void"
+  },
+  {
+    "question": "Which of the following data types are primitive types in Java?",
+    "options": [
+      "int, char, boolean",
+      "Integer, Boolean, String",
+      "float, String, Double"
+    ],
+    "correctAnswer": "int, char, boolean"
+  },
+  {
+    "question": "What is the result of the expression 10 / 3 in Java?",
+    "options": [
+      "3.0",
+      "3",
+      "3.33"
+    ],
+    "correctAnswer": "3"
+  },
+  {
+    "question": "Which of the following is NOT a valid identifier in Java?",
+    "options": [
+      "int var_1;",
+      "int 1var;",
+      "int $var;"
+    ],
+    "correctAnswer": "int 1var;"
+  },
+  {
+    "question": "What is the method signature for the main method in Java?",
+    "options": [
+      "public static void main(String[] args)",
+      "public void main(String args)",
+      "static public main(String[] args)"
+    ],
+    "correctAnswer": "public static void main(String[] args)"
+  },
+  {
+    "question": "Which class is the parent class of all classes in Java?",
+    "options": [
+      "Object",
+      "Class",
+      "Super"
+    ],
+    "correctAnswer": "Object"
+  },
+  {
+    "question": "Which keyword is used to inherit a class in Java?",
+    "options": [
+      "extends",
+      "implements",
+      "inherits"
+    ],
+    "correctAnswer": "extends"
+  },
+  {
+    "question": "What is the size of an int in Java?",
+    "options": [
+      "16 bits",
+      "32 bits",
+      "64 bits"
+    ],
+    "correctAnswer": "32 bits"
+  },
+  {
+    "question": "Which of the following is used to handle exceptions in Java?",
+    "options": [
+      "try-catch",
+      "throw-catch",
+      "error-catch"
+    ],
+    "correctAnswer": "try-catch"
+  },
+  {
+    "question": "What will the following code print? System.out.println('A' + 'B');",
+    "options": [
+      "AB",
+      "66",
+      "131"
+    ],
+    "correctAnswer": "131"
+  },
+  {
+    "question": "Which of the following statements is true about constructors in Java?",
+    "options": [
+      "A constructor is used to initialize objects",
+      "A constructor has no return type",
+      "Both of the above"
+    ],
+    "correctAnswer": "Both of the above"
+  },
+  {
+    "question": "What does the 'final' keyword mean in Java?",
+    "options": [
+      "The variable cannot be reassigned",
+      "The method cannot be overridden",
+      "Both of the above"
+    ],
+    "correctAnswer": "Both of the above"
+  },
+  {
+    "question": "Which method is used to find the length of an array in Java?",
+    "options": [
+      "array.length()",
+      "array.size()",
+      "array.length"
+    ],
+    "correctAnswer": "array.length"
+  },
+  {
+    "question": "Which exception is thrown when a null object is accessed in Java?",
+    "options": [
+      "NullPointerException",
+      "IndexOutOfBoundsException",
+      "ArithmeticException"
+    ],
+    "correctAnswer": "NullPointerException"
+  },
+  {
+    "question": "Which of the following can be used to create a thread in Java?",
+    "options": [
+      "Extending the Thread class",
+      "Implementing the Runnable interface",
+      "Both of the above"
+    ],
+    "correctAnswer": "Both of the above"
+  },
+  {
+    "question": "Which of the following is the correct way to declare a 2D array in Java?",
+    "options": [
+      "int[][] arr;",
+      "int arr[2][2];",
+      "int arr(2)(2);"
+    ],
+    "correctAnswer": "int[][] arr;"
+  },
+  {
+    "question": "Which of the following keywords is used for method overriding in Java?",
+    "options": [
+      "super",
+      "this",
+      "override"
+    ],
+    "correctAnswer": "super"
+  },
+  {
+    "question": "Which of the following is a valid Java package name?",
+    "options": [
+      "com.example",
+      "example.com",
+      "com_example"
+    ],
+    "correctAnswer": "com.example"
+  },
+  {
+    "question": "What is the output of the following code? System.out.println(5 + 3 + '2');",
+    "options": [
+      "52",
+      "53",
+      "8"
+    ],
+    "correctAnswer": "53"
+  },
+  {
+    "question": "Which of the following can be used to access a static method in Java?",
+    "options": [
+      "By using the class name",
+      "By using an object instance",
+      "Both of the above"
+    ],
+    "correctAnswer": "By using the class name"
+  },
+  {
+    "question": "Which of the following is true about Java interfaces?",
+    "options": [
+      "An interface can contain only abstract methods",
+      "An interface can contain both abstract and default methods",
+      "An interface can contain instance variables"
+    ],
+    "correctAnswer": "An interface can contain both abstract and default methods"
+  },
+  {
+    "question": "Which keyword is used to prevent a method from being overridden in Java?",
+    "options": [
+      "final",
+      "static",
+      "private"
+    ],
+    "correctAnswer": "final"
+  },
+  {
+    "question": "What will the following code print? System.out.println('A' - 'A');",
+    "options": [
+      "A",
+      "0",
+      "Error"
+    ],
+    "correctAnswer": "0"
+  },
+  {
+    "question": "Which of the following is used to define a new package in Java?",
+    "options": [
+      "package com.example;",
+      "import com.example;",
+      "define com.example;"
+    ],
+    "correctAnswer": "package com.example;"
+  },
+  {
+    "question": "Which of the following is NOT a type of constructor in Java?",
+    "options": [
+      "Default constructor",
+      "Parameterized constructor",
+      "Constructor with return type"
+    ],
+    "correctAnswer": "Constructor with return type"
+  },
+  {
+    "question": "Which of the following Java classes is used to handle input from the keyboard?",
+    "options": [
+      "Scanner",
+      "BufferedReader",
+      "FileReader"
+    ],
+    "correctAnswer": "Scanner"
+  }
+],
+"Spring Boot": [
+  {
+    "question": "What annotation is used to mark a class as a Spring Boot application?",
+    "options": [
+      "@SpringBootApplication",
+      "@EnableAutoConfiguration",
+      "@SpringApplication"
+    ],
+    "correctAnswer": "@SpringBootApplication"
+  },
+  {
+    "question": "What is the default port number for a Spring Boot application?",
+    "options": [
+      "8080",
+      "5000",
+      "9000"
+    ],
+    "correctAnswer": "8080"
+  },
+  {
+    "question": "Which of the following is used to run a Spring Boot application?",
+    "options": [
+      "java -jar application.jar",
+      "mvn spring-boot:run",
+      "Both of the above"
+    ],
+    "correctAnswer": "Both of the above"
+  },
+  {
+    "question": "Which annotation is used to create a REST controller in Spring Boot?",
+    "options": [
+      "@RestController",
+      "@Controller",
+      "@Service"
+    ],
+    "correctAnswer": "@RestController"
+  },
+  {
+    "question": "Which file is used for configuration in a Spring Boot application?",
+    "options": [
+      "application.properties",
+      "application.yml",
+      "Both of the above"
+    ],
+    "correctAnswer": "Both of the above"
+  },
+  {
+    "question": "What is the main purpose of the @Entity annotation in Spring Boot?",
+    "options": [
+      "To mark a class as a persistent entity",
+      "To mark a class as a service",
+      "To mark a class as a controller"
+    ],
+    "correctAnswer": "To mark a class as a persistent entity"
+  },
+  {
+    "question": "Which of the following is used for dependency injection in Spring Boot?",
+    "options": [
+      "@Autowired",
+      "@Inject",
+      "@Service"
+    ],
+    "correctAnswer": "@Autowired"
+  },
+  {
+    "question": "What is the role of @SpringBootApplication annotation in Spring Boot?",
+    "options": [
+      "It enables auto-configuration, component scanning, and enables configuration",
+      "It enables only auto-configuration",
+      "It is used to define a REST endpoint"
+    ],
+    "correctAnswer": "It enables auto-configuration, component scanning, and enables configuration"
+  },
+  {
+    "question": "What is the main use of @Value annotation in Spring Boot?",
+    "options": [
+      "To inject values from properties file into fields",
+      "To inject values from environment variables",
+      "To inject values from database"
+    ],
+    "correctAnswer": "To inject values from properties file into fields"
+  },
+  {
+    "question": "What is the default scope of a bean in Spring Boot?",
+    "options": [
+      "singleton",
+      "prototype",
+      "request"
+    ],
+    "correctAnswer": "singleton"
+  },
+  {
+    "question": "Which of the following is used to configure a database connection in Spring Boot?",
+    "options": [
+      "application.properties",
+      "persistence.xml",
+      "Both of the above"
+    ],
+    "correctAnswer": "application.properties"
+  },
+  {
+    "question": "What does the @SpringBootApplication annotation combine?",
+    "options": [
+      "@EnableAutoConfiguration, @ComponentScan, @Configuration",
+      "@RestController, @Service, @Entity",
+      "@Component, @Repository, @Controller"
+    ],
+    "correctAnswer": "@EnableAutoConfiguration, @ComponentScan, @Configuration"
+  },
+  {
+    "question": "Which Spring Boot starter is used to add web functionality to the application?",
+    "options": [
+      "spring-boot-starter-web",
+      "spring-boot-starter-data-jpa",
+      "spring-boot-starter-thymeleaf"
+    ],
+    "correctAnswer": "spring-boot-starter-web"
+  },
+  {
+    "question": "What is the default location for Spring Boot application properties?",
+    "options": [
+      "src/main/resources/application.properties",
+      "src/main/resources/application.yml",
+      "src/main/resources/config.properties"
+    ],
+    "correctAnswer": "src/main/resources/application.properties"
+  },
+  {
+    "question": "Which of the following annotations is used to handle HTTP GET requests in Spring Boot?",
+    "options": [
+      "@GetMapping",
+      "@RequestMapping",
+      "@PostMapping"
+    ],
+    "correctAnswer": "@GetMapping"
+  },
+  {
+    "question": "Which of the following can be used to configure logging in a Spring Boot application?",
+    "options": [
+      "application.properties",
+      "logback.xml",
+      "Both of the above"
+    ],
+    "correctAnswer": "Both of the above"
+  },
+  {
+    "question": "What is the role of @Component annotation in Spring Boot?",
+    "options": [
+      "Marks a class as a Spring-managed bean",
+      "Marks a class as a configuration class",
+      "Marks a class as a REST controller"
+    ],
+    "correctAnswer": "Marks a class as a Spring-managed bean"
+  },
+  {
+    "question": "What is the purpose of Spring Boot DevTools?",
+    "options": [
+      "It provides tools for development and debugging",
+      "It provides tools for testing",
+      "It provides tools for security"
+    ],
+    "correctAnswer": "It provides tools for development and debugging"
+  },
+  {
+    "question": "What is the default behavior of Spring Boot's embedded web server?",
+    "options": [
+      "It starts automatically when the application runs",
+      "It needs to be manually configured",
+      "It is disabled by default"
+    ],
+    "correctAnswer": "It starts automatically when the application runs"
+  },
+  {
+    "question": "Which of the following annotations is used to handle HTTP POST requests in Spring Boot?",
+    "options": [
+      "@PostMapping",
+      "@RequestMapping",
+      "@GetMapping"
+    ],
+    "correctAnswer": "@PostMapping"
+  },
+  {
+    "question": "Which Spring Boot starter is used to work with JPA (Java Persistence API)?",
+    "options": [
+      "spring-boot-starter-data-jpa",
+      "spring-boot-starter-web",
+      "spring-boot-starter-thymeleaf"
+    ],
+    "correctAnswer": "spring-boot-starter-data-jpa"
+  },
+  {
+    "question": "What does Spring Boot's auto-configuration feature do?",
+    "options": [
+      "Automatically configures beans based on application dependencies",
+      "Requires manual configuration for every dependency",
+      "Automatically generates code"
+    ],
+    "correctAnswer": "Automatically configures beans based on application dependencies"
+  },
+  {
+    "question": "What is the main benefit of using Spring Boot over traditional Spring?",
+    "options": [
+      "No need for complex XML configuration",
+      "Automatic configuration and embedded servers",
+      "Both of the above"
+    ],
+    "correctAnswer": "Both of the above"
+  },
+  {
+    "question": "How do you disable the Spring Boot banner?",
+    "options": [
+      "Set spring.main.banner-mode=off in application.properties",
+      "Set spring.main.banner=false in application.properties",
+      "Set spring.banner=false in application.properties"
+    ],
+    "correctAnswer": "Set spring.main.banner-mode=off in application.properties"
+  },
+  {
+    "question": "Which of the following annotations is used to define a REST endpoint in Spring Boot?",
+    "options": [
+      "@RestController",
+      "@Component",
+      "@Controller"
+    ],
+    "correctAnswer": "@RestController"
+  },
+  {
+    "question": "What is the default behavior of Spring Boot's embedded Tomcat server?",
+    "options": [
+      "It runs on port 8080",
+      "It runs on port 9090",
+      "It doesn't run by default"
+    ],
+    "correctAnswer": "It runs on port 8080"
+  }
+]
+  }

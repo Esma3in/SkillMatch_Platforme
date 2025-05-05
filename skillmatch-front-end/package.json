@@ -12,6 +12,7 @@
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "d3": "^7.9.0",
     "framer-motion": "^12.7.4",
     "lucide-react": "^0.503.0",
     "react": "^19.1.0",

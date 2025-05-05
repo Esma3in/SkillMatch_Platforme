@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    public function GetTestsCompanieSelected($id)
+    public function GetTestsCompanySelected($id)
     {
         $company = Company::find($id);
         
@@ -20,7 +20,7 @@ class TestController extends Controller
         $tests = $company->tests()->with([ 'company', 'skill'])->paginate(10);
     
         if ($tests->isEmpty()) {
-            return response()->json(['error' => 'Test not found'], 404);
+            return response()->json('This company dont have any test for now', 404);
         }
     
         return response()->json($tests, 200);
@@ -32,7 +32,6 @@ class TestController extends Controller
         if(!$test){
             return response()->json('test not found',404);
         }
-
         return response()->json($test,200); 
     }
 }

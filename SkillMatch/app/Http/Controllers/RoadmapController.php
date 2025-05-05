@@ -66,11 +66,15 @@ class RoadmapController extends Controller
     }
     public function generateRoadmap(Request $request){
         $validated = $request->validate([
+             'name'=>'nullable|string|max:120',
             'skill_id' =>'required|integer|exists:skills,id',
+            'completed'=>'required|string',
             'candidate_id'=>'required|integer|exists:candidates,id'
         ]);
         $roadmap = Roadmap::create([
+            'name'=>$validated['name'],
             'skill_id'=>$validated['skill_id'],
+            'completed'=>$validated['completed'],
             'candidate_id'=>$validated['candidate_id']
         ]);
         return response()->json([

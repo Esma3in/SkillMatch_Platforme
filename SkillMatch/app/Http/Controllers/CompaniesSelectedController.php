@@ -29,7 +29,7 @@ class CompaniesSelectedController extends Controller
             return response()->json(['error' => 'company not found'], 404);
         }
 
-     
+
 
         // Validation des données envoyées
         $validated = $request->validate([
@@ -100,7 +100,7 @@ class CompaniesSelectedController extends Controller
 
 public function getSelectedCompaniess($candidate_id, Request $request)
 {
-  
+
     $companiesSelected =CompaniesSelected::whereCandidateId($candidate_id)->with('companies')->get();
     return response()->json($companiesSelected);
 }
