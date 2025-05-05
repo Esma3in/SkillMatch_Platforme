@@ -66,20 +66,22 @@ function shuffleArray(array) {
 }
 
 export const CandidateTest = () => {
-    const { companyId } = useParams();
-    console.log(companyId)
+    const { TestId } = useParams();
     const [TestInfo, setTestInfo] = useState();
-    const [Loading,setLoading]=useState(true)
+    const [Loading, setLoading] = useState(true)
+    const [error, seterror] = useState('')
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await api.get(`/api/candidate/test/company/${companyId}`);
-                setTestInfo(response.data[0]);
+                const response = await api.get(`/api/candidate/test/${TestId}`);
+                setTestInfo(response.data);
                 console.log(response.data)
                 setLoading(false)
             } catch (err) {
                 console.log(err.message);
+                seterror(err.message)
+                setLoading(false)
             }
         };
         fetchData();
@@ -118,11 +120,22 @@ export const CandidateTest = () => {
             });
         });
     }
-if(Loading)  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
-    </div>
-  );
+    if (Loading) return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+        </div>
+    );
+    if (!TestInfo && !error) return (
+        <div className="w-full max-w-md mx-auto mt-10 p-6 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-xl shadow-md text-center">
+            The Company doesn't have any test for now.
+        </div>
+    );
+    if (error) return (
+        <div className="w-full max-w-md mx-auto mt-6 p-4 bg-red-100 text-red-800 border border-red-300 rounded-lg shadow text-center">
+            {error}
+        </div>
+    );
+
 
     return (
         <div className="w-full max-w-[1453px] mx-auto">
@@ -135,20 +148,20 @@ if(Loading)  return (
                             <div className="relative w-[179px] h-[167px] mt-10 ml-[119px]">
                                 <div className="relative w-[177px] h-[167px] bg-[#6c63ff] rounded-[88.62px/83.5px] flex items-center justify-center">
                                     <div className="text-white text-[64px] font-extrabold [font-family:'Inter',Helvetica]">
-                                        J
+                                        {TestInfo?.skill?.name.substring(0,1)}
                                     </div>
                                 </div>
                             </div>
 
                             {/* Title */}
                             <h1 className="w-[692px] h-16 mt-[92px] ml-[154px] [font-family:'Inter',Helvetica] font-extrabold text-black text-[40px] text-center">
-                                Java Backend Development Test
+                                {TestInfo?.skill?.name} Test
                             </h1>
 
                             {/* Difficulty Badge */}
                             <div className="mt-[106px] ml-[224px]">
                                 <Badge className="w-[120px] h-9 bg-[#f9debf] text-[#98523f] text-base font-medium rounded-[15px] flex items-center justify-center [font-family:'Inter',Helvetica]">
-                                    Medium
+                                    {TestInfo?.skill?.level}
                                 </Badge>
                             </div>
                         </div>
@@ -188,19 +201,20 @@ if(Loading)  return (
                             <Card className="mt-[25px] w-[1366px] h-auto bg-indigo-50 rounded-2xl border-none">
                                 <CardContent className="p-8 flex items-center justify-center">
                                     <div className="w-[1167px] flex flex-col gap-3">
-
-                                        <p
-
-                                            className="font-text-xs-medium text-black text-[length:var(--text-xs-medium-font-size)] leading-[var(--text-xs-medium-line-height)] tracking-[var(--text-xs-medium-letter-spacing)]"
-                                        >
-                                            {prerequisites ? prerequisites : ''}
-                                        </p>
-
+                                        {prerequisites?.map((pre, i) => {
+                                            return (
+                                                <p
+                                                    key={i}
+                                                    className="text-xs font-medium text-black leading-tight tracking-normal"
+                                                >
+                                                    {pre?.text}
+                                                </p>
+                                            );
+                                        })}
                                     </div>
                                 </CardContent>
                             </Card>
                         </section>
-
 
                         {/* Steps Section */}
                         <section className="mt-[25px] ml-[83px]">

@@ -20,7 +20,9 @@ return new class extends Migration
             $table->text('before_answer');
             $table->foreignid('qcm_id')->constrained('qcms');
             $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('skill_id');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('skill_id')->references('id')->on('skills')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

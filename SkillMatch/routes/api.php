@@ -70,10 +70,10 @@ Route::post('/candidate/settings/change-password', [ProfileSettingsController::c
 Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsController::class, 'deleteProfilePicture']);
 
 //company SELECTED
-Route::post('/candidates/{id}/select-company', [CompaniesSelectedController::class, 'selectCompany']);
+Route::post('/selected/company/{id}', [CompaniesSelectedController::class, 'selectCompany']);
 
 // get roadmap
-Route::get('/roadmaps', [RoadmapController::class, 'getCompleteRoadmap']);
+Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getCompleteRoadmap']);
 
 
 Route::get('/prerequisites', [prerequisitesController::class, 'index']);
@@ -81,23 +81,27 @@ Route::get('/tools', [toolsController::class, 'index']);
 Route::get('/candidate-courses', [candidateCoursesController::class, 'index']);
 Route::get('/roadmap-skills', [skillsRoadmapController::class, 'index']);
 
+//companies related
+Route::get('/selected/companies/{candidate_id}', [CompaniesSelectedController::class, 'getSelectedCompaniess']);
 
-
+// skills of an companyId
+Route::get('/skills/company/{company_id}' , [CompaniesSelectedController::class , 'getSkillsByCompany']);
+// genrate roadmap 
+Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 
 
 
 //Candidate Test Routes:
 
-Route::get('/candidate/test/company/{id}',[TestController::class,'GetTestCompanieSelected']);
-
+Route::get('/comapny/{id}/tests',[TestController::class,'GetTestsCompanieSelected']);
+Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
 
 //Select Company Route:
 // Route::post('/candidate/select/company',[CompaniesSelectedController::class,'SelectCompany']);
 // Route::get('/candidate/getSelected/companies/{id}',[CompaniesSelectedController::class,'getcompanies']);
 // candidate Roadmap Routes
 Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'getPrerequisites']);
-
 
 // admin routes
 
@@ -106,3 +110,7 @@ Route::get('/admin',[AdminController::class],'index')->name('admin.index');
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
 // Route::get('/admin/CanidatsList/Canidate/{id}',[AdminConroller::class],'Candidate')->name('admin.index');
+
+Route::get('/roadmap/{companyId}' , [CompaniesSelectedController::class  , 'getSkillsData']);
+
+

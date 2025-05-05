@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Roadmap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -61,6 +62,20 @@ class RoadmapController extends Controller
             'candidate_courses' => $courses,
             'roadmap_skills' => $roadmapSkills,
         ]);
-        //testetesttest
+    
+    }
+    public function generateRoadmap(Request $request){
+        $validated = $request->validate([
+            'skill_id' =>'required|integer|exists:skills,id',
+            'candidate_id'=>'required|integer|exists:candidates,id'
+        ]);
+        $roadmap = Roadmap::create([
+            'skill_id'=>$validated['skill_id'],
+            'candidate_id'=>$validated['candidate_id']
+        ]);
+        return response()->json([
+            'message' => 'Company selected successfully',
+            'data' => $roadmap
+        ], 201);
     }
 }

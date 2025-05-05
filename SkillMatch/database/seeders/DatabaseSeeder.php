@@ -60,9 +60,9 @@ class DatabaseSeeder extends Seeder
         foreach ($skills as $skillName) {
             $skillsCreated[] = Skill::factory()->create([
                 'name' => $skillName,
-                'test_id' => null,
             ]);
         }
+        
         $candidates = Candidate::factory(10)->create();
         // Création de 20 challenges avec chacun 20 problèmes
         Challenge::factory(20)->create()->each(function ($challenge) use ($skillsCreated, $candidates) {
@@ -153,7 +153,6 @@ class DatabaseSeeder extends Seeder
         });
         //Insert prerequisites
      
-        
         DB::transaction(function () {
             // Load and validate JSON files
             $files = [
@@ -210,7 +209,7 @@ class DatabaseSeeder extends Seeder
             if (empty($prerequisitesData)) {
                 throw new \Exception('No valid prerequisites found in prerequisites.json');
             }
-            DB::table('prerequisites')->insert($prerequisitesData);
+            DB::table('prerequistes')->insert($prerequisitesData);
         
             // Insert courses
             if (!isset($decoded['courses']['courses'])) {
@@ -230,35 +229,34 @@ class DatabaseSeeder extends Seeder
             DB::table('candidate_courses')->insert($coursesData);
         
             // Insert skills
-            if (!isset($decoded['skills']['java'])) {
-                throw new \Exception('Missing "java" key in skills.json');
+            if (empty($decoded['skills'])) {
+                throw new \Exception('No skills found in skills.json');
             }
-            $skillsData = array_map(function ($skill) use ($decoded) {
-                return [
-                    // 'roadmap_id' => (int) $decoded['skills']['roadmap_id'],
-                    // 'candidate_id' => (int) $decoded['skills']['candidate_id'],
-                    'id' => (int) $skill['id'],
-                    'text' => $skill['text'],
-                    'completed' => (bool) $skill['completed'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            }, $decoded['skills']['java']);
+            $skillsData = [];
+            foreach ($decoded['skills'] as $skillGroup) {
+                foreach ($skillGroup as $skill) {
+                    $skillsData[] = [
+                        'id' => (int) $skill['id'],
+                        'text' => $skill['text'],
+                        'completed' => (bool) $skill['completed'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+            if (empty($skillsData)) {
+                throw new \Exception('No valid skills found in skills.json');
+            }
             DB::table('roadmap_skills')->insert($skillsData);
         
             // Insert tools
             if (!isset($decoded['tools']['tools'])) {
                 throw new \Exception('Missing "tools" key in tools.json');
             }
-        
             $toolsData = [];
             $toolSkillsData = [];
-        
             foreach ($decoded['tools']['tools'] as $tool) {
-                // Data for the tools table
                 $toolsData[] = [
-                    // 'roadmap_id' => (int) $decoded['tools']['roadmap_id'],
-                    // 'candidate_id' => (int) $decoded['tools']['candidate_id'],
                     'id' => (int) $tool['id'],
                     'name' => $tool['name'],
                     'description' => $tool['description'] ?? null,
@@ -267,8 +265,6 @@ class DatabaseSeeder extends Seeder
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
-        
-                // Data for the tool_skills table
                 if (!empty($tool['skills']) && is_array($tool['skills'])) {
                     foreach ($tool['skills'] as $skillText) {
                         $toolSkillsData[] = [
@@ -280,9 +276,7 @@ class DatabaseSeeder extends Seeder
                     }
                 }
             }
-        
             DB::table('tools')->insert($toolsData);
-        
             if (!empty($toolSkillsData)) {
                 DB::table('tool_skills')->insert($toolSkillsData);
             }
@@ -329,5 +323,7 @@ class DatabaseSeeder extends Seeder
             }
 
         }
+        
     }
 }
+

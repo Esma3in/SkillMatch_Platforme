@@ -15,9 +15,10 @@ import AdminHome from './pages/adminHome.jsx';
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
 import { Roadmap } from './pages/Roadmap.js';
-import CompaniesRelated from './pages/compniesSelectedList.jsx';
+import CompaniesRelated from './pages/CompaniesRelated.jsx';
 import { CandidateTest } from './pages/CandidateTest.jsx';
 import { LandingPage } from './Espaces/LandingPage.jsx';
+import TestList  from './pages/TestList.jsx';
 export default function App() {
   return (
     <Router>
@@ -40,7 +41,8 @@ export default function App() {
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
-        <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
+       <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>
+        <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedRoute><TestList/></ProtectedRoute>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
 
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />

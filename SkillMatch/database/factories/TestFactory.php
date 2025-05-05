@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Step;
 use App\Models\Qcm;
+use App\Models\Step;
+use App\Models\Skill;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,6 +19,7 @@ class TestFactory extends Factory
             'before_answer' => $this->faker->sentence(),
             'qcm_id' => Qcm::factory(),    // Automatically create a QCM
             'company_id' => Company::factory(), // Automatically create a Company
+            'skill_id' => Skill::inRandomOrder()->first()?->id
         ];
     }
 }

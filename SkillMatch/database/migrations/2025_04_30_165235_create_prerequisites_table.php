@@ -8,7 +8,7 @@ class CreatePrerequisitesTable extends Migration
 {
         public function up(): void
         {
-            Schema::create('prerequisites', function (Blueprint $table) {
+            Schema::create('prerequistes', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('skill_id');
                 $table->string('text');
@@ -18,7 +18,6 @@ class CreatePrerequisitesTable extends Migration
                 $table->foreign('skill_id')->references('id')->on('skills')->onDelete('cascade');
             });
         }
-
     public function down()
     {
         Schema::dropIfExists('prerequisites');

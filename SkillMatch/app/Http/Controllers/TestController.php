@@ -2,26 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Test;
 use App\Models\Company;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    public function GetTestCompanieSelected($id)
-{
-    $company = Company::find($id);
+    public function GetTestsCompanieSelected($id)
+    {
+        $company = Company::find($id);
+        
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
     
-    if (!$company) {
-        return response()->json(['error' => 'Company not found'], 404);
+        // Eager load the skill relationship
+        $tests = $company->tests()->with([ 'company', 'skill'])->paginate(10);
+    
+        if ($tests->isEmpty()) {
+            return response()->json(['error' => 'Test not found'], 404);
+        }
+    
+        return response()->json($tests, 200);
     }
+    public function getTest($id){
+        $test = Test::with(['qcm','steps','skill','prerequisites'])->find($id);
 
-    $test = $company->tests()->with(['steps', 'qcm', 'company','skills'])->get();
 
-    if (!$test) {
-        return response()->json(['error' => 'Test not found'], 404);
+        if(!$test){
+            return response()->json('test not found',404);
+        }
+
+        return response()->json($test,200); 
     }
-
-    return response()->json($test, 200);
-}
-
 }
