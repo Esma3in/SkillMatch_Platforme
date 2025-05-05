@@ -161,7 +161,13 @@ const TestsList = () => {
                         onClick={() => window.location.href = `/candidate/Test/${test.id}`}
                         className="bg-indigo-600 text-white px-4 py-1 text-xs rounded hover:bg-indigo-700"
                       >
-                        resolve
+                        Resolve
+                      </button>
+                      <button
+                        onClick={() => window.location.href = `/candidate/test/${test.id}/result`}
+                        className="bg-indigo-600 text-white px-4 py-1 text-xs rounded hover:bg-indigo-700"
+                      >
+                        Result
                       </button>
                     </td>
                   </tr>

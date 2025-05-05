@@ -22,7 +22,7 @@ class StepFactory extends Factory
             'description'=>fake()->paragraph(),
             'order'=>fake()->sentence(),
             'test_id'=>Test::factory(),
-            'completed'=>fake()->boolean()
+            'completed'=>false
         ];
     }
 }

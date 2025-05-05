@@ -2,157 +2,208 @@ import React, { useEffect, useState } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { api } from "../api/api";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const cn = (...inputs) => twMerge(clsx(inputs));
 
 const Badge = ({ className, ...props }) => (
-  <div
-    className={cn(
-      "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-      className
-    )}
-    {...props}
-  />
+    <div
+        className={cn(
+            "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+            className
+        )}
+        {...props}
+    />
 );
 
 const Button = ({ className, ...props }) => (
-  <button
-    className={cn(
-      "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
-      className
-    )}
-    {...props}
-  />
+    <button
+        className={cn(
+            "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
+            className
+        )}
+        {...props}
+    />
 );
 
 const Card = ({ className, ...props }) => (
-  <div className={cn("rounded-lg border bg-card text-card-foreground", className)} {...props} />
+    <div className={cn("rounded-lg border bg-card text-card-foreground", className)} {...props} />
 );
 
 const CardContent = ({ className, ...props }) => (
-  <div className={cn("p-6 pt-0", className)} {...props} />
+    <div className={cn("p-6 pt-0", className)} {...props} />
 );
 
 const shuffleArray = (array) =>
-  array
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
+    array
+        .map((value) => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
 
 export const CandidateTest = () => {
-  const [steps, setSteps] = useState([]);
-  const [solutionOptions, setSolutionOptions] = useState([]);
-  const { TestId } = useParams();
-  const [TestInfo, setTestInfo] = useState();
-  const [Loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+    const navigate = useNavigate()
+    const [serverMessage, setServerMessage] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`/api/candidate/test/${TestId}`);
-        setTestInfo(response.data);
-        setLoading(false);
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [TestId]);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [steps, setSteps] = useState([]);
+    const [solutionOptions, setSolutionOptions] = useState([]);
+    const { TestId } = useParams();
+    const candidate_id = localStorage.getItem('candidate_id');
+    const [TestInfo, setTestInfo] = useState();
+    const [Loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-  useEffect(() => {
-    try {
-      const stepsProgress = JSON.parse(localStorage.getItem("steps"));
-      if (stepsProgress) {
-        setSteps(stepsProgress);
-      } else if (TestInfo?.steps) {
-        const formattedSteps = TestInfo.steps.map((step, index) => ({
-          stepId: step.id,
-          number: index + 1,
-          title: step.title,
-          description: step.description,
-          order: step.order,
-          completed: step.completed || false,
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await api.get(`/api/candidate/test/${TestId}`);
+                setTestInfo(response.data);
+                console.log(response.data)
+            } catch (err) {
+                console.log(err.message);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [TestId]);
+
+    useEffect(() => {
+        if (!TestInfo) return;
+    
+        try {
+            const stored = JSON.parse(localStorage.getItem(`steps_${TestId}_${candidate_id}`));
+            console.log(stored)
+            const savedResponse = localStorage.getItem(`response_${TestId}_${candidate_id}`);
+    
+            if (stored?.TestId === TestId && stored?.steps) {
+                setSteps(stored.steps);
+            } else {
+                const formattedSteps = TestInfo.steps.map((step, index) => ({
+                    stepId: step.id,
+                    number: index + 1,
+                    title: step.title,
+                    description: step.description,
+                    order: step.order,
+                    completed:false,
+                }));
+                setSteps(formattedSteps);
+                localStorage.setItem(`steps_${TestId}_${candidate_id}`, JSON.stringify({ TestId, steps: formattedSteps }));
+            }
+    
+            if (savedResponse) {
+                setIsSubmitted(true);
+            }
+        } catch (err) {
+            console.error("Failed to load steps or response from localStorage", err.message);
+        }
+    }, [TestInfo]);
+    
+    useEffect(() => {
+        if (!TestInfo?.qcm) return;
+    
+        const options = [
+            TestInfo.qcm.option_a,
+            TestInfo.qcm.option_b,
+            TestInfo.qcm.option_c,
+            TestInfo.qcm.option_d,
+            TestInfo.qcm.corrected_option,
+        ];
+        const optionIds = ["A", "B", "C", "D", "E"];
+        const shuffledOptions = shuffleArray(options);
+    
+        const savedResponse = localStorage.getItem(`response_${TestId}_${candidate_id}`);
+    
+        const formattedOptions = optionIds.map((id, index) => ({
+            id,
+            label: shuffledOptions[index],
+            selected: savedResponse === shuffledOptions[index],
         }));
-        setSteps(formattedSteps);
-        // localStorage.setItem("steps",{'TestId':TestId}; // ✅ correct
-;
-      }
-    } catch (err) {
-      console.error("Failed to load steps from localStorage", err);
-    }
-  }, [TestInfo]);
+    
+        setSolutionOptions(formattedOptions);
+    }, [TestInfo]);
+    
 
-  const handleStepCheck = (index) => {
-    const updatedSteps = steps.map((step, i) =>
-      i === index ? { ...step, completed: true } : step
-    );
-    setSteps(updatedSteps);
-    localStorage.setItem("steps", JSON.stringify(updatedSteps)); // ✅ correct
-;
-  };
+    const handleStepCheck = (index) => {
+        const updatedSteps = steps.map((step, i) =>
+            i === index ? { ...step, completed: true } : step
+        );
+        setSteps(updatedSteps);
+        localStorage.setItem(`steps_${TestId}_${candidate_id}`, JSON.stringify({ TestId, steps: updatedSteps }));
+    };
 
-  const prerequisites = TestInfo?.prerequisites;
-  const objective = TestInfo?.objective;
+    const SelectOption = (id) => {
+        if (isSubmitted) return;
+        setSolutionOptions((prevOptions) =>
+            prevOptions.map((option) =>
+                option.id === id
+                    ? { ...option, selected: !option.selected }
+                    : { ...option, selected: false }
+            )
+        );
+    };
 
-  const firstIncompleteIndex = steps.findIndex((step) => !step.completed);
-  const allStepsCompleted = steps.every((step) => step.completed);
+    const Submit = async () => {
+        try {
+            const selectedResponse = solutionOptions.find(option => option.selected);
+            if (!selectedResponse) {
+                alert("Please select an option before submitting.");
+                return;
+            }
+            const response = await api.post(`api/results/store`, {
+                candidate_id: candidate_id,
+                test_id: TestId,
+                answer: selectedResponse.label
+            });
 
-  useEffect(() => {
-    if (TestInfo?.qcm) {
-      const options = [
-        TestInfo.qcm.option_a,
-        TestInfo.qcm.option_b,
-        TestInfo.qcm.option_c,
-        TestInfo.qcm.option_d,
-        TestInfo.qcm.corrected_option,
-      ];
-      const optionIds = ["A", "B", "C", "D", "E"];
-      const shuffledOptions = shuffleArray(options);
-      const formattedOptions = optionIds.map((id, index) => ({
-        id,
-        label: shuffledOptions[index],
-        selected: false,
-      }));
-      setSolutionOptions(formattedOptions);
-    }
-  }, [TestInfo]);
+            localStorage.setItem(`response_${TestId}_${candidate_id}`, selectedResponse.label);
+            setIsSubmitted(true);
+            
+            setServerMessage(response.data?.message || "Submission successful.");
 
-  const SelectOption = (id) => {
-    setSolutionOptions((prevOptions) =>
-      prevOptions.map((option) =>
-        option.id === id
-          ? { ...option, selected: !option.selected }
-          : { ...option, selected: false }
-      )
-    );
-  };
+            navigate(`/candidate/test/${TestInfo.id}/result`)
+        } catch (err) {
+            console.error("Submission failed:", err);
+            setServerMessage("An error occurred during submission.");
+        }
+    };
 
-  if (Loading)
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
-      </div>
-    );
 
-  if (!TestInfo && !error)
-    return (
-      <div className="w-full max-w-md mx-auto mt-10 p-6 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-xl shadow-md text-center">
-        The Company doesn't have any test for now.
-      </div>
-    );
 
-  if (error)
-    return (
-      <div className="w-full max-w-md mx-auto mt-6 p-4 bg-red-100 text-red-800 border border-red-300 rounded-lg shadow text-center">
-        {error}
-      </div>
-    );
+    const prerequisites = TestInfo?.prerequisites || 'NAN';
+    const objective = TestInfo?.objective || "";
+    const firstIncompleteIndex = steps.findIndex((step) => !step.completed);
+    const allStepsCompleted = steps.every((step) => step.completed);
+
+    if (Loading)
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+            </div>
+        );
+
+    if (!TestInfo && !error)
+        return (
+            <div className="w-full max-w-md mx-auto mt-10 p-6 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-xl shadow-md text-center">
+                The Company doesn't have any test for now.
+            </div>
+        );
+
+    if (error)
+        return (
+            <div className="w-full max-w-md mx-auto mt-6 p-4 bg-red-100 text-red-800 border border-red-300 rounded-lg shadow text-center">
+                {error}
+            </div>
+        );
     return (
         <div className="w-full max-w-[1453px] mx-auto">
+            {serverMessage && (
+                <div className="mt-4 text-green-600 font-semibold text-center">
+                    {serverMessage}
+                </div>
+            )}
+
             <div className="w-full">
                 <div className="relative w-full">
                     {/* Header Section */}
@@ -215,16 +266,7 @@ export const CandidateTest = () => {
                             <Card className="mt-[25px] w-[1366px] h-auto bg-indigo-50 rounded-2xl border-none">
                                 <CardContent className="p-8 flex items-center justify-center">
                                     <div className="w-[1167px] flex flex-col gap-3">
-                                        {prerequisites?.map((pre, i) => {
-                                            return (
-                                                <p
-                                                    key={i}
-                                                    className="text-xs font-medium text-black leading-tight tracking-normal"
-                                                >
-                                                    {pre?.text}
-                                                </p>
-                                            );
-                                        })}
+                                        {prerequisites}
                                     </div>
                                 </CardContent>
                             </Card>
@@ -319,12 +361,12 @@ export const CandidateTest = () => {
                                     <div
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            if (allStepsCompleted) SelectOption(option.id);
+                                            if (allStepsCompleted && !isSubmitted) SelectOption(option.id);
                                         }}
                                         key={option.id}
-                                        className={`w-[1310px] h-[85px] bg-white border border-solid cursor-pointer ${option.selected
-                                                ? "border-[3px] border-[#6c63ff] bg-[#6c63ff]"
-                                                : "border-[#898989] bg-white"
+                                        className={`w-[1310px] h-[85px] bg-white border border-solid cursor-pointer ${isSubmitted ? "pointer-events-none" : ""} ${option.selected
+                                            ? "border-[3px] border-[#6c63ff] bg-[#6c63ff]"
+                                            : "border-[#898989] bg-white"
                                             }`}
                                     >
                                         <div className="relative w-full h-[60px] mt-3 ml-[51px] flex items-center">
@@ -332,8 +374,8 @@ export const CandidateTest = () => {
                                             <div className="w-[65px] h-[60px]">
                                                 <div
                                                     className={`relative w-[63px] h-[60px] rounded-[31.71px/29.88px] flex items-center justify-center border border-solid ${option.selected
-                                                            ? "bg-[#6c63ff] text-white border-[#6c63ff]"
-                                                            : "bg-[#f7f8f9] border-[#3f3d56] text-black"
+                                                        ? "bg-[#6c63ff] text-white border-[#6c63ff]"
+                                                        : "bg-[#f7f8f9] border-[#3f3d56] text-black"
                                                         }`}
                                                 >
                                                     <div className="font-extrabold text-[40px] text-center [font-family:'Inter',Helvetica]">
@@ -355,24 +397,26 @@ export const CandidateTest = () => {
                                     </div>
                                 ))}
                             </div>
-
                         </section>
                         {/* Action Buttons */}
                         <div className="flex gap-4 justify-center mt-[50px] mb-6">
                             <button
                                 onClick={(e) => { e.preventDefault(); window.history.back() }}
-                                className="h-[73px] w-[295px] bg-[#f7f8f9] text-[#5856d6] font-extrabold text-base [font-family:'Manrope',Helvetica]"
+                                className="h-[73px] w-[295px] bg-[#f7f8f9] text-[#5856d6] font-extrabold text-base [font-family:'Manrope',Helvetica] border border-[#5856d6] rounded-xl outline outline-2 outline-[#d9d6f7]"
                             >
                                 Cancel
                             </button>
-
-                            <Button className="h-[73px] w-[400px] bg-[#5856d6] text-shadeswhite font-semibold text-base [font-family:'Manrope',Helvetica]">
+                            <button
+                                onClick={(e) => { e.preventDefault(); Submit(); }}
+                                className={`h-[73px] w-[400px] bg-[#5856d6] text-shadeswhite font-semibold text-base rounded-xl [font-family:'Manrope',Helvetica] ${isSubmitted ? "opacity-50 cursor-not-allowed" : ""}`}
+                                disabled={isSubmitted}
+                            >
                                 Submit Response
-                            </Button>
+                            </button>
                         </div>
-
                     </div>
                 </div>
-            </div>    </div>
+            </div>
+        </div>
     );
 };

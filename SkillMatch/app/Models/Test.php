@@ -29,6 +29,8 @@ class Test extends Model
     {
         return $this->belongsTo(Qcm::class);
     }
+    
+    
     public function company(){
         return $this->belongsTo(Company::class);
     }

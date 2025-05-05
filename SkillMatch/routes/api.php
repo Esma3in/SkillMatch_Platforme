@@ -84,6 +84,9 @@ Route::post('/selected/company/{id}', [CompaniesSelectedController::class, 'sele
 //Candidate Test Routes:
 Route::get('/candidate/company/{id}/tests', [TestController::class, 'GetTestsCompanySelected']);
 Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
+Route::post('/results/store',[TestController::class,'storeResult']);
+
+Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::class,'getResult']);
 
 
 

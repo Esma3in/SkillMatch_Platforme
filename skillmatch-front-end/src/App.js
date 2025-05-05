@@ -27,6 +27,7 @@ import { Dashboard } from './pages/Dashboard.js';
 
 import QcmForRoadmap from './pages/qcmForRoadmap.js';
 import TestsList from './pages/TestList.jsx';
+import { ResultTest } from './pages/Testresult.jsx';
 export default function App() {
   return (
     <Router>
@@ -53,6 +54,7 @@ export default function App() {
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
        <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>
         <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedRoute><TestsList/></ProtectedRoute>}/>
+        <Route path='/candidate/test/:TestId/result' element={<ProtectedRoute><ResultTest/></ProtectedRoute>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
 
         {/* admin */}
