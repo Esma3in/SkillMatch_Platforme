@@ -50,7 +50,7 @@ export default function Sidebar() {
           <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide">OTHERS</div>
           <li className="flex items-center space-x-2 text-gray-800 hover:font-semibold m-3">
             <Users size={18} />
-            <a href="/admin/banUsers"><span>candidates</span></a>
+            <a href="/admin/banUsers"><span>banned users</span></a>
           </li>
         </ul>
       </div>
