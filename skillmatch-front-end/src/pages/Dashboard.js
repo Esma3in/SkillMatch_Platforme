@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { api } from "../api/api.js";
+import NavbarCandidate from "../components/common/navbarCandidate";
 
 export const Dashboard = () => {
   const chartRef = useRef(null);
@@ -31,110 +32,108 @@ export const Dashboard = () => {
         // Fetch matched companies
         let matchedResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          matchedResponse = await api.get(`/dashboard/companies/matched/${candidate_id}`);
+       
+          matchedResponse = await api.get(`/api/dashboard/companies/matched/${candidate_id}`);
           console.log('Matched Response:', matchedResponse.data);
         } catch (err) {
-          console.error('Error fetching matched companies:', err.response?.status, err.message);
+          console.log('Error fetching matched companies:', err.response?.status, err.message);
           matchedResponse = { data: { count: 0, change: 0 } };
         }
 
         // Fetch selected companies
         let selectedResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          selectedResponse = await api.get(`/dashboard/companies/selected/${candidate_id}`);
-          console.log('Selected Response:', selectedResponse.data);
+     
+          selectedResponse = await api.get(`/api/dashboard/companies/selected/${candidate_id}`);
+          console.log('Selected Response:', selectedResponse.data.selected_companies_count);
         } catch (err) {
-          console.error('Error fetching selected companies:', err.response?.status, err.message);
+          console.log('Error fetching selected companies:', err.response?.status, err.message);
           selectedResponse = { data: { count: 0, change: 0 } };
         }
 
         // Fetch completed roadmaps
         let completedResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          completedResponse = await api.get(`/dashboard/roadmap/completed/${candidate_id}`);
+
+          completedResponse = await api.get(`/api/dashboard/roadmap/completed/${candidate_id}`);
           console.log('Completed Response:', completedResponse.data);
         } catch (err) {
-          console.error('Error fetching completed roadmaps:', err.response?.status, err.message);
+          console.log('Error fetching completed roadmaps:', err.response?.status, err.message);
           completedResponse = { data: { count: 0, change: 0 } };
         }
 
         // Fetch badges
         let badgesResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          badgesResponse = await api.get(`/dashboard/bages/${candidate_id}`);
+    
+          badgesResponse = await api.get(`/api/dashboard/badges/${candidate_id}`);
           console.log('Badges Response:', badgesResponse.data);
         } catch (err) {
-          console.error('Error fetching badges:', err.response?.status, err.message);
+          console.log('Error fetching badges:', err.response?.status, err.message);
           badgesResponse = { data: { count: 0, change: 0 } };
         }
 
         // Fetch active roadmaps
         let activeResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          activeResponse = await api.get(`/dashboard/all/roadmaps/${candidate_id}`);
+        
+          activeResponse = await api.get(`/api/dashboard/all/roadmaps/${candidate_id}`);
           console.log('Active Response:', activeResponse.data);
         } catch (err) {
-          console.error('Error fetching active roadmaps:', err.response?.status, err.message);
+          console.log('Error fetching active roadmaps:', err.response?.status, err.message);
           activeResponse = { data: { count: 0, change: 0 } };
         }
 
         // Fetch roadmap progress
         let roadmapProgressResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          roadmapProgressResponse = await api.get(`/candidate/${candidate_id}/roadmaps-progress`);
+          roadmapProgressResponse = await api.get(`/api/candidate/${candidate_id}/roadmaps-progress`);
           console.log('Roadmap Progress Response:', roadmapProgressResponse.data);
         } catch (err) {
-          console.error('Error fetching roadmap progress:', err.response?.status, err.message);
+          console.log('Error fetching roadmap progress:', err.response?.status, err.message);
           roadmapProgressResponse = { data: [] };
         }
 
         // Fetch tests progress
         let testsProgressResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          testsProgressResponse = await api.get(`/candidate/${candidate_id}/test-progress`);
+          testsProgressResponse = await api.get(`/api/candidate/${candidate_id}/test-progress`);
           console.log('Tests Progress Response:', testsProgressResponse.data);
         } catch (err) {
-          console.error('Error fetching tests progress:', err.response?.status, err.message);
+          console.log('Error fetching tests progress:', err.response?.status, err.message);
           testsProgressResponse = { data: [] };
         }
 
         // Fetch challenges progress
         let challengesProgressResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          challengesProgressResponse = await api.get(`/candidate/${candidate_id}/challenges-progress`);
+      
+          challengesProgressResponse = await api.get(`/api/candidate/${candidate_id}/challenges-progress`);
           console.log('Challenges Progress Response:', challengesProgressResponse.data);
         } catch (err) {
-          console.error('Error fetching challenges progress:', err.response?.status, err.message);
+          console.log('Error fetching challenges progress:', err.response?.status, err.message);
           challengesProgressResponse = { data: [] };
         }
 
         // Fetch company data
         let companiesResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          companiesResponse = await api.get(`/candidate/${candidate_id}/company-data`);
+      
+          companiesResponse = await api.get(`/api/candidate/${candidate_id}/company-data`);
           console.log('Companies Response:', companiesResponse.data);
         } catch (err) {
-          console.error('Error fetching company data:', err.response?.status, err.message);
+          console.log('Error fetching company data:', err.response?.status, err.message);
           companiesResponse = { data: [] };
         }
 
         // Fetch selected companies
         let selectedCompaniesResponse;
         try {
-          await api.get('/sanctum/csrf-cookie');
-          selectedCompaniesResponse = await api.get(`/candidate/${candidate_id}/selected-companies`);
+        
+          selectedCompaniesResponse = await api.get(`/api/candidate/${candidate_id}/selected-companies`);
           console.log('Selected Companies Response:', selectedCompaniesResponse.data);
         } catch (err) {
-          console.error('Error fetching selected companies:', err.response?.status, err.message);
+          console.log('Error fetching selected companies:', err.response?.status, err.message);
           selectedCompaniesResponse = { data: [] };
         }
 
@@ -142,13 +141,13 @@ export const Dashboard = () => {
         setStatsCards([
           {
             title: 'ENTREPRISE MATCHED',
-            value: matchedResponse.data?.count?.toString() || '0',
+            value: matchedResponse.data?.matched_companies_count?.toString() || '0',
             change: matchedResponse.data?.change?.toString() || '+0',
             increase: (matchedResponse.data?.change || 0) >= 0,
           },
           {
             title: 'ENTREPRISE SELECTED',
-            value: selectedResponse.data?.count?.toString() || '0',
+            value: selectedResponse.data?.selected_companies_count?.toString() || '0',
             change: selectedResponse.data?.change?.toString() || '+0',
             increase: (selectedResponse.data?.change || 0) >= 0,
           },
@@ -166,7 +165,7 @@ export const Dashboard = () => {
           },
           {
             title: 'ACTIVE ROADMAPS',
-            value: activeResponse.data?.count?.toString() || '0',
+            value: activeResponse.data?.roadmap_count?.toString() || '0',
             change: activeResponse.data?.change?.toString() || '+0',
             increase: (activeResponse.data?.change || 0) >= 0,
           },
@@ -177,7 +176,7 @@ export const Dashboard = () => {
           Array.isArray(roadmapProgressResponse.data)
             ? roadmapProgressResponse.data.map((item) => ({
                 name: item.name || item.roadmap_name || 'Unknown',
-                percentage: item.progress || item.progress_percentage || 0,
+                percentage: item.progress || 0,
               }))
             : []
         );
@@ -186,8 +185,8 @@ export const Dashboard = () => {
         setTestsProgress(
           Array.isArray(testsProgressResponse.data)
             ? testsProgressResponse.data.map((item) => ({
-                name: item.name || item.test_name || 'Unknown',
-                percentage: item.progress || item.progress_percentage || 0,
+                name: item.name  || 'Unknown',
+                percentage: item.progress || 0,
               }))
             : []
         );
@@ -196,8 +195,8 @@ export const Dashboard = () => {
         setChallengeProgress(
           Array.isArray(challengesProgressResponse.data)
             ? challengesProgressResponse.data.map((item) => ({
-                name: item.name || item.challenge_name || 'Unknown',
-                percentage: item.progress || item.progress_percentage || 0,
+                name: item.name || 'Unknown',
+                percentage: item.progress || 0,
               }))
             : []
         );
@@ -208,7 +207,6 @@ export const Dashboard = () => {
             ? companiesResponse.data.map((company) => ({
                 name: company.name || 'Unknown',
                 email: company.email || 'N/A',
-                image: company.image_url || company.image || '/default-image.png',
               }))
             : []
         );
@@ -218,9 +216,9 @@ export const Dashboard = () => {
           Array.isArray(selectedCompaniesResponse.data)
             ? selectedCompaniesResponse.data.map((roadmap) => ({
                 status: roadmap.completed ? 'completed' : roadmap.status || 'pending',
-                name: roadmap.name || roadmap.roadmap_name || 'Unknown',
-                badges: roadmap.badges || roadmap.badges_earned || 0,
-                company: roadmap.company_name || 'Unknown',
+                name: roadmap.name || 'Unknown',
+                badges: roadmap.badges  || 0,
+           
               }))
             : []
         );
@@ -422,6 +420,7 @@ export const Dashboard = () => {
 
   return (
     <div className="w-full min-h-screen bg-gray-100">
+      <NavbarCandidate />
       <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Error Message */}
         {error && (
@@ -530,7 +529,7 @@ export const Dashboard = () => {
           </div>
 
           {/* Center Column */}
-          <div className="space-y-8">
+          <div className="space-y-10">
             {/* Activity Chart */}
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="flex justify-between items-center mb-6">
@@ -607,7 +606,7 @@ export const Dashboard = () => {
                         </td>
                         <td className="py-3">{roadmap.name}</td>
                         <td className="py-3">{roadmap.badges}</td>
-                        <td className="py-3">{roadmap.company}</td>
+                        <td className="py-3">{roadmap.company || 'N/A'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -638,12 +637,12 @@ export const Dashboard = () => {
                   <div key={index}>
                     <div className="flex justify-between mb-2">
                       <span className="font-medium text-gray-700">{item.name}</span>
-                      <span className="font-semibold text-gray-900">{item.percentage}%</span>
+                      <span className="font-semibold text-gray-900">{item.percentage || 0}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div
                         className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                        style={{ width: `${item.percentage}%` }}
+                        style={{ width: `${item.percentage || 0}%` }}
                       ></div>
                     </div>
                   </div>
@@ -671,12 +670,12 @@ export const Dashboard = () => {
                   <div key={index}>
                     <div className="flex justify-between mb-2">
                       <span className="font-medium text-gray-700">{item.name}</span>
-                      <span className="font-semibold text-gray-900">{item.percentage}%</span>
+                      <span className="font-semibold text-gray-900">{item.percentage || 0}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div
                         className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                        style={{ width: `${item.percentage}%` }}
+                        style={{ width: `${item.percentage || 0}%` }}
                       ></div>
                     </div>
                   </div>
