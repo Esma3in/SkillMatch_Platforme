@@ -31,18 +31,19 @@ class Test extends Model
     public function company(){
         return $this->belongsTo(Company::class);
     }
-    
+
     public function skills(){
         return $this->belongsToMany(skill::class,'test_competence')
                     ->withTimestamps();
     }
-    
-    public function candidate(){
-        return $this->belongsToMany(Candidate::class,'resultats')
-                    ->withPivot('result')
+
+    public function candidate()
+    {
+        return $this->belongsToMany(Candidate::class, 'Results')
+                    ->withPivot('score')  // Utilisez 'score' au lieu de 'result'
                     ->withTimestamps();
     }
-    
+
 }
 
 

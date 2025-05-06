@@ -8,6 +8,7 @@ import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
 import ProfileSettings from './pages/Settings.js';
+import CandidateList from './pages/manage/candidatesList.jsx';
 
 
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
@@ -50,8 +51,13 @@ export default function App() {
         <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
+        {/*test*/}
+        <Route path = '/candidateList' element={<ProtectedRoute><CandidateList/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
+
+        {/* company */}
+        
 
         {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />

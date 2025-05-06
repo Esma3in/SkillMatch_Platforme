@@ -19,6 +19,7 @@ use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\dahsboardcontroller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\AllCandidateController;
 use App\Http\Controllers\prerequisitesController;
 use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
@@ -99,6 +100,12 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
+
+//All candidate for company
+Route::get('/candidates', [AllCandidateController::class, 'index']);
+Route::get('/candidates/{id}', [AllCandidateController::class, 'show']);
+Route::put('/candidates/{id}/accept', [AllCandidateController::class, 'accept']);
+Route::put('/candidates/{id}/reject', [AllCandidateController::class, 'reject']);
 
 
 

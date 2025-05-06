@@ -44,7 +44,7 @@ class QcmForRoadmapController extends Controller
             $results = array_merge($results, $questions->toArray());
         }
 
-        // Step 3: Add advanced (non-matching) questions as challenges
+        // Step 3: Add advanced questions as challenges
         $advanced_questions = DB::table('qcm_for_roadmaps')
             ->join('skills', 'skills.id', '=', 'qcm_for_roadmaps.skill_id')
             ->whereNotIn('qcm_for_roadmaps.skill_id', $skill_ids)
