@@ -29,6 +29,7 @@ import { Dashboard } from './pages/Dashboard.js';
 import QcmForRoadmap from './pages/qcmForRoadmap.js';
 import TestsList from './pages/TestList.jsx';
 import { ResultTest } from './pages/Testresult.jsx';
+import TestsListForCompany from './pages/ListTestForCompany.js';
 export default function App() {
   return (
     <Router>
@@ -56,6 +57,7 @@ export default function App() {
 
         {/*test*/}
         <Route path = '/candidateList' element={<ProtectedRoute><CandidateList/></ProtectedRoute>}/>
+        <Route path = '/TestsListForCompany' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
 
        <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>

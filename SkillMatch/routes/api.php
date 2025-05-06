@@ -118,6 +118,14 @@ Route::get('/candidates/{id}', [AllCandidateController::class, 'show']);
 Route::put('/candidates/{id}/accept', [AllCandidateController::class, 'accept']);
 Route::put('/candidates/{id}/reject', [AllCandidateController::class, 'reject']);
 
+//Tests Routes for company
+// Test routes
+Route::get('/tests', [TestController::class, 'index']);
+Route::get('/tests/{id}/candidates', [TestController::class, 'getSolvedCandidates']);
+Route::delete('/tests', [TestController::class, 'deleteAll']);
+Route::post('/tests', [TestController::class, 'store']);
+Route::delete('/tests/{id}', [TestController::class, 'destroy']);
+
 
 
 
