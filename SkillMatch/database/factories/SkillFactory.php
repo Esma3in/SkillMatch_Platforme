@@ -73,7 +73,6 @@ class SkillFactory extends Factory
             'type' =>fake()->randomElement($type),
             'usageFrequency' =>fake()->randomElement($usageFrequency),
              'classement'=> fake()->randomElement($classement),
-              'test_id'=>Test::factory()
         ];
     }
 }

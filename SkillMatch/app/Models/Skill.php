@@ -18,7 +18,6 @@ class Skill extends Model
         'type',
         'usageFrequency',
         'classement',
-        'test_id'
     ];
 
     // get  the recommandede skills by Company
@@ -41,8 +40,11 @@ class Skill extends Model
         return $this->belongsToMany(Challenge::class());
     }
     //get the corresponding test of an company that test by this skill
-    public function tests(){
-        return $this->belongsToMany(Test::class);
+    public function test(){
+        return $this->hasMany(Test::class);
+    }
+    public function prerequistes(){
+        return $this->hasMany(Prerequiste::class);
     }
 
     //qcm for roadmap

@@ -16,6 +16,7 @@ class Test extends Model
         'before_answer',
         'qcm_id',
         'company_id',
+        'skill_id'
     ];
 
     // Relationships
@@ -28,13 +29,21 @@ class Test extends Model
     {
         return $this->belongsTo(Qcm::class);
     }
+    
+    
     public function company(){
         return $this->belongsTo(Company::class);
     }
+<<<<<<< HEAD
 
     public function skills(){
         return $this->belongsToMany(skill::class,'test_competence')
                     ->withTimestamps();
+=======
+    
+    public function skill(){
+        return $this->belongsTo(Skill::class);
+>>>>>>> fd866343e74343f195f76bc235b0f0c9259a1ec5
     }
 
     public function candidate()
@@ -44,6 +53,21 @@ class Test extends Model
                     ->withTimestamps();
     }
 
+<<<<<<< HEAD
+=======
+    public function prerequisites()
+{
+    return $this->hasManyThrough(
+        Prerequiste::class,
+        Skill::class,
+        'id',            // Local key on Skill
+        'skill_id',      // Foreign key on Prerequisite
+        'id',            // Local key on Test
+        'id'             // Local key on Skill
+    );
+}
+    
+>>>>>>> fd866343e74343f195f76bc235b0f0c9259a1ec5
 }
 
 
