@@ -133,7 +133,7 @@ function CompaniesRelated() {
           </button>
           <button 
             className="bg-white border border-purple-500 text-purple-600 font-semibold py-2 rounded-lg hover:bg-purple-50 transition-all"
-            onClick={() => navigate(`/candidate/assessment/${company.company_id}`)}
+            onClick={() => navigate(`/candidate/assessment/${company.company_id}/tests`)}
           >
             Take Assessment
           </button>

@@ -11,7 +11,9 @@ class Result extends Model
     protected $fillable=[
         'candidate_id',
         'test_id',
-        'Score'
+        'score',
+        'candidateAnswer',
+        "correctAnswer"
     ];
 
     //get the results of an candidate

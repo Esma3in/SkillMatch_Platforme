@@ -23,15 +23,16 @@ use App\Models\Notification;
 use App\Models\RoadmapSkill;
 use App\Models\Administrator;
 use App\Models\ProfileCompany;
-use App\Models\QuestionOption;
+
 use App\Models\SerieChallenge;
 use App\Models\CompaniesSkills;
 use Illuminate\Database\Seeder;
 use App\Models\CandidatesSkills;
 use App\Models\ProfileCandidate;
-use App\Models\CandidateSelected;
+
 use App\Models\CompaniesSelected;
 use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -57,14 +58,14 @@ class DatabaseSeeder extends Seeder
             "AWS",
             "TypeScript"
         ];
-        $levels = ['easy','meduim','hard','expert'];
+        $levels = ['easy','medium','hard','expert'];
         $skillsCreated = [];
         foreach ($skills as $skillName) {
             $skillsCreated[] = Skill::factory()->create([
                 'name' => $skillName,
-                'test_id' => null,
             ]);
         }
+        
         $candidates = Candidate::factory(10)->create();
         // Création de 20 challenges avec chacun 20 problèmes
         Challenge::factory(20)->create()->each(function ($challenge) use ($skillsCreated, $candidates) {
@@ -211,7 +212,7 @@ class DatabaseSeeder extends Seeder
             if (empty($prerequisitesData)) {
                 throw new \Exception('No valid prerequisites found in prerequisites.json');
             }
-            DB::table('prerequisites')->insert($prerequisitesData);
+            DB::table('prerequistes')->insert($prerequisitesData);
 
             // Insert courses
             if (!isset($decoded['courses']['courses'])) {
@@ -310,7 +311,7 @@ class DatabaseSeeder extends Seeder
         } else {
 
             // If no candidates exist, create some with social media profiles
-            for ($i = 0; $i < 10; $i++) { 
+            for ($i = 0; $i < 10; $i++) {
                 $candidate = Candidate::factory()->create();
 
                 // For each platform, 50% chance to create a profile
@@ -326,6 +327,7 @@ class DatabaseSeeder extends Seeder
             }
 
         }
+
 
         // Crée des roadmaps et skills avant
         Roadmap::factory()->count(10)->create();
@@ -367,4 +369,3 @@ class DatabaseSeeder extends Seeder
         }
     }
 }
-//testest

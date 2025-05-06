@@ -91,7 +91,7 @@ export default function SignUp({ onToggle }) {
   };
 
   return (
-    <div className="container">
+    <div className="containersignIn">
       <div className="visual-section">
         <img src={image} alt="Sign Up Visual" />
       </div>

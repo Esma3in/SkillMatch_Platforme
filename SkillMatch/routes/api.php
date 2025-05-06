@@ -26,11 +26,14 @@ use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\candidateCoursesController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
+use App\Models\Candidate;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['csrf' => csrf_token()]);
 });
+
+
 
 // Candidate Routes
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);
@@ -45,6 +48,8 @@ Route::post('/candidate/signin', [UserController::class, 'SignIn']);
 Route::get('/logout', [CandidateController::class, 'Logout']);
 Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);
 Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);
+
+
 
 // get the selected companies by an candidate :
 Route::get('/selected/companies/{candidate_id}' , [CompaniesSelectedController::class , 'CompaniesSelected']);
@@ -76,6 +81,12 @@ Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsContro
 Route::post('/selected/company/{id}', [CompaniesSelectedController::class, 'selectCompany']);
 
 
+//Candidate Test Routes:
+Route::get('/candidate/company/{id}/tests', [TestController::class, 'GetTestsCompanySelected']);
+Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
+Route::post('/results/store',[TestController::class,'storeResult']);
+
+Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::class,'getResult']);
 
 
 
@@ -103,9 +114,7 @@ Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
 
 
 
-//Candidate Test Routes:
 
-Route::get('/candidate/test/company/{id}',[TestController::class,'GetTestCompanieSelected']);
 
 
 //Select Company Route:
@@ -116,8 +125,9 @@ Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'ge
 
 // admin routes
 
-Route::get('/admin',[AdminController::class],'index')->name('admin.index');
-// Route::get('/admin/CanidatesList',[AdminConroller::class],'Candidates')->name('admin.CanidatesList');
+// Route::get('/admin',[CandidateController::class],'index')->name('admin.index');
+Route::get('/admin/CanidatesList',[CandidateController::class,'AllCandidates']);
+Route::post('/admin/CanidatesList/setstate',[CandidateController::class,'setstate']);
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
 // Route::get('/admin/CanidatsList/Canidate/{id}',[AdminConroller::class],'Candidate')->name('admin.index');

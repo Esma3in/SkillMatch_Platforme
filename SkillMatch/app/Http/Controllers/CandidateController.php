@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Support\Facades\Hash;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class CandidateController extends Controller
 {
@@ -298,6 +299,25 @@ class CandidateController extends Controller
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="candidate_cv.pdf"');
 
+    }
+    public function AllCandidates(){
+        $candidates = Candidate::with('profile')->get();
+        return response()->json($candidates,200);
+    }
+
+    public function setstate(Request $request){
+        $request->validate([
+            'id'=>'required',
+            'state' => 'required|in:BANNED,UNACTIVE,ACTIVE'
+        ]);
+        $candidate = Candidate::where('id', $request->id)->first();
+        if (!$candidate) {
+            return response()->json(['error' => 'Candidate not found'], 404);
+        }
+        $candidate->update([
+            'state' => $request->state
+        ]);
+        return response()->json(['message' => 'Candidate state updated successfully'], 200);
     }
 
 }

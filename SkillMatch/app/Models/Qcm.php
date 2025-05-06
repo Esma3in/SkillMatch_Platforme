@@ -17,4 +17,9 @@ class Qcm extends Model
             'option_d',
             'corrected_option'
     ];
+
+
+    public function test(){
+        return $this->hasOne(Test::class);
+    }
 }

@@ -9,7 +9,6 @@ import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
 import ProfileSettings from './pages/Settings.js';
 
-import AdminHome from './pages/adminHome.jsx';
 
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
@@ -20,9 +19,15 @@ import { LandingPage } from './Espaces/LandingPage.jsx';
 import { EnhancedLandingPage } from './Espaces/EnhancedLandingPage.jsx';
 import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
 
+import AdminHome from './pages/adminHome.jsx';
+import CompaniesList from './pages/manage/companiesList.jsx';
+import CandidatesList from './pages/manage/candidatesList.jsx';
+
 import { Dashboard } from './pages/Dashboard.js';
 
 import QcmForRoadmap from './pages/qcmForRoadmap.js';
+import TestsList from './pages/TestList.jsx';
+import { ResultTest } from './pages/Testresult.jsx';
 export default function App() {
   return (
     <Router>
@@ -47,9 +52,15 @@ export default function App() {
         <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
-        <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
+       <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>
+        <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedRoute><TestsList/></ProtectedRoute>}/>
+        <Route path='/candidate/test/:TestId/result' element={<ProtectedRoute><ResultTest/></ProtectedRoute>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
+
+        {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
+        <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
+        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
 
       </Routes>
     </Router>
