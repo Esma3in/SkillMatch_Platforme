@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Badge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class QcmForRoadmapController extends Controller
 {
@@ -69,6 +71,61 @@ class QcmForRoadmapController extends Controller
         }
 
         return response()->json($results);
+    }
+    // create Badge for QcmRoadmap
+    public function storeBadge(Request $request)
+    {
+        try {
+            // Validate the incoming request
+            $validated = $request->validate([
+                'candidate_id' => 'required|exists:candidates,id',
+                'qcm_for_roadmap_id' => 'required|exists:qcm_for_roadmaps,id',
+                'name' => 'required|string|max:255',
+                'icon' => 'nullable|string',
+                'description' => 'nullable|string',
+                'date_obtained' => 'nullable|date',
+            ]);
+
+            // Check if badge already exists for this user and QCM for roadmap
+            $existingBadge = DB::table('badges')
+                ->where('candidate_id', $validated['candidate_id'])
+                ->where('qcm_for_roadmap_id', $validated['qcm_for_roadmap_id'])
+                ->where('name', $validated['name'])
+                ->where('icon', $validated['icon'])
+                ->first();
+
+            if ($existingBadge) {
+                return response()->json([
+                    'message' => 'Badge already exists for this user and QCM for roadmap'
+                ], 409);
+            }
+
+            // Create new badge directly using the model
+            $badge = Badge::create([
+                'candidate_id' => $validated['candidate_id'],
+                'qcm_for_roadmap_id' => $validated['qcm_for_roadmap_id'],
+                'name' => $validated['name'],
+                'icon' => $validated['icon'],
+                'description' => $validated['description'],
+                'date_obtained' => $validated['date_obtained'] ?? now()->toDateString(),
+            ]);
+
+            return response()->json([
+                'message' => 'Badge created successfully',
+                'badge' => $badge,
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create badge',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
 }//testtest

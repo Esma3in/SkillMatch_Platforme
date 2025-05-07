@@ -110,6 +110,10 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
+Route::post('/create/badge' ,[QcmForRoadmapController::class , 'storeBadge']  );
+
+
+
 
 
 

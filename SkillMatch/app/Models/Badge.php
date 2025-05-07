@@ -12,15 +12,22 @@ class Badge extends Model
 
     protected $fillable = [
         'id',
+        'candidate_id',
+        'qcm_for_roadmap_id',
         'name',
         'icon',
+        'description',
         'Date_obtained',
-        'roadmap_id',
-        'candidate_id',
+       
+     
     ];
     public function roadmap(): BelongsTo
     {
         return $this->belongsTo(Roadmap::class);
+    }
+
+    public function QcmForRoadmap(){
+        return $this->belongsTo(QcmForRoadmap::class);
     }
 
     public function candidate(): BelongsTo

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/pages/Navbar/navbarCandidate.css';
-import userAvatar from '../../assets/userAvatar.jpg'; 
+import userAvatar from '../../assets/userAvatar.jpg';
+import { MdBadge } from "react-icons/md"; 
 import UseLogout from '../../hooks/useLogout';
 import { api } from '../../api/api';
+import { useNavigate } from 'react-router';
 
 const NavbarCandidate = () => {
   const logout = UseLogout();
@@ -19,7 +21,7 @@ const NavbarCandidate = () => {
   // for tyme
   const trainingTimeout = useRef(null);
   const companyTimeout = useRef(null);
-
+const Navigate= useNavigate();
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (trainingRef.current && !trainingRef.current.contains(event.target)) setIsTrainingOpen(false);
@@ -126,8 +128,8 @@ const NavbarCandidate = () => {
             <button className="icon-button notification-button">
               <i className="notification-icon"></i>
             </button>
-            <button className="icon-button settings-button">
-              <i className="settings-icon"></i>
+            <button className="icon-button settings-button" onClick={()=>{}}>
+            <MdBadge style={{"color" : "gray" , "fontSize" : "22px"}} />
             </button>
             
             <div className="profile-dropdown" ref={profileRef}>

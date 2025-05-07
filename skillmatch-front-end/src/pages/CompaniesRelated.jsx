@@ -161,13 +161,7 @@ function CompaniesRelated() {
       
       console.log("Company skills data:", skillsData);
       
-      // Based on the JSON format you shared, the skills are directly on the object
-      // and not nested under a company object
-      // if (!skillsData || !skillsData.skills || skillsData.skills.length === 0) {
-      //   console.error("No skills found for this company");
-      //   return;
-      // }
-      
+ 
       // Get the first skill ID from the skills array
       const skillId = skillsData[0].skills[0].id;
       
@@ -175,7 +169,7 @@ function CompaniesRelated() {
       
       // Create the roadmap
       const responseRoadmap = await api.post(`/api/create-roadmap`, {
-       name:"Roadmap just for u",
+       name:"Roadmap ",
         skill_id: skillId,
         completed : 'pending',
         candidate_id: candidate_id

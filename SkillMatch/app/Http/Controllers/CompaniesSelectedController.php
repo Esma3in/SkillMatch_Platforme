@@ -138,7 +138,7 @@ public function getSkillsData(Request $request, $companyId)
                      ->orOn(DB::raw("skills.name"), 'LIKE', DB::raw("CONCAT('%', candidate_courses.name, '%')"));
             })
             ->join('roadmaps', 'skills.id', '=', 'roadmaps.skill_id')
-            ->select('candidate_courses.*', 'skills.*', 'roadmaps.*')
+            ->select('candidate_courses.*', 'skills.*', 'roadmaps.*')->limit(10)
             ->get();
 
         // Step 5: Fetch roadmap skills

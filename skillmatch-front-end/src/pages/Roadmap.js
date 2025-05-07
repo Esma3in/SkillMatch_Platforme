@@ -2,9 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { api } from "../api/api";
 import { useParams, useNavigate } from 'react-router';
-
+import {format} from "date-fns"
 export const Roadmap = () => {
-  const [activeTab, setActiveTab] = useState("1");
   const roadmapSteps = [
     { id: 1, name: "Prerequisites" },
     { id: 2, name: "Courses" },
@@ -13,13 +12,44 @@ export const Roadmap = () => {
     { id: 5, name: "Badge" },
   ];
 
-  // State to track completion of each step (default all false)
-  const [stepCompletion, setStepCompletion] = useState({
-    "1": false,
-    "2": false,
-    "3": false,
-    "4": false,
-    "5": false,
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  // Initialize stepCompletion and activeTab from localStorage
+  const [stepCompletion, setStepCompletion] = useState(() => {
+    const savedData = localStorage.getItem(`roadmapProgress_${id}`);
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        if (parsedData.stepCompletion && Object.keys(parsedData.stepCompletion).length === roadmapSteps.length) {
+          return parsedData.stepCompletion;
+        }
+      } catch (e) {
+        console.warn("Invalid localStorage data, using default:", e);
+      }
+    }
+    return {
+      "1": false,
+      "2": false,
+      "3": false,
+      "4": false,
+      "5": false,
+    };
+  });
+
+  const [activeTab, setActiveTab] = useState(() => {
+    const savedData = localStorage.getItem(`roadmapProgress_${id}`);
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        if (parsedData.activeTab && roadmapSteps.some(step => step.id.toString() === parsedData.activeTab)) {
+          return parsedData.activeTab;
+        }
+      } catch (e) {
+        console.warn("Invalid activeTab in localStorage, using default:", e);
+      }
+    }
+    return "1";
   });
 
   const [data, setData] = useState({
@@ -30,14 +60,27 @@ export const Roadmap = () => {
     roadmapSkills: [],
     userTools: [],
   });
-  const { id } = useParams();
   const [competitors, setCompetitors] = useState([]);
   const [companySelected, setCompanySelected] = useState({ name: "Unknown Company" });
   const [skillsCompanySelected, setSkillsCompanySelected] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const candidateId = JSON.parse(localStorage.getItem('candidate_id'));
-  const navigate = useNavigate();
+
+  // Save progress and activeTab to localStorage whenever they change
+  useEffect(() => {
+    if (id) {
+      try {
+        const dataToSave = {
+          stepCompletion,
+          activeTab,
+        };
+        localStorage.setItem(`roadmapProgress_${id}`, JSON.stringify(dataToSave));
+      } catch (e) {
+        console.warn("Failed to save progress to localStorage:", e);
+      }
+    }
+  }, [stepCompletion, activeTab, id]);
 
   const handleTakeQuiz = () => {
     navigate(`/qcm/roadmap/${id}`);
@@ -91,7 +134,7 @@ export const Roadmap = () => {
   const filteredUserTools = useMemo(() => data.userTools, [data.userTools]);
 
   const isStepCompleted = (stepId) => {
-    return stepCompletion[stepId];
+    return stepCompletion[stepId] || false;
   };
 
   const getNextTab = (currentTab) => {
@@ -100,10 +143,11 @@ export const Roadmap = () => {
   };
 
   const handleNextStep = (currentTab) => {
-    setStepCompletion(prev => ({
-      ...prev,
+    const updatedStepCompletion = {
+      ...stepCompletion,
       [currentTab]: true,
-    }));
+    };
+    setStepCompletion(updatedStepCompletion);
     const nextTab = getNextTab(currentTab);
     setActiveTab(nextTab);
   };
@@ -112,6 +156,25 @@ export const Roadmap = () => {
     const completedSteps = Object.values(stepCompletion).filter(Boolean).length;
     return (completedSteps / roadmapSteps.length) * 100;
   };
+  const createNewBadge =  async()=>{
+    try {
+      const dateObtained = format(new Date(), 'yyyy-MM-dd');
+      const CreationBadge = await api.post('/api/create/badge' ,{
+
+        "candidate_id" : candidateId ,
+        "roadmap_id" :id,
+        "name" : "silver",
+        "icon" : "https://img.icons8.com/skeuomorphism/64/verified-badge.png",
+        "Date_obtained" : dateObtained
+      })
+      console.log(" Badge created succesfully !", CreationBadge);
+      
+    } catch (error) {
+      console.log("errerur de create new Badge" ,error.message)
+      
+    }
+  }
+  createNewBadge()
 
   return (
     <>
@@ -339,56 +402,56 @@ export const Roadmap = () => {
                         </div>
                       </div>
                     )}
-   {activeTab === "2" && (
-  <div className="" width='100'>
-    <div className="flex items-center px-4 sm:px-6 lg:px-8">
-      <div className="w-6 h-6 bg-gray-200 rounded-full mr-3"></div>
-      <h3 className="text-lg font-semibold text-gray-900">Courses</h3>
-    </div>
-    <div className="mt-4 w-full bg-gray-50">
-      {filteredCourses.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
-          {filteredCourses.map((course) => (
-            <div key={course.id} className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-              <img
-                src={course.image || `https://ui-avatars.com/api/?name=${course.name}&background=0D8ABC&color=fff&size=150`}
-                alt={course.name || "Course"}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2">{course.name || "Unknown Course"}</h4>
-                <p className="text-xs text-gray-600 mb-1">{course.provider || "N/A"}</p>
-                <p className="text-xs text-gray-600 mb-1">{course.duration || "N/A"}</p>
-                <p className="text-xs text-indigo-600 font-medium mb-2">{course.level}</p>
-                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-2">
-                  <div className="bg-purple-600 h-1.5 rounded-full" style={{ width: "30%" }}></div>
-                </div>
-                <a
-                  href={course.link || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-purple-600 text-xs font-medium hover:underline inline-block"
-                >
-                  Continue Learning
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-sm text-gray-600 p-4">Enroll in recommended courses to build skills.</p>
-      )}
-    </div>
-    <div className="mt-6 flex justify-end px-4 sm:px-6 lg:px-8">
-      <button
-        onClick={() => handleNextStep("2")}
-        className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300"
-      >
-        Next Step
-      </button>
-    </div>
-  </div>
-)}
+                    {activeTab === "2" && (
+                      <div className=" -ml-4 sm:-ml-6 lg:-ml-8">
+                        <div className="flex items-center px-4 sm:px-6 lg:px-8">
+                          <div className="w-6 h-6 bg-gray-200 rounded-full mr-3"></div>
+                          <h3 className="text-lg font-semibold text-gray-900">Courses</h3>
+                        </div>
+                        <div className="mt-4 w-full bg-gray-50">
+                          {filteredCourses.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
+                              {filteredCourses.map((course) => (
+                                <div key={course.id} className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                                  <img
+                                    src={course.image || `https://ui-avatars.com/api/?name=${course.name}&background=0D8ABC&color=fff&size=150`}
+                                    alt={course.name || "Course"}
+                                    className="w-full h-48 object-cover"
+                                  />
+                                  <div className="p-4">
+                                    <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2">{course.name || "Unknown Course"}</h4>
+                                    <p className="text-xs text-gray-600 mb-1">{course.provider || "N/A"}</p>
+                                    <p className="text-xs text-gray-600 mb-1">{course.duration || "N/A"}</p>
+                                    <p className="text-xs text-indigo-600 font-medium mb-2">{course.level}</p>
+                                    <div className="w-full bg-gray-200 rounded-full h-1.5 mb-2">
+                                      <div className="bg-purple-600 h-1.5 rounded-full" style={{ width: "30%" }}></div>
+                                    </div>
+                                    <a
+                                      href={course.link || "#"}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-purple-600 text-xs font-medium hover:underline inline-block"
+                                    >
+                                      Continue Learning
+                                    </a>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-gray-600 p-4">Enroll in recommended courses to build skills.</p>
+                          )}
+                        </div>
+                        <div className="mt-6 flex justify-end px-4 sm:px-6 lg:px-8">
+                          <button
+                            onClick={() => handleNextStep("2")}
+                            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300"
+                          >
+                            Next Step
+                          </button>
+                        </div>
+                      </div>
+                    )}
                     {activeTab === "3" && (
                       <div>
                         <div className="flex items-center">
@@ -462,16 +525,6 @@ export const Roadmap = () => {
                             Take the Quiz
                           </button>
                         </div>
-                        <div className="mt-6 flex justify-end">
-                          <button
-                            disabled={!isStepCompleted("4")}
-                            onClick={() => handleNextStep("4")}
-                            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed ml-4"
-                            title={!isStepCompleted("4") ? "Complete Quiz first" : "Proceed to next step"}
-                          >
-                            Next Step
-                          </button>
-                        </div>
                       </div>
                     )}
                     {activeTab === "5" && (
@@ -538,7 +591,10 @@ export const Roadmap = () => {
                   </svg>
                 </a>
               </div>
+
             </div>
+            
+            <div><button >Badge</button></div>
           </div>
         </div>
       </div>
