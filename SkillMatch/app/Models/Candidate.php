@@ -68,7 +68,9 @@ class Candidate extends Model
 
     public function tests(): BelongsToMany
     {
-        return $this->belongsToMany(Test::class);
+        return $this->belongsToMany(Test::class, 'Results')
+                    ->withPivot('score')  // Utilisez 'score' au lieu de 'result'
+                    ->withTimestamps();
     }
 
 

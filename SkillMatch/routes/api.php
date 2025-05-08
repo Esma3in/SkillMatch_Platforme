@@ -19,6 +19,7 @@ use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\dahsboardcontroller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\AllCandidateController;
 use App\Http\Controllers\prerequisitesController;
 use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
@@ -114,6 +115,26 @@ Route::post('/create/badge' ,[QcmForRoadmapController::class , 'storeBadge']  );
 
 
 
+
+//All candidate for company
+Route::get('/candidates', [AllCandidateController::class, 'index']);
+Route::get('/candidates/{id}', [AllCandidateController::class, 'show']);
+Route::put('/candidates/{id}/accept', [AllCandidateController::class, 'accept']);
+Route::put('/candidates/{id}/reject', [AllCandidateController::class, 'reject']);
+
+//Tests Routes for company
+// Test routes
+Route::get('/tests', [TestController::class, 'index']);
+Route::get('/tests/{id}/candidates', [TestController::class, 'getSolvedCandidates']);
+Route::delete('/tests', [TestController::class, 'deleteAll']);
+Route::post('/tests', [TestController::class, 'store']);
+Route::delete('/tests/{id}', [TestController::class, 'destroy']);
+
+// Candidate filtering routes
+Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
+Route::get('/candidates/{id}', [CandidateController::class, 'getCandidateDetails']);
+Route::get('/skills', [CandidateController::class, 'getSkills']);
+Route::get('/test-tags', [CandidateController::class, 'getTestTags']);
 
 
 

@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Mpdf\Mpdf;
+use App\Models\Skill;
 use App\Models\Company;
 use App\Models\Candidate;
 use App\Models\Experience;
 use Illuminate\Http\Request;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 
@@ -318,6 +319,148 @@ class CandidateController extends Controller
             'state' => $request->state
         ]);
         return response()->json(['message' => 'Candidate state updated successfully'], 200);
+    }
+
+
+
+
+
+    // Filter candidates for company
+    /**
+     * Filter candidates based on various criteria
+     */
+    public function filterCandidates(Request $request)
+    {
+        // Start with a base query
+        $query = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
+                 ->join('profile_candidates', 'candidates.id', '=', 'profile_candidates.candidate_id')
+                 ->select('candidates.*');
+
+        // Filter by domain (field in profile)
+        if ($request->has('domain') && $request->domain) {
+            $query->where('profile_candidates.field', $request->domain);
+        }
+
+        // Filter by city (localisation in profile)
+        if ($request->has('city') && $request->city) {
+            $query->where('profile_candidates.localisation', 'like', '%' . $request->city . '%');
+        }
+
+        // Filter by skill
+        if ($request->has('skill') && $request->skill) {
+            $query->whereHas('skills', function($q) use ($request) {
+                $q->where('skills.name', $request->skill);
+            });
+        }
+
+        // Filter by test tag
+        if ($request->has('tag') && $request->tag) {
+            $query->whereHas('tests', function($q) use ($request) {
+                $q->where('tests.tag', $request->tag);
+            });
+        }
+
+        // Filter by test score
+        if ($request->has('minScore') && $request->minScore) {
+            $minScore = (int)$request->minScore;
+            $query->whereHas('tests', function($q) use ($minScore) {
+                $q->where('results.score', '>=', $minScore);
+            });
+        }
+
+        // Get paginated results
+        $perPage = $request->has('perPage') ? (int)$request->perPage : 10;
+        $candidates = $query->distinct()->paginate($perPage);
+
+        // Format the response data
+        $formattedCandidates = $candidates->map(function($candidate) {
+            // Calculate average test score
+            $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
+
+            // Check if candidate has attestations
+            $certified = $candidate->attestations->count() > 0;
+
+            return [
+                'id' => $candidate->id,
+                'name' => $candidate->name,
+                'field' => $candidate->profile ? $candidate->profile->field : null,
+                'location' => $candidate->profile ? $candidate->profile->localisation : null,
+                'testScore' => round($avgScore),
+                'certified' => $certified,
+                'skills' => $candidate->skills->pluck('name'),
+                'description' => $candidate->profile ? $candidate->profile->description : null,
+                'badges' => $candidate->badges->map(function($badge) {
+                    return [
+                        'name' => $badge->name,
+                        'icon' => $badge->icon
+                    ];
+                }),
+                'resumeUrl' => $candidate->profile ? $candidate->profile->file : null,
+            ];
+        });
+
+        return response()->json([
+            'data' => $formattedCandidates,
+            'meta' => [
+                'current_page' => $candidates->currentPage(),
+                'last_page' => $candidates->lastPage(),
+                'total' => $candidates->total(),
+                'per_page' => $candidates->perPage()
+            ]
+        ]);
+    }
+
+    /**
+     * Get a specific candidate's details
+     */
+    public function getCandidateDetails($id)
+    {
+        $candidate = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
+                    ->findOrFail($id);
+
+        // Calculate average test score
+        $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
+
+        // Check if candidate has attestations
+        $certified = $candidate->attestations->count() > 0;
+
+        $candidateDetails = [
+            'id' => $candidate->id,
+            'name' => $candidate->name,
+            'field' => $candidate->profile ? $candidate->profile->field : null,
+            'location' => $candidate->profile ? $candidate->profile->localisation : null,
+            'testScore' => round($avgScore),
+            'certified' => $certified,
+            'skills' => $candidate->skills->pluck('name'),
+            'description' => $candidate->profile ? $candidate->profile->description : null,
+            'badges' => $candidate->badges->map(function($badge) {
+                return [
+                    'name' => $badge->name,
+                    'icon' => $badge->icon
+                ];
+            }),
+            'resumeUrl' => $candidate->profile ? $candidate->profile->file : null,
+        ];
+
+        return response()->json($candidateDetails);
+    }
+
+    /**
+     * Get all available skills for filtering
+     */
+    public function getSkills()
+    {
+        $skills = Skill::select('name')->distinct()->get()->pluck('name');
+        return response()->json($skills);
+    }
+
+    /**
+     * Get all available test tags for filtering
+     */
+    public function getTestTags()
+    {
+        $tags = DB::table('tests')->select('tag')->distinct()->get()->pluck('tag');
+        return response()->json($tags);
     }
 
 }

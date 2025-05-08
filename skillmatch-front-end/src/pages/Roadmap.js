@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { api } from "../api/api";
 import { useParams, useNavigate } from 'react-router';
-import {format} from "date-fns"
+
 export const Roadmap = () => {
   const roadmapSteps = [
     { id: 1, name: "Prerequisites" },
@@ -156,25 +156,25 @@ export const Roadmap = () => {
     const completedSteps = Object.values(stepCompletion).filter(Boolean).length;
     return (completedSteps / roadmapSteps.length) * 100;
   };
-  const createNewBadge =  async()=>{
-    try {
-      const dateObtained = format(new Date(), 'yyyy-MM-dd');
-      const CreationBadge = await api.post('/api/create/badge' ,{
+  // const createNewBadge =  async()=>{
+  //   try {
+  //     const dateObtained = format(new Date(), 'yyyy-MM-dd');
+  //     const CreationBadge = await api.post('/api/create/badge' ,{
 
-        "candidate_id" : candidateId ,
-        "roadmap_id" :id,
-        "name" : "silver",
-        "icon" : "https://img.icons8.com/skeuomorphism/64/verified-badge.png",
-        "Date_obtained" : dateObtained
-      })
-      console.log(" Badge created succesfully !", CreationBadge);
+  //       "candidate_id" : candidateId ,
+  //       "roadmap_id" :id,
+  //       "name" : "silver",
+  //       "icon" : "https://img.icons8.com/skeuomorphism/64/verified-badge.png",
+  //       "Date_obtained" : dateObtained
+  //     })
+  //     console.log(" Badge created succesfully !", CreationBadge);
       
-    } catch (error) {
-      console.log("errerur de create new Badge" ,error.message)
+  //   } catch (error) {
+  //     console.log("errerur de create new Badge" ,error.message)
       
-    }
-  }
-  createNewBadge()
+  //   }
+  // }
+  // createNewBadge()
 
   return (
     <>
@@ -369,7 +369,8 @@ export const Roadmap = () => {
                                   <svg className="w-4 h-4 text-purple-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                   </svg>
-                                  <span>{prereq.description || "No description available"}</span>
+                                  <span>{prereq.text
+                                   || "No description available"}</span>
                                 </li>
                               ))
                             ) : (

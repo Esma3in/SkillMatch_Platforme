@@ -8,6 +8,7 @@ import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 import SeriesChallenge from './pages/SerieChallenges'
 import ProfileSettings from './pages/Settings.js';
+import CandidateList from './pages/manage/candidatesList.jsx';
 
 
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
@@ -28,6 +29,8 @@ import { Dashboard } from './pages/Dashboard.js';
 import QcmForRoadmap from './pages/qcmForRoadmap.js';
 import TestsList from './pages/TestList.jsx';
 import { ResultTest } from './pages/Testresult.jsx';
+import TestsListForCompany from './pages/ListTestForCompany.js';
+import FilterCandidate from './pages/FilterCandidate.js';
 export default function App() {
   return (
     <Router>
@@ -52,10 +55,21 @@ export default function App() {
         <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
+
+        {/*test*/}
+        <Route path = '/candidateList' element={<ProtectedRoute><CandidateList/></ProtectedRoute>}/>
+        <Route path = '/TestsListForCompany' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
+        <Route path = '/FilterCandidate' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
+        <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
+
        <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>
         <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedRoute><TestsList/></ProtectedRoute>}/>
         <Route path='/candidate/test/:TestId/result' element={<ProtectedRoute><ResultTest/></ProtectedRoute>}/>
+
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
+
+        {/* company */}
+        
 
         {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
