@@ -71,4 +71,30 @@ class QcmForRoadmapController extends Controller
         return response()->json($results);
     }
 
-}//testtest
+    public function saveResults(Request $request)
+    {
+        $validated = $request->validate([
+            'score' => 'required|numeric|between:0,100',
+            'candidateAnswer' => 'required|string',
+            'correctAnswer' => 'required|string',
+            'candidate_id' => 'required|exists:candidates,id',
+            'test_id' => 'required|exists:tests,id',
+        ]);
+
+        $result = DB::table('Results')->insert([
+            'score' => $validated['score'],
+            'candidateAnswer' => $validated['candidateAnswer'],
+            'correctAnswer' => $validated['correctAnswer'],
+            'candidate_id' => $validated['candidate_id'],
+            'test_id' => $validated['test_id'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'success' => $result,
+            'message' => $result ? 'Results saved successfully' : 'Failed to save results'
+        ]);
+    }
+
+}

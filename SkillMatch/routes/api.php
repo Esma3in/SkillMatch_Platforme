@@ -111,6 +111,7 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
+Route::post('/api/qcm/saveResults', [QcmForRoadmapController::class, 'saveResults']);
 
 //All candidate for company
 Route::get('/candidates', [AllCandidateController::class, 'index']);
