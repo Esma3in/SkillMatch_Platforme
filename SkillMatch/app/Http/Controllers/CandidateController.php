@@ -372,12 +372,10 @@ class CandidateController extends Controller
         $perPage = $request->has('perPage') ? (int)$request->perPage : 10;
         $candidates = $query->distinct()->paginate($perPage);
 
-        // Format the response data
+        //  the response data
         $formattedCandidates = $candidates->map(function($candidate) {
-            // Calculate average test score
-            $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
 
-            // Check if candidate has attestations
+            $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
             $certified = $candidate->attestations->count() > 0;
 
             return [
@@ -418,10 +416,8 @@ class CandidateController extends Controller
         $candidate = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
                     ->findOrFail($id);
 
-        // Calculate average test score
         $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
 
-        // Check if candidate has attestations
         $certified = $candidate->attestations->count() > 0;
 
         $candidateDetails = [

@@ -201,12 +201,46 @@ const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
       finalizeSubmission();
     }
   };
+  const saveQuizResults = async () => {
+  try {
+    const candidateAnswersJson = JSON.stringify(selectedAnswers);
+    const correctAnswersJson = JSON.stringify(
+      qcmData.reduce((acc, question) => {
+        acc[question.id] = question.correct_answer;
+        return acc;
+      }, {})
+    );
+    
+    const candidateId = localStorage.getItem('candidate_id');    
+    
+    const response = await api.post('/api/qcm/saveResults', {
+      score: score, 
+      candidateAnswer: candidateAnswersJson,
+      correctAnswer: correctAnswersJson,
+      candidate_id: candidateId,
+      test_id: id, 
+    });
+    
+    if (response.data.success) {
+      console.log("Results saved successfully");
+    } else {
+      console.error("Failed to save results:", response.data.message);
+
+    }
+  } catch (error) {
+    console.error("Error saving quiz results:", error);
+
+  }
+};
 
   // Final submission
   const finalizeSubmission = () => {
     calculateScore();
     setIsSubmitted(true);
     setShowConfirmSubmit(false);
+
+    // Save the results to the database
+    saveQuizResults();
   };
 
   // Return to roadmap
