@@ -8,6 +8,7 @@ import NavbarCandidate from "../components/common/navbarCandidate";
 import { Footer } from "../components/common/footer";
 
 export default function ProfileCandidate() {
+  // state 
   const [candidateInfo, setCandidateInfo] = useState(null);
   const [error, setError] = useState(null);
   const [experiences, setExperiences] = useState([]);
