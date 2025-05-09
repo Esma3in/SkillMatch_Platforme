@@ -21,7 +21,7 @@ const NavbarCandidate = () => {
   // for tyme
   const trainingTimeout = useRef(null);
   const companyTimeout = useRef(null);
-const Navigate= useNavigate();
+const navigate= useNavigate();
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (trainingRef.current && !trainingRef.current.contains(event.target)) setIsTrainingOpen(false);
@@ -128,7 +128,7 @@ const Navigate= useNavigate();
             <button className="icon-button notification-button">
               <i className="notification-icon"></i>
             </button>
-            <button className="icon-button settings-button" onClick={()=>{}}>
+            <button className="icon-button settings-button" onClick={()=>{navigate("/badges")}}>
             <MdBadge style={{"color" : "gray" , "fontSize" : "22px"}} />
             </button>
             

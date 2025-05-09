@@ -31,6 +31,7 @@ import TestsList from './pages/TestList.jsx';
 import { ResultTest } from './pages/Testresult.jsx';
 import TestsListForCompany from './pages/ListTestForCompany.js';
 import FilterCandidate from './pages/FilterCandidate.js';
+import {BadgeList} from './pages/BadgesListes.jsx';
 export default function App() {
   return (
     <Router>
@@ -45,6 +46,7 @@ export default function App() {
         <Route path='/Createprofile' element={<ProtectedRoute><Box/></ProtectedRoute>}/>
         <Route path='/companies/list'  element={<ProtectedRoute><CompaniesMatching/></ProtectedRoute>}></Route> 
         <Route path='/profile' element={<ProtectedRoute><ProfileCandidat/></ProtectedRoute>} />
+        <Route path='/badges' element = {<BadgeList />}/>
         {/* <Route path='/companyProfile' element={<ProtectedRoute><CompanyProfile/></ProtectedRoute>}/>  */}
         <Route path="/qcm/roadmap/:id" element={<QcmForRoadmap />} />
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />

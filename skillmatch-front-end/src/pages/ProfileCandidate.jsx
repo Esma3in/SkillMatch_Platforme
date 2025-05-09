@@ -5,6 +5,7 @@ import Bio from "../components/modals/AddBioCandidate";
 import CreateExperienceModal from "../components/modals/createExperience";
 import ModalSkill from "../components/modals/createSkillsCandidate";
 import NavbarCandidate from "../components/common/navbarCandidate";
+import { Footer } from "../components/common/footer";
 
 export default function ProfileCandidate() {
   const [candidateInfo, setCandidateInfo] = useState(null);
@@ -70,6 +71,7 @@ export default function ProfileCandidate() {
     return (
       <>
         <NavbarCandidate />
+
         <div className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
           <p className="text-base font-medium text-gray-700 mb-2">
             You don't have a profile yet.
@@ -91,7 +93,24 @@ export default function ProfileCandidate() {
   return (
     <>
       <NavbarCandidate />
-      <div className="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 bg-gray-50">
+   
+      < div className="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <div className="max-w-4xl mx-auto">
+          {/* Descriptive Hero Section */}
+          {/* <div className="mb-10 text-center bg-white p-6 rounded-xl shadow-lg border border-gray-200 animate-fade-in">
+            <h1 className="text-4xl font-bold text-gray-900 mb-3">Welcome to Your SkillMatch Journey</h1>
+            <p className="text-lg text-gray-600 mb-4">
+              Build a standout profile to showcase your skills and connect with opportunities in the digital world. Follow these steps to create a professional presence—let’s get started!
+            </p> */}
+            <div className="flex justify-center space-x-2">
+              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-medium">1</div>
+              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-medium">2</div>
+              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-medium">
+                3</div>
+            </div>
+            <p className="text-sm text-gray-500 mt-2">Step 2: Complete Your Profile</p>
+          </div>
+        
         {/* Profile Header */}
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <div className="relative bg-gradient-to-r from-indigo-700 to-blue-500 h-32"></div>
@@ -294,6 +313,7 @@ export default function ProfileCandidate() {
           />
         )}
       </div>
+      <Footer/>
     </>
   );
 }

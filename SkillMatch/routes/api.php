@@ -1,13 +1,15 @@
 <?php
 
 use App\Models\Problem;
+use App\Models\Candidate;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestController;
 
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\toolsController;
 use App\Http\Controllers\CompanyController;
@@ -27,7 +29,6 @@ use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\candidateCoursesController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
-use App\Models\Candidate;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -165,3 +166,5 @@ Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController:
 Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
+
+Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
