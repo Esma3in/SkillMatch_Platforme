@@ -24,6 +24,7 @@ use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
 use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\candidateCoursesController;
+use App\Http\Controllers\CandidateSelectedController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
 use App\Models\Candidate;
@@ -80,15 +81,16 @@ Route::post('/candidate/settings/delete-profile-picture', [ProfileSettingsContro
 //company SELECTED
 Route::post('/selected/company/{id}', [CompaniesSelectedController::class, 'selectCompany']);
 
-
 //Candidate Test Routes:
 Route::get('/candidate/company/{id}/tests', [TestController::class, 'GetTestsCompanySelected']);
 Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
 Route::post('/results/store',[TestController::class,'storeResult']);
-
 Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::class,'getResult']);
 
+//selected candidates for company :
 
+Route::get('/company/{id}/candidates/selected',[CandidateSelectedController::class,'getSelectedcandidates']);
+Route::delete('/company/delete/candidate/selected',[CandidateSelectedController::class,'delete']);
 
 
 // get roadmap
@@ -117,9 +119,7 @@ Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
 
 
 
-//Select Company Route:
-// Route::post('/candidate/select/company',[CompaniesSelectedController::class,'SelectCompany']);
-// Route::get('/candidate/getSelected/companies/{id}',[CompaniesSelectedController::class,'getcompanies']);
+
 // candidate Roadmap Routes
 Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'getPrerequisites']);
 

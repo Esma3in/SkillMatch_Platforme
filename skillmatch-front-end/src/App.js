@@ -28,6 +28,9 @@ import { Dashboard } from './pages/Dashboard.js';
 import QcmForRoadmap from './pages/qcmForRoadmap.js';
 import TestsList from './pages/TestList.jsx';
 import { ResultTest } from './pages/Testresult.jsx';
+import { ListCandidateSelected } from './pages/CandidateSelected.jsx';
+import Company from './pages/Company.jsx';
+import CandidateProfileForCompany from './pages/CandidateProfileForCompany.jsx';
 export default function App() {
   return (
     <Router>
@@ -55,6 +58,12 @@ export default function App() {
        <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>
         <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedRoute><TestsList/></ProtectedRoute>}/>
         <Route path='/candidate/test/:TestId/result' element={<ProtectedRoute><ResultTest/></ProtectedRoute>}/>
+        
+
+        {/*company Routes */}
+        <Route path='/company/Candidate-Selected' element={<ListCandidateSelected/>}/>
+        <Route path='/company/Session/:CompanyId' element={<Company/>}/>
+        <Route path='/company/candidate/profile/:candidate_id' element={<CandidateProfileForCompany/>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
 
         {/* admin */}
