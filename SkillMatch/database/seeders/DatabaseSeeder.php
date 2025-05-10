@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Ceo;
 use App\Models\Step;
 use App\Models\Test;
+use App\Models\User;
 use App\Models\Badge;
 use App\Models\Skill;
 use App\Models\Result;
@@ -22,17 +23,17 @@ use App\Models\SocialMedia;
 use App\Models\Notification;
 use App\Models\RoadmapSkill;
 use App\Models\Administrator;
-use App\Models\ProfileCompany;
 
+use App\Models\ProfileCompany;
 use App\Models\SerieChallenge;
 use App\Models\CompaniesSkills;
 use Illuminate\Database\Seeder;
 use App\Models\CandidatesSkills;
+
 use App\Models\ProfileCandidate;
-
 use App\Models\CompaniesSelected;
-use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -65,7 +66,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $skillName,
             ]);
         }
-        
+
         $candidates = Candidate::factory(10)->create();
         // Création de 20 challenges avec chacun 20 problèmes
         Challenge::factory(20)->create()->each(function ($challenge) use ($skillsCreated, $candidates) {
@@ -367,5 +368,41 @@ class DatabaseSeeder extends Seeder
 
             $this->command->info("QCM insert with  : $skillName");
         }
+
+
+
+
+        //1 candidate for filter company
+        $user = User::create([
+            'name' => 'chaimaeel',
+            'email' => 'candidate9999999@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'candidate'
+        ]);
+        $candidate = Candidate::create([
+            'id' => 9999999,
+            'user_id' => $user->id,
+            'name' => 'Candidate 9999999',
+            'email' => 'candidate9999999@example.com',
+            'password' => Hash::make('password'),
+            'state' => 'active'
+        ]);
+
+        // Ajout du profil
+        $candidate->profile()->create([
+            'field' => 'Web Development',
+            'last_name' => 'Dev',
+            'phoneNumber' => '0612345678',
+            'file' => null,
+            'projects' => null,
+            'experience' => ['Stage à XYZ'],
+            'formation' => ['Licence Informatique'],
+            'photoProfil' => null,
+            'localisation' => 'Tétouan, Morocco',
+            'description' => 'Développeur web basé à Tétouan.',
+            'competenceList' => ['HTML', 'CSS', 'JavaScript', 'Laravel']
+        ]);
+
+
     }
 }

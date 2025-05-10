@@ -131,7 +131,6 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
 Route::get('/candidates/{id}', [CandidateController::class, 'getCandidateDetails']);
 Route::get('/skills', [CandidateController::class, 'getSkills']);
-Route::get('/test-tags', [CandidateController::class, 'getTestTags']);
 
 
 

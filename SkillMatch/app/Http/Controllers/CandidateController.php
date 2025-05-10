@@ -331,69 +331,64 @@ class CandidateController extends Controller
      */
     public function filterCandidates(Request $request)
     {
-        // Start with a base query
-        $query = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
-                 ->join('profile_candidates', 'candidates.id', '=', 'profile_candidates.candidate_id')
-                 ->select('candidates.*');
+        // Démarrer la requête avec les relations nécessaires
+        $query = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests']);
 
-        // Filter by domain (field in profile)
-        if ($request->has('domain') && $request->domain) {
-            $query->where('profile_candidates.field', $request->domain);
+        // Joindre le profil pour les filtres sur city et field
+        $query->join('profile_candidates', 'candidates.id', '=', 'profile_candidates.candidate_id')
+            ->select('candidates.*');
+
+        // Filtrer par domaine (field)
+        if ($request->filled('domain')) {
+            $query->whereRaw('LOWER(profile_candidates.field) LIKE ?', ['%' . strtolower($request->domain) . '%']);
         }
 
-        // Filter by city (localisation in profile)
-        if ($request->has('city') && $request->city) {
-            $query->where('profile_candidates.localisation', 'like', '%' . $request->city . '%');
-        }
+        // Filtrer par ville (city)
+        if ($request->filled('city')) {
+            $city = strtolower($request->city);
+            $query->where(function($q) use ($city) {
+                $q->whereRaw('LOWER(profile_candidates.localisation) LIKE ?', ["%$city%"]);
 
-        // Filter by skill
-        if ($request->has('skill') && $request->skill) {
-            $query->whereHas('skills', function($q) use ($request) {
-                $q->where('skills.name', $request->skill);
+                // Ajouter une condition spéciale pour Tétouan
+                if ($city === 'tetouan') {
+                    $q->orWhereRaw('LOWER(profile_candidates.localisation) LIKE ?', ['%tétouan%']);
+                }
             });
         }
 
-        // Filter by test tag
-        if ($request->has('tag') && $request->tag) {
-            $query->whereHas('tests', function($q) use ($request) {
-                $q->where('tests.tag', $request->tag);
+        // Filtrer par compétence (skills)
+        if ($request->filled('skill')) {
+            $skill = strtolower($request->skill);
+            $query->whereHas('skills', function($q) use ($skill) {
+                $q->whereRaw('LOWER(skills.name) LIKE ?', ["%$skill%"]);
             });
         }
 
-        // Filter by test score
-        if ($request->has('minScore') && $request->minScore) {
-            $minScore = (int)$request->minScore;
-            $query->whereHas('tests', function($q) use ($minScore) {
-                $q->where('results.score', '>=', $minScore);
-            });
-        }
-
-        // Get paginated results
-        $perPage = $request->has('perPage') ? (int)$request->perPage : 10;
+        // Paginer les résultats
+        $perPage = $request->get('perPage', 10);
         $candidates = $query->distinct()->paginate($perPage);
 
-        //  the response data
+        // Formater les résultats
         $formattedCandidates = $candidates->map(function($candidate) {
-
             $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
             $certified = $candidate->attestations->count() > 0;
 
             return [
                 'id' => $candidate->id,
                 'name' => $candidate->name,
-                'field' => $candidate->profile ? $candidate->profile->field : null,
-                'location' => $candidate->profile ? $candidate->profile->localisation : null,
+                'field' => optional($candidate->profile)->field,
+                'location' => optional($candidate->profile)->localisation,
                 'testScore' => round($avgScore),
                 'certified' => $certified,
                 'skills' => $candidate->skills->pluck('name'),
-                'description' => $candidate->profile ? $candidate->profile->description : null,
+                'description' => optional($candidate->profile)->description,
                 'badges' => $candidate->badges->map(function($badge) {
                     return [
                         'name' => $badge->name,
-                        'icon' => $badge->icon
+                        'icon' => $badge->icon,
                     ];
                 }),
-                'resumeUrl' => $candidate->profile ? $candidate->profile->file : null,
+                'resumeUrl' => optional($candidate->profile)->file,
             ];
         });
 
@@ -403,60 +398,12 @@ class CandidateController extends Controller
                 'current_page' => $candidates->currentPage(),
                 'last_page' => $candidates->lastPage(),
                 'total' => $candidates->total(),
-                'per_page' => $candidates->perPage()
+                'per_page' => $candidates->perPage(),
             ]
         ]);
     }
 
-    /**
-     * Get a specific candidate's details
-     */
-    public function getCandidateDetails($id)
-    {
-        $candidate = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
-                    ->findOrFail($id);
 
-        $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
 
-        $certified = $candidate->attestations->count() > 0;
-
-        $candidateDetails = [
-            'id' => $candidate->id,
-            'name' => $candidate->name,
-            'field' => $candidate->profile ? $candidate->profile->field : null,
-            'location' => $candidate->profile ? $candidate->profile->localisation : null,
-            'testScore' => round($avgScore),
-            'certified' => $certified,
-            'skills' => $candidate->skills->pluck('name'),
-            'description' => $candidate->profile ? $candidate->profile->description : null,
-            'badges' => $candidate->badges->map(function($badge) {
-                return [
-                    'name' => $badge->name,
-                    'icon' => $badge->icon
-                ];
-            }),
-            'resumeUrl' => $candidate->profile ? $candidate->profile->file : null,
-        ];
-
-        return response()->json($candidateDetails);
-    }
-
-    /**
-     * Get all available skills for filtering
-     */
-    public function getSkills()
-    {
-        $skills = Skill::select('name')->distinct()->get()->pluck('name');
-        return response()->json($skills);
-    }
-
-    /**
-     * Get all available test tags for filtering
-     */
-    public function getTestTags()
-    {
-        $tags = DB::table('tests')->select('tag')->distinct()->get()->pluck('tag');
-        return response()->json($tags);
-    }
 
 }
