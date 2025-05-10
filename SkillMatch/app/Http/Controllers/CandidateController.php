@@ -301,14 +301,16 @@ class CandidateController extends Controller
 
     }
     public function AllCandidates(){
-        $candidates = Candidate::with('profile')->get();
-        return response()->json($candidates,200);
+        $candidates = Candidate::with('profile')
+            ->whereIn('state', ['active', 'unactive','waiting'])
+            ->get();
+        return response()->json($candidates, 200);
     }
 
     public function setstate(Request $request){
         $request->validate([
             'id'=>'required',
-            'state' => 'required|in:BANNED,UNACTIVE,ACTIVE'
+            'state' => 'required|in:unactive,active,banned'
         ]);
         $candidate = Candidate::where('id', $request->id)->first();
         if (!$candidate) {
@@ -318,6 +320,20 @@ class CandidateController extends Controller
             'state' => $request->state
         ]);
         return response()->json(['message' => 'Candidate state updated successfully'], 200);
+    }
+
+     public function show($id)
+    {
+        // Find the candidate by ID
+        $candidate = Candidate::find($id);
+
+        // Check if the candidate exists
+        if (!$candidate) {
+            return response()->json(['error' => 'Candidate not found'], 404);
+        }
+
+        // Return the state of the candidate
+        return response()->json(['state' => $candidate->state], 200);
     }
 
 }

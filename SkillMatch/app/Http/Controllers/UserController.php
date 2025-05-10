@@ -118,4 +118,71 @@ class UserController extends Controller
         }
         
     }
+    public function getBannedUsers()
+        {
+            // Get banned candidates
+            $bannedCandidates = User::where('role', 'candidate')
+                ->whereHas('candidate', function ($query) {
+                    $query->where('state', 'banned');
+                })
+                ->with('candidate')
+                ->get();
+
+            // Get banned companies
+            $bannedCompanies = User::where('role', 'company')
+                ->whereHas('company', function ($query) {
+                    $query->where('state', 'banned');
+                })
+                ->with('company')
+                ->get();
+
+            // Merge both collections
+            $Users = $bannedCandidates->merge($bannedCompanies);
+
+            return response()->json($Users, 200);
+    }
+    public function setstate(Request $request)
+        {
+            $request->validate([
+                'user_id' => 'required',  // We're using user_id here
+                'state' => 'required|in:waiting,banned',
+            ]);
+
+            // Find the user by user_id (foreign key)
+            $user = User::where('id', $request->user_id)->first();
+
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+
+            // Check the user's role and update the state in the related model (Candidate or Company)
+            if ($user->role === 'candidate') {
+                // Fetch the candidate using the user_id
+                $candidate = $user->candidate; // Relation assumed to be defined
+
+                if (!$candidate) {
+                    return response()->json(['error' => 'Candidate not found'], 404);
+                }
+
+                // Update the candidate's state
+                $candidate->update(['state' => $request->state]);
+
+            } elseif ($user->role === 'company') {
+                // Fetch the company using the user_id
+                $company = $user->company; // Relation assumed to be defined
+
+                if (!$company) {
+                    return response()->json(['error' => 'Company not found'], 404);
+                }
+
+                // Update the company's state
+                $company->update(['state' => $request->state]);
+            } else {
+                return response()->json(['error' => 'Invalid user role'], 400);
+            }
+
+            return response()->json(['message' => 'User state updated successfully'], 200);
+        }
+
+
 }
