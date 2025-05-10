@@ -12,7 +12,6 @@ import SeriesChallenge from './pages/SerieChallenges'
 
 
 import ProfileSettings from './pages/Settings.js';
-import CandidateList from './pages/manage/candidatesList.jsx';
 
 
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
@@ -26,7 +25,7 @@ import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
 
 import AdminHome from './pages/adminHome.jsx';
 import CompaniesList from './pages/manage/companiesList.jsx';
-import CandidatesList from './pages/manage/candidatesList.jsx';
+import CandidateListForCompany from './pages/CandidateListForCompany.jsx';
 
 import { Dashboard } from './pages/Dashboard.js';
 
@@ -66,7 +65,7 @@ export default function App() {
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
 
         {/*test*/}
-        <Route path = '/candidateList' element={<ProtectedRoute><CandidateList/></ProtectedRoute>}/>
+        <Route path = '/candidateList' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
         <Route path = '/TestsListForCompany' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
         <Route path = '/FilterCandidate' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
@@ -85,7 +84,6 @@ export default function App() {
         {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
         <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
-        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
 
       </Routes>
     </Router>
