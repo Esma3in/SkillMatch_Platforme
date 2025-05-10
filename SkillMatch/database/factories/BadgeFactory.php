@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Roadmap;
+use App\Models\QcmForRoadmap;
 use App\Models\Candidate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,8 +21,9 @@ class BadgeFactory extends Factory
         return [
             'name' => fake()->name(),
             'icon' => fake()->imageUrl(64, 64, 'badges'),
+            'description'=>fake()->paragraph(4),
             'Date_obtained' => fake()->dateTime(max:"now"),
-            'roadmap_id' => Roadmap::factory(),
+            'qcm_for_roadmap_id' => QcmForRoadmap::factory(),
             'candidate_id' => Candidate::factory(),
         ];
     }

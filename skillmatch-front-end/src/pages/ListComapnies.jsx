@@ -6,6 +6,8 @@ export default function Listcompanies() {
         <>
             <NavbarCandidate />
             <Companies />
+            
+
         </>
     )
 }

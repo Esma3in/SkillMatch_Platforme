@@ -1,33 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { useParams } from "react-router";
+import { motion, AnimatePresence } from "framer-motion";
 import { api } from "../api/api";
-import Candidate from "../Espaces/Candidate";
+import { Footer } from "../components/common/footer";
+import NavbarCandidate from "../components/common/navbarCandidate";
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-        outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: "bg-indigo-600 text-white shadow-md hover:bg-indigo-700",
+        destructive: "bg-red-600 text-white shadow-md hover:bg-red-700",
+        outline: "border border-indigo-600 text-indigo-600 hover:bg-indigo-50",
+        secondary: "bg-gray-200 text-gray-800 shadow-sm hover:bg-gray-300",
+        ghost: "hover:bg-gray-100 hover:text-indigo-600",
+        link: "text-indigo-600 underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        default: "h-10 px-6 py-2",
+        sm: "h-9 rounded-md px-4 text-xs",
+        lg: "h-12 rounded-lg px-8",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {
@@ -40,39 +42,63 @@ const buttonVariants = cva(
 const CustomButton = React.forwardRef(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    return (
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Comp
+          className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
+          {...props}
+        />
+      </motion.div>
+    );
   }
 );
 CustomButton.displayName = "CustomButton";
 
 const Card = React.forwardRef(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("rounded-xl border bg-card text-card-foreground shadow", className)} {...props} />
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    ref={ref}
+    className={cn(
+      "rounded-2xl border bg-white text-gray-800 shadow-lg",
+      className
+    )}
+    {...props}
+  />
 ));
 Card.displayName = "Card";
 
 const CardContent = React.forwardRef(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  <div ref={ref} className={cn("p-6", className)} {...props} />
 ));
 CardContent.displayName = "CardContent";
 
-export const ResultTest = () => {
-  const [Loading, setLoading] = useState(true);
-  const [TestInfo, setTestInfo] = useState({});
-  const [Result, setResultInfo] = useState({});
+const ResultTest = () => {
+  const [loading, setLoading] = useState(true);
+  const [testInfo, setTestInfo] = useState({});
+  const [result, setResultInfo] = useState({});
   const [candidate, setCandidate] = useState({});
   const { TestId } = useParams();
   const candidate_id = localStorage.getItem("candidate_id");
 
   useEffect(() => {
-    const TestData = async () => {
+    const fetchTestData = async () => {
       try {
-        const response = await api.get(`api/candidate/${candidate_id}/result/test/${TestId}`);
+        const response = await api.get(
+          `api/candidate/${candidate_id}/result/test/${TestId}`
+        );
         setResultInfo(response.data.result);
         setCandidate(response.data.candidate);
         setTestInfo(response.data.test);
       } catch (err) {
-        if (err.response && err.response.status === 401 && err.response.data.message === "result not found") {
-          setResultInfo(null); // explicitly indicate no result
+        if (
+          err.response &&
+          err.response.status === 401 &&
+          err.response.data.message === "result not found"
+        ) {
+          setResultInfo(null);
         } else {
           console.error("Failed to fetch test result:", err.message);
         }
@@ -80,148 +106,240 @@ export const ResultTest = () => {
         setLoading(false);
       }
     };
-  
-    TestData();
-  }, [TestId]);
-  
-  if (!Loading && Result === null) {
+
+    fetchTestData();
+  }, [TestId, candidate_id]);
+
+  const userInfo = useMemo(
+    () => ({
+      name: candidate?.name ?? "N/A",
+      email: candidate?.email ?? "N/A",
+      date: candidate?.created_at
+        ? new Date(candidate.created_at).toLocaleDateString()
+        : "N/A",
+    }),
+    [candidate]
+  );
+
+  const testResults = useMemo(
+    () => ({
+      score: result?.score ?? 0,
+      correct: `${result?.score ?? 0}/100`,
+      status: result?.score === 100 ? "Excellent" : "Needs Improvement",
+      feedback:
+        result?.score === 100
+          ? "Great job! You've successfully passed the test."
+          : "Unfortunately, you did not pass the test.",
+      description:
+        result?.score === 100
+          ? "Your results demonstrate a strong understanding of the subject matter."
+          : "Consider reviewing the material to improve your understanding.",
+    }),
+    [result]
+  );
+
+  const questions = useMemo(
+    () => [
+      {
+        id: 1,
+        test: testInfo?.objective ?? "N/A",
+        userAnswer: result?.candidateAnswer ?? "N/A",
+        correctAnswer: result?.correctAnswer ?? "N/A",
+        isCorrect: result?.score === 100,
+        icon:
+          result?.score === 100
+            ? "https://c.animaapp.com/mabjl2fqtswclr/img/icons8-correct-48-1.png"
+            : "https://c.animaapp.com/mabjl2fqtswclr/img/icons8-annuler-48-1.png",
+        alt: result?.score === 100 ? "Correct" : "Incorrect",
+      },
+    ],
+    [testInfo, result]
+  );
+
+  if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-50 px-4">
-        <h2 className="text-3xl font-bold text-red-600 mb-4">Result Not Found</h2>
-        <p className="text-lg text-gray-700 mb-6">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="h-12 w-12 rounded-full border-t-4 border-indigo-600"
+        />
+      </div>
+    );
+  }
+
+  if (result === null) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-100 px-4"
+      >
+        <h2 className="text-4xl font-bold text-red-600 mb-6">
+          Result Not Found
+        </h2>
+        <p className="text-lg text-gray-600 mb-8 max-w-md">
           You haven't completed the test yet. Click below to take it now.
         </p>
         <CustomButton
           variant="default"
-          className="text-lg px-6 py-3"
+          className="text-lg px-8 py-3"
           onClick={() => {
             window.location.href = `/candidate/test/${TestId}`;
           }}
         >
           Start Test
         </CustomButton>
-      </div>
+      </motion.div>
     );
   }
-    
-  if (Loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-indigo-700"></div>
-      </div>
-    );
-  }
-
-  const userInfo = {
-    name: candidate?.name ?? "N/A",
-    email: candidate?.email ?? "N/A",
-    date: candidate?.created_at ? new Date(candidate.created_at).toLocaleDateString() : "N/A",
-  };
-
-  const testResults = {
-    score: Result?.score ?? 0,
-    correct: `${Result?.score ?? 0}/100`,
-    status: Result?.score === 100 ? "Excellent" : "Needs Improvement",
-    feedback:
-      Result?.score === 100
-        ? "Great job! You've successfully passed the test."
-        : "Unfortunately, you did not pass the test.",
-    description:
-      Result?.score === 100
-        ? "Your results demonstrate a strong understanding of the subject matter."
-        : "Consider reviewing the material to improve your understanding.",
-  };
-
-  const questions = [
-    {
-      id: 1,
-      test: TestInfo?.objective ?? "N/A",
-      userAnswer: Result?.candidateAnswer ?? "N/A",
-      correctAnswer: Result?.correctAnswer ?? "N/A",
-      isCorrect: Result?.score === 100,
-      icon:
-        Result?.score === 100
-          ? "https://c.animaapp.com/mabjl2fqtswclr/img/icons8-correct-48-1.png"
-          : "https://c.animaapp.com/mabjl2fqtswclr/img/icons8-annuler-48-1.png",
-      alt: Result?.score === 100 ? "Correct" : "Incorrect",
-    },
-  ];
 
   return (
-    <div className="w-full max-w-[1193px] mx-auto p-6 bg-white shadow-md">
-      <h1 className="text-4xl font-bold text-center mb-12">Your Test Results</h1>
+    <>
+    <NavbarCandidate />
+    <div className="w-full max-w-5xl mx-auto p-6 bg-gray-50 min-h-screen">
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-4xl md:text-5xl font-bold text-center mb-12 text-indigo-800"
+      >
+        Your Test Results
+      </motion.h1>
 
-      <Card className="mb-12 bg-[#f7f8f9] border-white">
+      <Card className="mb-12 bg-gradient-to-br from-white to-gray-50">
         <CardContent>
-          <h2 className="text-2xl font-semibold text-center mb-8">User Information</h2>
-          <div className="flex justify-between flex-wrap">
-            <div className="text-xl font-light">
-              Name: {userInfo.name} <br /> Email: {userInfo.email}
+          <h2 className="text-2xl font-semibold text-center mb-8 text-gray-800">
+            User Information
+          </h2>
+          <div className="flex flex-col md:flex-row justify-between gap-6">
+            <div className="text-lg text-gray-600">
+              <p>
+                <span className="font-medium">Name:</span> {userInfo.name}
+              </p>
+              <p>
+                <span className="font-medium">Email:</span> {userInfo.email}
+              </p>
             </div>
-            <div className="text-xl font-light">Date: {userInfo.date}</div>
+            <div className="text-lg text-gray-600">
+              <p>
+                <span className="font-medium">Date:</span> {userInfo.date}
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="mb-12 border-[#6c63ff] shadow-md">
+      <Card className="mb-12 border-indigo-200">
         <CardContent>
-          <div className="flex flex-wrap items-center justify-between">
-            <div className="relative">
-              <div className="w-[169px] h-[171px] bg-white rounded-full border border-black flex flex-col items-center justify-center">
-                <span className="text-[44px] font-bold">{testResults.score}</span>
-                <span className="text-xl">{testResults.correct}</span>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              className="relative"
+            >
+              <div className="w-40 h-40 bg-white rounded-full border-4 border-indigo-600 flex flex-col items-center justify-center shadow-lg">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="text-4xl font-bold text-indigo-800"
+                >
+                  {testResults.score}
+                </motion.span>
+                <span className="text-lg text-gray-600">
+                  {testResults.correct}
+                </span>
               </div>
               <img
-                className="absolute w-[210px] h-[212px] top-0 left-0 -z-10 -translate-x-12 -translate-y-4"
+                className="absolute w-56 h-56 top-0 left-0 -z-10 -translate-x-8 -translate-y-8 opacity-20"
                 alt="Ellipse"
                 src="https://c.animaapp.com/mabjl2fqtswclr/img/ellipse-27.svg"
               />
-            </div>
-            <div className="flex flex-col items-center">
-              <div
-                className={`${
-                  testResults.score === 100 ? "bg-[#0f9f27] text-white" : "bg-gray-200 text-black"
-                } rounded-2xl w-auto h-auto flex items-center justify-center mb-4 text-lg`}
+            </motion.div>
+            <div className="flex flex-col items-center text-center">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className={cn(
+                  "px-4 py-2 rounded-full text-lg font-semibold",
+                  testResults.score === 100
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-200 text-gray-800"
+                )}
               >
                 {testResults.status}
-              </div>
-
-              <p className="text-lg font-medium text-center mb-2">{testResults.feedback}</p>
-              <p className="text-base font-light text-center">{testResults.description}</p>
+              </motion.div>
+              <p className="text-lg font-medium text-gray-800 mt-4">
+                {testResults.feedback}
+              </p>
+              <p className="text-base text-gray-600 mt-2 max-w-md">
+                {testResults.description}
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       <div>
-        <h2 className="text-2xl font-semibold mb-8">Detailed Results</h2>
-        {questions.map((q) => (
-          <Card key={q.id} className="mb-8 border-[#6c63ff]">
-            <CardContent>
-              <h3 className="text-xl font-medium mb-4">{q.test}</h3>
-              <div className="flex justify-between items-center">
-                <div className="text-xl font-light">
-                  Your Answer: {q.userAnswer} <br />
-                  Correct Answer: {q.correctAnswer}
+        <h2 className="text-2xl font-semibold mb-8 text-gray-800">
+          Detailed Results
+        </h2>
+        <AnimatePresence>
+          {questions.map((q) => (
+            <Card key={q.id} className="mb-8 border-indigo-200">
+              <CardContent>
+                <h3 className="text-xl font-medium mb-4 text-gray-800">
+                  {q.test}
+                </h3>
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                  <div className="text-lg text-gray-600">
+                    <p>
+                      <span className="font-medium">Your Answer:</span>{" "}
+                      {q.userAnswer}
+                    </p>
+                    <p>
+                      <span className="font-medium">Correct Answer:</span>{" "}
+                      {q.correctAnswer}
+                    </p>
+                  </div>
+                  <motion.img
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="w-16 h-16 object-contain"
+                    src={q.icon}
+                    alt={q.alt}
+                  />
                 </div>
-                <img className="w-[71px] h-[71px] object-cover" src={q.icon} alt={q.alt} />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
+        </AnimatePresence>
       </div>
 
-      <div className="flex justify-center gap-6 mt-12 mb-6">
-        <button onClick={(e)=>{e.preventDefault();window.history.back()}}  className="w-[260px] h-[59px] bg-[#5856d6] text-xl font-extrabold">
-            Back
-        </button>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col md:flex-row justify-center gap-6 mt-12 mb-6"
+      >
+        <CustomButton
+          variant="default"
+          className="w-full md:w-64 h-12 text-lg"
+          onClick={() => window.history.back()}
+        >
+          Back
+        </CustomButton>
         <CustomButton
           variant="outline"
-          className="w-[262px] h-[61px] border-[#5856d6] text-[#5856d6] text-xl font-extrabold"
+          className="w-full md:w-64 h-12 text-lg border-indigo-600 text-indigo-600"
         >
           Download PDF
         </CustomButton>
-      </div>
+      </motion.div>
     </div>
+    <Footer />
+    </>
   );
 };
+
+export default React.memo(ResultTest);

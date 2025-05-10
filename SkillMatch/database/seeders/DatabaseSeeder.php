@@ -23,6 +23,11 @@ use App\Models\SocialMedia;
 use App\Models\Notification;
 use App\Models\RoadmapSkill;
 use App\Models\Administrator;
+<<<<<<< HEAD
+=======
+use App\Models\CandidateSelected;
+use App\Models\ProfileCompany;
+>>>>>>> 19afbc5ffcb1da21da18e194c88c8e126b64324b
 
 use App\Models\ProfileCompany;
 use App\Models\SerieChallenge;
@@ -99,7 +104,10 @@ class DatabaseSeeder extends Seeder
 
 
         // Create Companies and their Profiles, Roadmaps, Challenges
-       $companies=Company::factory(5)->create()->each(function ($company) use($skillsCreated) {
+       $companies=Company::factory(10)->create()->each(function ($company) use($skillsCreated) {
+            CandidateSelected::factory(10)->create([
+                'company_id'=>$company->id,
+            ]);
             Ceo::factory()->create([
                 'company_id'=>$company->id
             ]);
@@ -126,6 +134,7 @@ class DatabaseSeeder extends Seeder
 
         // Create Candidates and their related data
         Candidate::factory(2)->create()->each(function ($candidate) use ($skillsCreated) {
+            
             CompaniesSelected::factory(10)->create([
             'candidate_id'=>$candidate->id,
             ]);
