@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('question');
             $table->json('options');
-            $table->string('correct_answer');
+            $table->string('correct_answer')->nullable();
             $table->foreignId('skill_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 

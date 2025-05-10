@@ -1,13 +1,15 @@
 <?php
 
 use App\Models\Problem;
+use App\Models\Candidate;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestController;
 
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\toolsController;
 use App\Http\Controllers\CompanyController;
@@ -19,6 +21,7 @@ use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\dahsboardcontroller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\AllCandidateController;
 use App\Http\Controllers\prerequisitesController;
 use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
@@ -27,7 +30,6 @@ use App\Http\Controllers\candidateCoursesController;
 use App\Http\Controllers\CandidateSelectedController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
-use App\Models\Candidate;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -113,6 +115,26 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
 
+//All candidate for company
+Route::get('/candidates', [AllCandidateController::class, 'index']);
+Route::get('/candidates/{id}', [AllCandidateController::class, 'show']);
+Route::put('/candidates/{id}/accept', [AllCandidateController::class, 'accept']);
+Route::put('/candidates/{id}/reject', [AllCandidateController::class, 'reject']);
+
+//Tests Routes for company
+// Test routes
+Route::get('/tests', [TestController::class, 'index']);
+Route::get('/tests/{id}/candidates', [TestController::class, 'getSolvedCandidates']);
+Route::delete('/tests', [TestController::class, 'deleteAll']);
+Route::post('/tests', [TestController::class, 'store']);
+Route::delete('/tests/{id}', [TestController::class, 'destroy']);
+
+// Candidate filtering routes
+Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
+Route::get('/candidates/{id}', [CandidateController::class, 'getCandidateDetails']);
+Route::get('/skills', [CandidateController::class, 'getSkills']);
+Route::get('/test-tags', [CandidateController::class, 'getTestTags']);
+
 
 
 
@@ -144,3 +166,5 @@ Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController:
 Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
+
+Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);

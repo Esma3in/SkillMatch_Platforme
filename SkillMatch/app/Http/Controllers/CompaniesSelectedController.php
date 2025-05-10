@@ -118,9 +118,9 @@ public function getSkillsData(Request $request, $companyId)
 
         // Step 2: Fetch prerequisites
         $prerequisites = DB::table('roadmaps')
-            ->join('prerequisites', 'roadmaps.skill_id', '=', 'prerequisites.skill_id')
+            ->join('prerequistes', 'roadmaps.skill_id', '=', 'prerequistes.skill_id')
             ->whereIn('roadmaps.skill_id', $skillIds)
-            ->select('roadmaps.*', 'prerequisites.*')
+            ->select('roadmaps.*', 'prerequistes.*')
             ->get();
 
         // Step 3: Fetch tools
@@ -162,9 +162,9 @@ public function getSkillsData(Request $request, $companyId)
         ]);
 
     } catch (\Exception $e) {
-        return response()->json(['message' => 'Internal server error'], 500);
+        return response()->json([ "erreur" => $e]);
     }
 }
 
-}
+} 
 //testetestestest

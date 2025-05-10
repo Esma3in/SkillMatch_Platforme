@@ -50,22 +50,22 @@ class TestController extends Controller
        if($result){
         return response()->json(['message'=>'the test are resolved'],401);
        }
-    
+
         // Eager load the qcm relation
         $test = Test::with('qcm')->find($validated['test_id']);
-    
+
         if (!$test) {
             return response()->json(['message' => 'Test not found.'], 404);
         }
-    
+
         // Ensure qcm exists and has the correct_answer field
         if (!$test->qcm || !isset($test->qcm->corrected_option)) {
             return response()->json(['message' => 'Correct answer not found in test QCM.'], 400);
         }
-    
+
         $correct_answer = $test->qcm->corrected_option;
         $score = $validated['answer'] === $correct_answer ? 100 : 0;
-    
+
         Result::create([
             'candidate_id' => $validated['candidate_id'],
             'test_id' => $validated['test_id'],
@@ -73,14 +73,14 @@ class TestController extends Controller
             'candidateAnswer' => $validated['answer'],
             'correctAnswer' => $correct_answer,
         ]);
-    
+
         return response()->json([
             'message' => 'Your response has been registered.',
             'score' => $score
         ], 200);
     }
-    
-    
+
+
     public function getResult($candidate_id,$TestId){
         $test = Test::find($TestId);
         $candidate = Candidate::find($candidate_id);
@@ -91,5 +91,87 @@ class TestController extends Controller
         }
 
         return response()->json(['candidate'=>$candidate,'result'=>$results,'test'=>$test]);
+    }
+
+    
+
+
+    //for company
+    /**
+     * Get paginated list of tests
+     */
+    public function index(Request $request)
+    {
+        $tests = Test::with(['skill', 'candidate'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return response()->json([
+            'tests' => $tests,
+        ]);
+    }
+
+    /**
+     * Get candidates who solved a specific test
+     */
+    public function getSolvedCandidates($id)
+    {
+        $test = Test::findOrFail($id);
+        $candidates = $test->candidate()->get();
+
+        return response()->json([
+            'candidates' => $candidates,
+        ]);
+    }
+
+    /**
+     * Delete all tests
+     */
+    public function deleteAll()
+    {
+        // You might want to add authorization check here
+        Test::truncate();
+        // Or if you want to delete only tests for a specific company
+        // Test::where('company_id', auth()->user()->company_id)->delete();
+
+        return response()->json([
+            'message' => 'All tests have been deleted successfully',
+        ]);
+    }
+
+    /**
+     * Create a new test
+     */
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'objective' => 'required|string',
+            'prerequisites' => 'nullable|string',
+            'tools_Required' => 'nullable|string',
+            'before_answer' => 'nullable|string',
+            'qcm_id' => 'nullable|exists:qcms,id',
+            'company_id' => 'required|exists:companies,id',
+            'skill_id' => 'required|exists:skills,id',
+        ]);
+
+        $test = Test::create($validatedData);
+
+        return response()->json([
+            'message' => 'Test created successfully',
+            'test' => $test,
+        ], 201);
+    }
+
+    /**
+     * Delete a specific test
+     */
+    public function destroy($id)
+    {
+        $test = Test::findOrFail($id);
+        $test->delete();
+
+        return response()->json([
+            'message' => 'Test deleted successfully',
+        ]);
     }
 }

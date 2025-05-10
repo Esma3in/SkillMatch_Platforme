@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { api } from "../api/api";
-
+import { Footer } from "../components/common/footer";
+import { motion } from "framer-motion";
 function CompaniesRelated() {
   const [companiesSelectedList, setCompaniesSelectedList] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -161,13 +162,7 @@ function CompaniesRelated() {
       
       console.log("Company skills data:", skillsData);
       
-      // Based on the JSON format you shared, the skills are directly on the object
-      // and not nested under a company object
-      // if (!skillsData || !skillsData.skills || skillsData.skills.length === 0) {
-      //   console.error("No skills found for this company");
-      //   return;
-      // }
-      
+ 
       // Get the first skill ID from the skills array
       const skillId = skillsData[0].skills[0].id;
       
@@ -175,7 +170,7 @@ function CompaniesRelated() {
       
       // Create the roadmap
       const responseRoadmap = await api.post(`/api/create-roadmap`, {
-       name:"Roadmap just for u",
+       name:"Roadmap ",
         skill_id: skillId,
         completed : 'pending',
         candidate_id: candidate_id
@@ -256,49 +251,114 @@ function CompaniesRelated() {
       </div>
       
       {!loading && !error && companies.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
-            Your Progress
-          </h3>
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="text-lg font-semibold text-gray-800">
-                Application Status
-              </h4>
-              <span className="text-sm text-purple-600 font-medium">
-                In Progress
-              </span>
-            </div>
-            <div className="relative pt-1">
-              <div className="flex mb-2 items-center justify-between">
-                <div>
-                  <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-purple-600 bg-purple-100">
-                    60% Complete
-                  </span>
-                </div>
-              </div>
-              <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-                <div
-                  style={{ width: "60%" }}
-                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"
-                ></div>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600">
-              Complete assessments and interviews to move forward in the application process.
-            </p>
-            <div className="mt-4">
-              <h5 className="text-sm font-semibold text-gray-700">
-                Next Steps:
-              </h5>
-              <ul className="list-disc list-inside text-sm text-gray-600 mt-2">
-                <li>Complete the technical assessment</li>
-                <li>Schedule an interview</li>
-                <li>Review company culture fit</li>
-              </ul>
-            </div>
-          </div>
+    <motion.div
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16"
+  >
+    <motion.h3
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+      className="text-2xl md:text-3xl font-extrabold text-violet-900 mb-6 tracking-tight"
+    >
+      Keep Going, You're Almost There!
+    </motion.h3>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6 }}
+      className="bg-white/95 rounded-2xl shadow-2xl p-8 border border-gray-100"
+    >
+      <div className="flex items-center justify-between mb-6">
+        <h4 className="text-xl font-semibold text-gray-800">
+          After Selecting Companies
+        </h4>
+        <span className="text-sm font-medium text-purple-600 bg-purple-100 py-1 px-3 rounded-full">
+          60% Complete
+        </span>
+      </div>
+      <div className="relative pt-1">
+        <div className="overflow-hidden h-3 mb-6 text-xs flex rounded-full bg-gray-200">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: "60%" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-600 rounded-full"
+          />
         </div>
+      </div>
+      <p className="text-base text-gray-600 mb-6">
+        Great job choosing your target companies! Now, tackle their required tests (if any), follow their application roadmap, or sharpen your skills with our SkillMatch challenges to stand out.
+      </p>
+      <div className="mt-6">
+        <div className="flex items-center justify-between mb-4">
+          <h5 className="text-base font-semibold text-gray-700">
+            Next Steps
+          </h5>
+          <button
+        
+            className="text-sm font-medium text-purple-600 hover:text-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 rounded"
+       
+            aria-controls="next-steps-list"
+          >
+           
+          </button>
+        </div>
+ 
+       
+            <motion.ul
+              id="next-steps-list"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.4 }}
+              className="list-disc list-inside text-base text-gray-600 mt-2"
+            >
+              <motion.li
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+              >
+                Complete any required technical assessments for the selected companies.
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                Follow the company's roadmap for interviews or additional tasks.
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+              >
+                Start training with our SkillMatch challenges to boost your skills.
+              </motion.li>
+            </motion.ul>
+      
+    
+      </div>
+      <motion.div
+        className="mt-8 flex justify-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.button
+          whileHover={{ scale: 1.05, boxShadow: "0 6px 16px rgba(0,0,0,0.2)" }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-purple-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          onClick={() => window.location.href = "/candidate/next-action"}
+          aria-label="Start the next step in your application process"
+        >
+          Take the Next Step
+        </motion.button>
+      </motion.div>
+    </motion.div>
+  </motion.div>
       )}
 
       {!loading && !error && (
@@ -354,7 +414,9 @@ function CompaniesRelated() {
             </div>
           </div>
         </div>
+
       )}
+      <Footer />
     </>
   );
 }
