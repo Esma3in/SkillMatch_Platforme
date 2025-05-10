@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 // import { api } from "../api/api";
 import Sidebar from "../../components/common/sideBars/sidebarPlatforme";
@@ -14,3 +15,5 @@ export default function CompaniesList(){
         </>
     )
 }
+=======
+>>>>>>> 241ad86e6cef88541082016df2293938f6dbebf6

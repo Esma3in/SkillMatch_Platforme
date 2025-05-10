@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Mpdf\Mpdf;
+use App\Models\Skill;
 use App\Models\Company;
 use App\Models\Candidate;
 use App\Models\Experience;
 use Illuminate\Http\Request;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 
@@ -335,5 +336,174 @@ class CandidateController extends Controller
         // Return the state of the candidate
         return response()->json(['state' => $candidate->state], 200);
     }
+
+
+
+
+
+    // Filter candidates for company
+    /**
+     * Filter candidates based on various criteria
+     */
+    public function filterCandidates(Request $request)
+    {
+        try {
+            // Start the query with necessary relationships
+            $query = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests']);
+
+            // Join profile for filtering on city and field
+            $query->join('profile_candidates', 'candidates.id', '=', 'profile_candidates.candidate_id')
+                ->select('candidates.*');
+
+            // Filter by domain (field)
+            if ($request->filled('domain')) {
+                $query->whereRaw('LOWER(profile_candidates.field) LIKE ?', ['%' . strtolower($request->domain) . '%']);
+            }
+
+            // Filter by city
+            if ($request->filled('city')) {
+                $city = strtolower($request->city);
+                $query->where(function ($q) use ($city) {
+                    $q->whereRaw('LOWER(profile_candidates.localisation) LIKE ?', ["%$city%"]);
+
+                    // Special condition for Tétouan
+                    if ($city === 'tetouan') {
+                        $q->orWhereRaw('LOWER(profile_candidates.localisation) LIKE ?', ['%tétouan%']);
+                    }
+                });
+            }
+
+            // Filter by skill
+            if ($request->filled('skill')) {
+                $skill = strtolower($request->skill);
+                $query->whereHas('skills', function ($q) use ($skill) {
+                    $q->whereRaw('LOWER(skills.name) LIKE ?', ["%$skill%"]);
+                });
+            }
+
+            // Paginate results
+            $perPage = $request->get('perPage', 10);
+            $candidates = $query->distinct()->paginate($perPage);
+
+            // Format results
+            $formattedCandidates = $candidates->map(function ($candidate) {
+                $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
+                $certified = $candidate->attestations->count() > 0;
+
+                return [
+                    'id' => $candidate->id,
+                    'name' => $candidate->name,
+                    'field' => optional($candidate->profile)->field,
+                    'location' => optional($candidate->profile)->localisation,
+                    'testScore' => round($avgScore),
+                    'certified' => $certified,
+                    'skills' => $candidate->skills->pluck('name')->toArray(),
+                    'description' => optional($candidate->profile)->description,
+                    'badges' => $candidate->badges->map(function ($badge) {
+                        return [
+                            'name' => $badge->name,
+                            'icon' => $badge->icon,
+                        ];
+                    })->toArray(),
+                    'resumeUrl' => optional($candidate->profile)->file,
+                ];
+            });
+
+            return response()->json([
+                'data' => $formattedCandidates,
+                'meta' => [
+                    'current_page' => $candidates->currentPage(),
+                    'last_page' => $candidates->lastPage(),
+                    'total' => $candidates->total(),
+                    'per_page' => $candidates->perPage(),
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error filtering candidates: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error' => 'An error occurred while filtering candidates.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get details for a specific candidate.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCandidateDetails($id)
+    {
+        try {
+            $candidate = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
+                ->findOrFail($id);
+
+            $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
+            $certified = $candidate->attestations->count() > 0;
+
+            $formattedCandidate = [
+                'id' => $candidate->id,
+                'name' => $candidate->name,
+                'field' => optional($candidate->profile)->field,
+                'location' => optional($candidate->profile)->localisation,
+                'testScore' => round($avgScore),
+                'certified' => $certified,
+                'skills' => $candidate->skills->pluck('name')->toArray(),
+                'description' => optional($candidate->profile)->description,
+                'badges' => $candidate->badges->map(function ($badge) {
+                    return [
+                        'name' => $badge->name,
+                        'icon' => $badge->icon,
+                    ];
+                })->toArray(),
+                'resumeUrl' => optional($candidate->profile)->file,
+            ];
+
+            return response()->json([
+                'data' => $formattedCandidate
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Candidate not found.',
+                'message' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error fetching candidate details: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error' => 'An error occurred while fetching candidate details.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get all available skills.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSkills(Request $request)
+    {
+        try {
+            $skills = Skill::select('name')->distinct()->pluck('name')->toArray();
+            return response()->json($skills);
+        } catch (\Exception $e) {
+            Log::error('Error fetching skills: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error' => 'Failed to fetch skills.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
 
 }
