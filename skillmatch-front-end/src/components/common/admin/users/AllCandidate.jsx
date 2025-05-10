@@ -227,7 +227,7 @@ const AllCandidate = () => {
     currentPage * itemsPerPage
   );
 
-  const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
+  const totalPages = 9;
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -290,10 +290,10 @@ const AllCandidate = () => {
                           key={candidate.id}
                           className="border-b border-[#eaecf0]"
                         >
-                          <TableCell className="h-[72px] px-6 py-4 font-text-sm-medium text-gray-900">
+                          <TableCell className="h-[69.5px] px-3 py-3 font-text-sm-medium text-gray-900 text-center">
                             {candidate.id}
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4">
+                          <TableCell className="h-[69.5px] px-3 py-3">
                             <div className="flex items-center gap-3">
                               <Avatar className="w-8 h-8">
                                 {candidate.avatar ? (
@@ -319,15 +319,15 @@ const AllCandidate = () => {
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4">
+                          <TableCell className="h-[69.5px] px-3 py-3 text-center">
                             {candidate.state === "active" && (
-                              <Badge className="bg-success-50 text-[#1bea59] rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
+                              <Badge className="bg-green-100 text-[#39f170] rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
                                 <CheckIcon className="w-3 h-3" />
                                 Active
                               </Badge>
                             )}
                             {candidate.state === "unactive" && (
-                              <Badge className="bg-error-50 text-[#ff0a0a] rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
+                              <Badge className="bg-red-100 text-[#ff0a0a] rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
                                 <XIcon className="w-3 h-3" />
                                 unActive
                               </Badge>
@@ -339,15 +339,15 @@ const AllCandidate = () => {
                               </Badge>
                             )}
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4 font-text-sm-normal text-gray-500">
+                          <TableCell className="h-[69.5px] px-3 py-3 font-text-sm-normal text-gray-500">
                             {candidate.date}
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4">
+                          <TableCell className="h-[69.5px] px-3 py-3">
                             <Button className="w-[103px] h-10 bg-[#0a84ff26] text-[#0a84ff] font-semibold text-base rounded-[10px]">
                               Details
                             </Button>
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4">
+                          <TableCell className="h-[69.5px] px-3 py-3">
                             <div className="flex gap-2">
                               <button
                                 onClick={() =>
@@ -359,7 +359,7 @@ const AllCandidate = () => {
                                 className={`
                                   w-[103px] h-10 font-semibold text-base rounded-[10px] border
                                   ${candidate.state === 'active'
-                                    ? 'bg-white text-[#ff0a0a] border-[#ff0a0a]'
+                                    ? 'bg-[#ff0a0a26] text-[#ff0a0a] border-none'
                                     : 'bg-[#42cd2f26] text-[#1bea59] border-none'
                                   }
                                 `}
@@ -379,7 +379,7 @@ const AllCandidate = () => {
                   </TableBody>
                 </Table>
 
-                <div className="flex justify-center items-center gap-2 mt-4">
+                <div className="flex justify-center items-center gap-2 py-1 ">
                   <Button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}

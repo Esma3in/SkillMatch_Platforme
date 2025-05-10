@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import { api } from "../api/api";
 import Sidebar from "../../components/common/sideBars/sidebarPlatforme";
-import AllCompanies from "../../components/common/admin/users/AllCompanies";
+import AllCandidate from "../../components/common/admin/users/AllCandidate";
 
 
 export default function CompaniesList(){
@@ -9,7 +9,7 @@ export default function CompaniesList(){
         <>
             <div className='flex' >
                 <Sidebar className='inline' />
-                <AllCompanies />
+                <AllCandidate />
             </div>
         </>
     )
