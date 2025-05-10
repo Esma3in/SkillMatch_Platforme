@@ -148,6 +148,16 @@ Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'ge
 // Route::get('/admin',[CandidateController::class],'index')->name('admin.index');
 Route::get('/admin/CanidatesList',[CandidateController::class,'AllCandidates']);
 Route::post('/admin/CanidatesList/setstate',[CandidateController::class,'setstate']);
+
+Route::get('/admin/CompaniesList',[CompanyController::class,'AllCompanies']);
+Route::post('/admin/CompaniesList/setstate',[CompanyController::class,'setstate']);
+
+Route::get('/admin/UsersList',[UserController::class,'getBannedUsers']);
+Route::post('/admin/Users/setstate',[UserController::class,'setstate']);
+
+Route::get('api/admin/candidates/{id}', [CandidateController::class, 'show']);
+Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
+
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
 // Route::get('/admin/CanidatsList/Canidate/{id}',[AdminConroller::class],'Candidate')->name('admin.index');
@@ -164,5 +174,6 @@ Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController:
 Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
+
 
 Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);

@@ -25,7 +25,12 @@ import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
 
 import AdminHome from './pages/adminHome.jsx';
 import CompaniesList from './pages/manage/companiesList.jsx';
+
 import CandidateListForCompany from './pages/CandidateListForCompany.jsx';
+
+import CandidatesList from './pages/manage/candidatesList.jsx';
+import BanUsers from './pages/manage/banUsers.jsx'
+
 
 import { Dashboard } from './pages/Dashboard.js';
 
@@ -84,6 +89,10 @@ export default function App() {
         {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
         <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
+
+        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
+        <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
+
 
       </Routes>
     </Router>

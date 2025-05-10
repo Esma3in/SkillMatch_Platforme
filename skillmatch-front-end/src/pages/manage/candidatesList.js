@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   ChevronDown, ChevronUp, ArrowLeft, ArrowRight,
   CheckCircle, Clock, XCircle, Search, RefreshCw, X
 } from 'lucide-react';
-import { api } from '../api/api'; // Standardized to one import path
+
+import { api } from '../api/api';
 import Sidebar from '../components/common/sideBars/sidebarPlatforme';
 import AllCandidate from '../components/common/admin/comp/AllCandidate';
+
 
 export default function CandidateList() {
   const [candidates, setCandidates] = useState([]);
