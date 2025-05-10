@@ -6,7 +6,11 @@ import CompaniesMatching from './pages/CompaniesMatching.jsx';
 import ProtectedRoute from './features/session/ProtectedRoute.jsx';
 import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
+
 import SeriesChallenge from './pages/SerieChallenges'
+
+
+
 import ProfileSettings from './pages/Settings.js';
 import CandidateList from './pages/manage/candidatesList.jsx';
 
@@ -28,7 +32,7 @@ import { Dashboard } from './pages/Dashboard.js';
 
 import QcmForRoadmap from './pages/qcmForRoadmap.js';
 import TestsList from './pages/TestList.jsx';
-import { ResultTest } from './pages/Testresult.jsx';
+import ResultTest from './pages/Testresult.jsx';
 import TestsListForCompany from './pages/ListTestForCompany.js';
 import FilterCandidate from './pages/FilterCandidate.js';
 import {BadgeList} from './pages/BadgesListes.jsx';

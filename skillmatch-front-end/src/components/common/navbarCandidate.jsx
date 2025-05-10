@@ -83,7 +83,7 @@ const navigate= useNavigate();
               <span>Training <i className="dropdown-icon">▼</i></span>
               {isTrainingOpen && (
                 <div className="dropdown-menu">
-                  <a href="/training/start" className="dropdown-item">
+                  <a href="/challenges" className="dropdown-item">
                     <i className="menu-icon start-icon"></i>
                     Start training
                   </a>
