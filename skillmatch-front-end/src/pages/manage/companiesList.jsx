@@ -13,4 +13,7 @@ export default function CompaniesList(){
             </div>
         </>
     )
+
 }
+
+

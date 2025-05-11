@@ -31,6 +31,111 @@ const AllCompanies = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
+
+  // Data for candidates
+  // const candidates = [
+  //   {
+  //     id: "#306685",
+  //     name: "jack",
+  //     email: "olivia@untitledui.com",
+  //     avatar: "/avatar-1.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 6, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#306585",
+  //     name: "Phoenix Baker",
+  //     email: "phoenix@untitledui.com",
+  //     avatar: "/avatar-2.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 6, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#306485",
+  //     name: "Lana Steiner",
+  //     email: "lana@untitledui.com",
+  //     avatar: null,
+  //     avatarFallback: "LS",
+  //     state: "active",
+  //     date: "Jan 6, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#306385",
+  //     name: "Demi Wilkinson",
+  //     email: "demi@untitledui.com",
+  //     avatar: null,
+  //     avatarFallback: "DW",
+  //     state: "active",
+  //     date: "Jan 5, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#30628",
+  //     name: "Candice Wu",
+  //     email: "candice@untitledui.com",
+  //     avatar: "/avatar-5.svg",
+  //     avatarFallback: null,
+  //     state: "waiting",
+  //     date: "Jan 5, 2022",
+  //     isActive: true,
+  //   },
+  //   {
+  //     id: "#306185",
+  //     name: "Natali Craig",
+  //     email: "natali@untitledui.com",
+  //     avatar: null,
+  //     avatarFallback: "NC",
+  //     state: "active",
+  //     date: "Jan 5, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#306085",
+  //     name: "Drew Cano",
+  //     email: "drew@untitledui.com",
+  //     avatar: "/avatar.svg",
+  //     avatarFallback: null,
+  //     state: "inactive",
+  //     date: "Jan 4, 2022",
+  //     isActive: true,
+  //   },
+  //   {
+  //     id: "#305985",
+  //     name: "Orlando Diggs",
+  //     email: "orlando@untitledui.com",
+  //     avatar: "/avatar-4.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 3, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#305885",
+  //     name: "Andi Lane",
+  //     email: "andi@untitledui.com",
+  //     avatar: "/avatar-6.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 3, 2022",
+  //     isActive: false,
+  //   },
+  //   {
+  //     id: "#308557",
+  //     name: "Kate Morrison",
+  //     email: "kate@untitledui.com",
+  //     avatar: "/avatar-3.svg",
+  //     avatarFallback: null,
+  //     state: "active",
+  //     date: "Jan 3, 2022",
+  //     isActive: false,
+  //   },
+  // ];
+
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -101,7 +206,7 @@ const AllCompanies = () => {
       company.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const totalPages = Math.ceil(filteredCompanies.length / itemsPerPage);
+  const totalPages = 9;
   const paginatedCompanies = filteredCompanies.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -157,24 +262,24 @@ const AllCompanies = () => {
                     </div>
                   </TableCell>
                   <TableCell className="px-6 py-4">{company.sector}</TableCell>
-                  <TableCell className="px-6 py-4">
+                  <TableCell className="h-[69.5px] px-3 py-3 text-center">
                     {company.state === "active" && (
-                        <Badge className="bg-success-50 text-[#1bea59] rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
+                      <Badge className="bg-green-100 text-[#39f170] rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
                         <CheckIcon className="w-3 h-3" />
                         Active
-                        </Badge>
+                      </Badge>
                     )}
                     {company.state === "unactive" && (
-                        <Badge className="bg-error-50 text-[#ff0a0a] rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
+                      <Badge className="bg-red-100 text-[#ff0a0a] rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
                         <XIcon className="w-3 h-3" />
                         unActive
-                        </Badge>
+                      </Badge>
                     )}
                     {company.state === "waiting" && (
-                        <Badge className="bg-gray-100 text-gray-700 rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
+                      <Badge className="bg-gray-100 text-gray-700 rounded-2xl flex items-center gap-1 pl-1.5 pr-2 py-0.5 font-text-xs-medium">
                         <CornerUpLeftIcon className="w-3 h-3" />
                         Waiting
-                        </Badge>
+                      </Badge>
                     )}
                   </TableCell>
                   <TableCell className="px-6 py-4 text-gray-500">{company.date}</TableCell>
