@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   ChevronDown, ChevronUp, ArrowLeft, ArrowRight,
-  CheckCircle, Clock, XCircle, Search, RefreshCw, X
+  CheckCircle, Clock, XCircle, X
 } from 'lucide-react';
 import { api } from '../api/api';
 
@@ -14,8 +14,6 @@ export default function CandidateListForCompany() {
   const [sortField, setSortField] = useState('rank');
   const [sortDirection, setSortDirection] = useState('asc');
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
@@ -109,13 +107,6 @@ export default function CandidateListForCompany() {
     setTimeout(() => {
       setNotification(null);
     }, 3000);
-  };
-
-  // Fonction pour rafraîchir la liste des candidats
-  const refreshCandidates = async () => {
-    setRefreshing(true);
-    await fetchCandidates();
-    setRefreshing(false);
   };
 
   
@@ -236,7 +227,13 @@ export default function CandidateListForCompany() {
     try {
       await api.put(`/api/Allcandidates/${candidateId}/reject`);
       showNotification('Candidate rejected successfully');
-      fetchCandidates();
+      
+      // Update the candidates list in the state by filtering out the rejected candidate
+      setCandidates(prevCandidates => prevCandidates.filter(c => c.id !== candidateId));
+      
+      // Also update the top ranked candidates list if applicable
+      setTopRankedCandidates(prevTopRanked => prevTopRanked.filter(c => c.id !== candidateId));
+      
       return true;
     } catch (error) {
       console.error('Error rejecting candidate:', {
@@ -248,6 +245,7 @@ export default function CandidateListForCompany() {
       return false;
     }
   };
+  
 
   // Rendu des deux tabs
   const renderAllCandidates = () => (

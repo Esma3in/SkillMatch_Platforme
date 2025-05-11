@@ -27,7 +27,7 @@ class Candidate extends Model
     'email',
     'password',
     'state',
-    'documentState'
+    'documentState',
     ];
 
     public function notifications(): HasMany
