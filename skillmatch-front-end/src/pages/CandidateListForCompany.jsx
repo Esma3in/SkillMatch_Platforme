@@ -34,63 +34,24 @@ export default function CandidateListForCompany() {
     try {
       setLoading(true);
       setError(null);
-
-      logDebug('Tentative de récupération des candidats', 'start');
-
-      try {
-        // Première tentative avec préfixe /api
-        const response = await api.get('/api/candidates');
-        logDebug('Réponse API (avec /api):', response);
-
-        if (response.data && (response.data.candidates || Array.isArray(response.data))) {
-          // Vérifier le format de la réponse
-          const candidatesData = response.data.candidates || response.data;
-          const topRanked = response.data.topRankedCandidates || candidatesData;
-
-          logDebug('Données de candidats reçues', {
-            count: candidatesData.length,
-            sample: candidatesData.length > 0 ? candidatesData[0] : 'aucun candidat',
-          });
-
-          setCandidates(candidatesData);
-          setTopRankedCandidates(topRanked);
-        } else {
-          logDebug('Format de réponse inattendu', response.data);
-          setError('Format de réponse inattendu de l\'API');
-        }
-        return;
-      } catch (firstError) {
-        logDebug('Première tentative échouée', firstError);
-
-        // Si la première tentative échoue, essayer sans préfixe /api
-        try {
-          const response = await api.get('/candidates');
-          logDebug('Réponse API (sans /api):', response);
-
-          if (response.data && (response.data.candidates || Array.isArray(response.data))) {
-            // Vérifier le format de la réponse
-            const candidatesData = response.data.candidates || response.data;
-            const topRanked = response.data.topRankedCandidates || candidatesData;
-
-            logDebug('Données de candidats reçues (sans /api)', {
-              count: candidatesData.length,
-              sample: candidatesData.length > 0 ? candidatesData[0] : 'aucun candidat',
-            });
-
-            setCandidates(candidatesData);
-            setTopRankedCandidates(topRanked);
-          } else {
-            logDebug('Format de réponse inattendu (sans /api)', response.data);
-            setError('Format de réponse inattendu de l\'API');
-          }
-          return;
-        } catch (secondError) {
-          logDebug('Seconde tentative échouée', secondError);
-          throw secondError;
-        }
+      console.log('Fetching candidates from /api/Allcandidates');
+      const response = await api.get('/api/Allcandidates');
+      console.log('API Response:', response.data);
+  
+      if (response.data && (response.data.candidates || Array.isArray(response.data))) {
+        const candidatesData = response.data.candidates || response.data;
+        const topRanked = response.data.topRankedCandidates || candidatesData;
+        setCandidates(candidatesData);
+        setTopRankedCandidates(topRanked);
+      } else {
+        setError('Unexpected API response format');
       }
     } catch (error) {
-      console.error('Error fetching candidates:', error);
+      console.error('Error fetching candidates:', {
+        message: error.message,
+        code: error.code,
+        response: error.response ? error.response.data : null,
+      });
       setError(`Échec du chargement des candidats: ${error.message}`);
     } finally {
       setLoading(false);
@@ -101,31 +62,38 @@ export default function CandidateListForCompany() {
   const fetchCandidateDetails = async (candidateId) => {
     try {
       setLoadingDetails(true);
-
-      try {
-        // Première tentative avec préfixe /api
-        const response = await api.get(`/api/candidates/${candidateId}`);
-        setCandidateDetails(response.data);
-        return;
-      } catch (firstError) {
-        // Si la première tentative échoue, essayer sans préfixe /api
-        const response = await api.get(`/candidates/${candidateId}`);
-        setCandidateDetails(response.data);
+      setError(null);
+      console.log('Fetching details for candidate ID:', candidateId);
+      const response = await api.get(`/api/Allcandidates/${candidateId}`);
+      console.log('API Response:', response.data);
+  
+      if (response.data && response.data.candidate) {
+        setCandidateDetails(response.data.candidate);
+      } else {
+        throw new Error('Unexpected response format');
       }
     } catch (error) {
-      console.error('Error fetching candidate details:', error);
-      setError(`Échec du chargement des détails: ${error.message}`);
+      console.error('Error fetching candidate details:', {
+        message: error.message,
+        code: error.code,
+        response: error.response ? error.response.data : null,
+      });
+      const errorMessage = error.response?.data?.message || error.message;
+      setError(`Échec du chargement des détails : ${errorMessage}`);
+      setCandidateDetails(null);
     } finally {
       setLoadingDetails(false);
     }
   };
+  
 
   // Ouvrir le modal avec les détails du candidat
   const openDetailsModal = (candidate) => {
     setSelectedCandidate(candidate);
     setShowModal(true);
-    fetchCandidateDetails(candidate.id);
+    fetchCandidateDetails(candidate.id); // ← correct
   };
+  
 
   // Fermer le modal
   const closeModal = () => {
@@ -150,46 +118,7 @@ export default function CandidateListForCompany() {
     setRefreshing(false);
   };
 
-  // Fonction pour rechercher des candidats
-  const handleSearch = async () => {
-    if (!searchTerm.trim()) {
-      fetchCandidates();
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await api.get('/api/candidates', {
-          params: { search: searchTerm.trim() },
-        });
-
-        logDebug('Résultats de recherche (avec /api)', response.data);
-
-        const candidatesData = response.data.candidates || response.data;
-        setCandidates(candidatesData);
-        setTopRankedCandidates(candidatesData);
-      } catch (firstError) {
-        const response = await api.get('/candidates', {
-          params: { search: searchTerm.trim() },
-        });
-
-        logDebug('Résultats de recherche (sans /api)', response.data);
-
-        const candidatesData = response.data.candidates || response.data;
-        setCandidates(candidatesData);
-        setTopRankedCandidates(candidatesData);
-      }
-    } catch (error) {
-      console.error('Error searching candidates:', error);
-      setError(`Échec de la recherche: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   // Charger les candidats au chargement du composant
   useEffect(() => {
     fetchCandidates();
@@ -287,12 +216,16 @@ export default function CandidateListForCompany() {
   // Accepter un candidat
   const acceptCandidate = async (candidateId) => {
     try {
-      await api.put(`/candidates/${candidateId}/accept`);
+      await api.put(`/api/Allcandidates/${candidateId}/accept`);
       showNotification('Candidate accepted successfully');
       fetchCandidates();
       return true;
     } catch (error) {
-      console.error('Error accepting candidate:', error);
+      console.error('Error accepting candidate:', {
+        message: error.message,
+        code: error.code,
+        response: error.response ? error.response.data : null,
+      });
       showNotification(`Failed to accept candidate: ${error.message}`, 'error');
       return false;
     }
@@ -301,12 +234,16 @@ export default function CandidateListForCompany() {
   // Rejeter un candidat
   const rejectCandidate = async (candidateId) => {
     try {
-      await api.put(`/candidates/${candidateId}/reject`);
+      await api.put(`/api/Allcandidates/${candidateId}/reject`);
       showNotification('Candidate rejected successfully');
       fetchCandidates();
       return true;
     } catch (error) {
-      console.error('Error rejecting candidate:', error);
+      console.error('Error rejecting candidate:', {
+        message: error.message,
+        code: error.code,
+        response: error.response ? error.response.data : null,
+      });
       showNotification(`Failed to reject candidate: ${error.message}`, 'error');
       return false;
     }
@@ -360,6 +297,7 @@ export default function CandidateListForCompany() {
                 >
                   Details
                 </button>
+
               </td>
               <td className="py-3 px-4">
                 <div className="flex space-x-2">

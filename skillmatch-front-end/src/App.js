@@ -28,7 +28,6 @@ import CompaniesList from './pages/manage/companiesList.jsx';
 
 import CandidateListForCompany from './pages/CandidateListForCompany.jsx';
 
-import CandidatesList from './pages/manage/candidatesList.jsx';
 import BanUsers from './pages/manage/banUsers.jsx'
 
 
@@ -70,7 +69,7 @@ export default function App() {
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
 
         {/*test*/}
-        <Route path = '/candidateList' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
+        <Route path = '/CandidateListForCompany' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
         <Route path = '/TestsListForCompany' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
         <Route path = '/FilterCandidate' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
@@ -90,7 +89,7 @@ export default function App() {
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
         <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
 
-        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
+        {/*<Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />*/}
         <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
 
 

@@ -116,10 +116,10 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
 
 //All candidate for company
-Route::get('/candidates', [AllCandidateController::class, 'index']);
-Route::get('/candidates/{id}', [AllCandidateController::class, 'show']);
-Route::put('/candidates/{id}/accept', [AllCandidateController::class, 'accept']);
-Route::put('/candidates/{id}/reject', [AllCandidateController::class, 'reject']);
+Route::get('/Allcandidates', [AllCandidateController::class, 'index']);
+Route::get('/Allcandidates/{id}', [AllCandidateController::class, 'show']);
+Route::put('/Allcandidates/{id}/accept', [AllCandidateController::class, 'accept']);
+Route::put('/Allcandidates/{id}/reject', [AllCandidateController::class, 'reject']);
 
 //Tests Routes for company
 // Test routes
