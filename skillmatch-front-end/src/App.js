@@ -12,7 +12,6 @@ import SeriesChallenge from './pages/SerieChallenges'
 
 
 import ProfileSettings from './pages/Settings.js';
-import CandidateList from './pages/manage/candidatesList.jsx';
 
 
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
@@ -26,12 +25,19 @@ import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
 
 import AdminHome from './pages/adminHome.jsx';
 import CompaniesList from './pages/manage/companiesList.jsx';
-import CandidatesList from './pages/manage/candidatesList.jsx';
+
+import CandidateListForCompany from './pages/CandidateListForCompany.jsx';
+
+import BanUsers from './pages/manage/banUsers.jsx'
+
 
 import { Dashboard } from './pages/Dashboard.js';
 
 import QcmForRoadmap from './pages/qcmForRoadmap.js';
 import TestsList from './pages/TestList.jsx';
+import { ListCandidateSelected } from './pages/CandidateSelected.jsx';
+import Company from './pages/Company.jsx';
+import CandidateProfileForCompany from './pages/CandidateProfileForCompany.jsx';
 import ResultTest from './pages/Testresult.jsx';
 import TestsListForCompany from './pages/ListTestForCompany.js';
 import FilterCandidate from './pages/FilterCandidate.js';
@@ -68,7 +74,7 @@ export default function App() {
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
 
         {/*test*/}
-        <Route path = '/candidateList' element={<ProtectedRoute><CandidateList/></ProtectedRoute>}/>
+        <Route path = '/CandidateListForCompany' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
         <Route path = '/TestsListForCompany' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
         <Route path = '/FilterCandidate' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
@@ -76,16 +82,21 @@ export default function App() {
        <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>
         <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedRoute><TestsList/></ProtectedRoute>}/>
         <Route path='/candidate/test/:TestId/result' element={<ProtectedRoute><ResultTest/></ProtectedRoute>}/>
-
-        <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
-
-        {/* company */}
         
+
+        {/*company Routes */}
+        <Route path='/company/Candidate-Selected' element={<ListCandidateSelected/>}/>
+        <Route path='/company/Session/:CompanyId' element={<Company/>}/>
+        <Route path='/company/candidate/profile/:candidate_id' element={<CandidateProfileForCompany/>}/>
+        <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
 
         {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
         <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
-        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
+
+        {/*<Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />*/}
+        <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
+
 
       </Routes>
     </Router>

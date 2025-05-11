@@ -22,15 +22,14 @@ class AllCandidateController extends Controller
             ->select('candidates.*')
             ->get()
             ->map(function ($candidate) {
-                // Utiliser la table Results avec le bon nom
-                $testStatus = DB::table('Results')  // Notez le R majuscule
+                // Utiliser la table results avec le nom en minuscules
+                $testStatus = DB::table('results')
                     ->where('candidate_id', $candidate->id)
-                    ->select('test_id', 'score as status', 'created_at')  // Utilisez 'score' au lieu de 'result'
+                    ->select('test_id', 'score as status', 'created_at')
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-                // Modifiez également cette ligne si nécessaire
-                $completedTests = $testStatus->count(); // ou une autre logique adaptée à votre modèle
+                $completedTests = $testStatus->count();
 
                 $badgeCount = $candidate->badges->count();
 
@@ -63,7 +62,6 @@ class AllCandidateController extends Controller
 
         $topRankedCandidates = $candidates->sortBy('rank')->values();
 
-        // Retourner les données au format JSON pour l'API
         return response()->json([
             'candidates' => $candidates,
             'topRankedCandidates' => $topRankedCandidates
@@ -78,10 +76,16 @@ class AllCandidateController extends Controller
      */
     public function show($id)
     {
-        $candidate = Candidate::with(['badges', 'skills', 'profile'])
-            ->findOrFail($id);
+        // Modifié pour éviter le problème avec 'attestations'
+        $candidate = Candidate::findOrFail($id);
 
-        $testResults = DB::table('Results')  // Notez le R majuscule
+        // Charger le profil seulement s'il existe une relation profil
+        if (method_exists($candidate, 'profile')) {
+            $candidate->load('profile');
+        }
+
+        // Utiliser le nom de table en minuscules
+        $testResults = DB::table('Results')
             ->where('candidate_id', $candidate->id)
             ->join('tests', 'Results.test_id', '=', 'tests.id')
             ->select('tests.*', 'Results.score as status', 'Results.created_at as test_date')

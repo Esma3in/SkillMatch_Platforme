@@ -217,7 +217,8 @@ We encourage you to explore them when you're ready — take your time and have f
                     </div>
                     <div className="flex items-start space-x-3">
                       <div>
-                        <h3 className="text-base font-semibold text-gray-800">Email</h3>
+                        <h3 className="text-base font-semibold text-gray-800">Email</h3>   
+                            
                         <a
                           href={`mailto:${companyInfo.email}`}
                           className="text-indigo-600 hover:underline"

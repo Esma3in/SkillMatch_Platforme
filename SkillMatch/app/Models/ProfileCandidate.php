@@ -12,7 +12,7 @@ class ProfileCandidate extends Model
 {
 
 use HasFactory ;
-    protected $fillable = 
+    protected $fillable =
     ['field', "last_name" ,"phoneNumber", "'file'", " 'projects'",'experience', 'formation', 'photoProfil','localisation','description', 'competenceList', 'candidate_id'];
 
     // bcuz it's better to stock array variabeles on other varibake protected
