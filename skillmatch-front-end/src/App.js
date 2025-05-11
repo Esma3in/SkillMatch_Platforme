@@ -42,6 +42,8 @@ import ResultTest from './pages/Testresult.jsx';
 import TestsListForCompany from './pages/ListTestForCompany.js';
 import FilterCandidate from './pages/FilterCandidate.js';
 import {BadgeList} from './pages/BadgesListes.jsx';
+import NotificationCandidate from './pages/NotificationCandidate.js';
+import SupportPage from './pages/Support.jsx';
 export default function App() {
   return (
     <Router>
@@ -52,9 +54,12 @@ export default function App() {
         <Route path='/signIn' element={<SignPages isSignin={true}/>}/>
         <Route path='/signUp' element={<SignPages isSignin={false}/>}/>
         <Route path='/candidate/company/:id/profile' element={<ProtectedRoute><CompanyProfileForCandidate/></ProtectedRoute>}/>
+        
         <Route path="/candidate/Session/:id" element={<ProtectedRoute><Candidates/></ProtectedRoute>} />
         <Route path='/Createprofile' element={<ProtectedRoute><Box/></ProtectedRoute>}/>
         <Route path='/companies/list'  element={<ProtectedRoute><CompaniesMatching/></ProtectedRoute>}></Route> 
+        <Route path= "/notification"element= {<NotificationCandidate />} />
+        <Route path='/support' element={<SupportPage />}/>
         <Route path='/profile' element={<ProtectedRoute><ProfileCandidat/></ProtectedRoute>} />
         <Route path='/badges' element = {<BadgeList />}/>
         {/* <Route path='/companyProfile' element={<ProtectedRoute><CompanyProfile/></ProtectedRoute>}/>  */}
