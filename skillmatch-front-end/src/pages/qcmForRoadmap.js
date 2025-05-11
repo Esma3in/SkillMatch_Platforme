@@ -219,6 +219,7 @@ const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
       correctAnswer: correctAnswersJson,
       candidate_id: candidateId,
       test_id: id, 
+      qcm_for_roadmapId :qcmData.id 
     });
     
     if (response.data.success) {

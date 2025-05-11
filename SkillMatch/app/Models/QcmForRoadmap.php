@@ -25,4 +25,7 @@ class QcmForRoadmap extends Model
     {
         return $this->belongsTo(Roadmap::class);
     }
+    public function result (){
+        return $this->belongsTo(Result::class);
+    }
 }

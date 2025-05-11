@@ -240,7 +240,7 @@ export const EnhancedLandingPage = () => {
             <div className="text-center">
               <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
                 <span className="block">Flip the hiring game</span>
-                <span className="block text-white">where companies <span className="bg-gradient-to-br from-violet-400 to-violet-100 bg-clip-text text-transparent">compete</span> for your talent</span>
+                <span className="block text-white">where companies <span className="bg-gradient-to-br from-violet-400 to-white bg-clip-text text-transparent">compete</span> for your talent</span>
               </h1>
               <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
                 SkillMatch flips the script—now companies chase your talent. Showcase your skills, solve challenges, and let opportunities come to you.

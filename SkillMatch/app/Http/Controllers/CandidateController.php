@@ -7,6 +7,7 @@ use App\Models\Skill;
 use App\Models\Company;
 use App\Models\Candidate;
 use App\Models\Experience;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
@@ -459,4 +460,39 @@ class CandidateController extends Controller
         return response()->json($tags);
     }
 
+    //Notifications 
+    public function getNotifications($candidate_id)
+    {
+        try {
+            // Validate candidate_id
+            if (!is_numeric($candidate_id) || $candidate_id <= 0) {
+                return response()->json([
+                    'error' => 'Invalid candidate ID'
+                ], 400);
+            }
+    
+            // Fetch notifications
+            $notifications = Notification::where('candidate_id', $candidate_id)->get();
+    
+            // Check if notifications exist
+            if ($notifications->isEmpty()) {
+                return response()->json([
+                    'message' => 'No notifications found',
+                    'data' => []
+                ], 200);
+            }
+    
+            return response()->json([
+                'message' => 'Notifications retrieved successfully',
+                'data' => $notifications
+            ], 200);
+    
+        } catch (\Exception $e) {
+            // Handle any unexpected errors
+            return response()->json([
+                'error' => 'An error occurred while fetching notifications',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
