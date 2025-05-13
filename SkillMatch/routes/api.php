@@ -165,6 +165,8 @@ Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
 Route::get('/roadmap/{companyId}' , [CompaniesSelectedController::class  , 'getSkillsData']);
 
 Route::get('/dashboard/companies/selected/{candidate_id}', [DashboardController::class, 'countSelectedCompanies']);
+
+Route::get('/dashboard/companies/selected-data/{candidate_id}', [DashboardController::class, 'getSelectedCompaniesForCandidate']);
 Route::get('/dashboard/roadmap/completed/{candidate_id}', [DashboardController::class, 'countCompletedRoadmaps']);
 Route::get('/dashboard/companies/matched/{candidate_id}', [DashboardController::class, 'countMatchedCompaniesBySkill']);
 Route::get('/dashboard/badges/{candidate_id}', [DashboardController::class, 'countBadges']);

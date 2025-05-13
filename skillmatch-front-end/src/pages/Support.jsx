@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { Footer } from "../components/common/footer";
 import { ChevronDownIcon, ChevronUpIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router";
 
 const SupportPage = () => {
   const [openFaq, setOpenFaq] = useState(null);
@@ -43,10 +44,10 @@ const SupportPage = () => {
     console.log("Searching for:", searchQuery);
     // Replace with real search logic (e.g., API call to /api/support/search)
   };
-
+  const navigate =  useNavigate()
   return (
     <>
-      <NavbarCandidate />
+   
       <div className="relative">
         {/* Scroll Progress Bar */}
         <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
@@ -60,6 +61,7 @@ const SupportPage = () => {
         <header className="sticky top-0 bg-white shadow-md z-40 py-4 px-6">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <h2 className="text-2xl font-bold text-indigo-600">SkillMatch Support Hub</h2>
+            <button className ="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 transition-colors" onClick={()=>navigate('/')}>return back </button>
             <form onSubmit={handleSearch} className="flex items-center space-x-2">
               <div className="relative">
                 <input
