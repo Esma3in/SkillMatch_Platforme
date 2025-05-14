@@ -98,6 +98,7 @@ export default function App() {
         <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
 
 
+        {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}
       </Routes>
     </Router>
   );
