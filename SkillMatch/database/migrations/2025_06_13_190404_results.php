@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("Results" , function (Blueprint $table) {
+        Schema::create("results" , function (Blueprint $table) {
             $table->id();
             $table->double('score');
             $table->string('candidateAnswer');
             $table->string('correctAnswer');
             $table->foreignId('candidate_id')->constrained()->onDelete("cascade");
             $table->foreignId('test_id')->constrained()->onDelete('cascade');
+            $table->foreignId('qcm_for_roadmapId')->constrained('qcm_for_roadmaps')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

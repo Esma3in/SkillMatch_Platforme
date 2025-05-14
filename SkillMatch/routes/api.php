@@ -116,10 +116,10 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
 
 //All candidate for company
-Route::get('/candidates', [AllCandidateController::class, 'index']);
-Route::get('/candidates/{id}', [AllCandidateController::class, 'show']);
-Route::put('/candidates/{id}/accept', [AllCandidateController::class, 'accept']);
-Route::put('/candidates/{id}/reject', [AllCandidateController::class, 'reject']);
+Route::get('/Allcandidates', [AllCandidateController::class, 'index']);
+Route::get('/Allcandidates/{id}', [AllCandidateController::class, 'show']);
+Route::put('/Allcandidates/{id}/accept', [AllCandidateController::class, 'accept']);
+Route::put('/Allcandidates/{id}/reject', [AllCandidateController::class, 'reject']);
 
 //Tests Routes for company
 // Test routes
@@ -174,6 +174,10 @@ Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController:
 Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
+Route::get('/notifications/{candidate_id}' , [CandidateController::class , "getNotifications"]);
 
 
 Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
+Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResult']);
+
+

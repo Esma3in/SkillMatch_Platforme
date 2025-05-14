@@ -83,11 +83,11 @@ const navigate= useNavigate();
               <span>Training <i className="dropdown-icon">▼</i></span>
               {isTrainingOpen && (
                 <div className="dropdown-menu">
-                  <a href="/challenges" className="dropdown-item">
+                  <a href="/problems" className="dropdown-item">
                     <i className="menu-icon start-icon"></i>
                     Start training
                   </a>
-                  <a href="/problems" className="dropdown-item">
+                  <a href="/challenges" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Challenges
                   </a>
@@ -125,7 +125,8 @@ const navigate= useNavigate();
           </div>
           
           <div className="navbar-icons">
-            <button className="icon-button notification-button">
+            <button className="icon-button notification-button"
+            onClick={()=>navigate('/notification')}>
               <i className="notification-icon"></i>
             </button>
             <button className="icon-button settings-button" onClick={()=>{navigate("/badges")}}>

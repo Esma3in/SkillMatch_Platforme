@@ -13,7 +13,8 @@ class Result extends Model
         'test_id',
         'score',
         'candidateAnswer',
-        "correctAnswer"
+        "correctAnswer",
+        "qcm_for_roadmapId"
     ];
 
     //get the results of an candidate

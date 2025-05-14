@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Candidate;
 use App\Models\Test;
+
 use App\Models\Badge;
-use App\Models\Notification; // Added Notification model
+use App\Models\Result;
+use App\Models\Candidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Notification; // Added Notification model
 
 class AllCandidateController extends Controller
 {
@@ -22,15 +26,14 @@ class AllCandidateController extends Controller
             ->select('candidates.*')
             ->get()
             ->map(function ($candidate) {
-                // Utiliser la table Results avec le bon nom
-                $testStatus = DB::table('Results')  // Notez le R majuscule
+                // Utiliser la table results avec le nom en minuscules
+                $testStatus = DB::table('results')
                     ->where('candidate_id', $candidate->id)
-                    ->select('test_id', 'score as status', 'created_at')  // Utilisez 'score' au lieu de 'result'
+                    ->select('test_id', 'score as status', 'created_at')
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-                // Modifiez également cette ligne si nécessaire
-                $completedTests = $testStatus->count(); // ou une autre logique adaptée à votre modèle
+                $completedTests = $testStatus->count();
 
                 $badgeCount = $candidate->badges->count();
 
@@ -63,7 +66,6 @@ class AllCandidateController extends Controller
 
         $topRankedCandidates = $candidates->sortBy('rank')->values();
 
-        // Retourner les données au format JSON pour l'API
         return response()->json([
             'candidates' => $candidates,
             'topRankedCandidates' => $topRankedCandidates
@@ -78,21 +80,56 @@ class AllCandidateController extends Controller
      */
     public function show($id)
     {
-        $candidate = Candidate::with(['badges', 'skills', 'profile'])
-            ->findOrFail($id);
+        // Fetch the candidate with related data
+        $candidate = Candidate::with(['profile', 'badges', 'tests'])
+            ->where('id', $id)
+            ->first();
 
-        $testResults = DB::table('Results')  // Notez le R majuscule
-            ->where('candidate_id', $candidate->id)
-            ->join('tests', 'Results.test_id', '=', 'tests.id')
-            ->select('tests.*', 'Results.score as status', 'Results.created_at as test_date')
-            ->get();
+        if (!$candidate) {
+            return response()->json(['message' => 'Candidat non trouvé'], 404);
+        }
 
+        // Structure the response
         return response()->json([
-            'candidate' => $candidate,
-            'testResults' => $testResults,
-            'badges' => $candidate->badges
+            'candidate' => [
+                'id' => $candidate->id,
+                'name' => $candidate->name,
+                'email' => $candidate->email,
+                'state' => $candidate->state,
+                'profile' => $candidate->profile ? [
+                    'last_name' => $candidate->profile->last_name,
+                    'field' => $candidate->profile->field,
+                    'phoneNumber' => $candidate->profile->phoneNumber,
+                    'description' => $candidate->profile->description,
+                    'photoProfil' => $candidate->profile->photoProfil,
+                    'localisation' => $candidate->profile->localisation,
+                    'experience' => $candidate->profile->experience,
+                    'projects' => $candidate->profile->projects,
+                    'formation' => $candidate->profile->formation,
+                    'competenceList' => $candidate->profile->competenceList,
+                ] : null,
+                'badges' => $candidate->badges->map(function ($badge) {
+                    return [
+                        'id' => $badge->id,
+                        'name' => $badge->name,
+                        'iconcontrôle' => $badge->icon,
+                        'description' => $badge->description,
+                        'date_obtained' => $badge->Date_obtained->toDateString(),
+                    ];
+                })->toArray(),
+                'tests' => $candidate->tests->map(function ($test) {
+                    return [
+                        'id' => $test->id,
+                        'name' => $test->name,
+                        'score' => $test->score,
+                        'date' => $test->created_at->toDateString(),
+                    ];
+                })
+            ]
         ]);
     }
+
+
 
     /**
      * Accept a candidate and create a notification
@@ -102,20 +139,29 @@ class AllCandidateController extends Controller
      */
     public function accept($id)
     {
-        $candidate = Candidate::findOrFail($id);
-        $candidate->state = 'accepted';
+        // Find the candidate
+        $candidate = Candidate::find($id);
+
+        if (!$candidate) {
+            return response()->json(['message' => 'Candidate not found'], 404);
+        }
+
+        // Update candidate status (adjust according to your logic)
+        $candidate->state = 'accepted'; // Make sure the 'status' column exists
         $candidate->save();
 
-        // Create a notification for the candidate
+        // Create a notification
         Notification::create([
+            'message' => 'You have been accepted by our company. Congratulations!',
+            'dateEnvoi' => now(),
+            'destinataire' => $candidate->email, // or any field identifying the candidate
             'candidate_id' => $candidate->id,
-            'message' => 'You’re qualified to join us — congratulations!',
-            'type' => 'acceptance',
-            'created_at' => now(),
+            'company_id' => $candidate->company_id ?? 1,
         ]);
 
-        return response()->json(['message' => 'Candidate accepted successfully']);
+        return response()->json(['message' => 'Candidate accepted and notification sent successfully']);
     }
+
 
     /**
      * Reject a candidate and create a notification
@@ -125,20 +171,30 @@ class AllCandidateController extends Controller
      */
     public function reject($id)
     {
-        $candidate = Candidate::findOrFail($id);
-        $candidate->state = 'rejected';
+        // Find the candidate
+        $candidate = Candidate::find($id);
+
+        if (!$candidate) {
+            return response()->json(['message' => 'Candidate not found'], 404);
+        }
+
+        // Update candidate status
+        $candidate->state = 'rejected'; // Make sure 'state' column exists
         $candidate->save();
 
-        // Create a notification for the candidate
+        // Create a rejection notification
         Notification::create([
+            'message' => 'Your have been rejected by our company. Feel free to apply to other companies. Good luck!',
+            'dateEnvoi' => now(),
+            'destinataire' => $candidate->email,
             'candidate_id' => $candidate->id,
-            'message' => 'We wish you the best of luck in another company.',
-            'type' => 'rejection',
-            'created_at' => now(),
+            'company_id' => $candidate->company_id ?? 1,
         ]);
 
-        return response()->json(['message' => 'Candidate rejected successfully']);
+        return response()->json(['message' => 'Candidate rejected and notification sent successfully']);
     }
+
+
 
     /**
      * Get initials from a name

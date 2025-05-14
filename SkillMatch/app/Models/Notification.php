@@ -11,12 +11,14 @@ class Notification extends Model
     protected $fillable =
     [
         'message',
-        'dateenvoi',
+        'dateEnvoi',
         'destinataire',
+        'company_id',
+        'candidate_id',
     ];
 
     public function company(){
-        return $this->belongsTo('Entrprises::class');
+        return $this->belongsTo('Company::class');
     }
     public function candidate(){
         return $this->belongsTo('Candidate::class');
