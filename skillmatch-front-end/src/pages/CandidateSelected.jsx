@@ -377,7 +377,7 @@ const ContentByAnima = () => {
             try {
               const companyId = JSON.parse(localStorage.getItem("company_id")); // dynamic ID
               await api.get('/sanctum/csrf-cookie');
-              const response = await api.get(`api/company/${companyId}/candidates/selected?page=${currentPage}`);
+              const response = await api.get(`api/company/${1}/candidates/selected?page=${currentPage}`);
               
               const formattedCandidates = response.data.data.map((candidate) => {
                 const hasImage = !!candidate.profile?.photoProfil;

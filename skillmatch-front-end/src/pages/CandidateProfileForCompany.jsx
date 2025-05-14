@@ -66,23 +66,23 @@ export default function CandidateProfileForCompany() {
     );
   }
 
-//   if (candidateInfo && !candidateInfo.profile) {
-//     return (
-//       <>
-//         <div className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
-//           <p className="text-base font-medium text-gray-700 mb-2">
-//             The candidate does not have a profile yet.
-//           </p>
-//           <button
-//             onClick={(e)=>{e.preventDefault();window.history.back()}}
-//             className="text-indigo-600 hover:text-blue-800 font-medium text-sm transition-colors"
-//           >
-//             Back
-//           </button>
-//         </div>
-//       </>
-//     );
-//   }
+  if (candidateInfo && !candidateInfo.profile) {
+    return (
+      <>
+        <div className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
+          <p className="text-base font-medium text-gray-700 mb-2">
+            The candidate does not have a profile yet.
+          </p>
+          <button
+            onClick={(e)=>{e.preventDefault();window.history.back()}}
+            className="text-indigo-600 hover:text-blue-800 font-medium text-sm transition-colors"
+          >
+            Back
+          </button>
+        </div>
+      </>
+    );
+  }
 
   const { name, created_at, email, id } = candidateInfo;
   const { field, phoneNumber, localisation, photoProfil, description } = candidateInfo.profile;
