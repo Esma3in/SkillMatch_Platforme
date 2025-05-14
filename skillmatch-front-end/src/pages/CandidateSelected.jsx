@@ -348,7 +348,7 @@ const ContentByAnima = () => {
             const response = await api.delete('api/company/delete/candidate/selected', {
                 data: {
                     candidate_id: candidateId,
-                    company_id: 1 //CompanyId
+                    company_id: CompanyId
                 }
             });
 
@@ -365,7 +365,7 @@ const ContentByAnima = () => {
             try {
                 const companyId = JSON.parse(localStorage.getItem("company_id")); // dynamic ID
                 await api.get('/sanctum/csrf-cookie');
-                const response = await api.get(`api/company/${1}/candidates/selected?page=${currentPage}`);
+                const response = await api.get(`api/company/${CompanyId}/candidates/selected?page=${currentPage}`);
 
                 const formattedCandidates = response.data.data.map((candidate) => {
                     const hasImage = !!candidate.profile?.photoProfil;
