@@ -79,19 +79,7 @@ const buttonVariants = cva(
     },
 );
 
-const Button = React.forwardRef(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
-        const Comp = asChild ? Slot : "button";
-        return (
-            <Comp
-                className={cn(buttonVariants({ variant, size, className }))}
-                ref={ref}
-                {...props}
-            />
-        );
-    },
-);
-Button.displayName = "Button";
+
 const Card = React.forwardRef(({ className, ...props }, ref) => (
     <div
         ref={ref}
@@ -303,233 +291,239 @@ const TableCaption = React.forwardRef(({ className, ...props }, ref) => (
 TableCaption.displayName = "TableCaption";
 
 const ContentByAnima = () => {
-   
+
     const [candidates, setCandidates] = React.useState([]);
-    const [Loading,setLoading] = React.useState(true)
-    const [message,setMessage]= React.useState('')
+    const [Loading, setLoading] = React.useState(true)
+    const [message, setMessage] = React.useState('')
     const [currentPage, setCurrentPage] = React.useState(1);
     const [lastPage, setLastPage] = React.useState(1);
     const CompanyId = JSON.parse(localStorage.getItem("company_id"));
     const goToPage = (page) => {
         if (page >= 1 && page <= lastPage) {
-          setCurrentPage(page);
+            setCurrentPage(page);
         }
-      };
-    
-      const renderPagination = () => {
+    };
+
+    const renderPagination = () => {
         const pages = [];
         for (let i = 1; i <= lastPage; i++) {
-          pages.push(i);
+            pages.push(i);
         }
-    
+
         return (
-          <div className="flex flex-wrap items-center mt-4 gap-1">
-            <button
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-3 py-1 rounded border text-gray-600 hover:bg-gray-100"
-            >
-              Previous
-            </button>
-    
-            {pages.map(page => (
-              <button
-                key={page}
-                onClick={() => goToPage(page)}
-                className={`px-3 py-1 rounded ${currentPage === page ? 'bg-indigo-600 text-white' : 'border text-gray-600 hover:bg-gray-100'}`}
-              >
-                {page}
-              </button>
-            ))}
-    
-            <button
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === lastPage}
-              className="px-3 py-1 rounded border text-gray-600 hover:bg-gray-100"
-            >
-              Next
-            </button>
-          </div>
+            <div className="flex flex-wrap items-center mt-4 gap-1">
+                <button
+                    onClick={() => goToPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 rounded border text-gray-600 hover:bg-gray-100"
+                >
+                    Previous
+                </button>
+
+                {pages.map(page => (
+                    <button
+                        key={page}
+                        onClick={() => goToPage(page)}
+                        className={`px-3 py-1 rounded ${currentPage === page ? 'bg-indigo-600 text-white' : 'border text-gray-600 hover:bg-gray-100'}`}
+                    >
+                        {page}
+                    </button>
+                ))}
+
+                <button
+                    onClick={() => goToPage(currentPage + 1)}
+                    disabled={currentPage === lastPage}
+                    className="px-3 py-1 rounded border text-gray-600 hover:bg-gray-100"
+                >
+                    Next
+                </button>
+            </div>
         );
-      };
-      const Fire = async (candidateId) => {
-  try {
-    console.log("Firing candidate with ID:", candidateId);
-    console.log("Company ID:", CompanyId);
+    };
+    const Fire = async (candidateId) => {
+        try {
+            console.log("Firing candidate with ID:", candidateId);
+            console.log("Company ID:", CompanyId);
 
-    const response = await api.delete('/api/company/delete/candidate/selected', {
-      data: {
-        candidate_id: candidateId,
-        company_id: CompanyId
-      }
-    });
+            const response = await api.delete('api/company/delete/candidate/selected', {
+                data: {
+                    candidate_id: candidateId,
+                    company_id: 1 //CompanyId
+                }
+            });
 
-    console.log(response.data.message);
-    // Optional: Use toast or UI message instead of reload
-    window.location.reload();
-  } catch (error) {
-    console.error("Error deleting candidate selection:", error.response?.data?.message || error.message);
-  }
-};
+            console.log(response.data.message);
+            // Optional: Use toast or UI message instead of reload
+            window.location.reload();
+        } catch (error) {
+            console.error("Error deleting candidate selection:", error.response?.data?.message || error.message);
+        }
+    };
 
     React.useEffect(() => {
         const fetchCandidates = async () => {
             try {
-              const companyId = JSON.parse(localStorage.getItem("company_id")); // dynamic ID
-              await api.get('/sanctum/csrf-cookie');
-              const response = await api.get(`api/company/${1}/candidates/selected?page=${currentPage}`);
-              
-              const formattedCandidates = response.data.data.map((candidate) => {
-                const hasImage = !!candidate.profile?.photoProfil;
-                const avatar = hasImage
-                  ? `${import.meta.env.VITE_API_BASE_URL}/storage/${candidate.profile.photoProfil}`
-                  : "";
-                const initials = !hasImage && candidate.name
-                  ? candidate.name.charAt(0).toUpperCase()
-                  : "";
-          
-                return {
-                  id: candidate.id,
-                  name: candidate.name,
-                  email: candidate.email,
-                  avatar,
-                  hasImage,
-                  initials,
-                  date: new Date(candidate?.pivot?.created_at).toLocaleDateString(),
-                  badges: candidate?.badges?.length ?? 0,
-                  badgeImage: "https://c.animaapp.com/macl8400TWBRsn/img/image-9-9.png",
-                };
-              });
-          
-              setCandidates(formattedCandidates);
-              setLastPage(response.data.last_page);
+                const companyId = JSON.parse(localStorage.getItem("company_id")); // dynamic ID
+                await api.get('/sanctum/csrf-cookie');
+                const response = await api.get(`api/company/${1}/candidates/selected?page=${currentPage}`);
+
+                const formattedCandidates = response.data.data.map((candidate) => {
+                    const hasImage = !!candidate.profile?.photoProfil;
+                    const avatar = hasImage
+                        ? `${import.meta.env.VITE_API_BASE_URL}/storage/${candidate.profile.photoProfil}`
+                        : "";
+                    const initials = !hasImage && candidate.name
+                        ? candidate.name.charAt(0).toUpperCase()
+                        : "";
+
+                    return {
+                        id: candidate.id,
+                        name: candidate.name,
+                        email: candidate.email,
+                        avatar,
+                        hasImage,
+                        initials,
+                        date: new Date(candidate?.pivot?.created_at).toLocaleDateString(),
+                        badges: candidate?.badges?.length ?? 0,
+                        badgeImage: "https://c.animaapp.com/macl8400TWBRsn/img/image-9-9.png",
+                    };
+                });
+
+                setCandidates(formattedCandidates);
+                setLastPage(response.data.last_page);
             } catch (err) {
-              const errorMessage = err.response?.data?.message || "Something went wrong.";
-              setMessage(errorMessage);
+                const errorMessage = err.response?.data?.message || "Something went wrong.";
+                setMessage(errorMessage);
             } finally {
-              setLoading(false);
+                setLoading(false);
             }
-          };
-          
+        };
+
         fetchCandidates();
-    }, [CompanyId,currentPage]);
+    }, [CompanyId, currentPage]);
     if (Loading && !message) {
         return (
-          <div className="flex items-center justify-center min-h-screen bg-gray-50">
-            <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-indigo-700"></div>
-          </div>
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+                <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-indigo-700"></div>
+            </div>
         );
-      }   
-      if (message) {
+    }
+    if (message) {
         return (
-          <div className="flex items-center justify-center min-h-screen bg-gray-50">
-            <p className="text-red-500">{message}</p>
-            <button onClick={()=>{window.location.href=`/company/Session/${CompanyId}`}}>
-                Home
-            </button>
-          </div>
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+                <p className="text-red-500">{message}</p>
+                <button onClick={() => { window.location.href = `/company/Session/${CompanyId}` }}>
+                    Home
+                </button>
+            </div>
         );
-      }
-      
+    }
+
 
     return (
         <>
-        
-       
-        
-        <div className="w-full bg-white">
-            <Table>
-                <TableHeader className="bg-gray-50">
-                    <TableRow>
-                        <TableHead className="w-[421px] h-11 px-6 py-3 text-xs font-medium text-gray-500">
-                            Candidat
-                        </TableHead>
-                        <TableHead className="w-44 h-11 px-6 py-3 text-xs font-medium text-gray-500">
-                            Date selection
-                        </TableHead>
-                        <TableHead className="w-44 h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
-                            Total Badges
-                        </TableHead>
-                        <TableHead className="w-[220px] h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
-                            Details
-                        </TableHead>
-                        <TableHead className="w-[223px] h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
-                            Fire
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {candidates.map((candidate) => (
-                        <TableRow key={candidate.id} className="border-b border-[#eaecf0]">
-                            <TableCell className="h-[72px] px-6 py-4 flex items-center gap-3">
-                                {candidate.hasImage ? (
-                                    <div
-                                        className="w-8 h-8 rounded-[200px] bg-cover bg-center"
-                                        style={{ backgroundImage: `url(${candidate.avatar})` }}
-                                    />
-                                ) : (
-                                    <div className="w-8 h-8 bg-primary-50 rounded-[200px] flex items-center justify-center">
-                                        <span className="text-sm font-medium text-primary-600">
-                                            {candidate.initials}
-                                        </span>
-                                    </div>
-                                )}
-                                <div className="flex flex-col items-start">
-                                    <div className="text-sm font-normal text-gray-900">
-                                        {candidate.name}
-                                    </div>
-                                    <div className="text-sm font-normal text-gray-500">
-                                        {candidate.email}
-                                    </div>
-                                </div>
-                            </TableCell>
-                            <TableCell className="h-[72px] px-6 py-4">
-                                <div className="text-sm font-normal text-gray-500">
-                                    {candidate.date}
-                                </div>
-                            </TableCell>
-                            <TableCell className="h-[72px] px-6 py-4 flex items-center justify-center">
-                                <div className="text-base font-medium text-[#667085] mr-2">
-                                    {candidate.badges}
-                                </div>
-                                <img
-                                    className="w-[31px] h-[31px] object-cover"
-                                    alt="Badge"
-                                    src={candidate.badgeImage}
-                                />
-                            </TableCell>
-                            <TableCell className="h-[72px] px-6 py-4 text-center">
-                                <Button className="w-[103px] h-10 bg-[#0a84ff26] hover:bg-[#0a84ff40] text-[#0a84ff] font-semibold">
-                                    <a href={`/company/candidate/profile/${candidate.id}`}>Details</a>
-                                    
-                                </Button>
-                            </TableCell>
-                            <TableCell className="h-[72px] px-6 py-4 text-center">
-                            <button onClick={(e)=>{e.preventDefault();Fire(candidate.id)}} className="w-[103px] h-10 bg-[#ff000033] hover:bg-[#ff000050] text-[#ff0a0a] font-semibold">
-                                    Fire
-                                </button>
-                            </TableCell>
+
+
+
+            <div className="w-full bg-white">
+                <Table>
+                    <TableHeader className="bg-gray-50">
+                        <TableRow>
+                            <TableHead className="w-[421px] h-11 px-6 py-3 text-xs font-medium text-gray-500">
+                                Candidat
+                            </TableHead>
+                            <TableHead className="w-44 h-11 px-6 py-3 text-xs font-medium text-gray-500">
+                                Date selection
+                            </TableHead>
+                            <TableHead className="w-44 h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
+                                Total Badges
+                            </TableHead>
+                            <TableHead className="w-[220px] h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
+                                Details
+                            </TableHead>
+                            <TableHead className="w-[223px] h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
+                                Fire
+                            </TableHead>
                         </TableRow>
-                    ))}
-                </TableBody>
-                
-            </Table>
-            {renderPagination()}
-        </div>
-         </>
+                    </TableHeader>
+                    <TableBody>
+                        {candidates.map((candidate) => (
+                            <TableRow key={candidate.id} className="border-b border-[#eaecf0]">
+                                <TableCell className="h-[72px] px-6 py-4 flex items-center gap-3">
+                                    {candidate.hasImage ? (
+                                        <div
+                                            className="w-8 h-8 rounded-[200px] bg-cover bg-center"
+                                            style={{ backgroundImage: `url(${candidate.avatar})` }}
+                                        />
+                                    ) : (
+                                        <div className="w-8 h-8 bg-primary-50 rounded-[200px] flex items-center justify-center">
+                                            <span className="text-sm font-medium text-primary-600">
+                                                {candidate.initials}
+                                            </span>
+                                        </div>
+                                    )}
+                                    <div className="flex flex-col items-start">
+                                        <div className="text-sm font-normal text-gray-900">
+                                            {candidate.name}
+                                        </div>
+                                        <div className="text-sm font-normal text-gray-500">
+                                            {candidate.email}
+                                        </div>
+                                    </div>
+                                </TableCell>
+                                <TableCell className="h-[72px] px-6 py-4">
+                                    <div className="text-sm font-normal text-gray-500">
+                                        {candidate.date}
+                                    </div>
+                                </TableCell>
+                                <TableCell className="h-[72px] px-6 py-4 flex items-center justify-center">
+                                    <div className="text-base font-medium text-[#667085] mr-2">
+                                        {candidate.badges}
+                                    </div>
+                                    <img
+                                        className="w-[31px] h-[31px] object-cover"
+                                        alt="Badge"
+                                        src={candidate.badgeImage}
+                                    />
+                                </TableCell>
+                                <TableCell className="h-[72px] px-6 py-4 text-center">
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            window.location.href = `/company/candidate/profile/${candidate.id}`;
+                                        }}
+                                        className="w-[103px] h-10 bg-[#0a84ff26] hover:bg-[#0a84ff40] text-[#0a84ff] font-semibold rounded-md transition duration-200 ease-in-out hover:shadow-md"
+                                    >
+                                        Details
+                                    </button>
+
+                                </TableCell>
+                                <TableCell className="h-[72px] px-6 py-4 text-center">
+                                    <button onClick={(e) => { e.preventDefault(); Fire(candidate.id) }} className="w-[103px] h-10 bg-[#ff000033] hover:bg-[#ff000050] text-[#ff0a0a] font-semibold rounded-md transition duration-200 ease-in-out hover:shadow-md">
+                                        Fire
+                                    </button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+
+                </Table>
+                {renderPagination()}
+            </div>
+        </>
     );
 };
 export const ListCandidateSelected = () => {
     return (
         <>
-       <NavbarCompany/>
-      <div className="w-full min-h-screen bg-white flex justify-center items-start pt-[70px] px-4">
-        <div className="w-full max-w-[1216px]">
-          <Card className="w-full border border-gray-200 rounded-lg shadow-shadow-md overflow-hidden">
-            <ContentByAnima />
-          </Card>
-        </div>
-      </div>
-       </>
+            <NavbarCompany />
+            <div className="w-full min-h-screen bg-white flex justify-center items-start pt-[70px] px-4">
+                <div className="w-full max-w-[1216px]">
+                    <Card className="w-full border border-gray-200 rounded-lg shadow-shadow-md overflow-hidden">
+                        <ContentByAnima />
+                    </Card>
+                </div>
+            </div>
+        </>
     );
-  };
+};

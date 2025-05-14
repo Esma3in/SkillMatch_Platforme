@@ -6,6 +6,7 @@ import CreateExperienceModal from "../components/modals/createExperience";
 import ModalSkill from "../components/modals/createSkillsCandidate";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { useParams } from "react-router";
+import NavbarCompany from "../components/common/navbarCompany";
 
 export default function CandidateProfileForCompany() {
     const {candidate_id} = useParams();
@@ -69,6 +70,7 @@ export default function CandidateProfileForCompany() {
   if (candidateInfo && !candidateInfo.profile) {
     return (
       <>
+      <NavbarCompany/>
         <div className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
           <p className="text-base font-medium text-gray-700 mb-2">
             The candidate does not have a profile yet.
@@ -89,7 +91,7 @@ export default function CandidateProfileForCompany() {
 
   return (
     <>
-      
+      <NavbarCompany/>
       <div className="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 bg-gray-50">
         {/* Profile Header */}
         <div className="bg-white shadow-md rounded-lg overflow-hidden">

@@ -90,9 +90,8 @@ Route::post('/results/store',[TestController::class,'storeResult']);
 Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::class,'getResult']);
 
 //selected candidates for company :
-
-Route::get('/company/{id}/candidates/selected',[CandidateSelectedController::class,'getSelectedcandidates']);
 Route::delete('/company/delete/candidate/selected',[CandidateSelectedController::class,'delete']);
+Route::get('/company/{id}/candidates/selected',[CandidateSelectedController::class,'getSelectedcandidates']);
 
 
 // get roadmap
@@ -116,10 +115,10 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
 
 //All candidate for company
-Route::get('/candidates', [AllCandidateController::class, 'index']);
-Route::get('/candidates/{id}', [AllCandidateController::class, 'show']);
-Route::put('/candidates/{id}/accept', [AllCandidateController::class, 'accept']);
-Route::put('/candidates/{id}/reject', [AllCandidateController::class, 'reject']);
+Route::get('/Allcandidates', [AllCandidateController::class, 'index']);
+Route::get('/Allcandidates/{id}', [AllCandidateController::class, 'show']);
+Route::put('/Allcandidates/{id}/accept', [AllCandidateController::class, 'accept']);
+Route::put('/Allcandidates/{id}/reject', [AllCandidateController::class, 'reject']);
 
 //Tests Routes for company
 // Test routes
@@ -133,8 +132,6 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
 Route::get('/candidates/{id}', [CandidateController::class, 'getCandidateDetails']);
 Route::get('/skills', [CandidateController::class, 'getSkills']);
-Route::get('/test-tags', [CandidateController::class, 'getTestTags']);
-
 
 
 
@@ -150,6 +147,16 @@ Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'ge
 // Route::get('/admin',[CandidateController::class],'index')->name('admin.index');
 Route::get('/admin/CanidatesList',[CandidateController::class,'AllCandidates']);
 Route::post('/admin/CanidatesList/setstate',[CandidateController::class,'setstate']);
+
+Route::get('/admin/CompaniesList',[CompanyController::class,'AllCompanies']);
+Route::post('/admin/CompaniesList/setstate',[CompanyController::class,'setstate']);
+
+Route::get('/admin/UsersList',[UserController::class,'getBannedUsers']);
+Route::post('/admin/Users/setstate',[UserController::class,'setstate']);
+
+Route::get('api/admin/candidates/{id}', [CandidateController::class, 'show']);
+Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
+
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
 // Route::get('/admin/CanidatsList/Canidate/{id}',[AdminConroller::class],'Candidate')->name('admin.index');
@@ -166,5 +173,10 @@ Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController:
 Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
+Route::get('/notifications/{candidate_id}' , [CandidateController::class , "getNotifications"]);
+
 
 Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
+Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResult']);
+
+

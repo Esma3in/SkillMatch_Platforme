@@ -12,7 +12,6 @@ import SeriesChallenge from './pages/SerieChallenges'
 
 
 import ProfileSettings from './pages/Settings.js';
-import CandidateList from './pages/manage/candidatesList.jsx';
 
 
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
@@ -26,7 +25,11 @@ import SkillsDataPage from './pages/SkillDataRoadmap.jsx';
 
 import AdminHome from './pages/adminHome.jsx';
 import CompaniesList from './pages/manage/companiesList.jsx';
-import CandidatesList from './pages/manage/candidatesList.jsx';
+
+import CandidateListForCompany from './pages/CandidateListForCompany.jsx';
+
+import BanUsers from './pages/manage/banUsers.jsx'
+
 
 import { Dashboard } from './pages/Dashboard.js';
 
@@ -39,6 +42,8 @@ import ResultTest from './pages/Testresult.jsx';
 import TestsListForCompany from './pages/ListTestForCompany.js';
 import FilterCandidate from './pages/FilterCandidate.js';
 import {BadgeList} from './pages/BadgesListes.jsx';
+import NotificationCandidate from './pages/NotificationCandidate.js';
+import SupportPage from './pages/Support.jsx';
 export default function App() {
   return (
     <Router>
@@ -49,9 +54,12 @@ export default function App() {
         <Route path='/signIn' element={<SignPages isSignin={true}/>}/>
         <Route path='/signUp' element={<SignPages isSignin={false}/>}/>
         <Route path='/candidate/company/:id/profile' element={<ProtectedRoute><CompanyProfileForCandidate/></ProtectedRoute>}/>
+        
         <Route path="/candidate/Session/:id" element={<ProtectedRoute><Candidates/></ProtectedRoute>} />
         <Route path='/Createprofile' element={<ProtectedRoute><Box/></ProtectedRoute>}/>
         <Route path='/companies/list'  element={<ProtectedRoute><CompaniesMatching/></ProtectedRoute>}></Route> 
+        <Route path= "/notification"element= {<NotificationCandidate />} />
+        <Route path='/support' element={<SupportPage />}/>
         <Route path='/profile' element={<ProtectedRoute><ProfileCandidat/></ProtectedRoute>} />
         <Route path='/badges' element = {<BadgeList />}/>
         {/* <Route path='/companyProfile' element={<ProtectedRoute><CompanyProfile/></ProtectedRoute>}/>  */}
@@ -66,7 +74,7 @@ export default function App() {
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
 
         {/*test*/}
-        <Route path = '/candidateList' element={<ProtectedRoute><CandidateList/></ProtectedRoute>}/>
+        <Route path = '/CandidateListForCompany' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
         <Route path = '/TestsListForCompany' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
         <Route path = '/FilterCandidate' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
@@ -85,7 +93,12 @@ export default function App() {
         {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
         <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
-        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
+
+        {/*<Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />*/}
+        <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
+
+
+        {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}
       </Routes>
     </Router>
   );

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Candidate;
+use App\Models\QcmForRoadmap;
 use App\Models\Test;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +24,8 @@ class ResultFactory extends Factory
             'test_id'=>Test::factory(),
             'score'=>fake()->numberBetween('10','90'),
             'correctAnswer'=>fake()->sentence(),
-            'candidateAnswer'=>fake()->sentence()
+            'candidateAnswer'=>fake()->sentence(),
+            'qcm_for_roadmapId' =>QcmForRoadmap::factory()
             ];
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Skill;
 use App\Models\Company;
 use App\Models\Candidate;
 use App\Models\Experience;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
@@ -302,14 +303,16 @@ class CandidateController extends Controller
 
     }
     public function AllCandidates(){
-        $candidates = Candidate::with('profile')->get();
-        return response()->json($candidates,200);
+        $candidates = Candidate::with('profile')
+            ->whereIn('state', ['active', 'unactive','waiting'])
+            ->get();
+        return response()->json($candidates, 200);
     }
 
     public function setstate(Request $request){
         $request->validate([
             'id'=>'required',
-            'state' => 'required|in:BANNED,UNACTIVE,ACTIVE'
+            'state' => 'required|in:unactive,active,banned'
         ]);
         $candidate = Candidate::where('id', $request->id)->first();
         if (!$candidate) {
@@ -319,6 +322,20 @@ class CandidateController extends Controller
             'state' => $request->state
         ]);
         return response()->json(['message' => 'Candidate state updated successfully'], 200);
+    }
+
+     public function show($id)
+    {
+        // Find the candidate by ID
+        $candidate = Candidate::find($id);
+
+        // Check if the candidate exists
+        if (!$candidate) {
+            return response()->json(['error' => 'Candidate not found'], 404);
+        }
+
+        // Return the state of the candidate
+        return response()->json(['state' => $candidate->state], 200);
     }
 
 
@@ -331,132 +348,192 @@ class CandidateController extends Controller
      */
     public function filterCandidates(Request $request)
     {
-        // Start with a base query
-        $query = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
-                 ->join('profile_candidates', 'candidates.id', '=', 'profile_candidates.candidate_id')
-                 ->select('candidates.*');
+        //try {
+            $query = Candidate::with(['profile', 'skills', 'badges', 'tests'])
+                ->join('profile_candidates', 'candidates.id', '=', 'profile_candidates.candidate_id');
 
-        // Filter by domain (field in profile)
-        if ($request->has('domain') && $request->domain) {
-            $query->where('profile_candidates.field', $request->domain);
-        }
+            // Optional filter by domain (field)
+            if ($request->filled('domain')) {
+                $domain = strtolower($request->domain);
+                $query->whereRaw('LOWER(profile_candidates.field) LIKE ?', ["%{$domain}%"]);
+            }
 
-        // Filter by city (localisation in profile)
-        if ($request->has('city') && $request->city) {
-            $query->where('profile_candidates.localisation', 'like', '%' . $request->city . '%');
-        }
+            // Optional filter by city (localisation)
+            if ($request->filled('city')) {
+                $city = strtolower($request->city);
+                $query->whereRaw('LOWER(profile_candidates.localisation) LIKE ?', ["%{$city}%"]);
+            }
 
-        // Filter by skill
-        if ($request->has('skill') && $request->skill) {
-            $query->whereHas('skills', function($q) use ($request) {
-                $q->where('skills.name', $request->skill);
-            });
-        }
+            // Optional filter by skill
+            if ($request->filled('skill')) {
+                $skill = strtolower($request->skill);
+                $query->whereHas('skills', function ($q) use ($skill) {
+                    $q->whereRaw('LOWER(skills.name) LIKE ?', ["%{$skill}%"]);
+                });
+            }
 
-        // Filter by test tag
-        if ($request->has('tag') && $request->tag) {
-            $query->whereHas('tests', function($q) use ($request) {
-                $q->where('tests.tag', $request->tag);
-            });
-        }
+            // Final result
+            $candidates = $query->select('candidates.*')->distinct()->get();
 
-        // Filter by test score
-        if ($request->has('minScore') && $request->minScore) {
-            $minScore = (int)$request->minScore;
-            $query->whereHas('tests', function($q) use ($minScore) {
-                $q->where('results.score', '>=', $minScore);
-            });
-        }
 
-        // Get paginated results
-        $perPage = $request->has('perPage') ? (int)$request->perPage : 10;
-        $candidates = $query->distinct()->paginate($perPage);
+            // Paginate results
+            //$perPage = $request->get('perPage', 10);
+            //$candidates = $query->distinct()->paginate($perPage);
 
-        //  the response data
-        $formattedCandidates = $candidates->map(function($candidate) {
+            // Format results
+          //  $formattedCandidates = $candidates->map(function ($candidate) {
+            //    $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
+              //  $certified = $candidate->attestations->count() > 0;
+
+                //return [
+                  //  'id' => $candidate->id,
+               //     'name' => $candidate->name,
+                 //   'field' => optional($candidate->profile)->field,
+                  //  'location' => optional($candidate->profile)->localisation,
+                  //  'testScore' => round($avgScore),
+                   // 'certified' => $certified,
+                   // 'skills' => $candidate->skills->pluck('name')->toArray(),
+                   // 'description' => optional($candidate->profile)->description,
+                   // 'badges' => $candidate->badges->map(function ($badge) {
+                    //    return [
+                      //      'name' => $badge->name,
+                        //    'icon' => $badge->icon,
+                       // ];
+                   // })->toArray(),
+                //    'resumeUrl' => optional($candidate->profile)->file,
+             //   ];
+         //   });
+
+         //   return response()->json([
+             //   'data' => $formattedCandidates,
+              //  'meta' => [
+              ////      'current_page' => $candidates->currentPage(),
+                //    'last_page' => $candidates->lastPage(),
+                 //   'total' => $candidates->total(),
+                  //  'per_page' => $candidates->perPage(),
+              //  ]
+          //]);
+       // } catch (\Exception $e) {
+           /// Log::error('Error filtering candidates: ' . $e->getMessage(), [
+             //   'trace' => $e->getTraceAsString()
+           // ]);
+            //return response()->json([
+                //'error' => 'An error occurred while filtering candidates.',
+           //     'message' => $e->getMessage()
+           // ], 500);
+        //}
+    }
+
+    /**
+     * Get details for a specific candidate.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCandidateDetails($id)
+    {
+        try {
+            $candidate = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
+                ->findOrFail($id);
 
             $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
             $certified = $candidate->attestations->count() > 0;
 
-            return [
+            $formattedCandidate = [
                 'id' => $candidate->id,
                 'name' => $candidate->name,
-                'field' => $candidate->profile ? $candidate->profile->field : null,
-                'location' => $candidate->profile ? $candidate->profile->localisation : null,
+                'field' => optional($candidate->profile)->field,
+                'location' => optional($candidate->profile)->localisation,
                 'testScore' => round($avgScore),
                 'certified' => $certified,
-                'skills' => $candidate->skills->pluck('name'),
-                'description' => $candidate->profile ? $candidate->profile->description : null,
-                'badges' => $candidate->badges->map(function($badge) {
+                'skills' => $candidate->skills->pluck('name')->toArray(),
+                'description' => optional($candidate->profile)->description,
+                'badges' => $candidate->badges->map(function ($badge) {
                     return [
                         'name' => $badge->name,
-                        'icon' => $badge->icon
+                        'icon' => $badge->icon,
                     ];
-                }),
-                'resumeUrl' => $candidate->profile ? $candidate->profile->file : null,
+                })->toArray(),
+                'resumeUrl' => optional($candidate->profile)->file,
             ];
-        });
 
-        return response()->json([
-            'data' => $formattedCandidates,
-            'meta' => [
-                'current_page' => $candidates->currentPage(),
-                'last_page' => $candidates->lastPage(),
-                'total' => $candidates->total(),
-                'per_page' => $candidates->perPage()
-            ]
-        ]);
+            return response()->json([
+                'data' => $formattedCandidate
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Candidate not found.',
+                'message' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error fetching candidate details: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error' => 'An error occurred while fetching candidate details.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
-     * Get a specific candidate's details
+     * Get all available skills.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function getCandidateDetails($id)
+    public function getSkills(Request $request)
     {
-        $candidate = Candidate::with(['profile', 'skills', 'badges', 'attestations', 'tests'])
-                    ->findOrFail($id);
-
-        $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
-
-        $certified = $candidate->attestations->count() > 0;
-
-        $candidateDetails = [
-            'id' => $candidate->id,
-            'name' => $candidate->name,
-            'field' => $candidate->profile ? $candidate->profile->field : null,
-            'location' => $candidate->profile ? $candidate->profile->localisation : null,
-            'testScore' => round($avgScore),
-            'certified' => $certified,
-            'skills' => $candidate->skills->pluck('name'),
-            'description' => $candidate->profile ? $candidate->profile->description : null,
-            'badges' => $candidate->badges->map(function($badge) {
-                return [
-                    'name' => $badge->name,
-                    'icon' => $badge->icon
-                ];
-            }),
-            'resumeUrl' => $candidate->profile ? $candidate->profile->file : null,
-        ];
-
-        return response()->json($candidateDetails);
+        try {
+            $skills = Skill::select('name')->distinct()->pluck('name')->toArray();
+            return response()->json($skills);
+        } catch (\Exception $e) {
+            Log::error('Error fetching skills: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error' => 'Failed to fetch skills.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Get all available skills for filtering
-     */
-    public function getSkills()
-    {
-        $skills = Skill::select('name')->distinct()->get()->pluck('name');
-        return response()->json($skills);
-    }
 
-    /**
-     * Get all available test tags for filtering
-     */
-    public function getTestTags()
-    {
-        $tags = DB::table('tests')->select('tag')->distinct()->get()->pluck('tag');
-        return response()->json($tags);
-    }
 
+
+    //Notifications
+    public function getNotifications($candidate_id)
+    {
+        try {
+            // Validate candidate_id
+            if (!is_numeric($candidate_id) || $candidate_id <= 0) {
+                return response()->json([
+                    'error' => 'Invalid candidate ID'
+                ], 400);
+            }
+
+            // Fetch notifications
+            $notifications = Notification::where('candidate_id', $candidate_id)->get();
+
+            // Check if notifications exist
+            if ($notifications->isEmpty()) {
+                return response()->json([
+                    'message' => 'No notifications found',
+                    'data' => []
+                ], 200);
+            }
+
+            return response()->json([
+                'message' => 'Notifications retrieved successfully',
+                'data' => $notifications
+            ], 200);
+
+        } catch (\Exception $e) {
+            // Handle any unexpected errors
+            return response()->json([
+                'error' => 'An error occurred while fetching notifications',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
