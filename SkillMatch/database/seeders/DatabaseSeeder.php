@@ -23,10 +23,17 @@ use App\Models\SocialMedia;
 use App\Models\Notification;
 use App\Models\RoadmapSkill;
 use App\Models\Administrator;
+<<<<<<< HEAD
 
 
 use App\Models\CandidateSelected;
 use App\Models\ProfileCompany;
+=======
+
+use App\Models\CandidateSelected;
+use App\Models\ProfileCompany;
+
+>>>>>>> cc71d846adf5e94c46536b43afcf4af9d552884b
 use App\Models\SerieChallenge;
 use App\Models\CompaniesSkills;
 use Illuminate\Database\Seeder;
@@ -131,7 +138,7 @@ class DatabaseSeeder extends Seeder
 
         // Create Candidates and their related data
         Candidate::factory(2)->create()->each(function ($candidate) use ($skillsCreated) {
-            
+
             CompaniesSelected::factory(10)->create([
             'candidate_id'=>$candidate->id,
             ]);

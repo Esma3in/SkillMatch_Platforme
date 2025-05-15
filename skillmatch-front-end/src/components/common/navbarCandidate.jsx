@@ -74,7 +74,7 @@ const navigate= useNavigate();
         <div className="flex items-center gap-1 px-4 py-2">
         <img src={logo} alt="Logo" className="h-11 w-auto" />
         <h2 className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
-          SkillMatch
+          SkillMatch  
         </h2>
       </div>
 
@@ -90,11 +90,11 @@ const navigate= useNavigate();
               <span>Training <i className="dropdown-icon">▼</i></span>
               {isTrainingOpen && (
                 <div className="dropdown-menu">
-                  <a href="/challenges" className="dropdown-item">
+                  <a href="/problems" className="dropdown-item">
                     <i className="menu-icon start-icon"></i>
                     Start training
                   </a>
-                  <a href="/problems" className="dropdown-item">
+                  <a href="/challenges" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Challenges
                   </a>
