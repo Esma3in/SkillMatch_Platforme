@@ -1,10 +1,10 @@
 import { XIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/api";
 
 const CreateSkillsModal = ({ user, onClose }) => {
-  console.log(user)
+  console.log(user);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -12,15 +12,100 @@ const CreateSkillsModal = ({ user, onClose }) => {
     type: "",
     usageFrequency: "",
     classement: "",
+    language: "", // Added language field
   });
+  const [skills, setSkills] = useState([]);
   const [errors, setErrors] = useState({});
 
+  // Fetch skills from backend
+  useEffect(() => {
+    const getSkills = async () => {
+      try {
+        const response = await api.get('/api/skills/all');
+        setSkills(response.data);
+      } catch (error) {
+        console.error("Failed to fetch skills:", error);
+        setErrors({ general: "Failed to load skills. Please try again." });
+      }
+    };
+    getSkills();
+  }, []);
+
+  // Predefined language options (since no database for languages)
+  const languageOptions = [
+    { value: "", label: "Select a language" },
+    { value: "English", label: "English" },
+    { value: "Spanish", label: "Spanish" },
+    { value: "French", label: "French" },
+    { value: "German", label: "German" },
+    { value: "Chinese", label: "Chinese" },
+    { value: "Japanese", label: "Japanese" },
+  ];
+
   const formFields = [
-    { id: "name", label: "Skill Name", placeholder: "e.g., JavaScript" },
-    { id: "level", label: "Proficiency Level", placeholder: "e.g., Intermediate" },
-    { id: "type", label: "Skill Type", placeholder: "e.g., Technical" },
-    { id: "usageFrequency", label: "Usage Frequency", placeholder: "e.g., Daily" },
-    { id: "classement", label: "Certification/Ranking", placeholder: "e.g., Certified Professional" },
+    {
+      id: "name",
+      label: "Skill Name",
+      type: "select",
+      options: [
+        { value: "", label: "Select a skill" },
+        ...skills.map(skill => ({ value: skill.name, label: skill.name })),
+      ],
+    },
+    {
+      id: "language",
+      label: "Language",
+      type: "select",
+      options: languageOptions,
+    },
+    {
+      id: "level",
+      label: "Proficiency Level",
+      type: "select",
+      options: [
+        { value: "", label: "Select proficiency" },
+        { value: "Beginner", label: "Beginner" },
+        { value: "Intermediate", label: "Intermediate" },
+        { value: "Advanced", label: "Advanced" },
+        { value: "Expert", label: "Expert" },
+      ],
+    },
+    {
+      id: "type",
+      label: "Skill Type",
+      type: "select",
+      options: [
+        { value: "", label: "Select type" },
+        { value: "Technical", label: "Technical" },
+        { value: "Soft", label: "Soft" },
+        { value: "Analytical", label: "Analytical" },
+        { value: "Creative", label: "Creative" },
+      ],
+    },
+    {
+      id: "usageFrequency",
+      label: "Usage Frequency",
+      type: "select",
+      options: [
+        { value: "", label: "Select frequency" },
+        { value: "Daily", label: "Daily" },
+        { value: "Weekly", label: "Weekly" },
+        { value: "Monthly", label: "Monthly" },
+        { value: "Occasionally", label: "Occasionally" },
+      ],
+    },
+    {
+      id: "classement",
+      label: "Certification/Ranking",
+      type: "select",
+      options: [
+        { value: "", label: "Select certification" },
+        { value: "Certified Professional", label: "Certified Professional" },
+        { value: "Associate", label: "Associate" },
+        { value: "Expert", label: "Expert" },
+        { value: "None", label: "None" },
+      ],
+    },
   ];
 
   const handleChange = (e) => {
@@ -31,11 +116,9 @@ const CreateSkillsModal = ({ user, onClose }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    formFields.forEach(field => {
-      if (!formData[field.id].trim()) {
+    formFields.forEach((field) => {
+      if (!formData[field.id]) {
         newErrors[field.id] = `${field.label} is required.`;
-      } else if (formData[field.id].length > 255) {
-        newErrors[field.id] = `${field.label} must be 255 characters or less.`;
       }
     });
     return newErrors;
@@ -86,6 +169,7 @@ const CreateSkillsModal = ({ user, onClose }) => {
       type: "",
       usageFrequency: "",
       classement: "",
+      language: "",
     });
     setErrors({});
     if (onClose) onClose();
@@ -96,7 +180,10 @@ const CreateSkillsModal = ({ user, onClose }) => {
       <div className="bg-white p-6 rounded-lg w-96">
         <div className="flex justify-between items-center mb-4">
           <h5 className="text-xl font-semibold">Add New Skill</h5>
-          <button onClick={handleCancel} className="text-gray-500 hover:text-gray-700 text-2xl">
+          <button
+            onClick={handleCancel}
+            className="text-gray-500 hover:text-gray-700 text-2xl"
+          >
             <XIcon className="w-5 h-5" />
           </button>
         </div>
@@ -107,17 +194,21 @@ const CreateSkillsModal = ({ user, onClose }) => {
               <label htmlFor={field.id} className="block text-gray-700 mb-1">
                 {field.label}
               </label>
-              <input
+              <select
                 id={field.id}
                 name={field.id}
-                type="text"
                 value={formData[field.id]}
                 onChange={handleChange}
-                placeholder={field.placeholder}
                 className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors[field.id] ? "border-red-500" : "border-gray-300"
                 }`}
-              />
+              >
+                {field.options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
               {errors[field.id] && (
                 <p className="text-red-500 text-sm mt-1">{errors[field.id]}</p>
               )}

@@ -4,6 +4,7 @@ import userAvatar from '../../assets/userAvatar.jpg';
 import { MdBadge } from "react-icons/md"; 
 import UseLogout from '../../hooks/useLogout';
 import { api } from '../../api/api';
+import logo from "../../assets/Logoo.png"
 import { useNavigate } from 'react-router';
 
 const NavbarCandidate = () => {
@@ -70,7 +71,13 @@ const navigate= useNavigate();
     <div className="navbar-container">
       <div className="navbar">
         <div className="navbar-left">
-          <div className="navbar-logo">SkillMatch</div>
+        <div className="flex items-center gap-1 px-4 py-2">
+        <img src={logo} alt="Logo" className="h-11 w-auto" />
+        <h2 className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
+          SkillMatch
+        </h2>
+      </div>
+
           <nav className="navbar-nav">
             <a href={`/candidate/Session/${candidate_id}`} className="nav-item">Home</a>
             

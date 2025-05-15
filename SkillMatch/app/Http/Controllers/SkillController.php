@@ -83,4 +83,8 @@ class SkillController extends Controller
             return response()->json(['error' => 'Failed to fetch skills'], 500);
         }
     }
+    public function allSkills(){
+        $skills= Skill::all();
+        return response()->json($skills);
+    }
 }

@@ -23,12 +23,9 @@ use App\Models\SocialMedia;
 use App\Models\Notification;
 use App\Models\RoadmapSkill;
 use App\Models\Administrator;
-<<<<<<< HEAD
-=======
-use App\Models\CandidateSelected;
-use App\Models\ProfileCompany;
->>>>>>> 19afbc5ffcb1da21da18e194c88c8e126b64324b
 
+
+use App\Models\CandidateSelected;
 use App\Models\ProfileCompany;
 use App\Models\SerieChallenge;
 use App\Models\CompaniesSkills;

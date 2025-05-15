@@ -62,8 +62,10 @@ Route::get('/experiences/candidate/{candidateId}', [ExperienceController::class,
 
 // Skill Routes
 Route::post('/skills', [SkillController::class, 'store']);
-Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
 
+Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
+// Education Routes 
+Route::post('/education' , [ProfileCandidateController::class , 'storeEducation']);
 // Challenge Routes
 Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
 Route::get('/challenges/{challenge}', [ChallengeController::class, 'show']);
@@ -180,6 +182,9 @@ Route::get('/notifications/{candidate_id}' , [CandidateController::class , "getN
 
 
 Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
+Route::post('/qcm/saveResults',[QcmForRoadmapController::class ,"saveResults"]);
 Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResult']);
 
 
+// Get all skills :
+ Route::get('/skills/all' , [SkillController::class , 'allSkills']);

@@ -136,6 +136,7 @@ class QcmForRoadmapController extends Controller
             'correctAnswer' => 'required|string',
             'candidate_id' => 'required|exists:candidates,id',
             'test_id' => 'required|exists:tests,id',
+        'qcm_for_roadmapId' =>'required'
         ]);
 
         $result = DB::table('Results')->insert([
@@ -144,6 +145,7 @@ class QcmForRoadmapController extends Controller
             'correctAnswer' => $validated['correctAnswer'],
             'candidate_id' => $validated['candidate_id'],
             'test_id' => $validated['test_id'],
+            'qcm_for_roadmapId'=>$validated['qcm_for_roadmapId'],
             'created_at' => now(),
             'updated_at' => now(),
         ]);
