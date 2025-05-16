@@ -2,23 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Check, ChevronLeft, ChevronRight, Filter, X, AlertCircle, Award, FileText, Bell, User } from 'lucide-react';
 import { api } from '../api/api';
 
-const CandidateFilter = () => {
-  // State management
-  const [filters, setFilters] = useState({ 
-    domain: '',
-    skill: [],
-    city: ''
-  });
-  const [candidates, setCandidates] = useState([]);
-  const [selectedCandidate, setSelectedCandidate] = useState(null);
-  const [page, setPage] = useState(1);
-  const [meta, setMeta] = useState({ total: 0, lastPage: 1 });
-  const [showSkillDropdown, setShowSkillDropdown] = useState(false);
-  const [isFiltered, setIsFiltered] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
-
-  // Notification Modal Component
+// Notification Modal Component séparé
 const NotificationModal = ({ isOpen, onClose, candidateId, companyId }) => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,7 +27,7 @@ const NotificationModal = ({ isOpen, onClose, candidateId, companyId }) => {
       setMessage('');
       onClose(); 
     } catch (error) {
-      console.error("Erreur lors de l'envoi de la notification :", error);
+      console.error("Error sending the notification :", error);
     } finally {
       setLoading(false);
     }
@@ -55,14 +39,14 @@ const NotificationModal = ({ isOpen, onClose, candidateId, companyId }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md mx-4">
         <div className="p-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Envoyer une notification au candidat</h3>
+          <h3 className="text-lg font-medium text-gray-900">Send a notification to the candidate</h3>
         </div>
         
         <div className="p-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
           <textarea
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="Écris ton message ici..."
+            placeholder="Write your message here..."
             rows={4}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -74,7 +58,7 @@ const NotificationModal = ({ isOpen, onClose, candidateId, companyId }) => {
             className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none"
             onClick={handleClose}
           >
-            Annuler
+            Cancel
           </button>
           <button 
             className={`px-4 py-2 rounded-md text-white focus:outline-none ${
@@ -85,23 +69,31 @@ const NotificationModal = ({ isOpen, onClose, candidateId, companyId }) => {
             onClick={handleSend}
             disabled={loading || !message.trim()}
           >
-            {loading ? "Envoi..." : "Envoyer"}
+            {loading ? "Sending..." : "Send"}
           </button>
         </div>
       </div>
-      
-      {/* Notification Modal */}
-      {selectedCandidate && (
-        <NotificationModal 
-          isOpen={showNotificationModal}
-          onClose={() => setShowNotificationModal(false)}
-          candidateId={selectedCandidate.id}
-          companyId={companyId}
-        />
-      )}
     </div>
   );
 };
+
+const CandidateFilter = () => {
+  // State management
+  const [filters, setFilters] = useState({ 
+    domain: '',
+    skill: [],
+    city: ''
+  });
+  const [candidates, setCandidates] = useState([]);
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState({ total: 0, lastPage: 1 });
+  const [showSkillDropdown, setShowSkillDropdown] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
+  // Définir une valeur par défaut pour companyId
+  const [companyId, setCompanyId] = useState(1); // Valeur fictive pour test
   
   // Available options
   const domains = [
@@ -648,6 +640,16 @@ const NotificationModal = ({ isOpen, onClose, candidateId, companyId }) => {
           </div>
         )}
       </div>
+      
+      {/* Notification Modal - Déplacé à l'extérieur pour éviter la récursion */}
+      {selectedCandidate && (
+        <NotificationModal 
+          isOpen={showNotificationModal}
+          onClose={() => setShowNotificationModal(false)}
+          candidateId={selectedCandidate.id}
+          companyId={companyId}
+        />
+      )}
     </div>
   );
 };
