@@ -64,7 +64,7 @@ Route::get('/experiences/candidate/{candidateId}', [ExperienceController::class,
 Route::post('/skills', [SkillController::class, 'store']);
 
 Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
-// Education Routes 
+// Education Routes
 Route::post('/education' , [ProfileCandidateController::class , 'storeEducation']);
 // Challenge Routes
 Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
@@ -132,8 +132,6 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 
 // Candidate filtering routes
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
-Route::get('/candidates/{id}', [CandidateController::class, 'getCandidateDetails']);
-Route::get('/skills', [CandidateController::class, 'getSkills']);
 
 
 
