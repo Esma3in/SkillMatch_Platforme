@@ -352,7 +352,7 @@ class CandidateController extends Controller
         $skill = $request->input('skill');
         $field = $request->input('field');
 
-        $candidates = Candidate::with(['profile', 'skills'])
+        $candidates = Candidate::with(['profile', 'skills', 'badges', 'attestations'])
             ->whereHas('profile', function ($query) use ($city, $field) {
                 if ($city) {
                     $query->where('localisation', 'like', "%$city%");
@@ -367,10 +367,11 @@ class CandidateController extends Controller
                     $q->where('name', 'like', "%$skill%");
                 });
             })
-            ->get();
+            ->paginate(5); // 5 candidats par page
 
         return response()->json($candidates);
     }
+
 
     /**
      * Get details for a specific candidate.
