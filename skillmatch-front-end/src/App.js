@@ -44,6 +44,7 @@ import FilterCandidate from './pages/FilterCandidate.js';
 import {BadgeList} from './pages/BadgesListes.jsx';
 import NotificationCandidate from './pages/NotificationCandidate.js';
 import SupportPage from './pages/Support.jsx';
+import CandidateDashboard from './pages/CandidateDashboard.jsx';
 import { CompanyProfile } from './pages/ProfileCompany.jsx';
 export default function App() {
   return (
@@ -68,7 +69,7 @@ export default function App() {
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
         <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
-        <Route path="/performance" element= {<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
+        <Route path="/performance" element= {<ProtectedRoute><CandidateDashboard/></ProtectedRoute>}/>
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
         <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>

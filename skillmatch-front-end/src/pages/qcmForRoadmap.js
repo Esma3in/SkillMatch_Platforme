@@ -189,7 +189,7 @@ const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
     const calculatedScore = (correctAnswers / qcmData.length) * 100;
     setScore(calculatedScore);
   };
-
+console.log(score)
   // Handle quiz submission
   const handleSubmitQuiz = () => {
     // Check if all questions are answered
@@ -219,7 +219,7 @@ const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
       correctAnswer: correctAnswersJson,
       candidate_id: candidateId,
       test_id: id, 
-      qcm_for_roadmapId :qcmData.id 
+      qcm_for_roadmapId : id
     });
     
     if (response.data.success) {
@@ -733,7 +733,8 @@ const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
             })}
           </div>
         </div>
-        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} />
+        {console.log(qcmData)}
+        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={qcmData} />
       </div>
     );
   };

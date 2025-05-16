@@ -348,81 +348,30 @@ class CandidateController extends Controller
      */
     public function filterCandidates(Request $request)
     {
-        //try {
-            $query = Candidate::with(['profile', 'skills', 'badges', 'tests'])
-                ->join('profile_candidates', 'candidates.id', '=', 'profile_candidates.candidate_id');
+        $city = $request->input('city');
+        $skill = $request->input('skill');
+        $field = $request->input('field');
 
-            // Optional filter by domain (field)
-            if ($request->filled('domain')) {
-                $domain = strtolower($request->domain);
-                $query->whereRaw('LOWER(profile_candidates.field) LIKE ?', ["%{$domain}%"]);
-            }
+        $candidates = Candidate::with(['profile', 'skills', 'badges', 'attestations'])
+            ->whereHas('profile', function ($query) use ($city, $field) {
+                if ($city) {
+                    $query->where('localisation', 'like', "%$city%");
+                }
 
-            // Optional filter by city (localisation)
-            if ($request->filled('city')) {
-                $city = strtolower($request->city);
-                $query->whereRaw('LOWER(profile_candidates.localisation) LIKE ?', ["%{$city}%"]);
-            }
-
-            // Optional filter by skill
-            if ($request->filled('skill')) {
-                $skill = strtolower($request->skill);
+                if ($field) {
+                    $query->where('field', 'like', "%$field%");
+                }
+            })
+            ->when($skill, function ($query) use ($skill) {
                 $query->whereHas('skills', function ($q) use ($skill) {
-                    $q->whereRaw('LOWER(skills.name) LIKE ?', ["%{$skill}%"]);
+                    $q->where('name', 'like', "%$skill%");
                 });
-            }
+            })
+            ->paginate(5); // 5 candidats par page
 
-            // Final result
-            $candidates = $query->select('candidates.*')->distinct()->get();
-
-
-            // Paginate results
-            //$perPage = $request->get('perPage', 10);
-            //$candidates = $query->distinct()->paginate($perPage);
-
-            // Format results
-          //  $formattedCandidates = $candidates->map(function ($candidate) {
-            //    $avgScore = $candidate->tests->avg('pivot.score') ?? 0;
-              //  $certified = $candidate->attestations->count() > 0;
-
-                //return [
-                  //  'id' => $candidate->id,
-               //     'name' => $candidate->name,
-                 //   'field' => optional($candidate->profile)->field,
-                  //  'location' => optional($candidate->profile)->localisation,
-                  //  'testScore' => round($avgScore),
-                   // 'certified' => $certified,
-                   // 'skills' => $candidate->skills->pluck('name')->toArray(),
-                   // 'description' => optional($candidate->profile)->description,
-                   // 'badges' => $candidate->badges->map(function ($badge) {
-                    //    return [
-                      //      'name' => $badge->name,
-                        //    'icon' => $badge->icon,
-                       // ];
-                   // })->toArray(),
-                //    'resumeUrl' => optional($candidate->profile)->file,
-             //   ];
-         //   });
-
-         //   return response()->json([
-             //   'data' => $formattedCandidates,
-              //  'meta' => [
-              ////      'current_page' => $candidates->currentPage(),
-                //    'last_page' => $candidates->lastPage(),
-                 //   'total' => $candidates->total(),
-                  //  'per_page' => $candidates->perPage(),
-              //  ]
-          //]);
-       // } catch (\Exception $e) {
-           /// Log::error('Error filtering candidates: ' . $e->getMessage(), [
-             //   'trace' => $e->getTraceAsString()
-           // ]);
-            //return response()->json([
-                //'error' => 'An error occurred while filtering candidates.',
-           //     'message' => $e->getMessage()
-           // ], 500);
-        //}
+        return response()->json($candidates);
     }
+
 
     /**
      * Get details for a specific candidate.

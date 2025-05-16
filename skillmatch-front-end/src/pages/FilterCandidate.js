@@ -1,235 +1,109 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { api } from "../api/api";
-import { Search, ChevronDown, Briefcase } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { api } from '../api/api';
 
-const FilterCandidate = () => {
-  const [filters, setFilters] = useState({ domain: "", skill: "" });
-  const [isSkillsOpen, setIsSkillsOpen] = useState(false);
-  const [availableSkills, setAvailableSkills] = useState([]);
+const CandidateFilter = () => {
+  const [filters, setFilters] = useState({ city: '', skill: '', field: '' });
   const [candidates, setCandidates] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    perPage: 5,
-  });
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState({});
 
-  const domainOptions = [
-    { id: "web", name: "Web Development" },
-    { id: "mobile", name: "Mobile Development" },
-    { id: "ai", name: "AI & Machine Learning" },
-    { id: "data", name: "Data & Database" },
-    { id: "cloud", name: "Cloud Computing" },
-    { id: "devops", name: "DevOps" },
-  ];
-
-  // Load skills on mount
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const response = await api.get("/api/skills");
-        const skills = Array.isArray(response.data)
-          ? response.data.map((skill) => (typeof skill === "string" ? skill : skill.name))
-          : [];
-        setAvailableSkills(skills);
-      } catch (error) {
-        console.error("Error fetching skills:", error);
-        setAvailableSkills([]);
-      }
-    };
-    fetchSkills();
-  }, []);
-
-  // Handle filter changes
-  const handleFilterChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+  const fetchCandidates = async () => {
+    const res = await api.get('/api/candidates/filter', {
+      params: { ...filters, page }
+    });
+    setCandidates(res.data.data);
+    setMeta({ lastPage: res.data.last_page, total: res.data.total });
   };
 
-  // Fetch candidates based on filters
-  const handleApplyFilters = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      // Ensure the API endpoint path is correct
-      const response = await api.get("/api/candidates/filter", {
-        params: {
-          domain: filters.domain || undefined,
-          skill: filters.skill || undefined,
-          page: pagination.currentPage,
-          perPage: pagination.perPage,
-        },
-      });
-      
-      console.log("API Response:", response.data);
-      
-      setCandidates(response.data.data || []);
-      setPagination((prev) => ({
-        ...prev,
-        totalPages: response.data.meta?.last_page || 1,
-      }));
-    } catch (error) {
-      console.error("Error fetching candidates:", error);
-      setError(`Failed to fetch candidates: ${error.response?.data?.message || error.message}`);
-      setCandidates([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [filters, pagination.currentPage, pagination.perPage]);
+  useEffect(() => {
+    fetchCandidates();
+  }, [page]);
 
-  // Change page
-  const handlePageChange = (page) => {
-    setPagination((prev) => ({ ...prev, currentPage: page }));
+  const handleFilter = () => {
+    setPage(1);
+    fetchCandidates();
   };
 
-  // Fetch candidates when page changes
-  useEffect(() => {
-    if (filters.domain || filters.skill || candidates.length > 0) {
-      handleApplyFilters();
-    }
-  }, [pagination.currentPage, handleApplyFilters]);
-
-  // Skill badge colors
-  const getSkillColor = (index) => {
-    const colors = ["bg-blue-100 text-blue-800", "bg-green-100 text-green-800"];
-    return colors[index % colors.length];
+  const resetFilters = () => {
+    setFilters({ city: '', skill: '', field: '' });
+    setSelectedCandidate(null);
+    setPage(1);
+    fetchCandidates();
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen p-4">
-      {/* Debug Info */}
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 max-w-2xl mx-auto">
-          <strong className="font-bold">Error:</strong>
-          <span className="block sm:inline"> {error}</span>
-        </div>
-      )}
-      
-      {/* Filter Section */}
-      <div className="bg-white p-4 rounded shadow mb-4 max-w-md mx-auto">
-        <h2 className="text-lg font-semibold mb-4">Filters</h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Domain</label>
-            <select
-              className="w-full border rounded p-2 text-sm"
-              value={filters.domain}
-              onChange={(e) => handleFilterChange("domain", e.target.value)}
-            >
-              <option value="">Any domain</option>
-              {domainOptions.map((option) => (
-                <option key={option.id} value={option.name}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="relative">
-            <label className="block text-sm font-medium mb-1">Skill</label>
-            <button
-              className="w-full border rounded p-2 text-sm text-left flex justify-between items-center"
-              onClick={() => setIsSkillsOpen(!isSkillsOpen)}
-            >
-              {filters.skill || "Any skill"}
-              <ChevronDown size={16} className={isSkillsOpen ? "rotate-180" : ""} />
-            </button>
-            {isSkillsOpen && (
-              <div className="absolute z-10 mt-1 w-full bg-white border rounded shadow max-h-40 overflow-y-auto">
-                <div
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-                    handleFilterChange("skill", "");
-                    setIsSkillsOpen(false);
-                  }}
-                >
-                  Any skill
-                </div>
-                {availableSkills.map((skill) => (
-                  <div
-                    key={skill}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {
-                      handleFilterChange("skill", skill);
-                      setIsSkillsOpen(false);
-                    }}
-                  >
-                    {skill}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <button
-            onClick={handleApplyFilters}
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            Apply Filters
-          </button>
-        </div>
+    <div className="p-6">
+      {/* FILTERS */}
+      <div className="flex gap-4">
+        <input placeholder="City" value={filters.city}
+          onChange={e => setFilters({ ...filters, city: e.target.value })} />
+
+        <input placeholder="Skill" value={filters.skill}
+          onChange={e => setFilters({ ...filters, skill: e.target.value })} />
+
+        <input placeholder="Field" value={filters.field}
+          onChange={e => setFilters({ ...filters, field: e.target.value })} />
+
+        <button onClick={resetFilters}>Reset Filters</button>
+        <button onClick={handleFilter}>Apply Filters</button>
       </div>
 
-      {/* Candidate List */}
-      <div className="max-w-2xl mx-auto">
-        {loading ? (
-          <div className="text-center p-4">Loading...</div>
-        ) : candidates.length > 0 ? (
-          <div className="space-y-4">
-            {candidates.map((candidate) => (
-              <div
-                key={candidate.id}
-                className="bg-white p-4 rounded shadow border"
-              >
-                <h3 className="text-lg font-semibold">{candidate.name}</h3>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Briefcase size={14} />
-                  {candidate.field || "N/A"}
-                </div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {candidate.skills?.slice(0, 3).map((skill, index) => (
-                    <span
-                      key={index}
-                      className={`px-2 py-1 rounded text-xs ${getSkillColor(index)}`}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-            {/* Pagination */}
-            {pagination.totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-4">
-                <button
-                  onClick={() =>
-                    pagination.currentPage > 1 &&
-                    handlePageChange(pagination.currentPage - 1)
-                  }
-                  disabled={pagination.currentPage === 1}
-                  className="px-3 py-1 border rounded disabled:text-gray-400"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() =>
-                    pagination.currentPage < pagination.totalPages &&
-                    handlePageChange(pagination.currentPage + 1)
-                  }
-                  disabled={pagination.currentPage === pagination.totalPages}
-                  className="px-3 py-1 border rounded disabled:text-gray-400"
-                >
-                  Next
-                </button>
-              </div>
-            )}
+      {/* SEARCH RESULTS */}
+      <h2>{meta.total} candidates found</h2>
+      <div className="grid grid-cols-2 gap-6">
+        {candidates.map(candidate => (
+          <div key={candidate.id} className="border p-4 rounded">
+            <h3>{candidate.name}</h3>
+            <p>{candidate.profile?.field} | {candidate.profile?.localisation}</p>
+            <div className="flex gap-2 flex-wrap">
+              {candidate.skills.map(skill => (
+                <span key={skill.id} className="bg-blue-100 px-2 rounded">{skill.name}</span>
+              ))}
+            </div>
+            <button onClick={() => setSelectedCandidate(candidate)}>View</button>
           </div>
-        ) : (
-          <div className="text-center p-4 bg-white rounded shadow">
-            {error ? "Error loading candidates." : "No candidates found."}
-          </div>
-        )}
+        ))}
       </div>
+
+      {/* PAGINATION */}
+      <div className="mt-4 flex gap-2">
+        {[...Array(meta.lastPage || 1)].map((_, idx) => (
+          <button key={idx} onClick={() => setPage(idx + 1)}
+            className={page === idx + 1 ? 'font-bold' : ''}>
+            {idx + 1}
+          </button>
+        ))}
+      </div>
+
+      {/* CANDIDATE DETAILS */}
+      {selectedCandidate && (
+        <div className="mt-6 border p-6 rounded shadow">
+          <h2>{selectedCandidate.name}</h2>
+          <p>{selectedCandidate.profile?.field} | {selectedCandidate.profile?.localisation}</p>
+          <p><strong>Summary:</strong> {selectedCandidate.profile?.description}</p>
+
+          {/* Certified */}
+          {selectedCandidate.attestations.length > 0 && (
+            <span className="bg-green-100 px-2 py-1 rounded">Certified</span>
+          )}
+
+          {/* Badges */}
+          <div className="mt-2 flex gap-2 flex-wrap">
+            {selectedCandidate.badges.map(badge => (
+              <span key={badge.id} className="bg-purple-100 px-2 rounded">{badge.name}</span>
+            ))}
+          </div>
+
+          {/* Action buttons */}
+          <div className="mt-4 flex gap-4">
+            <button className="bg-blue-500 text-white px-3 py-1 rounded">Resume</button>
+            <button className="bg-indigo-500 text-white px-3 py-1 rounded">Notification</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default FilterCandidate;
+export default CandidateFilter;

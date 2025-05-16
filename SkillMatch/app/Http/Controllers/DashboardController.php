@@ -123,4 +123,16 @@ class DashboardController extends Controller
             return response()->json($data);
         }
 
+        public function getSelectedCompaniesForCandidate($candidateId)
+        {
+            $data = DB::table('companies_selecteds')
+                ->join('profile_companies', 'companies_selecteds.company_id', '=', 'profile_companies.company_id')
+                ->join('companies', 'companies.id', '=', 'companies_selecteds.company_id')
+                ->where('companies_selecteds.candidate_id', $candidateId)
+                ->select('companies_selecteds.*', 'profile_companies.*', 'companies.*') // You can customize this
+                ->get();
+        
+            return response()->json($data);
+        }
+
 }

@@ -62,8 +62,10 @@ Route::get('/experiences/candidate/{candidateId}', [ExperienceController::class,
 
 // Skill Routes
 Route::post('/skills', [SkillController::class, 'store']);
-Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
 
+Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
+// Education Routes
+Route::post('/education' , [ProfileCandidateController::class , 'storeEducation']);
 // Challenge Routes
 Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
 Route::get('/challenges/{challenge}', [ChallengeController::class, 'show']);
@@ -134,8 +136,6 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 
 // Candidate filtering routes
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
-Route::get('/candidates/{id}', [CandidateController::class, 'getCandidateDetails']);
-Route::get('/skills', [CandidateController::class, 'getSkills']);
 
 
 
@@ -168,6 +168,8 @@ Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
 Route::get('/roadmap/{companyId}' , [CompaniesSelectedController::class  , 'getSkillsData']);
 
 Route::get('/dashboard/companies/selected/{candidate_id}', [DashboardController::class, 'countSelectedCompanies']);
+
+Route::get('/dashboard/companies/selected-data/{candidate_id}', [DashboardController::class, 'getSelectedCompaniesForCandidate']);
 Route::get('/dashboard/roadmap/completed/{candidate_id}', [DashboardController::class, 'countCompletedRoadmaps']);
 Route::get('/dashboard/companies/matched/{candidate_id}', [DashboardController::class, 'countMatchedCompaniesBySkill']);
 Route::get('/dashboard/badges/{candidate_id}', [DashboardController::class, 'countBadges']);
@@ -181,6 +183,9 @@ Route::get('/notifications/{candidate_id}' , [CandidateController::class , "getN
 
 
 Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
+Route::post('/qcm/saveResults',[QcmForRoadmapController::class ,"saveResults"]);
 Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResult']);
 
 
+// Get all skills :
+ Route::get('/skills/all' , [SkillController::class , 'allSkills']);

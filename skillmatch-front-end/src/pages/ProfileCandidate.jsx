@@ -6,6 +6,8 @@ import CreateExperienceModal from "../components/modals/createExperience";
 import ModalSkill from "../components/modals/createSkillsCandidate";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { Footer } from "../components/common/footer";
+import ModalEducation from "../components/modals/createEducation";
+import CreateFormationModal from "../components/modals/createEducation";
 
 export default function ProfileCandidate() {
   // state 
@@ -14,6 +16,7 @@ export default function ProfileCandidate() {
   const [experiences, setExperiences] = useState([]);
   const [skills, setSkills] = useState([]);
   const [showSkillModal, setShowSkillModal] = useState(false);
+  const [ showEducationModal , setEducationModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,12 +106,7 @@ export default function ProfileCandidate() {
             <p className="text-lg text-gray-600 mb-4">
               Build a standout profile to showcase your skills and connect with opportunities in the digital world. Follow these steps to create a professional presence—let’s get started!
             </p> */}
-            <div className="flex justify-center space-x-2">
-              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-medium">1</div>
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-medium">2</div>
-              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-medium">
-                3</div>
-            </div>
+       
             <p className="text-sm text-gray-500 mt-2">Step 2: Complete Your Profile</p>
           </div>
         
@@ -284,7 +282,7 @@ export default function ProfileCandidate() {
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-lg font-semibold text-gray-900">Education</h2>
                 <button
-                  onClick={() => alert("Education modal not implemented yet")}
+                  onClick={() =>setEducationModal(true)}
                   className="text-indigo-600 hover:text-blue-700 text-sm font-medium"
                 >
                   Add
@@ -308,6 +306,25 @@ export default function ProfileCandidate() {
                   })
                   .catch((err) => {
                     console.error("Failed to refresh skills", err);
+                  });
+              }
+            }}
+          />
+        )}
+        
+        {showEducationModal && (
+          <CreateFormationModal
+            user={candidateInfo.id}
+            onClose={() => {
+              setEducationModal(false);
+              if (candidateInfo && candidateInfo.id) {
+                api
+                  .get(`/api/education/candidate/${candidateInfo.id}`)
+                  .then((response) => {
+                    setSkills(response.data);
+                  })
+                  .catch((err) => {
+                    console.error("Failed to refresh education", err);
                   });
               }
             }}

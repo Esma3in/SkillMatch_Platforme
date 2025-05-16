@@ -37,6 +37,7 @@ const BadgeGenerator = ({ candidateId, qcmForRoadmapId }) => {
         });
         return;
       }
+      console.log("qcm rodamap result  : " ,qcmRoadmapResult)
 
       if (qcmRoadmapResult.score <= 80) {
         setBadgeMessage({

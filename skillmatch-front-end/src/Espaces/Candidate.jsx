@@ -1,8 +1,10 @@
-import CompaniesMatching from "../pages/CompaniesMatching"
+import CandidateDashboard from "../pages/CandidateDashboard"
+
 function Candidate(){
     return(
         <>
-            <CompaniesMatching/>
+            <CandidateDashboard/>
+            
         </>
     )
 }
