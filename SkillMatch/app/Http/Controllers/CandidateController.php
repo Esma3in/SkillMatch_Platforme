@@ -371,6 +371,25 @@ class CandidateController extends Controller
 
         return response()->json($candidates);
     }
+    //create notification
+    public function storeNotificationForFilter(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            'company_id' => 'required|exists:companies,id',
+            'candidate_id' => 'required|exists:candidates,id',
+        ]);
+
+        Notification::create([
+            'message' => $request->message,
+            'dateEnvoi' => now(),
+            'destinataire' => 'company',
+            'company_id' => $request->company_id,
+            'candidate_id' => $request->candidate_id,
+        ]);
+
+        return response()->json(['message' => 'Notification envoyée avec succès.']);
+    }
 
 
     /**

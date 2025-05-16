@@ -91,4 +91,8 @@ class Candidate extends Model
         ->withTimestamps();
     }
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 }

@@ -382,7 +382,7 @@ class CompanyFactory extends Factory
                 ]),
             'name' => $company['name'],
             'sector' => $company['sector'],
-            'files' => $company['files'],
+            'file' => $company['files'],
             'logo' => $defaultLogo,
         ];
     }

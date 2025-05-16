@@ -17,14 +17,12 @@ return new class extends Migration
             $table->string('reasonSocial')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->string('email')->nullable();
             $table->double('capital')->nullable();
             $table->double('salesfigures')->nullable();
             $table->bigInteger('nbEmployers')->nullable();
             $table->date('DateCreation')->nullable();
-            $table->string('status')->nullable();
+            $table->text('Bio')->nullable();
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('candidate_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

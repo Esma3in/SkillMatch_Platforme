@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/pages/Navbar/navbarCandidate.css';
 import userAvatar from '../../assets/userAvatar.jpg'; 
+import UseLogout from '../../hooks/useLogout';
 
 const NavbarCompany = () => {
+  const logout =UseLogout();
   const [isTrainingOpen, setIsTrainingOpen] = useState(false);
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -76,7 +78,7 @@ const NavbarCompany = () => {
                     <i className="menu-icon company-related-icon"></i>
                     Candidate Filter
                   </a>
-                  <a href="/candidates/related" className="dropdown-item">
+                  <a href="/company/Candidate-Selected" className="dropdown-item">
                     <i className="menu-icon company-related-icon"></i>
                     Candidate Selected
                   </a>
@@ -118,7 +120,7 @@ const NavbarCompany = () => {
                     </div>
                   </div>
                   <div className="profile-options">
-                    <a href="/profile" className="profile-option">
+                    <a href="/company/profile" className="profile-option">
                       <i className="option-icon profile-icon"></i>
                       View profile
                     </a>
@@ -134,10 +136,10 @@ const NavbarCompany = () => {
                       <i className="option-icon support-icon"></i>
                       Support
                     </a>
-                    <a href="/logout" className="profile-option">
+                    <button onClick={logout} className="profile-option">
                       <i className="option-icon logout-icon"></i>
                       Log out
-                    </a>
+                    </button>
                   </div>
                 </div>
               )}

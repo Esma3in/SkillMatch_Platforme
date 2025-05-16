@@ -91,10 +91,14 @@ Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
 Route::post('/results/store',[TestController::class,'storeResult']);
 Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::class,'getResult']);
 
-//selected candidates for company :
+//selected candidates for companby :
 Route::delete('/company/delete/candidate/selected',[CandidateSelectedController::class,'delete']);
 Route::get('/company/{id}/candidates/selected',[CandidateSelectedController::class,'getSelectedcandidates']);
 
+
+//profile company:
+
+Route::get('/company/profile/{company_id}',[CompanyController::class,'getProfile']);
 
 // get roadmap
 Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getCompleteRoadmap']);
@@ -132,6 +136,7 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 
 // Candidate filtering routes
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
+Route::post('/notifications', [CandidateController::class, 'storeNotificationForFilter']);
 
 
 
