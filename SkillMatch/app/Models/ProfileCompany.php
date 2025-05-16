@@ -19,9 +19,7 @@ class ProfileCompany extends Model
         'salesfigures',
         'nbEmployers',
         'DateCreation',
-        'status',
         'company_id',
-        'candidate_id'
     ];
 
      // get the company associted to this profile

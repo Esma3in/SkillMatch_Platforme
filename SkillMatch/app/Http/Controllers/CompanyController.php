@@ -13,26 +13,29 @@ class CompanyController extends Controller
         return response()->json($companies, 200);
     }
 
-    public function GetCompany($id){
-        $company = Company::with(['profile','skills','tests','ceo'])->find($id);
-        if($company){
-            return response()->json($company,200);
-        }else{
-            return response()->json(['message'=>'company Not found'],404);
+    public function GetCompany($id)
+    {
+        $company = Company::with(['profile', 'skills', 'tests', 'ceo'])->find($id);
+        if ($company) {
+            return response()->json($company, 200);
+        } else {
+            return response()->json(['message' => 'company Not found'], 404);
         }
     }
 
-    public function AllCompanies(){
-        $companies = Company::whereIn('state', ['active', 'unactive','waiting'])
+    public function AllCompanies()
+    {
+        $companies = Company::whereIn('state', ['active', 'unactive', 'waiting'])
             ->get();
-        return response()->json($companies,200);
+        return response()->json($companies, 200);
     }
 
-    
-    
-    public function setstate(Request $request){
+
+
+    public function setstate(Request $request)
+    {
         $request->validate([
-            'id'=>'required',
+            'id' => 'required',
             'state' => 'required|in:unactive,active,banned'
         ]);
         $company = Company::where('id', $request->id)->first();
@@ -58,5 +61,16 @@ class CompanyController extends Controller
         // Return the state of the company
         return response()->json(['state' => $company->state], 200);
     }
-    
+
+
+    public function getProfile($company_id)
+    {
+        $company = Company::with(['profile', 'skills', 'ceo', 'services', 'legaldocuments','user'])->find($company_id);
+
+        if (!$company) {
+            return response()->json(['message' => 'Company not found !!'], 404);
+        }
+
+        return response()->json($company);
+    }
 }

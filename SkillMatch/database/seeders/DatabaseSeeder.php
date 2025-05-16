@@ -34,7 +34,8 @@ use App\Models\CandidatesSkills;
 
 use App\Models\ProfileCandidate;
 use App\Models\CompaniesSelected;
-
+use App\Models\CompanyLegalDocuments;
+use App\Models\CompanyServices;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
@@ -102,6 +103,12 @@ class DatabaseSeeder extends Seeder
 
         // Create Companies and their Profiles, Roadmaps, Challenges
        $companies=Company::factory(10)->create()->each(function ($company) use($skillsCreated) {
+            CompanyServices::factory(2)->create([
+                'company_id'=>$company->id,
+            ]);
+            CompanyLegalDocuments::factory()->create([
+                'company_id'=>$company->id
+            ]);
             CandidateSelected::factory(10)->create([
                 'company_id'=>$company->id,
             ]);
