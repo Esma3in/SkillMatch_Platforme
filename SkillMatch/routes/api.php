@@ -136,6 +136,7 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 
 // Candidate filtering routes
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
+Route::post('/notifications', [CandidateController::class, 'storeNotificationForFilter']);
 
 
 
