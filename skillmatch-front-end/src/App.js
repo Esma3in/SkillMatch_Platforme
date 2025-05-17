@@ -46,6 +46,7 @@ import NotificationCandidate from './pages/NotificationCandidate.js';
 import SupportPage from './pages/Support.jsx';
 import CandidateDashboard from './pages/CandidateDashboard.jsx';
 import { CompanyProfile } from './pages/ProfileCompany.jsx';
+import CreateProfileCompany  from './pages/createProfileCompany.jsx';
 export default function App() {
   return (
     <Router>
@@ -91,6 +92,7 @@ export default function App() {
         <Route path='/company/Session/:CompanyId' element={<Company/>}/>
         <Route path='/company/candidate/profile/:candidate_id' element={<CandidateProfileForCompany/>}/>
         <Route path='/company/profile' element={<CompanyProfile/>}/>
+        <Route path='/company/create/profile' element={<CreateProfileCompany/>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
 
         {/* admin */}
