@@ -30,6 +30,7 @@ use App\Http\Controllers\candidateCoursesController;
 use App\Http\Controllers\CandidateSelectedController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
+use App\Http\Controllers\ProfileCompanyController;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -97,7 +98,7 @@ Route::get('/company/{id}/candidates/selected',[CandidateSelectedController::cla
 
 
 //profile company:
-
+Route::post('/company/store/profile',[ProfileCompanyController::class,'store']);
 Route::get('/company/profile/{company_id}',[CompanyController::class,'getProfile']);
 
 // get roadmap

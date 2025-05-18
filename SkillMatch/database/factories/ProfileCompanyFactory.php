@@ -15,13 +15,10 @@ class ProfileCompanyFactory extends Factory
     public function definition(): array
     {
         return [
-            'serieNumber'    => $this->faker->unique()->numerify('SN-#######'),
-            'reasonSocial'   => $this->faker->company,
+            'websiteUrl'   => $this->faker->url(),
             'address'        => $this->faker->address,
             'phone'          => $this->faker->phoneNumber,
-            'capital'        => $this->faker->numberBetween(10000, 1000000),
-            'salesfigures'   => $this->faker->numberBetween(50000, 5000000),
-            'nbEmployers'    => $this->faker->numberBetween(10, 500),
+            'Bio'    => $this->faker->paragraph(7),
             'DateCreation'   => $this->faker->date(),            
             // Foreign Keys
             'company_id'     => Company::inRandomOrder()->first()?->id ?? Company::factory(),
