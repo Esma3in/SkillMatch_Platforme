@@ -111,8 +111,21 @@ const CandidateFilter = () => {
     { id: 'nodejs', name: 'Node.js' },
     { id: 'java', name: 'Java' },
     { id: 'sql', name: 'SQL' },
-    { id: 'react', name: 'React' },
-    { id: 'python', name: 'Python' }
+    {id : "HTML", name : "HTML"},
+    {id : "CSS", name : "CSS"},
+    {id : "JavaScript", name : "JavaScript"},
+    {id : "PHP", name : "PHP"},
+    {id : "Laravel", name : "Laravel"},
+    {id : "React", name : "React"},
+    {id : "Vue.js", name : "Vue.js"},
+    {id : "MySQL", name : "MySQL"},
+    {id : "Git", name : "Git"},
+    {id : "REST APIs", name : "REST APIs"},
+    {id : "Node.js", name : "Node.js"},
+    {id : "Python", name : "Python"},
+    {id : "Docker", name : "Docker"},
+    {id : "AWS", name : "AWS"},
+    {id : "TypeScript", name : "TypeScript"}
   ];
 
   // Close dropdowns when clicking outside

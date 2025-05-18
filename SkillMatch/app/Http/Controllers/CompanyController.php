@@ -93,7 +93,7 @@ class CompanyController extends Controller
             'type' => 'required|string|max:255',
             'usageFrequency' => 'required|string|in:Daily,Weekly,Rarely',
             'classement' => 'required|string|in:Important,Optional',
-            'company_id' => 'required|exists:companies,id', // Ajout de la validation du company_id
+            'company_id' => 'required|exists:companies,id', 
         ]);
 
         if ($validator->fails()) {
