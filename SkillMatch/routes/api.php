@@ -139,6 +139,9 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
 Route::post('/notifications', [CandidateController::class, 'storeNotificationForFilter']);
 
+// Create skills company
+Route::post('/skills/create/company', [CompanyController::class, 'storeSkills']);
+
 
 
 
@@ -191,3 +194,7 @@ Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResul
 
 // Get all skills :
  Route::get('/skills/all' , [SkillController::class , 'allSkills']);
+
+ Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
+
+Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);

@@ -13,7 +13,8 @@ class QcmForRoadmap extends Model
         'question',
         'options',
         'correct_answer',
-        'skill_id'
+        'skill_id', 
+        'roadmap_id'
     ];
 
     public function skill()

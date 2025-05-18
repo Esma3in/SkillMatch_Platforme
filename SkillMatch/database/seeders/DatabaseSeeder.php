@@ -350,45 +350,53 @@ class DatabaseSeeder extends Seeder
         }
 
 
-        // Crée des roadmaps et skills avant
-        Roadmap::factory()->count(10)->create();
-        Skill::factory()->count(10)->create();
-        // Puis crée les liaisons
-        RoadmapSkill::factory()->count(90)->create();
+   // Create roadmaps and skills
+   Roadmap::factory()->count(10)->create();
+   Skill::factory()->count(10)->create();
+   // Create roadmap-skill relationships
+   RoadmapSkill::factory()->count(90)->create();
 
+   // Path to the JSON file
+   $qcmForRoadmap = database_path('data/json/QcmForRoadmap.json');
 
-        //qcm for roadmap :
-        $qcmForRoadmap = database_path('data/json/QcmForRoadmap.json');
+   // Check if the JSON file exists
+   if (!File::exists($qcmForRoadmap)) {
+       $this->command->error("JSON file not found at: $qcmForRoadmap");
+       return;
+   }
 
-        if (!File::exists($qcmForRoadmap)) {
-            $this->command->error("Fichier JSON non trouvé à : $qcmForRoadmap");
-            return;
-        }
+   // Load and decode the JSON file
+   $qcmData = json_decode(File::get($qcmForRoadmap), true);
 
-        $qcmData = json_decode(File::get($qcmForRoadmap), true);
+   // Get all roadmaps
+   $roadmaps = Roadmap::all();
 
-        foreach ($qcmData as $skillName => $questions) {
-            $skill = Skill::where('name', $skillName)->first();
+   foreach ($qcmData as $skillName => $questions) {
+       // Find the skill by name
+       $skill = Skill::where('name', $skillName)->first();
 
-            if (!$skill) {
-                $this->command->warn("Compétence non trouvée dans la base : $skillName");
-                continue;
-            }
+       if (!$skill) {
+           $this->command->warn("Skill not found in database: $skillName");
+           continue;
+       }
 
-            foreach ($questions as $questionData) {
-                DB::table('qcm_for_roadmaps')->insert([
-                    'question' => $questionData['question'],
-                    'options' => json_encode($questionData['options']),
-                    'correct_answer' => $questionData['correctAnswer'],
-                    'skill_id' => $skill->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+       // For each roadmap, associate the questions
+       foreach ($roadmaps as $roadmap) {
+           foreach ($questions as $questionData) {
+               DB::table('qcm_for_roadmaps')->insert([
+                   'question' => $questionData['question'],
+                   'options' => json_encode($questionData['options']),
+                   'correct_answer' => $questionData['correctAnswer'],
+                   'skill_id' => $skill->id,
+                   'roadmap_id' => $roadmap->id,
+                   'created_at' => now(),
+                   'updated_at' => now(),
+               ]);
+           }
+       }
 
-            $this->command->info("QCM insert with  : $skillName");
-        }
-
+       $this->command->info("QCM inserted for skill: $skillName across all roadmaps");
+   }
 
 
 
