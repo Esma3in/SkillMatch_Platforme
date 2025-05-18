@@ -190,6 +190,8 @@ Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
 Route::post('/qcm/saveResults',[QcmForRoadmapController::class ,"saveResults"]);
 Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResult']);
 
+//create test company
+Route::post('/create/tests/company', [CompanyController::class, 'storeTests']);
 
 // Get all skills :
  Route::get('/skills/all' , [SkillController::class , 'allSkills']);

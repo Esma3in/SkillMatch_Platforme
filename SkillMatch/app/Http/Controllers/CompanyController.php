@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Test;
 use App\Models\Skill;
 use App\Models\Company;
 use Illuminate\Http\Request;
@@ -93,7 +94,7 @@ class CompanyController extends Controller
             'type' => 'required|string|max:255',
             'usageFrequency' => 'required|string|in:Daily,Weekly,Rarely',
             'classement' => 'required|string|in:Important,Optional',
-            'company_id' => 'required|exists:companies,id', 
+            'company_id' => 'required|exists:companies,id',
         ]);
 
         if ($validator->fails()) {
@@ -126,4 +127,56 @@ class CompanyController extends Controller
             'skill' => $skill,
         ], 201);
     }
+
+    //create test
+    public function storeTests(Request $request)
+    {
+        $validatedData = $request->validate([
+            'objective' => 'required|string',
+            'prerequisites' => 'nullable|string',
+            'tools_Required' => 'required|string',
+            'before_answer' => 'required|string',
+            'qcm_id' => 'required|exists:qcms,id',
+            'company_id' => 'required|exists:companies,id',
+            'skill_id' => 'required|exists:skills,id',
+            'skill_ids' => 'nullable|array',
+            'skill_ids.*' => 'exists:skills,id',
+            'steps' => 'nullable|array',
+            'steps.*.title' => 'required|string',
+            'steps.*.description' => 'nullable|string',
+            'steps.*.order' => 'required|integer',
+        ]);
+
+        $test = Test::create([
+            'objective' => $validatedData['objective'],
+            'prerequisites' => $validatedData['prerequisites'] ?? null,
+            'tools_Required' => $validatedData['tools_Required'],
+            'before_answer' => $validatedData['before_answer'],
+            'qcm_id' => $validatedData['qcm_id'],
+            'company_id' => $validatedData['company_id'],
+            'skill_id' => $validatedData['skill_id'], // belongsTo
+        ]);
+
+        // Ajouter des compétences
+        if (!empty($validatedData['skill_ids'])) {
+            $test->skills()->attach($validatedData['skill_ids']);
+        }
+
+        // Ajouter des étapes
+        if (!empty($validatedData['steps'])) {
+            foreach ($validatedData['steps'] as $stepData) {
+                $test->steps()->create([
+                    'title' => $stepData['title'],
+                    'description' => $stepData['description'] ?? null,
+                    'order' => $stepData['order'],
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Test créé avec succès.',
+            'test' => $test->load('skills', 'steps', 'company', 'qcm'),
+        ], 201);
+    }
+
 }

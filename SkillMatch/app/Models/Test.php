@@ -36,11 +36,12 @@ class Test extends Model
     }
 
 
-    public function skills(){
-        return $this->belongsToMany(skill::class,'test_competence')
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'test_skills')
                     ->withTimestamps();
-
     }
+
     public function skill(){
         return $this->belongsTo(Skill::class);
     }
