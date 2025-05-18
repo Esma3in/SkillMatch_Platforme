@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Roadmap;
 use App\Models\Skill;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,6 +29,7 @@ class QcmForRoadmapFactory extends Factory
             'options' => $options,
             'correct_answer' => $correctAnswer,
             'skill_id' => Skill::factory(),
+            "roadmap_id" => Roadmap::factory()
         ];
     }
 }

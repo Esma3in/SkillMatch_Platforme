@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { api } from "../api/api";
 import NavbarCandidate from "../components/common/navbarCandidate";
@@ -18,13 +19,18 @@ export const BadgeList = () => {
       }
 
       try {
-        const response = await api.get(`/api/badges/${81}`);
+        const response = await api.get(`/api/badges/${candidate_id}`);
         const data = response.data.data; // Access the 'data' array from response
         if (!Array.isArray(data)) {
           throw new Error("Invalid data format: Expected an array");
         }
-        setBadges(data);
+        // Remove duplicate badges by id
+        const uniqueBadges = Array.from(
+          new Map(data.map((badge) => [badge.id, badge])).values()
+        );
+        setBadges(uniqueBadges);
       } catch (err) {
+        console.error('Error fetching badges:', err.response?.data || err.message);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -53,20 +59,17 @@ export const BadgeList = () => {
               // Map backend fields to frontend expectations
               const {
                 id = "unknown",
-                name = "Untitled Badge", // Backend: name → Frontend: title
+                name = "Untitled Badge",
                 description = "No description available",
-                date_obtained = null, // Backend: date_obtained → Frontend: dateEarned
-                qcm_for_roadmap = null,
+                date_obtained = null,
+                result = null,
+                company = null,
               } = badge;
 
-              // Extract fields from qcm_for_roadmap and result
-              const title = qcm_for_roadmap?.title || name; // Prefer roadmap title if available
-              const score = qcm_for_roadmap?.result?.score || 0; // Score from results
-              // Placeholder defaults for missing fields
-              const difficulty = 0; // Not provided by backend
-              const timeSpent = 0; // Not provided by backend
-              const skills = []; // Not provided by backend
-              const additionalInfo = qcm_for_roadmap ? "Associated with roadmap" : "No additional info";
+              // Extract fields
+              const score = result?.score || 0;
+              const companyName = company?.name || "No company associated";
+              const additionalInfo = `Associated with roadmap ID ${badge.qcm_for_roadmap_id} (${companyName})`;
 
               // Safely parse date
               const formattedDate = date_obtained
@@ -84,9 +87,10 @@ export const BadgeList = () => {
                 >
                   <div className="flex items-center mb-4">
                     <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                    <h3 className="text-2xl font-semibold text-blue-700">{title}</h3>
+                    <h3 className="text-2xl font-semibold text-blue-700">{name}</h3>
                   </div>
                   <div className="flex justify-between items-center mb-4">
+                    <img src ={badge.icon} alt="badge" />
                     <span className="inline-block bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
                       Earned: {formattedDate}
                     </span>
@@ -96,36 +100,13 @@ export const BadgeList = () => {
                   </div>
                   <div className="mb-6">
                     <p className="text-gray-600 text-sm mb-2">{description}</p>
-                    <div className="flex items-center text-sm">
+                    {/* <div className="flex items-center text-sm">
                       <span className="font-medium text-gray-700 mr-2">Score:</span>
                       <span className="text-blue-600 font-bold">{score}%</span>
-                    </div>
+                    </div> */}
                     <div className="flex items-center text-sm mt-1">
-                      <span className="font-medium text-gray-700 mr-2">Difficulty:</span>
-                      <span className="text-yellow-500">
-                        {"★".repeat(difficulty) + "☆".repeat(5 - difficulty)} ({difficulty}/5)
-                      </span>
-                    </div>
-                    <div className="flex items-center text-sm mt-1">
-                      <span className="font-medium text-gray-700 mr-2">Time:</span>
-                      <span className="font-bold text-gray-900">{timeSpent} hours</span>
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <h4 className="text-md font-medium text-gray-700 mb-2">Key Competencies:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {Array.isArray(skills) && skills.length > 0 ? (
-                        skills.map((skill, index) => (
-                          <span
-                            key={index}
-                            className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium"
-                          >
-                            {skill}
-                          </span>
-                        ))
-                      ) : (
-                        <span className="text-gray-500 text-xs">No skills listed</span>
-                      )}
+                      <span className="font-medium text-gray-700 mr-2">Company:</span>
+                      <span className="text-gray-900">{companyName}</span>
                     </div>
                   </div>
                   <div className="border-t border-gray-200 pt-4">
