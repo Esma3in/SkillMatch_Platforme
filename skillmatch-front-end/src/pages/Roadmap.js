@@ -9,7 +9,6 @@ export const Roadmap = () => {
     { id: 2, name: "Courses" },
     { id: 3, name: "Improve Skills" },
     { id: 4, name: "Quiz" },
-    { id: 5, name: "Badge" },
   ];
 
   const { id } = useParams();
@@ -33,7 +32,6 @@ export const Roadmap = () => {
       "2": false,
       "3": false,
       "4": false,
-      "5": false,
     };
   });
 
@@ -65,7 +63,28 @@ export const Roadmap = () => {
   const [skillsCompanySelected, setSkillsCompanySelected] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const candidateId = JSON.parse(localStorage.getItem('candidate_id'));
+  const [completed, setCompleted] = useState("pending");
+
+  useEffect(() => {
+    const getRoadmapInfo = async () => {
+      try {
+        const response = await api.get(`/api/roadmap/details/${id}`);
+        setCompleted(response.data.completed);
+        // If roadmap is completed, mark all steps as completed
+        if (response.data.completed === "completed") {
+          const updatedStepCompletion = roadmapSteps.reduce((acc, step) => {
+            acc[step.id] = true;
+            return acc;
+          }, {});
+          setStepCompletion(updatedStepCompletion);
+          setActiveTab("4"); // Set to the last step (Quiz) when completed
+        }
+      } catch (error) {
+        console.log("Error loading roadmap details:", error.message);
+      }
+    };
+    getRoadmapInfo();
+  }, [id ,roadmapSteps]);
 
   // Save progress and activeTab to localStorage whenever they change
   useEffect(() => {
@@ -74,13 +93,14 @@ export const Roadmap = () => {
         const dataToSave = {
           stepCompletion,
           activeTab,
+          completed, // Save completed status to localStorage
         };
         localStorage.setItem(`roadmapProgress_${id}`, JSON.stringify(dataToSave));
       } catch (e) {
         console.warn("Failed to save progress to localStorage:", e);
       }
     }
-  }, [stepCompletion, activeTab, id]);
+  }, [stepCompletion, activeTab, completed, id]);
 
   const handleTakeQuiz = () => {
     navigate(`/qcm/roadmap/${id}`);
@@ -156,36 +176,22 @@ export const Roadmap = () => {
     const completedSteps = Object.values(stepCompletion).filter(Boolean).length;
     return (completedSteps / roadmapSteps.length) * 100;
   };
-  // const createNewBadge =  async()=>{
-  //   try {
-  //     const dateObtained = format(new Date(), 'yyyy-MM-dd');
-  //     const CreationBadge = await api.post('/api/create/badge' ,{
-
-  //       "candidate_id" : candidateId ,
-  //       "roadmap_id" :id,
-  //       "name" : "silver",
-  //       "icon" : "https://img.icons8.com/skeuomorphism/64/verified-badge.png",
-  //       "Date_obtained" : dateObtained
-  //     })
-  //     console.log(" Badge created succesfully !", CreationBadge);
-      
-  //   } catch (error) {
-  //     console.log("errerur de create new Badge" ,error.message)
-      
-  //   }
-  // }
-  // createNewBadge()
 
   return (
     <>
       <NavbarCandidate />
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen bg-gray-50 ${completed === "completed" ? "bg-green-50" : ""}`}>
         {/* Roadmap Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-700 shadow-lg py-6">
+        <div className={`bg-gradient-to-r ${completed === "completed" ? "from-green-600 to-emerald-700" : "from-purple-600 to-indigo-700"} shadow-lg py-6`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold text-white">Personalized Learning Roadmap</h1>
             <p className="mt-2 text-sm text-white">
               Tailored for: <span className="font-semibold">{companySelected.name || "Unknown Company"}</span>
+              {completed === "completed" && (
+                <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  Completed
+                </span>
+              )}
             </p>
           </div>
         </div>
@@ -330,6 +336,13 @@ export const Roadmap = () => {
                         </div>
                       </div>
                     </div>
+                    {completed === "completed" && (
+                      <div className="mt-4 p-3 bg-green-50 border-l-4 border-green-400 rounded-lg">
+                        <p className="text-sm text-green-700">
+                          Congratulations! You've earned your badge for {companySelected.name || "this roadmap"}.
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   {/* Tools and Resources */}
@@ -369,8 +382,7 @@ export const Roadmap = () => {
                                   <svg className="w-4 h-4 text-purple-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                   </svg>
-                                  <span>{prereq.text
-                                   || "No description available"}</span>
+                                  <span>{prereq.text || "No description available"}</span>
                                 </li>
                               ))
                             ) : (
@@ -396,7 +408,8 @@ export const Roadmap = () => {
                         <div className="mt-6 flex justify-end">
                           <button
                             onClick={() => handleNextStep("1")}
-                            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300"
+                            disabled={completed === "completed"}
+                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${completed === "completed" ? "bg-gray-400 cursor-not-allowed" : ""}`}
                           >
                             Next Step
                           </button>
@@ -404,7 +417,7 @@ export const Roadmap = () => {
                       </div>
                     )}
                     {activeTab === "2" && (
-                      <div className=" -ml-4 sm:-ml-6 lg:-ml-8">
+                      <div className="-ml-4 sm:-ml-6 lg:-ml-8">
                         <div className="flex items-center px-4 sm:px-6 lg:px-8">
                           <div className="w-6 h-6 bg-gray-200 rounded-full mr-3"></div>
                           <h3 className="text-lg font-semibold text-gray-900">Courses</h3>
@@ -446,7 +459,8 @@ export const Roadmap = () => {
                         <div className="mt-6 flex justify-end px-4 sm:px-6 lg:px-8">
                           <button
                             onClick={() => handleNextStep("2")}
-                            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300"
+                            disabled={completed === "completed"}
+                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${completed === "completed" ? "bg-gray-400 cursor-not-allowed" : ""}`}
                           >
                             Next Step
                           </button>
@@ -470,9 +484,9 @@ export const Roadmap = () => {
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center">
                                       <div className={`w-5 h-5 rounded-full flex items-center justify-center mr-3 ${
-                                        skill.completed ? "bg-green-500" : "bg-gray-200 border border-gray-300"
+                                        skill.completed || completed === "completed" ? "bg-green-500" : "bg-gray-200 border border-gray-300"
                                       }`}>
-                                        {skill.completed && (
+                                        {(skill.completed || completed === "completed") && (
                                           <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                           </svg>
@@ -482,7 +496,7 @@ export const Roadmap = () => {
                                     </div>
                                     <div className="flex items-center">
                                       <div className="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                        <div className="bg-purple-600 h-2 rounded-full" style={{ width: skill.completed ? "100%" : "50%" }}></div>
+                                        <div className="bg-purple-600 h-2 rounded-full" style={{ width: skill.completed || completed === "completed" ? "100%" : "50%" }}></div>
                                       </div>
                                       <button className="text-xs text-purple-600 hover:underline">Practice</button>
                                     </div>
@@ -497,7 +511,8 @@ export const Roadmap = () => {
                         <div className="mt-6 flex justify-end">
                           <button
                             onClick={() => handleNextStep("3")}
-                            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300"
+                            disabled={completed === "completed"}
+                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${completed === "completed" ? "bg-gray-400 cursor-not-allowed" : ""}`}
                           >
                             Next Step
                           </button>
@@ -516,28 +531,22 @@ export const Roadmap = () => {
                             Assess skills in {filteredSkillsCompanySelected.length > 0 ? filteredSkillsCompanySelected.map(skill => skill.name).join(", ") : "various areas"}. Pass with 80% to earn a badge.
                           </p>
                         </div>
+                        {completed === "completed" && (
+                          <div className="mt-4 ml-9 p-3 bg-green-50 border-l-4 border-green-400 rounded-lg">
+                            <p className="text-sm text-green-700">
+                              Quiz completed! You've successfully finished the roadmap.
+                            </p>
+                          </div>
+                        )}
                         <div className="mt-6 flex justify-end">
                           <button
                             onClick={handleTakeQuiz}
-                            disabled={!isStepCompleted("3")}
-                            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed"
-                            title={!isStepCompleted("3") ? "Complete Improve Skills first" : "Take the Quiz"}
+                            disabled={!isStepCompleted("3") || completed === "completed"}
+                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${(!isStepCompleted("3") || completed === "completed") ? "bg-gray-400 cursor-not-allowed" : ""}`}
+                            title={!isStepCompleted("3") ? "Complete Improve Skills first" : completed === "completed" ? "Quiz already completed" : "Take the Quiz"}
                           >
                             Take the Quiz
                           </button>
-                        </div>
-                      </div>
-                    )}
-                    {activeTab === "5" && (
-                      <div>
-                        <div className="flex items-center">
-                          <div className="w-6 h-6 bg-gray-200 rounded-full mr-3"></div>
-                          <h3 className="text-lg font-semibold text-gray-900">Earn Your Badge</h3>
-                        </div>
-                        <div className="mt-4 ml-9 p-3 bg-gray-50 rounded-lg">
-                          <p className="text-sm text-gray-600">
-                            Pass the quiz to earn a badge for {companySelected.name || "your chosen company"}.
-                          </p>
                         </div>
                       </div>
                     )}
@@ -545,57 +554,6 @@ export const Roadmap = () => {
                 </>
               )}
             </div>
-
-            {/* Sidebar */}
-            <div className="w-full lg:w-80 flex flex-col gap-6">
-              <div className="bg-white rounded-xl shadow-md p-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Progress Overview</h3>
-                <div className="flex justify-center items-center my-3">
-                  <div className="relative w-20 h-20">
-                    <div className="absolute inset-0 bg-purple-100 rounded-full flex items-center justify-center">
-                      <span className="text-xl font-bold text-purple-600">{calculateProgress()}%</span>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-gray-800">Recent Activity</h4>
-                  <p className="text-xs text-gray-600">Completed Skill - {new Date().toLocaleDateString()}</p>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-md p-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Competitors</h3>
-                <p className="text-xs text-gray-600 mb-3">Compare with other candidates.</p>
-                {filteredCompetitors.length > 0 ? (
-                  filteredCompetitors.map((competitor) => (
-                    <div key={competitor.id} className="flex items-center justify-between mb-3">
-                      <div className="flex items-center">
-                        <img src={competitor.image || "https://via.placeholder.com/32"} alt={competitor.name || "Competitor"} className="w-8 h-8 rounded-full mr-2" />
-                        <div>
-                          <p className="text-xs font-medium text-gray-900">{competitor.name || "Unknown"}</p>
-                          <p className="text-xs text-gray-500">{competitor.email || "No email"}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs font-medium text-gray-900">{competitor.badges || 0} Badges</p>
-                        <p className="text-xs text-gray-500">{competitor.location || "Unknown"}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-xs text-gray-600">No competitor data available.</p>
-                )}
-                <a href="#" className="text-purple-600 text-xs font-medium hover:underline flex items-center">
-                  See All Details
-                  <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-
-            </div>
-            
-            <div><button >Badge</button></div>
           </div>
         </div>
       </div>

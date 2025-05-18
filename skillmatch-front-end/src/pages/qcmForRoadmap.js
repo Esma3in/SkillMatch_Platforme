@@ -734,7 +734,7 @@ console.log(score)
           </div>
         </div>
         {console.log(qcmData)}
-        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={qcmData} />
+        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score = {score} />
       </div>
     );
   };

@@ -82,4 +82,30 @@ class RoadmapController extends Controller
             'data' => $roadmap
         ], 201);
     }
+    public function details($id)
+    {
+        try {
+            // Fetch the roadmap by ID
+            $roadmap = Roadmap::find($id);
+    
+            // Check if roadmap exists
+            if (!$roadmap) {
+                return response()->json([
+                    'message' => 'Roadmap not found'
+                ], 404);
+            }
+    
+            // Return the roadmap details
+            return response()->json([
+                'id' => $roadmap->id,
+                'name' => $roadmap->name,
+                'completed' => $roadmap->completed
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error fetching roadmap details',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

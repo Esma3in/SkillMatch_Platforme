@@ -187,3 +187,6 @@ Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResul
 
 // Get all skills :
  Route::get('/skills/all' , [SkillController::class , 'allSkills']);
+ Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
+
+Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
