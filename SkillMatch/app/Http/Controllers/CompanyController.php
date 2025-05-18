@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
@@ -72,5 +74,47 @@ class CompanyController extends Controller
         }
 
         return response()->json($company);
+    }
+
+
+    //create skills
+    /**
+     * Create a new skill
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeSkills(Request $request)
+    {
+        // Validation des données
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'level' => 'required|string|in:Junior,Intermediate,Advanced',
+            'type' => 'required|string|max:255',
+            'usageFrequency' => 'required|string|in:Daily,Weekly,Rarely',
+            'classement' => 'required|string|in:Important,Optional',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Création de la compétence
+        $skill = Skill::create([
+            'name' => $request->name,
+            'level' => $request->level,
+            'type' => $request->type,
+            'usageFrequency' => $request->usageFrequency,
+            'classement' => $request->classement,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Compétence créée avec succès',
+            'skill' => $skill,
+        ], 201);
     }
 }

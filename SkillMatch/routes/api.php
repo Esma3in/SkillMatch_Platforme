@@ -138,6 +138,9 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
 Route::post('/notifications', [CandidateController::class, 'storeNotificationForFilter']);
 
+// Create skills company
+Route::post('/skills/create/company', [CompanyController::class, 'storeSkills']);
+
 
 
 

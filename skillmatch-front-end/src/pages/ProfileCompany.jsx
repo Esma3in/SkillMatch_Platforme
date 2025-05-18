@@ -8,6 +8,7 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { api } from "../api/api";
 import NavbarCompany from "../components/common/navbarCompany";
+import { useNavigate } from "react-router";
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
@@ -93,9 +94,17 @@ const GroupByAnima = ({ services }) => {
 };
 
 const OverlapGroupWrapperByAnima = ({Bio}) => {
+    const navigate = useNavigate();
+    const idCompany = localStorage.getItem("idCompany") || localStorage.getItem("company_id");
+    
+    // Corrected function to properly use the idCompany variable
+    const handleAddSkillClick = () => {
+        navigate(`/company/${idCompany}/add-skill`);
+    };
+
     // Data for action buttons
     const actionButtons = [
-        { id: 1, text: "Add skills" },
+        { id: 1, text: "Add skills", onClick: handleAddSkillClick },
         { id: 2, text: "Add Test" },
     ];
 
@@ -132,6 +141,7 @@ const OverlapGroupWrapperByAnima = ({Bio}) => {
                                 {actionButtons.map((button) => (
                                     <Button
                                         key={button.id}
+                                        onClick={button.onClick}
                                         className="w-[223px] h-[55px] rounded-[9px] bg-indigo-600 border border-white"
                                     >
                                         <span className="font-poppins font-semibold text-white text-2xl tracking-[-0.20px]">
