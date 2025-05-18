@@ -13,8 +13,7 @@ class DashboardController extends Controller
         // counting roadmap completed
         public function countCompletedRoadmaps(Request $request ,$candidate_id)
             {
-                $count = Roadmap::where('candidate_id', $candidate_id)
-                                ->where('completed', 'completed')
+                $count = Roadmap::where('candidate_id', $candidate_id)->where("completed" , "completed")
                                 ->count();
 
                 return response()->json(['completed_count' => $count]);

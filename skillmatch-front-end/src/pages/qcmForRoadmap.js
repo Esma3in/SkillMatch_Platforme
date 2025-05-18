@@ -18,18 +18,24 @@ const QcmForRoadmap = () => {
   const [progressAnimationWidth, setProgressAnimationWidth] = useState("0%");
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
 
+  const candidateId = localStorage.getItem("candidate_id")
+    ? JSON.parse(localStorage.getItem("candidate_id"))
+    : null;
+
   // Fetch and process quiz data
   useEffect(() => {
     const fetchQcmData = async () => {
       try {
         const response = await api.get(`/api/qcm/roadmap/${id}`);
-        const formattedData = response.data.map(item => {
+        const formattedData = response.data.map((item) => {
           let options = [];
-          if (typeof item.options === 'string') {
+          if (typeof item.options === "string") {
             try {
               options = JSON.parse(item.options);
             } catch (e) {
-              console.error(`Failed to parse options for question ${item.id}:`, item.options, e);
+              if (process.env.NODE_ENV !== "production") {
+                console.error(`Failed to parse options for question ${item.id}:`, item.options, e);
+              }
               options = [];
             }
           } else if (Array.isArray(item.options)) {
@@ -42,7 +48,7 @@ const QcmForRoadmap = () => {
               const key = `option_${String.fromCharCode(97 + index)}`;
               optionMap[key] = option;
             });
-          } else {
+          } else if (process.env.NODE_ENV !== "production") {
             console.warn(`No valid options found for question ${item.id}`);
           }
 
@@ -51,8 +57,8 @@ const QcmForRoadmap = () => {
 
         // Group questions by course
         const questionsByCourse = {};
-        formattedData.forEach(question => {
-          const courseName = question.course_name || 'General';
+        formattedData.forEach((question) => {
+          const courseName = question.course_name || "General";
           if (!questionsByCourse[courseName]) {
             questionsByCourse[courseName] = [];
           }
@@ -65,12 +71,10 @@ const QcmForRoadmap = () => {
         const maxTotalQuestions = 20;
         const questionsPerCourse = Math.min(3, Math.max(2, Math.floor(maxTotalQuestions / courseNames.length)));
 
-        courseNames.forEach(courseName => {
+        courseNames.forEach((courseName) => {
           const courseQuestions = questionsByCourse[courseName];
           const questionsToTake = Math.min(questionsPerCourse, courseQuestions.length);
-          const selectedQuestions = courseQuestions
-            .sort(() => Math.random() - 0.5) // Shuffle questions within each course
-            .slice(0, questionsToTake);
+          const selectedQuestions = courseQuestions.sort(() => Math.random() - 0.5).slice(0, questionsToTake);
           finalQuestions = [...finalQuestions, ...selectedQuestions];
         });
 
@@ -78,15 +82,15 @@ const QcmForRoadmap = () => {
         finalQuestions = finalQuestions.slice(0, maxTotalQuestions);
 
         // Shuffle options while preserving correct answer
-        const randomizedData = finalQuestions.map(question => {
+        const randomizedData = finalQuestions.map((question) => {
           if (question.parsedOptions && Array.isArray(question.parsedOptions) && question.parsedOptions.length > 0) {
             const originalOptions = [...question.parsedOptions];
-            const correctText = question.correct_answer.startsWith('option_')
-              ? originalOptions[question.correct_answer.charAt(question.correct_answer.length - 1).charCodeAt(0) - 97]
+            const correctText = question.correct_answer.startsWith("option_")
+              ? originalOptions[parseInt(question.correct_answer.replace("option_", "")) - 97] || question.correct_answer
               : question.correct_answer;
 
             const shuffledOptions = [...originalOptions].sort(() => Math.random() - 0.5);
-            const newCorrectIndex = shuffledOptions.findIndex(opt => opt === correctText);
+            const newCorrectIndex = shuffledOptions.findIndex((opt) => opt === correctText);
             const newOptionMap = {};
             shuffledOptions.forEach((option, index) => {
               const key = `option_${String.fromCharCode(97 + index)}`;
@@ -97,7 +101,7 @@ const QcmForRoadmap = () => {
               ...question,
               ...newOptionMap,
               parsedOptions: shuffledOptions,
-              correct_answer: `option_${String.fromCharCode(97 + newCorrectIndex)}`
+              correct_answer: `option_${String.fromCharCode(97 + newCorrectIndex)}`,
             };
           }
           return question;
@@ -105,7 +109,7 @@ const QcmForRoadmap = () => {
 
         setQcmData(randomizedData);
         const initialAnswers = {};
-        randomizedData.forEach(item => {
+        randomizedData.forEach((item) => {
           initialAnswers[item.id] = "";
         });
         setSelectedAnswers(initialAnswers);
@@ -117,12 +121,18 @@ const QcmForRoadmap = () => {
     };
     fetchQcmData();
   }, [id]);
-const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
+
   // Timer logic
   useEffect(() => {
+
     if (loading || isSubmitted || isTimeUp) return;
+
     const timer = setInterval(() => {
-      setTimeLeft(prevTime => {
+      const handleTimeUp = () => {
+        calculateScore();
+        setIsSubmitted(true);
+      };
+      setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
           clearInterval(timer);
           setIsTimeUp(true);
@@ -133,29 +143,28 @@ const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
       });
     }, 1000);
     return () => clearInterval(timer);
+
   }, [loading, isSubmitted, isTimeUp]);
 
   // Update progress animation width
   useEffect(() => {
     if (qcmData.length === 0) return;
-    
+
     // Calculate how many questions have been answered
-    const answeredQuestions = Object.values(selectedAnswers).filter(answer => answer !== "").length;
+    const answeredQuestions = Object.values(selectedAnswers).filter((answer) => answer !== "").length;
     const progressPercentage = (answeredQuestions / qcmData.length) * 100;
     setProgressAnimationWidth(`${progressPercentage}%`);
+
   }, [selectedAnswers, qcmData]);
 
   // Handle time up
-  const handleTimeUp = () => {
-    calculateScore();
-    setIsSubmitted(true);
-  };
+
 
   // Format time remaining
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
   // Time warning class
@@ -168,19 +177,19 @@ const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
   // Handle answer selection
   const handleAnswerSelect = (questionId, option) => {
     if (isSubmitted) return;
-    setSelectedAnswers(prev => ({
+    setSelectedAnswers((prev) => ({
       ...prev,
-      [questionId]: option
+      [questionId]: option,
     }));
   };
 
   // Calculate score
   const calculateScore = () => {
     let correctAnswers = 0;
-    qcmData.forEach(question => {
+    qcmData.forEach((question) => {
       const userAnswer = selectedAnswers[question.id];
       const correctAnswer = question.correct_answer;
-      
+
       if (userAnswer && userAnswer === correctAnswer) {
         correctAnswers++;
       }
@@ -189,58 +198,63 @@ const candidateId = JSON.parse(localStorage.getItem('candidate_id'))
     const calculatedScore = (correctAnswers / qcmData.length) * 100;
     setScore(calculatedScore);
   };
-console.log(score)
+
   // Handle quiz submission
   const handleSubmitQuiz = () => {
     // Check if all questions are answered
-    const unansweredCount = qcmData.filter(q => !selectedAnswers[q.id]).length;
-    
+    const unansweredCount = qcmData.filter((q) => !selectedAnswers[q.id]).length;
+
     if (unansweredCount > 0) {
       setShowConfirmSubmit(true);
     } else {
       finalizeSubmission();
     }
   };
+
   const saveQuizResults = async () => {
-  try {
-    const candidateAnswersJson = JSON.stringify(selectedAnswers);
-    const correctAnswersJson = JSON.stringify(
-      qcmData.reduce((acc, question) => {
-        acc[question.id] = question.correct_answer;
-        return acc;
-      }, {})
-    );
-    
-    const candidateId = localStorage.getItem('candidate_id');    
-    
-    const response = await api.post('/api/qcm/saveResults', {
-      score: score, 
-      candidateAnswer: candidateAnswersJson,
-      correctAnswer: correctAnswersJson,
-      candidate_id: candidateId,
-      test_id: id, 
-      qcm_for_roadmapId : id
-    });
-    
-    if (response.data.success) {
-      console.log("Results saved successfully");
-    } else {
-      console.error("Failed to save results:", response.data.message);
+    try {
+      if (!candidateId) {
+        setError("No candidate ID found. Please log in again.");
+        return;
+      }
 
+      const candidateAnswersJson = JSON.stringify(selectedAnswers);
+      const correctAnswersJson = JSON.stringify(
+        qcmData.reduce((acc, question) => {
+          acc[question.id] = question.correct_answer;
+          return acc;
+        }, {})
+      );
+
+      const response = await api.post("/api/qcm/saveResults", {
+        score,
+        candidateAnswer: candidateAnswersJson,
+        correctAnswer: correctAnswersJson,
+        candidate_id: candidateId,
+        test_id: id,
+        qcm_for_roadmapId: id,
+      });
+
+      if (response.data.success) {
+        if (process.env.NODE_ENV !== "production") {
+          console.log("Results saved successfully");
+        }
+      } else {
+        setError(response.data.message || "Failed to save results");
+      }
+    } catch (error) {
+      setError("Error saving quiz results. Please try again.");
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error saving quiz results:", error);
+      }
     }
-  } catch (error) {
-    console.error("Error saving quiz results:", error);
-
-  }
-};
+  };
 
   // Final submission
   const finalizeSubmission = () => {
     calculateScore();
     setIsSubmitted(true);
     setShowConfirmSubmit(false);
-
-    // Save the results to the database
     saveQuizResults();
   };
 
@@ -274,7 +288,7 @@ console.log(score)
 
   // Jump to first unanswered question
   const goToFirstUnanswered = () => {
-    const firstUnansweredIndex = qcmData.findIndex(q => !selectedAnswers[q.id]);
+    const firstUnansweredIndex = qcmData.findIndex((q) => !selectedAnswers[q.id]);
     if (firstUnansweredIndex !== -1) {
       setCurrentQuestion(firstUnansweredIndex);
     }
@@ -309,53 +323,64 @@ console.log(score)
 
   // Render options for a question
   const renderOptions = (question) => {
-    if (question.parsedOptions && Array.isArray(question.parsedOptions) && question.parsedOptions.length > 0) {
-      return question.parsedOptions.map((optionText, index) => {
-        const option = `option_${String.fromCharCode(97 + index)}`;
-        return (
-          <div
-            key={option}
-            onClick={() => !isSubmitted && handleAnswerSelect(question.id, option)}
-            className={`p-4 rounded-lg border mb-3 cursor-pointer transition-all ${getAnswerStyle(question, option)}`}
-          >
-            <div className="flex items-center">
-              <div className={`w-8 h-8 mr-3 flex items-center justify-center rounded-full border ${
-                selectedAnswers[question.id] === option
-                  ? 'bg-indigo-600 border-indigo-600 text-white'
-                  : 'border-gray-400 text-gray-500'
-              }`}>
-                <span className="font-medium">{String.fromCharCode(65 + index)}</span>
-              </div>
-              <span className="text-gray-800">{optionText}</span>
-            </div>
-            {isSubmitted && option === question.correct_answer && (
-              <div className="mt-2 flex items-center text-green-600 font-medium">
-                <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                Correct answer
-              </div>
-            )}
-            {isSubmitted && selectedAnswers[question.id] === option && option !== question.correct_answer && (
-              <div className="mt-2 flex items-center text-red-600 font-medium">
-                <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-                Incorrect choice
-              </div>
-            )}
-          </div>
-        );
-      });
+    if (!question.parsedOptions || !Array.isArray(question.parsedOptions) || question.parsedOptions.length === 0) {
+      return <div className="text-red-500">No options available for this question</div>;
     }
-    return <div className="text-red-500">No options available for this question</div>;
+
+    return question.parsedOptions.map((optionText, index) => {
+      const option = `option_${String.fromCharCode(97 + index)}`;
+      return (
+        <div
+          key={option}
+          onClick={() => !isSubmitted && handleAnswerSelect(question.id, option)}
+          className={`p-4 rounded-lg border mb-3 cursor-pointer transition-all ${getAnswerStyle(question, option)}`}
+        >
+          <div className="flex items-center">
+            <div
+              className={`w-8 h-8 mr-3 flex items-center justify-center rounded-full border ${
+                selectedAnswers[question.id] === option
+                  ? "bg-indigo-600 border-indigo-600 text-white"
+                  : "border-gray-400 text-gray-500"
+              }`}
+            >
+              <span className="font-medium">{String.fromCharCode(65 + index)}</span>
+            </div>
+            <span className="text-gray-800">{optionText}</span>
+          </div>
+          {isSubmitted && option === question.correct_answer && (
+            <div className="mt-2 flex items-center text-green-600 font-medium">
+              <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Correct answer
+            </div>
+          )}
+          {isSubmitted && selectedAnswers[question.id] === option && option !== question.correct_answer && (
+            <div className="mt-2 flex items-center text-red-600 font-medium">
+              <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Incorrect choice
+            </div>
+          )}
+        </div>
+      );
+    });
   };
 
   // Render quiz progress header
   const renderQuizHeader = () => {
     // Count answered questions
-    const answeredCount = Object.values(selectedAnswers).filter(answer => answer !== "").length;
-    
+    const answeredCount = Object.values(selectedAnswers).filter((answer) => answer !== "").length;
+
     return (
       <div className="bg-white rounded-xl shadow-md p-6 mb-6">
         <div className="flex flex-col md:flex-row justify-between items-center mb-4">
@@ -372,14 +397,14 @@ console.log(score)
             </div>
           </div>
         </div>
-        
+
         <div className="mb-2 flex justify-between text-sm font-medium text-gray-600">
           <span>Progress: {answeredCount}/{qcmData.length} questions answered</span>
           <span>{Math.round((answeredCount / qcmData.length) * 100)}% complete</span>
         </div>
-        
+
         <div className="w-full bg-gray-200 rounded-full h-2.5">
-          <div 
+          <div
             className="bg-indigo-600 h-2.5 rounded-full transition-all duration-500 ease-out"
             style={{ width: progressAnimationWidth }}
           ></div>
@@ -401,10 +426,10 @@ console.log(score)
               onClick={() => goToQuestion(index)}
               className={`w-10 h-10 rounded-md flex items-center justify-center font-medium text-sm transition-all ${
                 currentQuestion === index
-                  ? 'bg-indigo-600 text-white shadow-md'
+                  ? "bg-indigo-600 text-white shadow-md"
                   : hasAnswer
-                    ? 'bg-indigo-100 text-indigo-700 border border-indigo-300'
-                    : 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200'
+                    ? "bg-indigo-100 text-indigo-700 border border-indigo-300"
+                    : "bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200"
               }`}
             >
               {index + 1}
@@ -412,7 +437,7 @@ console.log(score)
           );
         })}
       </div>
-      
+
       {!isSubmitted && (
         <div className="mt-4">
           <button
@@ -440,34 +465,34 @@ console.log(score)
       </div>
     </div>
   );
- 
+
   // Render question content
   const renderQuestionContent = () => (
     <div className="flex-1">
       <div className="bg-white p-6 rounded-xl shadow-md mb-4">
         <div className="flex items-center mb-6">
-          <span className="bg-indigo-100 text-indigo-800 text-sm font-medium py-1 px-3 rounded-full">Question {currentQuestion + 1} of {getTotalQuestions()}</span>
+          <span className="bg-indigo-100 text-indigo-800 text-sm font-medium py-1 px-3 rounded-full">
+            Question {currentQuestion + 1} of {getTotalQuestions()}
+          </span>
           <div className="ml-3 flex items-center text-sm text-gray-500">
-            <span className="bg-gray-100 py-1 px-3 rounded-full mr-2">{getCurrentQuestion().course_name || 'General'}</span>
+            <span className="bg-gray-100 py-1 px-3 rounded-full mr-2">{getCurrentQuestion().course_name || "General"}</span>
             <span className="bg-gray-100 py-1 px-3 rounded-full">{getCurrentQuestion().skill_name}</span>
           </div>
         </div>
-        
+
         <h3 className="text-xl font-semibold text-gray-800 mb-6">{getCurrentQuestion().question}</h3>
-        
-        <div className="space-y-1">
-          {renderOptions(getCurrentQuestion())}
-        </div>
+
+        <div className="space-y-1">{renderOptions(getCurrentQuestion())}</div>
       </div>
-      
+
       <div className="flex justify-between items-center">
         <button
           onClick={goToPreviousQuestion}
           disabled={currentQuestion === 0}
           className={`flex items-center py-2 px-4 rounded-lg transition-all ${
             currentQuestion === 0
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 shadow-sm'
+              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+              : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 shadow-sm"
           }`}
         >
           <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -487,8 +512,8 @@ console.log(score)
           disabled={isSubmitted}
           className={`flex items-center py-2 px-4 rounded-lg transition-all ${
             currentQuestion === qcmData.length - 1
-              ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md'
-              : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 shadow-sm'
+              ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-md"
+              : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 shadow-sm"
           }`}
         >
           {currentQuestion === qcmData.length - 1 ? (
@@ -517,11 +542,17 @@ console.log(score)
       <div className="bg-white rounded-xl shadow-xl p-6 max-w-md mx-4">
         <div className="text-center mb-4">
           <svg className="w-16 h-16 mx-auto text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
           </svg>
           <h2 className="text-xl font-bold text-gray-800 mt-4">Confirm Submission</h2>
           <p className="text-gray-600 mt-2">
-            You have {qcmData.filter(q => !selectedAnswers[q.id]).length} unanswered questions. Are you sure you want to submit?
+            You have {qcmData.filter((q) => !selectedAnswers[q.id]).length} unanswered questions. Are you sure you want to
+            submit?
           </p>
         </div>
         <div className="flex space-x-3">
@@ -574,26 +605,26 @@ console.log(score)
     const totalQuestions = qcmData.length;
     const correctCount = Math.round((score / 100) * totalQuestions);
     const incorrectCount = totalQuestions - correctCount;
-    
+
     // Group by courses
     const coursePerformance = {};
-    qcmData.forEach(question => {
-      const courseName = question.course_name || 'General';
+    qcmData.forEach((question) => {
+      const courseName = question.course_name || "General";
       if (!coursePerformance[courseName]) {
         coursePerformance[courseName] = { total: 0, correct: 0 };
       }
-      
+
       coursePerformance[courseName].total++;
       if (selectedAnswers[question.id] === question.correct_answer) {
         coursePerformance[courseName].correct++;
       }
     });
-    
+
     return {
       correctCount,
       incorrectCount,
-      unattemptedCount: Object.values(selectedAnswers).filter(a => a === "").length,
-      coursePerformance
+      unattemptedCount: Object.values(selectedAnswers).filter((a) => a === "").length,
+      coursePerformance,
     };
   };
 
@@ -601,7 +632,7 @@ console.log(score)
   const renderResults = () => {
     const feedback = getScoreFeedback();
     const metrics = calculatePerformanceMetrics();
-    
+
     return (
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
@@ -612,9 +643,7 @@ console.log(score)
                 <span className={feedback.color}>{score.toFixed(0)}%</span>
                 <span className="ml-3">{feedback.icon}</span>
               </div>
-              <p className={`text-xl ${feedback.color} font-medium`}>
-                {feedback.text}
-              </p>
+              <p className={`text-xl ${feedback.color} font-medium`}>{feedback.text}</p>
               <p className="text-gray-600 mt-2">
                 {metrics.correctCount} correct out of {qcmData.length} questions
               </p>
@@ -649,7 +678,7 @@ console.log(score)
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
+                    <div
                       className="bg-indigo-600 h-2 rounded-full"
                       style={{ width: `${(data.correct / data.total) * 100}%` }}
                     ></div>
@@ -672,15 +701,15 @@ console.log(score)
 
         <div className="bg-white rounded-xl shadow-md p-6 mb-8">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">Detailed Question Analysis</h3>
-          
+
           <div className="space-y-6">
             {qcmData.map((question, index) => {
               const userAnswer = selectedAnswers[question.id];
               const isCorrect = userAnswer === question.correct_answer;
 
               const getAnswerText = (answerKey) => {
-                if (!answerKey) return 'No answer';
-                if (answerKey.startsWith('option_')) {
+                if (!answerKey) return "No answer";
+                if (answerKey.startsWith("option_")) {
                   const optionIndex = answerKey.charAt(answerKey.length - 1).charCodeAt(0) - 97;
                   return question.parsedOptions?.[optionIndex] || answerKey;
                 }
@@ -690,19 +719,29 @@ console.log(score)
               return (
                 <div
                   key={question.id}
-                  className={`p-5 rounded-lg border ${isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}
+                  className={`p-5 rounded-lg border ${isCorrect ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
                 >
                   <div className="flex items-start">
-                    <div className={`mt-1 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${
-                      isCorrect ? 'bg-green-500' : 'bg-red-500'
-                    }`}>
+                    <div
+                      className={`mt-1 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${
+                        isCorrect ? "bg-green-500" : "bg-red-500"
+                      }`}
+                    >
                       {isCorrect ? (
                         <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       ) : (
                         <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       )}
                     </div>
@@ -710,16 +749,18 @@ console.log(score)
                       <div className="flex items-center justify-between mb-1">
                         <span className="font-semibold text-gray-800">Question {index + 1}</span>
                         <div className="flex space-x-2 text-xs">
-                          <span className="bg-gray-100 py-1 px-2 rounded-full">{question.course_name || 'General'}</span>
+                          <span className="bg-gray-100 py-1 px-2 rounded-full">{question.course_name || "General"}</span>
                           <span className="bg-gray-100 py-1 px-2 rounded-full">{question.skill_name}</span>
                         </div>
                       </div>
                       <p className="font-medium text-gray-800 mb-3">{question.question}</p>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                        <div className={`p-3 rounded-md ${userAnswer ? (isCorrect ? 'bg-green-100' : 'bg-red-100') : 'bg-gray-100'}`}>
+                        <div
+                          className={`p-3 rounded-md ${userAnswer ? (isCorrect ? "bg-green-100" : "bg-red-100") : "bg-gray-100"}`}
+                        >
                           <div className="text-sm text-gray-500">Your Answer</div>
-                          <div className="font-medium">{getAnswerText(userAnswer) || 'Unanswered'}</div>
+                          <div className="font-medium">{getAnswerText(userAnswer) || "Unanswered"}</div>
                         </div>
                         <div className="p-3 rounded-md bg-green-100">
                           <div className="text-sm text-gray-500">Correct Answer</div>
@@ -733,8 +774,7 @@ console.log(score)
             })}
           </div>
         </div>
-        {console.log(qcmData)}
-        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score = {score} />
+        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score={score} />
       </div>
     );
   };
@@ -754,7 +794,12 @@ console.log(score)
       <div className="max-w-md mx-auto mt-12 p-6 bg-white rounded-xl shadow-md">
         <div className="text-center">
           <svg className="w-16 h-16 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
           </svg>
           <h2 className="mt-4 text-xl font-bold text-gray-800">Something went wrong</h2>
           <p className="mt-2 text-gray-600">{error}</p>
@@ -764,7 +809,6 @@ console.log(score)
           >
             Return to Roadmap
           </button>
-          
         </div>
       </div>
     );
@@ -775,22 +819,16 @@ console.log(score)
   }
 
   if (isSubmitted) {
-    return (
-      <div className="max-w-4xl mx-auto p-6">
-        {renderResults()}
-      </div>
-    );
+    return <div className="max-w-4xl mx-auto p-6">{renderResults()}</div>;
   }
 
   return (
-    
     <div className="max-w-6xl mx-auto p-6">
       {renderQuizHeader()}
-      
+
       <div className="flex">
         {renderQuestionSidebar()}
         {renderQuestionContent()}
-  
       </div>
 
       {/* Mobile question pagination */}
@@ -804,10 +842,10 @@ console.log(score)
                 onClick={() => goToQuestion(index)}
                 className={`w-full h-8 rounded-md flex items-center justify-center font-medium text-sm ${
                   currentQuestion === index
-                    ? 'bg-indigo-600 text-white'
+                    ? "bg-indigo-600 text-white"
                     : hasAnswer
-                      ? 'bg-indigo-100 text-indigo-700 border border-indigo-300'
-                      : 'bg-gray-100 text-gray-700 border border-gray-300'
+                      ? "bg-indigo-100 text-indigo-700 border border-indigo-300"
+                      : "bg-gray-100 text-gray-700 border border-gray-300"
                 }`}
               >
                 {index + 1}
@@ -826,10 +864,10 @@ console.log(score)
                   onClick={() => goToQuestion(actualIndex)}
                   className={`w-full h-8 rounded-md flex items-center justify-center font-medium text-sm ${
                     currentQuestion === actualIndex
-                      ? 'bg-indigo-600 text-white'
+                      ? "bg-indigo-600 text-white"
                       : hasAnswer
-                        ? 'bg-indigo-100 text-indigo-700 border border-indigo-300'
-                        : 'bg-gray-100 text-gray-700 border border-gray-300'
+                        ? "bg-indigo-100 text-indigo-700 border border-indigo-300"
+                        : "bg-gray-100 text-gray-700 border border-gray-300"
                   }`}
                 >
                   {actualIndex + 1}
@@ -840,20 +878,9 @@ console.log(score)
         )}
       </div>
 
-      
       {showConfirmSubmit && renderConfirmSubmitModal()}
-    
     </div>
-
-
   );
-
-  
- 
-
-
-  
-
 };
 
 export default QcmForRoadmap;

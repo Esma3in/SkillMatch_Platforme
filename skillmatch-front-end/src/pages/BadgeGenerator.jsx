@@ -1,60 +1,65 @@
 import React, { useState } from "react";
 import { api } from "../api/api";
 
-const BadgeGenerator = ({ candidateId, qcmForRoadmapId, score }) => {
+const BadgeGenerator = ({ candidateId, qcmForRoadmapId, score, refreshBadges }) => {
   const [badgeMessage, setBadgeMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-const createBadge = async () => {
-  try {
-    // Check if score exists and is greater than 80
-    if (!score || isNaN(score)) {
+  const createBadge = async () => {
+    try {
+      if (!score || isNaN(score)) {
+        setBadgeMessage({
+          type: "error",
+          text: "Valid score information not available",
+        });
+        return;
+      }
+
+      if (score <= 80) {
+        setBadgeMessage({
+          type: "error",
+          text: "Score must be greater than 80 to earn this badge",
+        });
+        return;
+      }
+
+      console.log("BadgeGenerator candidateId:", candidateId);
+      console.log("BadgeGenerator qcmForRoadmapId:", qcmForRoadmapId);
+      const payload = {
+        candidate_id: Number(candidateId),
+        qcm_for_roadmap_id: Number(qcmForRoadmapId),
+        name: String(`Badge for Roadmap ${qcmForRoadmapId}`),
+        icon: String("https://img.icons8.com/pulsar-gradient/48/warranty-card.png"),
+        description: String(`Earned by completing the roadmap with ID ${qcmForRoadmapId} with a score of ${score}`),
+        Date_obtained: new Date().toISOString().split("T")[0],
+        result: { score: Number(score) }, // Match BadgeList expectation
+        company: { name: "Default Company" }, // Match BadgeList expectation
+      };
+
+      console.log("Sending badge creation request:", payload);
+      setLoading(true);
+      const response = await api.post("/api/create/badge", payload);
+
       setBadgeMessage({
-        type: 'error',
-        text: 'Valid score information not available',
+        type: "success",
+        text: response.data.message || "Badge created successfully!",
       });
-      return;
-    }
-
-    if (score <= 80) {
+      if (refreshBadges) {
+        refreshBadges(); // Trigger parent refresh
+      } else if (window.location.pathname === "/badges") {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Badge creation error:", error.response?.data || error.message);
       setBadgeMessage({
-        type: 'error',
-        text: 'Score must be greater than 80 to earn this badge',
+        type: "error",
+        text: error.response?.data?.message || "Failed to create badge",
+        errorDetails: error.response?.data?.error || "No additional error details available",
       });
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    // Construct payload with explicit string conversion
-    console.log(qcmForRoadmapId)
-    const payload = {
-      candidate_id: Number(candidateId), // Ensure numeric
-      qcm_for_roadmap_id:qcmForRoadmapId, // Ensure numeric
-      name: String(`Badge for Roadmap ${qcmForRoadmapId}`), // Ensure string
-      icon: String("https://img.icons8.com/pulsar-gradient/48/warranty-card.png"), // Ensure string
-      description: String(`Earned by completing the roadmap with ID ${qcmForRoadmapId} with a score of ${score}`), // Ensure string
-      Date_obtained: new Date().toISOString().split('T')[0], // Already a string
-    };
-
-    console.log('Sending badge creation request:', payload); // Debug payload
-    setLoading(true);
-    const response = await api.post('/api/create/badge', payload);
-
-    setBadgeMessage({
-      type: 'success',
-      text: response.data.message || 'Badge created successfully!',
-    });
-  } catch (error) {
-    console.error('Badge creation error:', error.response?.data || error.message);
-    setBadgeMessage({
-      type: 'error',
-      text: error.response?.data?.message || 'Failed to create badge',
-      errorDetails: error.response?.data?.error || 'No additional error details available',
-    });
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
@@ -63,7 +68,7 @@ const createBadge = async () => {
       {!loading && (
         <>
           <p className="text-sm text-gray-600 mb-2">
-            Your score: {score || 'Not available'}
+            Your score: {score || "Not available"}
             {score && score > 80 ? (
               <span className="text-green-600 ml-2">Eligible for badge!</span>
             ) : (
@@ -75,8 +80,8 @@ const createBadge = async () => {
             disabled={loading || !score || score <= 80}
             className={`font-semibold py-2 px-4 rounded-lg transition-all duration-300 ${
               loading || !score || score <= 80
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700'
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700"
             }`}
           >
             Get My Badge
@@ -84,7 +89,11 @@ const createBadge = async () => {
         </>
       )}
       {badgeMessage && (
-        <div className={`mt-3 p-2 rounded-lg text-sm ${badgeMessage.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+        <div
+          className={`mt-3 p-2 rounded-lg text-sm ${
+            badgeMessage.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+          }`}
+        >
           <p>{badgeMessage.text}</p>
           {badgeMessage.errorDetails && <p className="mt-1 text-xs">Details: {badgeMessage.errorDetails}</p>}
         </div>

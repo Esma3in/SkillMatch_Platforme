@@ -24,6 +24,7 @@ export default function CandidateDashboard() {
 
   // Get the candidate_id from localStorage
   const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
+  console.log(candidate_id)
 
   // Fetch dashboard data
   useEffect(() => {

@@ -109,4 +109,41 @@ class RoadmapController extends Controller
             ], 500);
         }
     }
+    public function getcompanyInfoForRoadmapId($roadmap_id){
+            $result = DB::table('companies')
+                ->join('companies_selecteds', 'companies.id', '=', 'companies_selecteds.company_id')
+                ->join('roadmaps', 'companies_selecteds.candidate_id', '=', 'roadmaps.candidate_id')
+                ->where('roadmaps.id', $roadmap_id)
+                ->select(
+                    'companies.id as company_id',
+                    'companies.name as company_name',
+
+                    'companies_selecteds.candidate_id',
+                    'roadmaps.id as roadmap_id',
+                    'roadmaps.completed',
+                    'roadmaps.created_at as roadmap_created_at'
+                )
+                ->first();
+        
+            if (!$result) {
+                return response()->json(['message' => 'No matching record found'], 404);
+            }
+        
+            // Return as a clearly structured associative array
+            return response()->json([
+                'company' => [
+                    'id' => $result->company_id,
+                    'name' => $result->company_name,
+                ],
+                'candidate' => [
+                    'id' => $result->candidate_id,
+                ],
+                'roadmap' => [
+                    'id' => $result->roadmap_id,
+                    'completed' => $result->completed,
+                    'created_at' => $result->roadmap_created_at,
+                ],
+            ]);
+        }
+        
 }

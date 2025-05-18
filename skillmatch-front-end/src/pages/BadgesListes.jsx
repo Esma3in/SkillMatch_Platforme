@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { api } from "../api/api";
 import NavbarCandidate from "../components/common/navbarCandidate";
@@ -11,40 +10,68 @@ export const BadgeList = () => {
 
   useEffect(() => {
     const fetchBadges = async () => {
-      const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
-      if (!candidate_id) {
-        setError('No candidate ID found');
+      const candidateId = JSON.parse(localStorage.getItem("candidate_id"));
+      if (!candidateId || !isNumeric(candidateId) || candidateId <= 0) {
+        setError("Invalid or missing candidate ID");
         setLoading(false);
         return;
       }
 
       try {
-        const response = await api.get(`/api/badges/${candidate_id}`);
-        const data = response.data.data; // Access the 'data' array from response
-        if (!Array.isArray(data)) {
-          throw new Error("Invalid data format: Expected an array");
+        const response = await api.get(`/api/badges/${candidateId}`);
+        const { message, data } = response.data;
+
+        if (response.status !== 200) {
+          throw new Error(message || "Failed to fetch badges");
         }
-        // Remove duplicate badges by id
+
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid data format: Expected an array of badges");
+        }
+
         const uniqueBadges = Array.from(
           new Map(data.map((badge) => [badge.id, badge])).values()
         );
         setBadges(uniqueBadges);
       } catch (err) {
-        console.error('Error fetching badges:', err.response?.data || err.message);
-        setError(err.message);
+        console.error("Error fetching badges:", err.response?.data || err.message);
+        setError(err.response?.data?.error || err.response?.data?.message || err.message || "An unexpected error occurred");
       } finally {
         setLoading(false);
       }
     };
+
     fetchBadges();
   }, []);
 
+  // Helper function to check if a value is numeric
+  const isNumeric = (value) => !isNaN(parseFloat(value)) && isFinite(value);
+
   if (loading) {
-    return <div className="text-center py-12 text-gray-600">Loading badges...</div>;
+    return (
+      <div className="max-w-7xl mx-auto py-12 px-6 text-center">
+        <div className="animate-pulse space-y-4">
+          <div className="h-6 bg-gray-200 rounded w-1/4 mx-auto"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {[...Array(4)].map((_, index) => (
+              <div key={index} className="bg-gray-100 rounded-2xl shadow p-6">
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                <div className="h-20 bg-gray-200 rounded mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center py-12 text-red-600">Error: {error}</div>;
+    return (
+      <div className="max-w-7xl mx-auto py-12 px-6 text-center text-red-600">
+        Error: {error}
+      </div>
+    );
   }
 
   return (
@@ -56,24 +83,23 @@ export const BadgeList = () => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {badges.map((badge) => {
-              // Map backend fields to frontend expectations
               const {
                 id = "unknown",
                 name = "Untitled Badge",
                 description = "No description available",
-                date_obtained = null,
-                result = null,
-                company = null,
+                Date_obtained = null,
+                result = { score: 0 },
+                company = { name: "No company associated" },
+                qcm_for_roadmap_id = "unknown",
+                icon = "/default-badge-icon.png",
               } = badge;
 
-              // Extract fields
-              const score = result?.score || 0;
-              const companyName = company?.name || "No company associated";
-              const additionalInfo = `Associated with roadmap ID ${badge.qcm_for_roadmap_id} (${companyName})`;
+              const score = result.score || 0;
+              const companyName = company.name || "No company associated";
+              const additionalInfo = `Associated with roadmap ID ${qcm_for_roadmap_id} (${companyName})`;
 
-              // Safely parse date
-              const formattedDate = date_obtained
-                ? new Date(date_obtained).toLocaleDateString(undefined, {
+              const formattedDate = Date_obtained
+                ? new Date(Date_obtained).toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
@@ -90,20 +116,23 @@ export const BadgeList = () => {
                     <h3 className="text-2xl font-semibold text-blue-700">{name}</h3>
                   </div>
                   <div className="flex justify-between items-center mb-4">
-                    <img src ={badge.icon} alt="badge" />
-                    <span className="inline-block bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
-                      Earned: {formattedDate}
-                    </span>
-                    <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
-                      Completed
-                    </span>
+                    <img
+                      src={icon}
+                      alt={`${name} badge`}
+                      className="w-16 h-16 object-contain"
+                      onError={(e) => (e.target.src = "/default-badge-icon.png")}
+                    />
+                    <div className="flex flex-col gap-2">
+                      <span className="inline-block bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
+                        Earned: {formattedDate}
+                      </span>
+                      <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
+                      completed
+                      </span>
+                    </div>
                   </div>
                   <div className="mb-6">
                     <p className="text-gray-600 text-sm mb-2">{description}</p>
-                    {/* <div className="flex items-center text-sm">
-                      <span className="font-medium text-gray-700 mr-2">Score:</span>
-                      <span className="text-blue-600 font-bold">{score}%</span>
-                    </div> */}
                     <div className="flex items-center text-sm mt-1">
                       <span className="font-medium text-gray-700 mr-2">Company:</span>
                       <span className="text-gray-900">{companyName}</span>

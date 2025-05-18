@@ -28,16 +28,14 @@ use App\Models\Notification;
 use App\Models\RoadmapSkill;
 
 use App\Models\Administrator;
-<<<<<<< HEAD
 
 
 
-use App\Models\CandidateSelected;
+
 use App\Models\ProfileCompany;
 
-=======
-use App\Models\ProfileCompany;
->>>>>>> e67a09c32e3da1d699529241316d921925960875
+
+
 use App\Models\SerieChallenge;
 
 use App\Models\CompaniesSkills;
@@ -360,10 +358,10 @@ class DatabaseSeeder extends Seeder
 
 
    // Create roadmaps and skills
-   Roadmap::factory()->count(10)->create();
+   Roadmap::factory()->count(1)->create();
    Skill::factory()->count(10)->create();
    // Create roadmap-skill relationships
-   RoadmapSkill::factory()->count(90)->create();
+   RoadmapSkill::factory()->count(20)->create();
 
    // Path to the JSON file
    $qcmForRoadmap = database_path('data/json/QcmForRoadmap.json');

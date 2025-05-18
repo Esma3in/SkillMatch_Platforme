@@ -11,12 +11,12 @@ export const Roadmap = () => {
     { id: 4, name: "Quiz" },
   ];
 
-  const { id } = useParams();
+  const { id: roadmapId } = useParams(); // Renamed for clarity: id is roadmapId
   const navigate = useNavigate();
 
-  // Initialize stepCompletion and activeTab from localStorage
+  // State
   const [stepCompletion, setStepCompletion] = useState(() => {
-    const savedData = localStorage.getItem(`roadmapProgress_${id}`);
+    const savedData = localStorage.getItem(`roadmapProgress_${roadmapId}`);
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
@@ -36,7 +36,7 @@ export const Roadmap = () => {
   });
 
   const [activeTab, setActiveTab] = useState(() => {
-    const savedData = localStorage.getItem(`roadmapProgress_${id}`);
+    const savedData = localStorage.getItem(`roadmapProgress_${roadmapId}`);
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
@@ -59,51 +59,86 @@ export const Roadmap = () => {
     userTools: [],
   });
   const [competitors, setCompetitors] = useState([]);
-  const [companySelected, setCompanySelected] = useState({ name: "Unknown Company" });
+  const [companySelected, setCompanySelected] = useState({ id: null, name: "Unknown Company", address: null });
   const [skillsCompanySelected, setSkillsCompanySelected] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [completed, setCompleted] = useState("pending");
+  const [roadmapName, setRoadmapName] = useState("Personalized Learning Roadmap");
 
+  // Fetch company info based on roadmap ID
   useEffect(() => {
-    const getRoadmapInfo = async () => {
+    const fetchCompanyInfo = async () => {
       try {
-        const response = await api.get(`/api/roadmap/details/${id}`);
-        setCompleted(response.data.completed);
+        const response = await api.get(`/api/company/roadmap/${roadmapId}`);
+        const { company, roadmap } = response.data;
+        setCompanySelected({
+          id: company.id,
+          name: company.name,
+          address: company.address,
+        });
+        setCompleted(roadmap.completed);
+        // Generate dynamic roadmap name
+        setRoadmapName(`${company.name} Career Roadmap`);
         // If roadmap is completed, mark all steps as completed
-        if (response.data.completed === "completed") {
+        if (roadmap.completed === "completed") {
           const updatedStepCompletion = roadmapSteps.reduce((acc, step) => {
             acc[step.id] = true;
             return acc;
           }, {});
           setStepCompletion(updatedStepCompletion);
-          setActiveTab("4"); // Set to the last step (Quiz) when completed
+          setActiveTab("4"); // Set to Quiz tab
         }
       } catch (error) {
-        console.log("Error loading roadmap details:", error.message);
+        console.error("Error fetching company info:", error.message);
+        setError(error.response?.data?.message || "Failed to load company information");
       }
     };
-    getRoadmapInfo();
-  }, [id ,roadmapSteps]);
+    fetchCompanyInfo();
+  }, [roadmapId, roadmapSteps]);
 
-  // Save progress and activeTab to localStorage whenever they change
+  // Fetch roadmap details
   useEffect(() => {
-    if (id) {
+    const fetchRoadmapData = async () => {
       try {
-        const dataToSave = {
-          stepCompletion,
-          activeTab,
-          completed, // Save completed status to localStorage
+        if (!companySelected.id) return; // Wait for company ID
+        const response = await api.get(`/api/roadmap/${companySelected.id}`);
+        const uniqueData = {
+          skills: removeDuplicates(response.data.skills || [], 'id'),
+          prerequisites: removeDuplicates(response.data.prerequisites || [], 'id'),
+          tools: removeDuplicates(response.data.tools || [], 'name'),
+          candidateCourses: removeDuplicates(response.data.candidateCourses || [], 'id'),
+          roadmapSkills: removeDuplicates(response.data.roadmapSkills || [], 'text'),
+          userTools: removeDuplicates(response.data.userTools || [], 'name'),
         };
-        localStorage.setItem(`roadmapProgress_${id}`, JSON.stringify(dataToSave));
-      } catch (e) {
-        console.warn("Failed to save progress to localStorage:", e);
+        setData(uniqueData);
+        setSkillsCompanySelected(removeDuplicates(response.data.skills || [], 'id'));
+        setCompetitors(removeDuplicates(response.data.competitors || [], 'id'));
+        setLoading(false);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Error fetching roadmap data');
+        setLoading(false);
       }
+    };
+    fetchRoadmapData();
+  }, [companySelected.id]);
+
+  // Save progress to localStorage
+  useEffect(() => {
+    try {
+      const dataToSave = {
+        stepCompletion,
+        activeTab,
+        completed,
+      };
+      localStorage.setItem(`roadmapProgress_${roadmapId}`, JSON.stringify(dataToSave));
+    } catch (e) {
+      console.warn("Failed to save progress to localStorage:", e);
     }
-  }, [stepCompletion, activeTab, completed, id]);
+  }, [stepCompletion, activeTab, completed, roadmapId]);
 
   const handleTakeQuiz = () => {
-    navigate(`/qcm/roadmap/${id}`);
+    navigate(`/qcm/roadmap/${roadmapId}`);
   };
 
   const removeDuplicates = (array, criteria) => {
@@ -120,31 +155,6 @@ export const Roadmap = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`/api/roadmap/${id}`);
-        const uniqueData = {
-          skills: removeDuplicates(response.data.skills || [], 'id'),
-          prerequisites: removeDuplicates(response.data.prerequisites || [], 'id'),
-          tools: removeDuplicates(response.data.tools || [], 'name'),
-          candidateCourses: removeDuplicates(response.data.candidateCourses || [], 'id'),
-          roadmapSkills: removeDuplicates(response.data.roadmapSkills || [], 'text'),
-          userTools: removeDuplicates(response.data.userTools || [], 'name'),
-        };
-        setData(uniqueData);
-        setCompanySelected(response.data.company || { name: "Unknown Company" });
-        setSkillsCompanySelected(removeDuplicates(response.data.skills || [], 'id'));
-        setCompetitors(removeDuplicates(response.data.competitors || [], 'id'));
-        setLoading(false);
-      } catch (err) {
-        setError(err.response?.data?.message || 'Error fetching data');
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [id]);
-
   const filteredTools = useMemo(() => data.tools, [data.tools]);
   const filteredPrerequisites = useMemo(() => data.prerequisites, [data.prerequisites]);
   const filteredCourses = useMemo(() => data.candidateCourses, [data.candidateCourses]);
@@ -153,9 +163,7 @@ export const Roadmap = () => {
   const filteredCompetitors = useMemo(() => competitors, [competitors]);
   const filteredUserTools = useMemo(() => data.userTools, [data.userTools]);
 
-  const isStepCompleted = (stepId) => {
-    return stepCompletion[stepId] || false;
-  };
+  const isStepCompleted = (stepId) => stepCompletion[stepId] || false;
 
   const getNextTab = (currentTab) => {
     const currentIndex = roadmapSteps.findIndex(step => step.id.toString() === currentTab);
@@ -184,7 +192,7 @@ export const Roadmap = () => {
         {/* Roadmap Header */}
         <div className={`bg-gradient-to-r ${completed === "completed" ? "from-green-600 to-emerald-700" : "from-purple-600 to-indigo-700"} shadow-lg py-6`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-white">Personalized Learning Roadmap</h1>
+            <h1 className="text-3xl font-bold text-white">{roadmapName}</h1>
             <p className="mt-2 text-sm text-white">
               Tailored for: <span className="font-semibold">{companySelected.name || "Unknown Company"}</span>
               {completed === "completed" && (
@@ -479,7 +487,7 @@ export const Roadmap = () => {
                           </div>
                           <div className="space-y-4">
                             {filteredRoadmapSkills.length > 0 ? (
-                              filteredRoadmapSkills.map((skill, index) => (
+                              filteredRoadmapSkills.map((skill) => (
                                 <div key={skill.id} className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition-all duration-300">
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center">

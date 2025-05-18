@@ -59,8 +59,8 @@ class CompaniesSelectedController extends Controller
         }
     }
 
-    public function getSkillsByCompany($company_id){
-        $company_skills = Company::where('id' , $company_id)->with('skills')->get();
+    public function getSkillsByCompany($companyId){
+        $company_skills = Company::where('id' , $companyId)->with('skills')->get()->lazy();
         return response()->json($company_skills);
 
     }

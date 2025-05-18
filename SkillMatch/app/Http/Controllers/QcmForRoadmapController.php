@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Badge;
+use App\Models\QcmForRoadmap;
+use App\Models\Roadmap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Log;
 
 class QcmForRoadmapController extends Controller
 {
@@ -51,7 +54,7 @@ class QcmForRoadmapController extends Controller
             ->join('skills', 'skills.id', '=', 'qcm_for_roadmaps.skill_id')
             ->whereNotIn('qcm_for_roadmaps.skill_id', $skill_ids)
             ->select(
-                'qcm_for_roadmaps.id',
+                'qcm_for_roadmaps.id as qcmForRoadmapId' ,
                 'qcm_for_roadmaps.question',
                 'qcm_for_roadmaps.options',
                 'qcm_for_roadmaps.correct_answer',
@@ -128,6 +131,59 @@ class QcmForRoadmapController extends Controller
         }
     }
 
+    // Create a new QCM for roadmap
+    public function createQcmForRoadmap(Request $request)
+    {
+        try {
+            // Validate the incoming request
+            $validated = $request->validate([
+                'roadmap_id' => 'required|exists:roadmaps,id',
+                'skill_id' => 'required|exists:skills,id',
+                'question' => 'required|string',
+                'options' => 'required|string', // JSON string of options
+                'correct_answer' => 'required|string',
+            ]);
+            
+            // Create new QCM for roadmap
+            $qcmForRoadmap = QcmForRoadmap::create([
+                'roadmap_id' => $validated['roadmap_id'],
+                'skill_id' => $validated['skill_id'],
+                'question' => $validated['question'],
+                'options' => $validated['options'],
+                'correct_answer' => $validated['correct_answer'],
+            ]);
+            
+            Log::info('QCM for roadmap created successfully', [
+                'qcm_for_roadmap_id' => $qcmForRoadmap->id,
+                'roadmap_id' => $validated['roadmap_id']
+            ]);
+            
+            return response()->json([
+                'message' => 'QCM for roadmap created successfully',
+                'qcm_for_roadmap' => $qcmForRoadmap,
+            ], 201);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed when creating QCM for roadmap', [
+                'errors' => $e->errors()
+            ]);
+            
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Failed to create QCM for roadmap', [
+                'error' => $e->getMessage()
+            ]);
+            
+            return response()->json([
+                'message' => 'Failed to create QCM for roadmap',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
     public function saveResults(Request $request)
     {
         $validated = $request->validate([
@@ -135,8 +191,8 @@ class QcmForRoadmapController extends Controller
             'candidateAnswer' => 'required|string',
             'correctAnswer' => 'required|string',
             'candidate_id' => 'required|exists:candidates,id',
-            'test_id' => 'required|exists:tests,id',
-        'qcm_for_roadmapId' =>'required'
+            'test_id' => 'nullable',
+            'qcm_for_roadmapId' =>'required'
         ]);
 
         $result = DB::table('Results')->insert([
@@ -144,7 +200,7 @@ class QcmForRoadmapController extends Controller
             'candidateAnswer' => $validated['candidateAnswer'],
             'correctAnswer' => $validated['correctAnswer'],
             'candidate_id' => $validated['candidate_id'],
-            'test_id' => $validated['test_id'],
+        
             'qcm_for_roadmapId'=>$validated['qcm_for_roadmapId'],
             'created_at' => now(),
             'updated_at' => now(),
