@@ -48,6 +48,7 @@ import CandidateDashboard from './pages/CandidateDashboard.jsx';
 import { CompanyProfile } from './pages/ProfileCompany.jsx';
 import CreateProfileCompany  from './pages/createProfileCompany.jsx';
 import CreateSkill from './pages/createSkillsCompany.js';
+import TestCreationForm from './pages/CreateProgrammingTestForCompany.js';
 export default function App() {
   return (
     <Router>
@@ -95,6 +96,7 @@ export default function App() {
         <Route path='/company/profile' element={<CompanyProfile/>}/>
         <Route path='/company/create/profile' element={<CreateProfileCompany/>}/>
         <Route path='/company/create/skill' element={<CreateSkill/>}/>
+        <Route path='/company/create/test' element={<TestCreationForm/>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
 
         {/* admin */}
