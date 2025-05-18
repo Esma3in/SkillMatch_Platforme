@@ -12,7 +12,7 @@ class CompanyServices extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title','company_id'
+        'title','company_id','descriptions'
     ];
     protected $casts = [
         'descriptions'=>'array'

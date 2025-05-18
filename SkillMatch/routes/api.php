@@ -30,7 +30,11 @@ use App\Http\Controllers\candidateCoursesController;
 use App\Http\Controllers\CandidateSelectedController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
+<<<<<<< HEAD
 use App\Models\Roadmap;
+=======
+use App\Http\Controllers\ProfileCompanyController;
+>>>>>>> 100c6b0bf16942e64f958d0b55c6364a858f76b4
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -98,7 +102,7 @@ Route::get('/company/{id}/candidates/selected',[CandidateSelectedController::cla
 
 
 //profile company:
-
+Route::post('/company/store/profile',[ProfileCompanyController::class,'store']);
 Route::get('/company/profile/{company_id}',[CompanyController::class,'getProfile']);
 
 // get roadmap
@@ -139,6 +143,9 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 // Candidate filtering routes
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
 Route::post('/notifications', [CandidateController::class, 'storeNotificationForFilter']);
+
+// Create skills company
+Route::post('/skills/create/company', [CompanyController::class, 'storeSkills']);
 
 
 
@@ -189,10 +196,19 @@ Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
 Route::post('/qcm/saveResults',[QcmForRoadmapController::class ,"saveResults"]);
 Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResult']);
 
+//create test company
+Route::post('/create/tests/company', [CompanyController::class, 'storeTests']);
 
 // Get all skills :
  Route::get('/skills/all' , [SkillController::class , 'allSkills']);
+<<<<<<< HEAD
  Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
 
 Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
 Route::get("/company/roadmap/{roadmap_id}" , [RoadmapController::class , "getcompanyInfoForRoadmapId"]);
+=======
+
+ Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
+
+Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
+>>>>>>> 100c6b0bf16942e64f958d0b55c6364a858f76b4

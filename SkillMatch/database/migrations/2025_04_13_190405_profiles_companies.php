@@ -13,13 +13,9 @@ return new class extends Migration
     {
         Schema::create('profile_companies' ,function(Blueprint $table){
             $table->id();
-            $table->string('serieNumber')->unique();
-            $table->string('reasonSocial')->nullable();
+            $table->string('websiteUrl')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->double('capital')->nullable();
-            $table->double('salesfigures')->nullable();
-            $table->bigInteger('nbEmployers')->nullable();
             $table->date('DateCreation')->nullable();
             $table->text('Bio')->nullable();
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade')->onUpdate('cascade');

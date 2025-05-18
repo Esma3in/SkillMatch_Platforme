@@ -13,7 +13,7 @@ const QcmForRoadmap = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(900); // 15 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(900); 
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [progressAnimationWidth, setProgressAnimationWidth] = useState("0%");
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
@@ -143,6 +143,7 @@ const QcmForRoadmap = () => {
       });
     }, 1000);
     return () => clearInterval(timer);
+    
 
   }, [loading, isSubmitted, isTimeUp]);
 

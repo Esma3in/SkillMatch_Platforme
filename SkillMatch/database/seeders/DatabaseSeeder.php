@@ -28,6 +28,7 @@ use App\Models\Notification;
 use App\Models\RoadmapSkill;
 
 use App\Models\Administrator;
+<<<<<<< HEAD
 
 
 
@@ -36,6 +37,9 @@ use App\Models\ProfileCompany;
 
 
 
+=======
+use App\Models\ProfileCompany;
+>>>>>>> 100c6b0bf16942e64f958d0b55c6364a858f76b4
 use App\Models\SerieChallenge;
 
 use App\Models\CompaniesSkills;
