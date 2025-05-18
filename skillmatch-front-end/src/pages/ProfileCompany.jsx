@@ -93,15 +93,14 @@ const GroupByAnima = ({ services }) => {
     );
 };
 
-const OverlapGroupWrapperByAnima = ({Bio}) => {
+
+const OverlapGroupWrapperByAnima = ({ Bio }) => {
     const navigate = useNavigate();
     const idCompany = localStorage.getItem("idCompany") || localStorage.getItem("company_id");
     
     // Corrected function to properly use the idCompany variable
     const handleAddSkillClick = () => {
         navigate(`/company/${idCompany}/add-skill`);
-    };
-
     // Data for action buttons
     const actionButtons = [
         { id: 1, text: "Add skills", onClick: handleAddSkillClick },
@@ -169,7 +168,7 @@ const OverlapGroupWrapperByAnima = ({Bio}) => {
                         </div>
 
                         <p className="mt-6 font-normal text-xl leading-8">
-                           {Bio}
+                            {Bio}
                         </p>
                     </CardContent>
                 </Card>
@@ -177,7 +176,7 @@ const OverlapGroupWrapperByAnima = ({Bio}) => {
         </section>
     );
 };
-
+}
 const OverlapWrapperByAnima = ({ companyData, techBadges }) => {
     return (
         <div className="w-full mx-auto">
@@ -392,11 +391,11 @@ export const CompanyProfile = () => {
                 setLoading(false);
             }
         };
-        
+
         // Execute the fetchData function
         fetchData();
     }, [companyId]); // Properly depend on companyId
-  // Default icons for services
+    // Default icons for services
     const servicesIcons = [
         "https://c.animaapp.com/manu7kxgcmYZMO/img/icons8-licence-100.png",
         "https://c.animaapp.com/manu7kxgcmYZMO/img/icons8-cdi-100.png",
@@ -415,7 +414,12 @@ export const CompanyProfile = () => {
     // Fixed company data with fallbacks
     const companyData = {
         name: companyInfo?.name || 'Company Name',
-        logo: companyInfo?.logo || 'https://via.placeholder.com/157',
+        logo: companyInfo?.logo // Check if logo exists
+            ? (companyInfo.logo.startsWith('http://') || companyInfo.logo.startsWith('https://') // Check if it's already a full URL
+                ? companyInfo.logo // If it is, use it as is
+                : `http://localhost:8000/storage/${companyInfo.logo}` // If not (and exists), prepend the storage base URL
+            )
+            : null,
         creationDate: companyInfo?.profile?.DateCreation || 'N/A',
         email: companyInfo?.user?.email || 'N/A',
         ceo: companyInfo?.ceo?.name || 'N/A',
@@ -428,7 +432,7 @@ export const CompanyProfile = () => {
         "bg-[#1b56fd33] text-[#1b56fd]",
         "bg-[#a31d1d33] text-[#a31d1d]"
     ];
-    
+
     // Fixed tech badges mapping
     const techBadges = companyInfo?.skills?.map((skill, index) => ({
         name: skill.name || `Skill ${index + 1}`,
@@ -436,13 +440,13 @@ export const CompanyProfile = () => {
     })) || [];
 
     // Fixed legal documents array structure and mapping
-    const legalDocuments = companyInfo?.legaldocuments 
+    const legalDocuments = companyInfo?.legaldocuments
         ? [companyInfo.legaldocuments.map((doc, index) => ({
             title: doc.title || `Document ${index + 1}`,
             descriptions: doc.descriptions || []
         }))]
         : [];
-      
+
     // Show loading state
     if (loading) {
         return <div className="w-full text-center py-8">Loading company profile...</div>;
@@ -452,118 +456,117 @@ export const CompanyProfile = () => {
     if (error) {
         return <div className="w-full text-center py-8 text-red-500">Error loading profile: {error}</div>;
     }
-    if(companyInfo && !companyInfo?.profile) return (
-       <>
-      <NavbarCompany/>
-        <div className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
-          <p className="text-base font-medium text-gray-700 mb-2">
-            You dont have a profile 
-          </p>
-          <button
-            onClick={(e)=>{e.preventDefault();window.location.href='/company/create/profile'}}
-            className="text-indigo-600 hover:text-blue-800 font-medium text-sm transition-colors"
-          >
-            create one
-          </button>
-        </div>
-      </>
+    if (companyInfo && !companyInfo?.profile) return (
+        <>
+            <NavbarCompany />
+            <div className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
+                <p className="text-base font-medium text-gray-700 mb-2">
+                    You dont have a profile
+                </p>
+                <button
+                    onClick={(e) => { e.preventDefault(); window.location.href = '/company/create/profile' }}
+                    className="text-indigo-600 hover:text-blue-800 font-medium text-sm transition-colors"
+                >
+                    create one
+                </button>
+            </div>
+        </>
     )
-    
+
     return (
         <>
-       
-        <NavbarCompany/>
-        <div className="relative w-full max-w-[1440px] mx-auto bg-white">
-            <main className="flex flex-col w-full p-8">
-                {/* Main Content with Two Columns */}
-                <div className="flex flex-col lg:flex-row gap-8 mb-8">
-                    {/* Left Section */}
-                    <section className="w-full lg:w-2/3">
-                        <div className="relative mb-8">
-                            <OverlapWrapperByAnima companyData={companyData} techBadges={techBadges} />
-                            <img
-                                className="absolute w-11 h-11 top-6 right-6 object-cover"
-                                alt="Company logo"
-                                src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
-                            />
-                        </div>
-                        <GroupByAnima services={services} />
-                    </section>
-
-                    {/* Right Section */}
-                    <section className="w-full lg:w-1/3">
-                        <OverlapGroupWrapperByAnima Bio={companyInfo?.profile?.Bio || 'Add A Bio'}/>
-                    </section>
-                </div>
-
-                {/* Legal Documents Section */}
-                {legalDocuments.length > 0 && (
-                    <Card className="mt-8 p-6 bg-[#f7f8f9] rounded-[25px] border-none">
-                        <CardContent className="p-0">
-                            <div className="flex justify-between items-start mb-8">
-                                <h2 className="text-4xl font-bold">Legal Documents</h2>
+            <NavbarCompany />
+            <div className="relative w-full max-w-[1440px] mx-auto bg-white">
+                <main className="flex flex-col w-full p-8">
+                    {/* Main Content with Two Columns */}
+                    <div className="flex flex-col lg:flex-row gap-8 mb-8">
+                        {/* Left Section */}
+                        <section className="w-full lg:w-2/3">
+                            <div className="relative mb-8">
+                                <OverlapWrapperByAnima companyData={companyData} techBadges={techBadges} />
                                 <img
-                                    className="w-11 h-11 object-cover"
+                                    className="absolute w-11 h-11 top-6 right-6 object-cover"
                                     alt="Company logo"
                                     src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
                                 />
                             </div>
+                            <GroupByAnima services={services} />
+                        </section>
 
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                {legalDocuments.map((documents, colIdx) => (
-                                    <div key={colIdx} className="relative">
-                                        {/* Timeline bar and dots */}
-                                        <div className="absolute left-[10px] top-0 w-10">
-                                            {/* Timeline line from first to last dot */}
-                                            <div
-                                                className="absolute left-5 w-1 bg-indigo-600"
-                                                style={{
-                                                    top: '20px',
-                                                    height: `${(documents?.length - 1) * 200}px`,
-                                                }}
-                                            />
+                        {/* Right Section */}
+                        <section className="w-full lg:w-1/3">
+                            <OverlapGroupWrapperByAnima Bio={companyInfo?.profile?.Bio || 'Add A Bio'} />
+                        </section>
+                    </div>
 
-                                            {/* Timeline dots */}
-                                            {documents.map((_, index) => (
+                    {/* Legal Documents Section */}
+                    {legalDocuments.length > 0 && (
+                        <Card className="mt-8 p-6 bg-[#f7f8f9] rounded-[25px] border-none">
+                            <CardContent className="p-0">
+                                <div className="flex justify-between items-start mb-8">
+                                    <h2 className="text-4xl font-bold">Legal Documents</h2>
+                                    <img
+                                        className="w-11 h-11 object-cover"
+                                        alt="Company logo"
+                                        src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    {legalDocuments.map((documents, colIdx) => (
+                                        <div key={colIdx} className="relative">
+                                            {/* Timeline bar and dots */}
+                                            <div className="absolute left-[10px] top-0 w-10">
+                                                {/* Timeline line from first to last dot */}
                                                 <div
-                                                    key={index}
-                                                    className="absolute left-0 w-10 h-10 bg-white rounded-full border-[3px] border-indigo-600"
-                                                    style={{ top: `${index * 200}px` }}
-                                                >
-                                                    <div className="relative w-[30px] h-[30px] top-0.5 left-0.5 bg-indigo-600 rounded-full border-[3px] border-solid" />
-                                                </div>
-                                            ))}
-                                        </div>
+                                                    className="absolute left-5 w-1 bg-indigo-600"
+                                                    style={{
+                                                        top: '20px',
+                                                        height: `${(documents?.length - 1) * 200}px`,
+                                                    }}
+                                                />
 
-                                        {/* Document Content */}
-                                        <div className="ml-16">
-                                            {documents.map((doc, index) => (
-                                                <div key={index} className="mb-16">
-                                                    <div className="relative w-full h-[45px] bg-[url(https://c.animaapp.com/manu7kxgcmYZMO/img/rectangle-49.svg)] bg-cover mb-6">
-                                                        <h3 className="absolute top-[10px] left-[20px] font-semibold text-xl leading-6">
-                                                            {doc.title}
-                                                        </h3>
+                                                {/* Timeline dots */}
+                                                {documents.map((_, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className="absolute left-0 w-10 h-10 bg-white rounded-full border-[3px] border-indigo-600"
+                                                        style={{ top: `${index * 200}px` }}
+                                                    >
+                                                        <div className="relative w-[30px] h-[30px] top-0.5 left-0.5 bg-indigo-600 rounded-full border-[3px] border-solid" />
                                                     </div>
+                                                ))}
+                                            </div>
 
-                                                    {doc.descriptions && doc.descriptions.map((desc, descIndex) => (
-                                                        <div key={descIndex} className="relative ml-8 mb-4">
-                                                            <div className="absolute -left-[15px] top-2 w-[10px] h-[10px] bg-[#f7f8f9] rounded-full border border-[#8989898c]" />
-                                                            <p className="text-[#5d5d5d] text-base leading-7 font-medium">
-                                                                {desc}
-                                                            </p>
+                                            {/* Document Content */}
+                                            <div className="ml-16">
+                                                {documents.map((doc, index) => (
+                                                    <div key={index} className="mb-16">
+                                                        <div className="relative w-full h-[45px] bg-[url(https://c.animaapp.com/manu7kxgcmYZMO/img/rectangle-49.svg)] bg-cover mb-6">
+                                                            <h3 className="absolute top-[10px] left-[20px] font-semibold text-xl leading-6">
+                                                                {doc.title}
+                                                            </h3>
                                                         </div>
-                                                    ))}
-                                                </div>
-                                            ))}
+
+                                                        {doc.descriptions && doc.descriptions.map((desc, descIndex) => (
+                                                            <div key={descIndex} className="relative ml-8 mb-4">
+                                                                <div className="absolute -left-[15px] top-2 w-[10px] h-[10px] bg-[#f7f8f9] rounded-full border border-[#8989898c]" />
+                                                                <p className="text-[#5d5d5d] text-base leading-7 font-medium">
+                                                                    {desc}
+                                                                </p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                )}
-            </main>
-        </div>
-         </>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
+                </main>
+            </div>
+        </>
     );
 };

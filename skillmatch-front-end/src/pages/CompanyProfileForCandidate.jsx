@@ -57,7 +57,7 @@ export default function CompanyProfileForCandidate() {
   const companyInfo = {
     name: companyInfoFetched?.name || "N/A",
     logo: companyInfoFetched?.logo || "https://via.placeholder.com/100",
-    bio: companyInfoFetched?.bio || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus, el.",
+    bio: companyInfoFetched?.profile?.Bio || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus, el.",
     address: companyInfoFetched?.profile?.address || "N/A",
     email: companyInfoFetched?.profile?.email || "N/A",
     sector: companyInfoFetched?.sector || "N/A",

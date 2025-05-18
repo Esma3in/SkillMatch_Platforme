@@ -10,15 +10,11 @@ class ProfileCompany extends Model
 {
     use HasFactory;
     protected $fillable =[
-        'serieNumber',
-        'reasonSocial',
+        'DateCreation',
+        'Bio',
         'address',
         'phone',
-        'email',
-        'capital',
-        'salesfigures',
-        'nbEmployers',
-        'DateCreation',
+        'websiteUrl',
         'company_id',
     ];
 
