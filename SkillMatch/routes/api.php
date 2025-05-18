@@ -64,7 +64,7 @@ Route::get('/experiences/candidate/{candidateId}', [ExperienceController::class,
 Route::post('/skills', [SkillController::class, 'store']);
 
 Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
-// Education Routes 
+// Education Routes
 Route::post('/education' , [ProfileCandidateController::class , 'storeEducation']);
 // Challenge Routes
 Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
@@ -91,10 +91,14 @@ Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
 Route::post('/results/store',[TestController::class,'storeResult']);
 Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::class,'getResult']);
 
-//selected candidates for company :
+//selected candidates for companby :
 Route::delete('/company/delete/candidate/selected',[CandidateSelectedController::class,'delete']);
 Route::get('/company/{id}/candidates/selected',[CandidateSelectedController::class,'getSelectedcandidates']);
 
+
+//profile company:
+
+Route::get('/company/profile/{company_id}',[CompanyController::class,'getProfile']);
 
 // get roadmap
 Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getCompleteRoadmap']);
@@ -132,8 +136,7 @@ Route::delete('/tests/{id}', [TestController::class, 'destroy']);
 
 // Candidate filtering routes
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
-Route::get('/candidates/{id}', [CandidateController::class, 'getCandidateDetails']);
-Route::get('/skills', [CandidateController::class, 'getSkills']);
+Route::post('/notifications', [CandidateController::class, 'storeNotificationForFilter']);
 
 
 
@@ -187,6 +190,9 @@ Route::get('/qcmForRoadmap/{qcmForRoadmapId}',[BadgeController::class, 'QcmResul
 
 // Get all skills :
  Route::get('/skills/all' , [SkillController::class , 'allSkills']);
+<<<<<<< HEAD
  Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
 
 Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
+=======
+>>>>>>> e67a09c32e3da1d699529241316d921925960875

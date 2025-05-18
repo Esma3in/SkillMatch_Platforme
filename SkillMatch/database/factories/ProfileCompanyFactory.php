@@ -19,16 +19,12 @@ class ProfileCompanyFactory extends Factory
             'reasonSocial'   => $this->faker->company,
             'address'        => $this->faker->address,
             'phone'          => $this->faker->phoneNumber,
-            'email'          => $this->faker->unique()->companyEmail,
             'capital'        => $this->faker->numberBetween(10000, 1000000),
             'salesfigures'   => $this->faker->numberBetween(50000, 5000000),
             'nbEmployers'    => $this->faker->numberBetween(10, 500),
-            'DateCreation'   => $this->faker->date(),
-            'status'         => $this->faker->randomElement(['active', 'inactive', 'pending']),
-            
+            'DateCreation'   => $this->faker->date(),            
             // Foreign Keys
             'company_id'     => Company::inRandomOrder()->first()?->id ?? Company::factory(),
-            'candidate_id'   => Candidate::inRandomOrder()->first()?->id ?? Candidate::factory(),
         ];
     }
 }

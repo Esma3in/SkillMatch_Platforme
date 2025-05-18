@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name')->nullable();
             $table->string('sector')->nullable();
-            $table->string('files')->nullable();
+            $table->string('file')->nullable();
             $table->string('logo')->nullable();
             $table->string('state')->default('waiting');
             $table->string('docstate')->default('waiting');

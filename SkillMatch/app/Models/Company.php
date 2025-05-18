@@ -43,5 +43,15 @@ class Company extends Model
         ->withTimestamps();
     }
 
+    public function services(){
+        return $this->hasMany(CompanyServices::class);
+    }
+
+    public function legaldocuments(){
+        return $this->hasMany(CompanyLegalDocuments::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -1,6 +1,8 @@
+import NavbarCompany from "../components/common/navbarCompany";
+
 export default function Company(){
 
     return (
-       <p>Hello</p>
+      <NavbarCompany/>
     )
 }

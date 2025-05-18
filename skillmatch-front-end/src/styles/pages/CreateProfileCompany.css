@@ -1,0 +1,6 @@
+/* You can scope it to a class if needed */
+.custom-date::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+

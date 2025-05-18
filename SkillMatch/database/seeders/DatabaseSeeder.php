@@ -7,40 +7,53 @@ use App\Models\Step;
 use App\Models\Test;
 use App\Models\User;
 use App\Models\Badge;
+
 use App\Models\Skill;
 use App\Models\Result;
 use App\Models\Company;
 use App\Models\Problem;
 use App\Models\Roadmap;
 use App\Models\Document;
+use App\Models\Language;
+
 use App\Models\Candidate;
 use App\Models\Challenge;
 use App\Models\Formation;
 use App\Models\Experience;
 use App\Models\Attestation;
+
 use App\Models\RoadMapTest;
 use App\Models\SocialMedia;
 use App\Models\Notification;
 use App\Models\RoadmapSkill;
+
 use App\Models\Administrator;
+<<<<<<< HEAD
 
 
 
 use App\Models\CandidateSelected;
 use App\Models\ProfileCompany;
 
+=======
+use App\Models\ProfileCompany;
+>>>>>>> e67a09c32e3da1d699529241316d921925960875
 use App\Models\SerieChallenge;
+
 use App\Models\CompaniesSkills;
 use Illuminate\Database\Seeder;
 use App\Models\CandidatesSkills;
-
 use App\Models\ProfileCandidate;
 use App\Models\CompaniesSelected;
+use App\Models\CompanyLegalDocuments;
+use App\Models\CompanyServices;
+use App\Models\CandidateSelected;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -104,6 +117,12 @@ class DatabaseSeeder extends Seeder
 
         // Create Companies and their Profiles, Roadmaps, Challenges
        $companies=Company::factory(10)->create()->each(function ($company) use($skillsCreated) {
+            CompanyServices::factory(2)->create([
+                'company_id'=>$company->id,
+            ]);
+            CompanyLegalDocuments::factory()->create([
+                'company_id'=>$company->id
+            ]);
             CandidateSelected::factory(10)->create([
                 'company_id'=>$company->id,
             ]);
@@ -140,7 +159,9 @@ class DatabaseSeeder extends Seeder
             ProfileCandidate::factory()->create(['candidate_id' => $candidate->id]);
             Experience::factory(3)->create();
             Formation::factory(2)->create();
-            Attestation::factory(2)->create();
+            Attestation::factory(2)->create([
+                'candidate_id' => $candidate->id
+            ]);
             Document::factory(1)->create();
             $randomSkill = $skillsCreated[array_rand($skillsCreated)];
             CandidatesSkills::factory()->create([
