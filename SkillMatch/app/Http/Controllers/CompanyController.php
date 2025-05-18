@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Skill;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
@@ -86,13 +87,13 @@ class CompanyController extends Controller
      */
     public function storeSkills(Request $request)
     {
-        // Validation des données
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'level' => 'required|string|in:Junior,Intermediate,Advanced',
             'type' => 'required|string|max:255',
             'usageFrequency' => 'required|string|in:Daily,Weekly,Rarely',
             'classement' => 'required|string|in:Important,Optional',
+            'company_id' => 'required|exists:companies,id', // Ajout de la validation du company_id
         ]);
 
         if ($validator->fails()) {
@@ -111,9 +112,17 @@ class CompanyController extends Controller
             'classement' => $request->classement,
         ]);
 
+        // Création de la relation dans la table pivot companies_skills
+        DB::table('companies_skills')->insert([
+            'company_id' => $request->company_id,
+            'skill_id' => $skill->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return response()->json([
             'status' => 'success',
-            'message' => 'Compétence créée avec succès',
+            'message' => 'Compétence créée avec succès et associée à l\'entreprise',
             'skill' => $skill,
         ], 201);
     }

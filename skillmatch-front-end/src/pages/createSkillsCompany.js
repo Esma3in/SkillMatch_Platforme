@@ -42,33 +42,31 @@ const CreateSkill = () => {
 
   // Liste des compétences programmation disponibles
   const programmingSkills = [
-    'Spring Boot',
-    'Django',
-    'Node.js',
-    'Databases Management',
-    'REST API Design',
-    'React',
-    'Angular',
-    'Vue.js',
-    'Docker',
-    'Kubernetes',
-    'CI/CD',
-    'AWS',
-    'Azure',
-    'Python',
-    'Java',
-    'JavaScript',
-    'TypeScript',
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "PHP",
+            "Laravel",
+            "React",
+            "Vue.js",
+            "MySQL",
+            "Git",
+            "REST APIs",
+            "Node.js",
+            "Python",
+            "Docker",
+            "AWS",
+            "TypeScript"
   ];
 
   // Liste des types de compétences
   const skillTypes = [
-    'Programming Skills',
-    'Design Skills',
-    'Soft Skills',
-    'Management Skills',
-    'Marketing Skills',
-    'Analysis Skills',
+    'Web Development',
+    'Mobile Development',
+    'AI & Machine Learning',
+    'Data & Database',
+    'Cloud Computing',
+    'DevOps',
   ];
 
   // Gestion du changement des champs du formulaire
@@ -374,4 +372,4 @@ const CreateSkill = () => {
   );
 };
 
-export default CreateSkill; //test
+export default CreateSkill; 
