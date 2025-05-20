@@ -28,7 +28,6 @@ use App\Models\Notification;
 use App\Models\RoadmapSkill;
 
 use App\Models\Administrator;
-<<<<<<< HEAD
 
 
 
@@ -37,9 +36,7 @@ use App\Models\ProfileCompany;
 
 
 
-=======
-use App\Models\ProfileCompany;
->>>>>>> 100c6b0bf16942e64f958d0b55c6364a858f76b4
+
 use App\Models\SerieChallenge;
 
 use App\Models\CompaniesSkills;
@@ -174,12 +171,8 @@ class DatabaseSeeder extends Seeder
             Roadmap::factory(2)->create(['candidate_id' => $candidate->id]);
 
             // Link Results to existing Tests
-            Test::inRandomOrder()->take(2)->get()->each(function ($test) use ($candidate) {
-                Result::factory()->create([
-                    'candidate_id' => $candidate->id,
-                    'test_id' => $test->id
-                ]);
-            });
+                Result::factory()->create(['candidate_id' => $candidate->id,]);
+
             Test::inRandomOrder()->get()->each(function ($test){
                 Step::factory(4)->create([
                     'test_id' => $test->id
@@ -392,19 +385,7 @@ class DatabaseSeeder extends Seeder
        }
 
        // For each roadmap, associate the questions
-       foreach ($roadmaps as $roadmap) {
-           foreach ($questions as $questionData) {
-               DB::table('qcm_for_roadmaps')->insert([
-                   'question' => $questionData['question'],
-                   'options' => json_encode($questionData['options']),
-                   'correct_answer' => $questionData['correctAnswer'],
-                   'skill_id' => $skill->id,
-                   'roadmap_id' => $roadmap->id,
-                   'created_at' => now(),
-                   'updated_at' => now(),
-               ]);
-           }
-       }
+
 
        $this->command->info("QCM inserted for skill: $skillName across all roadmaps");
    }

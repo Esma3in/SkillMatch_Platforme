@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create("results" , function (Blueprint $table) {
             $table->id();
             $table->double('score');
-            $table->string('candidateAnswer');
-            $table->string('correctAnswer');
+            $table->text('candidateAnswer');
+            $table->text('correctAnswer');
             $table->foreignId('candidate_id')->constrained()->onDelete("cascade");
-            $table->foreignId('test_id')->constrained()->onDelete('cascade');
             $table->foreignId('qcm_for_roadmapId')->constrained('qcm_for_roadmaps')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Qcm;
 use App\Models\Badge;
-use App\Models\QcmForRoadmap;
 use App\Models\Roadmap;
 use Illuminate\Http\Request;
+use App\Models\QcmForRoadmap;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class QcmForRoadmapController extends Controller
 {
@@ -23,50 +24,58 @@ class QcmForRoadmapController extends Controller
             ->distinct()
             ->get();
 
-        $skill_ids = $roadmap_skills->pluck('skill_id')->toArray();
-        $skill_names = $roadmap_skills->pluck('skill_name', 'skill_id')->toArray();
-
+        $skill_names = $roadmap_skills->pluck('skill_name')->toArray();
         $results = [];
 
-        // Step 2: Get 3 random questions per skill in the roadmap
-        foreach ($skill_ids as $skill_id) {
-            $questions = DB::table('qcm_for_roadmaps')
-                ->join('skills', 'skills.id', '=', 'qcm_for_roadmaps.skill_id')
-                ->where('qcm_for_roadmaps.skill_id', $skill_id)
-                ->select(
-                    'qcm_for_roadmaps.id',
-                    'qcm_for_roadmaps.question',
-                    'qcm_for_roadmaps.options',
-                    'qcm_for_roadmaps.correct_answer',
-                    'qcm_for_roadmaps.skill_id',
-                    DB::raw("'core' as type"),
-                    'skills.name as skill_name'
-                )
-                ->inRandomOrder()
-                ->limit(10)
-                ->get();
-
-            $results = array_merge($results, $questions->toArray());
+        // Step 2: Load QCM questions from JSON file
+        $jsonPath = base_path('database/data/json/QcmForRoadmap.json');
+    
+        if (!file_exists($jsonPath)) {
+            return response()->json(['message' => 'QCM JSON file not found at ' . $jsonPath], 500);
+        }
+        $jsonContent = file_get_contents($jsonPath);
+        $qcmData = json_decode($jsonContent, true);
+        if (!$qcmData) {
+            return response()->json(['message' => 'Invalid QCM JSON file'], 500);
         }
 
-        // Step 3: Add advanced questions as challenges
-        $advanced_questions = DB::table('qcm_for_roadmaps')
-            ->join('skills', 'skills.id', '=', 'qcm_for_roadmaps.skill_id')
-            ->whereNotIn('qcm_for_roadmaps.skill_id', $skill_ids)
-            ->select(
-                'qcm_for_roadmaps.id as qcmForRoadmapId' ,
-                'qcm_for_roadmaps.question',
-                'qcm_for_roadmaps.options',
-                'qcm_for_roadmaps.correct_answer',
-                'qcm_for_roadmaps.skill_id',
-                DB::raw("'advanced' as type"),
-                'skills.name as skill_name'
-            )
-            ->inRandomOrder()
-            ->limit(5)
-            ->get();
+        // Step 3: Get random questions per skill in the roadmap
+        foreach ($skill_names as $skill_name) {
+            if (isset($qcmData[$skill_name])) {
+                $questions = $qcmData[$skill_name];
+                shuffle($questions);
+                $selected = array_slice($questions, 0, 10);
+                foreach ($selected as $q) {
+                    $results[] = [
+                        'question' => $q['question'],
+                        'options' => $q['options'],
+                        'correct_answer' => $q['correctAnswer'],
+                        'skill_name' => $skill_name,
+                        'type' => 'core'
+                    ];
+                }
+            }
+        }
 
-        $results = array_merge($results, $advanced_questions->toArray());
+        // Step 4: Add advanced questions as challenges (from other skills)
+        $other_skills = array_diff(array_keys($qcmData), $skill_names);
+        $advanced_questions = [];
+        foreach ($other_skills as $other_skill) {
+            $questions = $qcmData[$other_skill];
+            shuffle($questions);
+            $advanced_questions = array_merge($advanced_questions, array_slice($questions, 0, 2));
+        }
+        shuffle($advanced_questions);
+        $advanced_questions = array_slice($advanced_questions, 0, 5);
+        foreach ($advanced_questions as $q) {
+            $results[] = [
+                'question' => $q['question'],
+                'options' => $q['options'],
+                'correct_answer' => $q['correctAnswer'],
+                'skill_name' => 'advanced',
+                'type' => 'advanced'
+            ];
+        }
 
         // Final check
         if (empty($results)) {
@@ -132,84 +141,90 @@ class QcmForRoadmapController extends Controller
     }
 
     // Create a new QCM for roadmap
-    public function createQcmForRoadmap(Request $request)
+    public function createQcm(Request $request)
+    {
+        $request->validate([
+            'roadmap_id' => 'required|exists:roadmaps,id',
+        ]);
+    
+        $qcm = new QcmForRoadmap();
+        $qcm->roadmap_id = $request->roadmap_id;
+        $qcm->save();
+    
+        return response()->json([
+            'id' => $qcm->id,
+            'message' => 'QCM created'
+        ], 201);
+    }
+    public function saveResults(Request $request)
     {
         try {
-            // Validate the incoming request
             $validated = $request->validate([
-                'roadmap_id' => 'required|exists:roadmaps,id',
-                'skill_id' => 'required|exists:skills,id',
-                'question' => 'required|string',
-                'options' => 'required|string', // JSON string of options
-                'correct_answer' => 'required|string',
+                'score' => 'required|numeric|between:0,100',
+                'candidateAnswer' => 'required', // Validate as JSON string
+                'correctAnswer' => 'required', // Validate as JSON string
+                'candidate_id' => 'required|exists:candidates,id',
+                'qcm_for_roadmapId' => 'required|exists:qcm_for_roadmaps,id',
             ]);
-            
-            // Create new QCM for roadmap
-            $qcmForRoadmap = QcmForRoadmap::create([
-                'roadmap_id' => $validated['roadmap_id'],
-                'skill_id' => $validated['skill_id'],
-                'question' => $validated['question'],
-                'options' => $validated['options'],
-                'correct_answer' => $validated['correct_answer'],
+
+            // Check for existing result to prevent duplicates (optional, uncomment if needed)
+            /*
+            $existingResult = DB::table('results')
+                ->where('candidate_id', $validated['candidate_id'])
+                ->where('qcm_for_roadmap_id', $validated['qcm_for_roadmap_id'])
+                ->exists();
+
+            if ($existingResult) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Result already exists for this candidate and QCM'
+                ], 422);
+            }
+            */
+
+            $result = DB::table('results')->insert([
+                'score' => $validated['score'],
+                'candidateAnswer' => $validated['candidateAnswer'],
+                'correctAnswer' => $validated['correctAnswer'],
+                'candidate_id' => $validated['candidate_id'],
+                'qcm_for_roadmapId' => $validated['qcm_for_roadmapId'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
-            
-            Log::info('QCM for roadmap created successfully', [
-                'qcm_for_roadmap_id' => $qcmForRoadmap->id,
-                'roadmap_id' => $validated['roadmap_id']
-            ]);
-            
+
             return response()->json([
-                'message' => 'QCM for roadmap created successfully',
-                'qcm_for_roadmap' => $qcmForRoadmap,
-            ], 201);
-            
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::error('Validation failed when creating QCM for roadmap', [
-                'errors' => $e->errors()
-            ]);
-            
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
+                'success' => $result,
+                'message' => $result ? 'Results saved successfully' : 'Failed to save results'
+            ], $result ? 201 : 422);
         } catch (\Exception $e) {
-            Log::error('Failed to create QCM for roadmap', [
-                'error' => $e->getMessage()
+            Log::error('Failed to save results', [
+                'error' => $e->getMessage(),
+                'request' => $request->all(),
             ]);
-            
+
             return response()->json([
-                'message' => 'Failed to create QCM for roadmap',
-                'error' => $e->getMessage()
+                'success' => false,
+                'message' => 'An error occurred while saving results: ' . $e->getMessage() // Include error for debugging
             ], 500);
         }
     }
-    
-    public function saveResults(Request $request)
-    {
-        $validated = $request->validate([
-            'score' => 'required|numeric|between:0,100',
-            'candidateAnswer' => 'required|string',
-            'correctAnswer' => 'required|string',
-            'candidate_id' => 'required|exists:candidates,id',
-            'test_id' => 'nullable',
-            'qcm_for_roadmapId' =>'required'
-        ]);
 
-        $result = DB::table('Results')->insert([
-            'score' => $validated['score'],
-            'candidateAnswer' => $validated['candidateAnswer'],
-            'correctAnswer' => $validated['correctAnswer'],
-            'candidate_id' => $validated['candidate_id'],
-        
-            'qcm_for_roadmapId'=>$validated['qcm_for_roadmapId'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+    public function getIdRoadmap(int $id)
+    {
+        $roadmap = QcmForRoadmap::find($id);
+
+        if (!$roadmap) {
+            return response()->json([
+                'success' => false,
+                'message' => 'QCM not found'
+            ], 404);
+        }
 
         return response()->json([
-            'success' => $result,
-            'message' => $result ? 'Results saved successfully' : 'Failed to save results'
-        ]);
+            'success' => true,
+            'data' => $roadmap
+        ], 200);
     }
-
 }
+
+

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../api/api";
 import BadgeGenerator from "./BadgeGenerator";
+import QcmForRoadmapData from "../api/QcmForRoadmap.json";
 
 const QcmForRoadmap = () => {
   const { id } = useParams();
@@ -13,10 +14,11 @@ const QcmForRoadmap = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(900); 
+  const [timeLeft, setTimeLeft] = useState(900); // 15 minutes in seconds
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [progressAnimationWidth, setProgressAnimationWidth] = useState("0%");
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
+  const [roadmapId , setRoadmapId] = useState(undefined);
 
   const candidateId = localStorage.getItem("candidate_id")
     ? JSON.parse(localStorage.getItem("candidate_id"))
@@ -26,90 +28,54 @@ const QcmForRoadmap = () => {
   useEffect(() => {
     const fetchQcmData = async () => {
       try {
-        const response = await api.get(`/api/qcm/roadmap/${id}`);
-        const formattedData = response.data.map((item) => {
-          let options = [];
-          if (typeof item.options === "string") {
-            try {
-              options = JSON.parse(item.options);
-            } catch (e) {
-              if (process.env.NODE_ENV !== "production") {
-                console.error(`Failed to parse options for question ${item.id}:`, item.options, e);
-              }
-              options = [];
-            }
-          } else if (Array.isArray(item.options)) {
-            options = item.options;
-          }
-
-          const optionMap = {};
-          if (Array.isArray(options) && options.length > 0) {
-            options.forEach((option, index) => {
-              const key = `option_${String.fromCharCode(97 + index)}`;
-              optionMap[key] = option;
-            });
-          } else if (process.env.NODE_ENV !== "production") {
-            console.warn(`No valid options found for question ${item.id}`);
-          }
-
-          return { ...item, ...optionMap, parsedOptions: options };
+        // Fetch roadmap QCM info to get associated skills
+        const roadmapQcmResponse = await api.get(`/api/qcm/roadmap/${id}`);
+        // Try to extract skills from the response (assuming backend returns them)
+        let skills = [];
+        if (roadmapQcmResponse.data && Array.isArray(roadmapQcmResponse.data)) {
+          // Try to infer skill names from the response (if present)
+          skills = roadmapQcmResponse.data
+            .map(item => item.skill_name)
+            .filter((v, i, a) => v && a.indexOf(v) === i);
+        }
+        // If backend does not provide skills, fallback to fetching skills via another endpoint (not shown here)
+        // Now, select questions for each skill from QcmForRoadmap.json
+        let selectedQuestions = [];
+        skills.forEach(skill => {
+          const questionsForSkill = QcmForRoadmapData[skill] || [];
+          // Pick up to 3 random questions per skill
+          const shuffled = [...questionsForSkill].sort(() => Math.random() - 0.5);
+          selectedQuestions = selectedQuestions.concat(shuffled.slice(0, 3));
         });
-
-        // Group questions by course
-        const questionsByCourse = {};
-        formattedData.forEach((question) => {
-          const courseName = question.course_name || "General";
-          if (!questionsByCourse[courseName]) {
-            questionsByCourse[courseName] = [];
-          }
-          questionsByCourse[courseName].push(question);
-        });
-
-        // Select 2-3 questions per course, with a total cap of 20
-        const courseNames = Object.keys(questionsByCourse);
-        let finalQuestions = [];
-        const maxTotalQuestions = 20;
-        const questionsPerCourse = Math.min(3, Math.max(2, Math.floor(maxTotalQuestions / courseNames.length)));
-
-        courseNames.forEach((courseName) => {
-          const courseQuestions = questionsByCourse[courseName];
-          const questionsToTake = Math.min(questionsPerCourse, courseQuestions.length);
-          const selectedQuestions = courseQuestions.sort(() => Math.random() - 0.5).slice(0, questionsToTake);
-          finalQuestions = [...finalQuestions, ...selectedQuestions];
-        });
-
+        // If no skills found, fallback to random questions from all skills
+        if (selectedQuestions.length === 0) {
+          Object.values(QcmForRoadmapData).forEach(questionsArr => {
+            const shuffled = [...questionsArr].sort(() => Math.random() - 0.5);
+            selectedQuestions = selectedQuestions.concat(shuffled.slice(0, 2));
+          });
+        }
         // Cap at 20 questions
-        finalQuestions = finalQuestions.slice(0, maxTotalQuestions);
-
-        // Shuffle options while preserving correct answer
-        const randomizedData = finalQuestions.map((question) => {
-          if (question.parsedOptions && Array.isArray(question.parsedOptions) && question.parsedOptions.length > 0) {
-            const originalOptions = [...question.parsedOptions];
-            const correctText = question.correct_answer.startsWith("option_")
-              ? originalOptions[parseInt(question.correct_answer.replace("option_", "")) - 97] || question.correct_answer
-              : question.correct_answer;
-
-            const shuffledOptions = [...originalOptions].sort(() => Math.random() - 0.5);
-            const newCorrectIndex = shuffledOptions.findIndex((opt) => opt === correctText);
-            const newOptionMap = {};
-            shuffledOptions.forEach((option, index) => {
-              const key = `option_${String.fromCharCode(97 + index)}`;
-              newOptionMap[key] = option;
-            });
-
-            return {
-              ...question,
-              ...newOptionMap,
-              parsedOptions: shuffledOptions,
-              correct_answer: `option_${String.fromCharCode(97 + newCorrectIndex)}`,
-            };
-          }
-          return question;
+        selectedQuestions = selectedQuestions.slice(0, 20);
+        // Format questions to match the expected structure
+        const formattedData = selectedQuestions.map((item, idx) => {
+          const options = item.options;
+          const optionMap = {};
+          options.forEach((option, index) => {
+            const key = `option_${String.fromCharCode(97 + index)}`;
+            optionMap[key] = option;
+          });
+          return {
+            id: idx + 1,
+            question: item.question,
+            parsedOptions: options,
+            correct_answer: `option_${String.fromCharCode(97 + options.indexOf(item.correctAnswer))}`,
+            skill_name: Object.keys(QcmForRoadmapData).find(skillKey => QcmForRoadmapData[skillKey].includes(item)) || "",
+            ...optionMap
+          };
         });
-
-        setQcmData(randomizedData);
+        setQcmData(formattedData);
         const initialAnswers = {};
-        randomizedData.forEach((item) => {
+        formattedData.forEach((item) => {
           initialAnswers[item.id] = "";
         });
         setSelectedAnswers(initialAnswers);
@@ -143,7 +109,6 @@ const QcmForRoadmap = () => {
       });
     }, 1000);
     return () => clearInterval(timer);
-    
 
   }, [loading, isSubmitted, isTimeUp]);
 
@@ -232,8 +197,7 @@ const QcmForRoadmap = () => {
         candidateAnswer: candidateAnswersJson,
         correctAnswer: correctAnswersJson,
         candidate_id: candidateId,
-        test_id: id,
-        qcm_for_roadmapId: id,
+        qcm_for_roadmapId:id
       });
 
       if (response.data.success) {
@@ -258,10 +222,28 @@ const QcmForRoadmap = () => {
     setShowConfirmSubmit(false);
     saveQuizResults();
   };
+  const getRoadmapId = async () => {
+    try {
+      const response = await api.get(`/api/roadmap/qcm/${id}`);
+      if (response.data.success) {
+        setRoadmapId(response.data.data.roadmap_id);
+      } else {
+        console.error('Failed to fetch roadmap ID:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching roadmap ID:', error.response?.data?.message || error.message);
+    }
+  };
 
+  // Example: Call getRoadmapId on component mount
+  useEffect(() => {
+    getRoadmapId();
+  }, [id]);
+  getRoadmapId()
+  console.log(roadmapId)
   // Return to roadmap
   const handleReturnToRoadmap = () => {
-    navigate(`/candidate/roadmap/${id}`);
+    navigate(`/candidate/roadmap/${roadmapId}`);
   };
 
   // Move to previous question
@@ -775,7 +757,7 @@ const QcmForRoadmap = () => {
             })}
           </div>
         </div>
-        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score={score} />
+        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score={100} />
       </div>
     );
   };

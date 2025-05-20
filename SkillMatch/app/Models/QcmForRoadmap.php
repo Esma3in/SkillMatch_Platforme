@@ -10,23 +10,13 @@ class QcmForRoadmap extends Model
     use HasFactory;
 
     protected $fillable = [
-        'question',
-        'options',
-        'correct_answer',
-        'skill_id', 
+    
         'roadmap_id'
     ];
-
-    public function skill()
-    {
-        return $this->belongsTo(Skill::class);
-    }
-
-    public function roadmap()
-    {
-        return $this->belongsTo(Roadmap::class);
-    }
     public function result (){
         return $this->belongsTo(Result::class);
+    }
+    public function roadmap(){
+        return $this->belongsTo(Roadmap::class);
     }
 }

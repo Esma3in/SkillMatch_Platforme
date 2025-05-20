@@ -21,7 +21,6 @@ class ResultFactory extends Factory
     {
         return [
             'candidate_id'=>Candidate::factory(),
-            'test_id'=>Test::factory(),
             'score'=>fake()->numberBetween('10','90'),
             'correctAnswer'=>fake()->sentence(),
             'candidateAnswer'=>fake()->sentence(),
