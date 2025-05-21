@@ -168,7 +168,7 @@ class DatabaseSeeder extends Seeder
                 'skill_id' => $randomSkill->id
             ]);
             Badge::factory(1)->create(['candidate_id' => $candidate->id]);
-            Roadmap::factory(2)->create(['candidate_id' => $candidate->id]);
+            Roadmap::factory(1)->create(['candidate_id' => $candidate->id]);
 
             // Link Results to existing Tests
                 Result::factory()->create(['candidate_id' => $candidate->id,]);

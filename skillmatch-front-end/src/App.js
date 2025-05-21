@@ -49,6 +49,7 @@ import { CompanyProfile } from './pages/ProfileCompany.jsx';
 import CreateProfileCompany  from './pages/createProfileCompany.jsx';
 import CreateSkill from './pages/createSkillsCompany.js';
 import TestCreationForm from './pages/CreateProgrammingTestForCompany.js';
+import Certificate from './pages/certificate.js';
 export default function App() {
   return (
     <Router>
@@ -105,8 +106,7 @@ export default function App() {
 
         {/*<Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />*/}
         <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
-
-
+        <Route path = "/certificate"  element={<Certificate />}/>
         {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}
       </Routes>
     </Router>

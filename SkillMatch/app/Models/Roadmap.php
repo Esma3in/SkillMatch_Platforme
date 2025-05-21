@@ -18,7 +18,8 @@ class Roadmap extends Model
         'skill_id',
         'name',
         'completed',
-        'candidate_id'
+        'candidate_id',
+        'company_id'
     ];
     // get the candidate correspnonding to this roadmap
     public function Candidate(){
@@ -43,5 +44,8 @@ class Roadmap extends Model
     // qcm for roadmap
     public function QcmForRoadmap(){
         return $this->belongsToMany(QcmForRoadmap::class);
+    }
+    public function Company(){
+        return $this->belongsTo(Company::class);
     }
 }

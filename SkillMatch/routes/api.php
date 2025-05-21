@@ -204,7 +204,7 @@ Route::post('/create/tests/company', [CompanyController::class, 'storeTests']);
  Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
 
 Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
-Route::get("/company/roadmap/{roadmap_id}" , [RoadmapController::class , "getcompanyInfoForRoadmapId"]);
+Route::get("/company/candidate-roadmap/{roadmap_id}" , [RoadmapController::class , "getSelectedCompanyForCandidate"]);
 
 
  Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
@@ -213,3 +213,4 @@ Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
 
 Route::post("/createQcm" ,[QcmForRoadmapController::class  , "createQcm"]);
 Route::get("/roadmap/qcm/{id}" ,[QcmForRoadmapController::class , "getIdRoadmap"]);
+// Route::get("/company/{candidate_id}" , [RoadmapController::class , "getCompanyByCandidate"]);

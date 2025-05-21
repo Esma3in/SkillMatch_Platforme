@@ -66,36 +66,59 @@ export const Roadmap = () => {
   const [completed, setCompleted] = useState("pending");
   const [roadmapName, setRoadmapName] = useState("Personalized Learning Roadmap");
   const [isCreatingQcm, setIsCreatingQcm] = useState(false); // Fixed: Added initial value
+const [ companyId ,setCompanyId] = useState(null)
+const candidate_id = JSON.parse(localStorage.getItem("candidate_id"))
 
+// // get the comnpany id 
+// useEffect(()=>{
+//   const getCompanyId = async ()=>{
+//     const response = await api.get(`/api/company/${candidate_id}`)
+//     setCompanyId(response.data.id)
+//   }
+
+// },[])
   // Fetch company info based on roadmap ID
-  useEffect(() => {
-    const fetchCompanyInfo = async () => {
-      try {
-        const response = await api.get(`/api/company/roadmap/${roadmapId}`);
-        const { company, roadmap } = response.data;
-        setCompanySelected({
-          id: company.id,
-          name: company.name,
-          address: company.address,
-        });
-        setCompleted(roadmap.completed);
-        setRoadmapName(`${company.name} Career Roadmap`);
-        if (roadmap.completed === "completed") {
-          const updatedStepCompletion = roadmapSteps.reduce((acc, step) => {
-            acc[step.id] = true;
-            return acc;
-          }, {});
-          setStepCompletion(updatedStepCompletion);
-          setActiveTab("4");
-        }
-      } catch (error) {
-        console.error("Error fetching company info:", error.message);
-        setError(error.response?.data?.message || "Failed to load company information");
-      }
-    };
-    fetchCompanyInfo();
-  }, [roadmapId, roadmapSteps]);
+useEffect(() => {
+  const fetchCompanyInfo = async () => {
+    setError(null); // Reset error state
+    setLoading(true); // Set loading state
 
+    try {
+      const response = await api.get(`/api/company/candidate-roadmap/${roadmapId}`, {
+        params: { candidate_id },
+      });
+
+      const { company, candidate, roadmap } = response.data;
+
+      // Update state with response data
+      setCompanySelected({
+        id: company.id,
+        name: company.name || 'Unknown Company',
+        address: company.address || '',
+      });
+      setCompleted(roadmap.completed);
+      setRoadmapName(`${company.name || 'Unknown Company'} Career Roadmap`);
+
+      if (roadmap.completed === 'completed') {
+        const updatedStepCompletion = roadmapSteps.reduce((acc, step) => {
+          acc[step.id] = true;
+          return acc;
+        }, {});
+        setStepCompletion(updatedStepCompletion);
+        setActiveTab('4'); // Consider making this dynamic based on roadmapSteps length
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to load company information';
+      setError(errorMessage);
+    } finally {
+      setLoading(false); // Reset loading state
+    }
+  };
+
+  if (roadmapId && candidate_id) {
+    fetchCompanyInfo();
+  }
+}, [roadmapId, candidate_id]); // Removed roadmapSteps from dependencies
   // Fetch roadmap details
   useEffect(() => {
     const fetchRoadmapData = async () => {
