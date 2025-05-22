@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Footer } from "../components/common/footer";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import Companies from "../components/sections/companies";
@@ -9,11 +10,26 @@ import {
   ChevronRight,
   Info,
 } from "lucide-react";
+import { api } from "../api/api";
 
-export default function CompaniesMatching({ id }) {
+export default function CompaniesMatching({ id }){ 
+  const [companies ,setcompanies] = useState([])
+  useEffect(()=>{
+    
+    const getCompanies= async ()=>{
+      try{
+        const response  = await api.get("/api/all")
+        setcompanies(response.data);
+      }catch(err){
+        console.log("erreur de fetching all companies" , err.message)
+      }
+    }
+    getCompanies()
+  },[])
   return (
     <>
-      <NavbarCandidate />
+
+      <NavbarCandidate searchedItems={companies}/>
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-12">
         {/* Welcome Banner */}
         <section className="bg-blue-50 p-6 rounded-xl shadow flex items-center justify-between">

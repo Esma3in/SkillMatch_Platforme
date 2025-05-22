@@ -86,7 +86,8 @@ class DashboardController extends Controller
             ->join('companies', 'companies_selecteds.company_id', '=', 'companies.id')
             ->join('candidates', 'companies_selecteds.candidate_id', '=', 'candidates.id')
             ->join('roadmaps', 'candidates.id', '=', 'roadmaps.candidate_id')
-            ->join('badges', 'roadmaps.id', '=', 'badges.roadmap_id')
+            ->join("qcm_for_roadmaps" , 'qcm_for_roadmaps.roadmap_id' , '=' , 'roadmaps.id')
+            ->join('badges', 'qcm_for_roadmaps.id', '=', 'badges.qcm_for_roadmap_id')
             ->where('companies_selecteds.candidate_id', $candidate_id)  // Filter by candidate_id
             ->select(
                 'companies_selecteds.*',

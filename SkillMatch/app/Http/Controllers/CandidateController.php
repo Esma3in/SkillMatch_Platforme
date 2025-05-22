@@ -504,4 +504,10 @@ class CandidateController extends Controller
             ], 500);
         }
     }
+
+    public function markasRead($id){
+        $notification = Notification::where("id" , $id )->get();
+        
+
+    }
 }

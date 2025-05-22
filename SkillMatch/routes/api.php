@@ -34,6 +34,7 @@ use App\Http\Controllers\CompaniesSelectedController;
 use App\Models\Roadmap;
 
 use App\Http\Controllers\ProfileCompanyController;
+use App\Models\Company;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -189,6 +190,7 @@ Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
 Route::get('/notifications/{candidate_id}' , [CandidateController::class , "getNotifications"]);
+Route::put('/notifications/{id}/read'  , [CandidateController::class , "markasRead"]);
 
 
 Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
@@ -213,4 +215,5 @@ Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
 
 Route::post("/createQcm" ,[QcmForRoadmapController::class  , "createQcm"]);
 Route::get("/roadmap/qcm/{id}" ,[QcmForRoadmapController::class , "getIdRoadmap"]);
-// Route::get("/company/{candidate_id}" , [RoadmapController::class , "getCompanyByCandidate"]);
+
+Route::get("/all" , [CompanyController::class , "all"]);

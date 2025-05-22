@@ -23,9 +23,16 @@ const BadgeGenerator = ({ candidateId, qcmForRoadmapId, score, refreshBadges }) 
         });
         return;
       }
-
-      if(score === 0){
-        setBadgeName("Hard worker")
+      if (score < 50) {
+        setBadgeName("Spark Starter");
+      } else if (score >= 50 && score < 81) {
+        setBadgeName("Trailblazer");
+      } else if (score === 81) {
+        setBadgeName("Grit Vanguard");
+      } else if (score > 81 && score <= 90) {
+        setBadgeName("Stellar Striver");
+      } else if (score > 90) {
+        setBadgeName("Cosmic Champion");
       }
       console.log("BadgeGenerator candidateId:", candidateId);
       console.log("BadgeGenerator qcmForRoadmapId:", qcmForRoadmapId);

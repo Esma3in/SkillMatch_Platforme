@@ -16,7 +16,7 @@ export const Roadmap = () => {
 
   // State
   const [stepCompletion, setStepCompletion] = useState(() => {
-    const savedData = localStorage.getItem(`roadmapProgress_${roadmapId}`);
+    const savedData = localStorage.getItem(`roadmap_id`);
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);

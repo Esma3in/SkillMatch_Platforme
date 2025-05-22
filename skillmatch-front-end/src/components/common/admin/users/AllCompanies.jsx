@@ -29,7 +29,7 @@ const AllCompanies = () => {
   const [companies, setCompany] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 8;
 
 
   // Data for candidates
@@ -214,7 +214,7 @@ const AllCompanies = () => {
 
   return (
     <div className="w-full h-full">
-      <div className="flex justify-between items-center px-4 py-2">
+      <div className="flex justify-between items-center px-4 py-5">
         <h1 className="font-semibold text-2xl text-black font-['Inter',Helvetica]">All Companies</h1>
         <div className="relative w-[644px] h-8">
           <div className="flex items-center bg-white border border-[#dde1e3] rounded-md overflow-hidden">
@@ -288,7 +288,7 @@ const AllCompanies = () => {
                       Details
                     </Button>
                   </TableCell>
-                  <TableCell className="px-6 py-4">
+                  <TableCell className="px-6 py-5">
                     <div className="flex gap-2">
                         <button
                             onClick={() =>
@@ -320,7 +320,7 @@ const AllCompanies = () => {
             </TableBody>
           </Table>
 
-          <div className="flex justify-center items-center gap-2">
+          <div className="flex justify-center items-center gap-2 px-10 py-4">
             <Button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
               Prev
             </Button>
@@ -328,7 +328,7 @@ const AllCompanies = () => {
               <Button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
-                className={`px-4 py-2 ${
+                className={`px-6 py-4 ${
                   currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-white'
                 }`}
               >
