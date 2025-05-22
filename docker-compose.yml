@@ -1,5 +1,4 @@
 
-
 services:
   nginx:
     build:
@@ -7,21 +6,31 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - skillmatch-react
-      - skillmatch-laravel
-      - leetcode-ide
+      - skillmatch-api
+      - skillmatch-frontend
+      - training-app
 
-  skillmatch-react:
+  skillmatch-api:
+    build: ./SkillMatch
+    container_name: skillmatch-api
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=local
+      - DB_HOST=host.docker.internal  # for macOS/Windows
+      - DB_PORT=3306
+      - DB_DATABASE=skillmatch
+      - DB_USERNAME=root
+      - DB_PASSWORD=your_db_password_here
+
+  skillmatch-frontend:
     build: ./skillmatch-front-end
+    container_name: skillmatch-frontend
     ports:
       - "3000:3000"
 
-  skillmatch-laravel:
-    build: ./SkillMatch
-    ports:
-      - "8000:8000"
-
   training-app:
     build: ./training_app
+    container_name: training-app
     ports:
-      - "4200:4200"
+      - "4200:3000"
