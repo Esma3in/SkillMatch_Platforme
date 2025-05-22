@@ -7,13 +7,14 @@ import { api } from '../../api/api';
 import logo from "../../assets/Logoo.png"
 import { useNavigate } from 'react-router';
 
-const NavbarCandidate = () => {
+const NavbarCandidate = ({searchedItems}) => {
   const logout = UseLogout();
   const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
   const [isTrainingOpen, setIsTrainingOpen] = useState(false);
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [candidate, setCandidate] = useState({});
+  const [searchedValue , setsearchedValue] = useState("")
 
   const trainingRef = useRef(null);
   const companyRef = useRef(null);
@@ -64,9 +65,14 @@ const navigate= useNavigate();
   const handleCompanyLeave = () => {
     companyTimeout.current = setTimeout(() => {
       setIsCompanyOpen(false);
-    }, 200); //  ness tanya
+    }, 200); 
   };
 
+  const handleSearch = (searchTerm) => {
+    return searchedItems.filter((item) => {
+      return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  }
   return (
     <div className="navbar-container">
       <div className="navbar">
@@ -80,7 +86,6 @@ const navigate= useNavigate();
 
           <nav className="navbar-nav">
             <a href={`/candidate/Session/${candidate_id}`} className="nav-item">Home</a>
-            
             <div 
               className="nav-item dropdown m-5" 
               ref={trainingRef}
@@ -91,7 +96,8 @@ const navigate= useNavigate();
               {isTrainingOpen && (
                 <div className="dropdown-menu">
                   <a href="/problems" className="dropdown-item">
-                    <i className="menu-icon start-icon"></i>
+                    <i className="menu-icon start-icon" ></i>
+              
                     Start training
                   </a>
                   <a href="/challenges" className="dropdown-item">
@@ -126,10 +132,20 @@ const navigate= useNavigate();
         </div>
         
         <div className="navbar-right">
-          <div className="search-container">
-            <input type="text" placeholder="Search" className="search-input" />
-            <i className="search-icon"></i>
-          </div>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search"
+            className="search-input"
+            value={searchedValue}
+            onChange={(e) => {
+              const value = e.target.value;
+              setsearchedValue(value);
+              handleSearch(value); // call search with input value
+            }}
+          />
+          <i className="search-icon"></i>
+        </div>
           
           <div className="navbar-icons">
             <button className="icon-button notification-button"
@@ -186,10 +202,7 @@ const navigate= useNavigate();
                       <i className="option-icon performance-icon"></i>
                       Performance
                     </a>
-                    <a href="/history" className="profile-option">
-                      <i className="option-icon history-icon"></i>
-                      Historique
-                    </a>
+                
                     <a href="/support" className="profile-option">
                       <i className="option-icon support-icon"></i>
                       Support

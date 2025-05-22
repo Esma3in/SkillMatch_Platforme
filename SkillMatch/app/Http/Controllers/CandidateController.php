@@ -13,8 +13,8 @@ use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
+// use Illuminate\Support\Facades\Hash;
+// use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class CandidateController extends Controller
 {
@@ -503,5 +503,11 @@ class CandidateController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function markasRead($id){
+        $notification = Notification::where("id" , $id )->get();
+
+
     }
 }

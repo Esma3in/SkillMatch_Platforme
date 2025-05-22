@@ -7,6 +7,7 @@ import ProtectedRoute from './features/session/ProtectedRoute.jsx';
 import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 
+
 import SeriesChallenge from './pages/SerieChallenges'
 
 
@@ -50,6 +51,7 @@ import CreateProfileCompany  from './pages/createProfileCompany.jsx';
 import CreateSkill from './pages/createSkillsCompany.js';
 import TestCreationForm from './pages/CreateProgrammingTestForCompany.js';
 import Certificate from './pages/certificate.js';
+import CandidatesList from './pages/manage/candidatesList.jsx';
 export default function App() {
   return (
     <Router>
@@ -104,7 +106,7 @@ export default function App() {
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
         <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
 
-        {/*<Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />*/}
+        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
         <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
         <Route path = "/certificate"  element={<Certificate />}/>
         {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}

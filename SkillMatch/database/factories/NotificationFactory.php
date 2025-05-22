@@ -23,7 +23,8 @@ class NotificationFactory extends Factory
             'dateEnvoi'=>fake()->dateTimeBetween('-1 month','now'),
             'destinataire'=>fake()->name(),
             'company_id'=>Company::factory(),
-            'candidate_id'=>Candidate::factory()
+            'candidate_id'=>Candidate::factory(),
+            "read" =>false
         ];
     }
 }

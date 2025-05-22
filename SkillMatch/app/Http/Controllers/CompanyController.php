@@ -178,5 +178,8 @@ class CompanyController extends Controller
             'test' => $test->load('skills', 'steps', 'company', 'qcm'),
         ], 201);
     }
-
+    public function all(){
+        $companiesAll = Company::all();
+        return response()->json($companiesAll);
+    }
 }

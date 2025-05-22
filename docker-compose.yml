@@ -1,0 +1,27 @@
+
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - skillmatch-react
+      - skillmatch-laravel
+      - leetcode-ide
+
+  skillmatch-react:
+    build: ./skillmatch-front-end
+    ports:
+      - "3000:3000"
+
+  skillmatch-laravel:
+    build: ./SkillMatch
+    ports:
+      - "8000:8000"
+
+  training-app:
+    build: ./training_app
+    ports:
+      - "4200:4200"
