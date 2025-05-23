@@ -63,7 +63,7 @@ class SkillController extends Controller
         }
     }
 
-    // skills by candidate 
+    // skills by candidate
     public function getSkillsByCandidate($candidateId)
     {
         try {

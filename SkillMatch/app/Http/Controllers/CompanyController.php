@@ -128,11 +128,13 @@ class CompanyController extends Controller
         ], 201);
     }
 
-    //create test
+    /**
+     * Create a new programming test for company
+     */
     public function storeTests(Request $request)
     {
         $validatedData = $request->validate([
-            'objective' => 'required|string',
+            'objective' => 'required|string|max:255',
             'prerequisites' => 'nullable|string',
             'tools_Required' => 'required|string',
             'before_answer' => 'required|string',
@@ -141,12 +143,13 @@ class CompanyController extends Controller
             'skill_id' => 'required|exists:skills,id',
             'skill_ids' => 'nullable|array',
             'skill_ids.*' => 'exists:skills,id',
-            'steps' => 'nullable|array',
-            'steps.*.title' => 'required|string',
+            'steps' => 'required|array|min:1',
+            'steps.*.title' => 'required|string|max:255',
             'steps.*.description' => 'nullable|string',
-            'steps.*.order' => 'required|integer',
+            'steps.*.order' => 'required|integer|min:1',
         ]);
 
+        // Create the test
         $test = Test::create([
             'objective' => $validatedData['objective'],
             'prerequisites' => $validatedData['prerequisites'] ?? null,
@@ -154,15 +157,22 @@ class CompanyController extends Controller
             'before_answer' => $validatedData['before_answer'],
             'qcm_id' => $validatedData['qcm_id'],
             'company_id' => $validatedData['company_id'],
-            'skill_id' => $validatedData['skill_id'], // belongsTo
+            'skill_id' => $validatedData['skill_id'], // Primary skill (belongsTo)
         ]);
 
-        // Ajouter des compétences
+        // Attach additional skills (many-to-many relationship)
         if (!empty($validatedData['skill_ids'])) {
-            $test->skills()->attach($validatedData['skill_ids']);
+            // Filter out the primary skill to avoid duplication
+            $additionalSkills = array_filter($validatedData['skill_ids'], function($skillId) use ($validatedData) {
+                return $skillId != $validatedData['skill_id'];
+            });
+
+            if (!empty($additionalSkills)) {
+                $test->skills()->attach($additionalSkills);
+            }
         }
 
-        // Ajouter des étapes
+        // Create test steps
         if (!empty($validatedData['steps'])) {
             foreach ($validatedData['steps'] as $stepData) {
                 $test->steps()->create([
@@ -173,9 +183,12 @@ class CompanyController extends Controller
             }
         }
 
+        // Load relationships for response
+        $test->load(['skills', 'steps', 'company', 'qcm', 'skill']);
+
         return response()->json([
             'message' => 'Test créé avec succès.',
-            'test' => $test->load('skills', 'steps', 'company', 'qcm'),
+            'test' => $test,
         ], 201);
     }
 

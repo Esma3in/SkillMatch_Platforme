@@ -1,119 +1,116 @@
 import { useState, useEffect } from "react";
 import { api } from "../api/api";
-import { PlusCircle, Trash2, Save, ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
+import { Save, ArrowLeft } from "lucide-react";
 
 export default function TestCreationForm() {
-  // États pour gérer les données du formulaire
   const [formData, setFormData] = useState({
     objective: "",
     prerequisites: "",
-    tools_Required: "",
+    tools_required: "",
     before_answer: "",
     qcm_id: "",
     company_id: "",
     skill_id: "",
-    skill_ids: [],
-    steps: [
-      {
-        title: "",
-        description: "",
-        order: 1,
-      },
-    ],
   });
-
-  // États pour les données externes
   const [qcms, setQcms] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const [isStepsOpen, setIsStepsOpen] = useState(true);
-  const [isSkillsOpen, setIsSkillsOpen] = useState(true);
 
-  // Chargement des données externes
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [qcmsRes, companiesRes, skillsRes] = await Promise.all([
-          api.get("/api/qcms"),
-          api.get("/api/companies"),
-          api.get("/api/skills"),
+          api.get("/api/qcms/company"),
+          api.get("/api/companies/company"),
+          api.get("/api/skills/company"),
         ]);
-        setQcms(qcmsRes.data);
-        setCompanies(companiesRes.data);
-        setSkills(skillsRes.data);
+        setQcms(Array.isArray(qcmsRes.data) ? qcmsRes.data : []);
+        setCompanies(Array.isArray(companiesRes.data) ? companiesRes.data : []);
+        setSkills(Array.isArray(skillsRes.data) ? skillsRes.data : []);
       } catch (err) {
-        console.error("Erreur lors du chargement des données:", err);
-        setError("Impossible de charger les données nécessaires au formulaire.");
+        console.error("Error loading data:", err);
+        setError(
+          err.response?.status === 404
+            ? "Requested resource not found. Please check the server configuration."
+            : "Unable to load the data required for the form."
+        );
       }
     };
 
     fetchData();
   }, []);
 
-  // Gestion des changements dans le formulaire
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Gestion des changements pour les compétences multiples
-  const handleSkillCheckbox = (skillId) => {
-    const updatedSkillIds = formData.skill_ids.includes(skillId)
-      ? formData.skill_ids.filter((id) => id !== skillId)
-      : [...formData.skill_ids, skillId];
-
-    setFormData({ ...formData, skill_ids: updatedSkillIds });
+  const validateForm = () => {
+    if (!formData.objective.trim()) {
+      setError("The objective is required.");
+      return false;
+    }
+    if (!formData.company_id) {
+      setError("Please select a company.");
+      return false;
+    }
+    if (!formData.skill_id) {
+      setError("Please select a primary skill.");
+      return false;
+    }
+    return true;
   };
 
-  // Gestion des étapes
-  const addStep = () => {
-    const newStep = {
-      title: "",
-      description: "",
-      order: formData.steps.length + 1,
-    };
-    setFormData({ ...formData, steps: [...formData.steps, newStep] });
-  };
-
-  const handleStepChange = (index, field, value) => {
-    const updatedSteps = [...formData.steps];
-    updatedSteps[index][field] = value;
-    setFormData({ ...formData, steps: updatedSteps });
-  };
-
-  const removeStep = (index) => {
-    const updatedSteps = formData.steps.filter((_, i) => i !== index);
-    // Réorganiser les ordres après suppression
-    const reorderedSteps = updatedSteps.map((step, i) => ({
-      ...step,
-      order: i + 1,
-    }));
-    setFormData({ ...formData, steps: reorderedSteps });
-  };
-
-  // Soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
+    if (!validateForm()) {
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const response = await api.post("/api/create/tests/company", formData);
-      console.log("Test créé:", response.data);
+      const submitData = {
+        objective: formData.objective,
+        prerequisites: formData.prerequisites || null,
+        tools_required: formData.tools_required || null,
+        before_answer: formData.before_answer || null,
+        qcm_id: formData.qcm_id ? parseInt(formData.qcm_id) : null,
+        company_id: parseInt(formData.company_id),
+        skill_id: parseInt(formData.skill_id),
+      };
+
+      const response = await api.post("/api/tests/company/create", submitData);
+      console.log("Test created:", response.data);
       setSuccess(true);
-      // Réinitialiser le formulaire ou rediriger
+      setFormData({
+        objective: "",
+        prerequisites: "",
+        tools_required: "",
+        before_answer: "",
+        qcm_id: "",
+        company_id: "",
+        skill_id: "",
+      });
       setTimeout(() => {
         setSuccess(false);
       }, 3000);
     } catch (err) {
-      console.error("Erreur lors de la création du test:", err);
-      setError(
-        err.response?.data?.message ||
-          "Une erreur s'est produite lors de la création du test."
-      );
+      console.error("Error while creating the test:", err);
+      if (err.response?.data?.errors) {
+        const validationErrors = Object.values(err.response.data.errors).flat();
+        setError(validationErrors.join(", "));
+      } else {
+        setError(
+          err.response?.data?.message ||
+            "An error occurred while creating the test."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -125,18 +122,18 @@ export default function TestCreationForm() {
         <div className="flex items-center gap-2 mb-2">
           <ArrowLeft className="w-5 h-5 text-gray-600" />
           <a href="#" className="text-blue-600 hover:underline text-sm">
-            Retour à la liste
+            Back to list
           </a>
         </div>
-        <h1 className="text-2xl font-bold text-gray-800">Créer un nouveau test</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Create a New Test</h1>
         <p className="text-gray-600 mt-1">
-          Configurez les détails du test et ajoutez des étapes pour les candidats.
+          Set up the test details for candidates.
         </p>
       </div>
 
       {success && (
         <div className="mb-6 p-4 bg-green-50 text-green-700 rounded-md border border-green-200">
-          Test créé avec succès !
+          Test created successfully!
         </div>
       )}
 
@@ -148,15 +145,14 @@ export default function TestCreationForm() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Informations principales */}
           <div className="md:col-span-2">
             <h2 className="text-lg font-medium text-gray-700 mb-4">
-              Informations principales
+              Main Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Objectif <span className="text-red-500">*</span>
+                  Objective <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -165,13 +161,13 @@ export default function TestCreationForm() {
                   onChange={handleChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Objectif du test"
+                  placeholder="Test objective"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Prérequis
+                  Prerequisites
                 </label>
                 <input
                   type="text"
@@ -179,47 +175,44 @@ export default function TestCreationForm() {
                   value={formData.prerequisites}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Prérequis pour le test"
+                  placeholder="Prerequisites for the test"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Outils requis <span className="text-red-500">*</span>
+                  Required Tools
                 </label>
                 <input
                   type="text"
-                  name="tools_Required"
-                  value={formData.tools_Required}
+                  name="tools_required"
+                  value={formData.tools_required}
                   onChange={handleChange}
-                  required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Outils nécessaires"
+                  placeholder="Required tools (e.g., VS Code, Node.js)"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Instructions préalables <span className="text-red-500">*</span>
+                  Preliminary Instructions
                 </label>
                 <input
                   type="text"
                   name="before_answer"
                   value={formData.before_answer}
                   onChange={handleChange}
-                  required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Instructions avant de commencer"
+                  placeholder="Instructions before starting"
                 />
               </div>
             </div>
           </div>
 
-          {/* Sélections */}
           <div className="space-y-4">
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                Entreprise <span className="text-red-500">*</span>
+                Company <span className="text-red-500">*</span>
               </label>
               <select
                 name="company_id"
@@ -228,7 +221,7 @@ export default function TestCreationForm() {
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Sélectionner une entreprise</option>
+                <option value="">Select a company</option>
                 {companies.map((company) => (
                   <option key={company.id} value={company.id}>
                     {company.name}
@@ -239,19 +232,18 @@ export default function TestCreationForm() {
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                QCM associé <span className="text-red-500">*</span>
+                Associated QCM
               </label>
               <select
                 name="qcm_id"
                 value={formData.qcm_id}
                 onChange={handleChange}
-                required
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Sélectionner un QCM</option>
+                <option value="">Select a QCM</option>
                 {qcms.map((qcm) => (
                   <option key={qcm.id} value={qcm.id}>
-                    {qcm.title}
+                    {qcm.question}
                   </option>
                 ))}
               </select>
@@ -261,7 +253,7 @@ export default function TestCreationForm() {
           <div className="space-y-4">
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                Compétence principale <span className="text-red-500">*</span>
+                Primary Skill <span className="text-red-500">*</span>
               </label>
               <select
                 name="skill_id"
@@ -270,137 +262,13 @@ export default function TestCreationForm() {
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Sélectionner une compétence principale</option>
+                <option value="">Select a primary skill</option>
                 {skills.map((skill) => (
                   <option key={skill.id} value={skill.id}>
                     {skill.name}
                   </option>
                 ))}
               </select>
-            </div>
-          </div>
-
-          {/* Compétences additionnelles */}
-          <div className="md:col-span-2">
-            <div className="border border-gray-200 rounded-lg p-4">
-              <div 
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => setIsSkillsOpen(!isSkillsOpen)}
-              >
-                <h2 className="text-lg font-medium text-gray-700">
-                  Compétences additionnelles
-                </h2>
-                {isSkillsOpen ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500" />
-                )}
-              </div>
-              
-              {isSkillsOpen && (
-                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                  {skills.map((skill) => (
-                    <div key={skill.id} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id={`skill-${skill.id}`}
-                        checked={formData.skill_ids.includes(skill.id)}
-                        onChange={() => handleSkillCheckbox(skill.id)}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label
-                        htmlFor={`skill-${skill.id}`}
-                        className="ml-2 block text-sm text-gray-700"
-                      >
-                        {skill.name}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Étapes du test */}
-          <div className="md:col-span-2">
-            <div className="border border-gray-200 rounded-lg p-4">
-              <div 
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => setIsStepsOpen(!isStepsOpen)}
-              >
-                <h2 className="text-lg font-medium text-gray-700">
-                  Étapes du test
-                </h2>
-                {isStepsOpen ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500" />
-                )}
-              </div>
-              
-              {isStepsOpen && (
-                <div className="mt-4 space-y-6">
-                  {formData.steps.map((step, index) => (
-                    <div
-                      key={index}
-                      className="border border-gray-200 rounded-md p-4 bg-gray-50"
-                    >
-                      <div className="flex justify-between items-center mb-3">
-                        <h3 className="text-md font-medium text-gray-700">{`Étape ${step.order}`}</h3>
-                        <button
-                          type="button"
-                          onClick={() => removeStep(index)}
-                          className="text-red-500 hover:text-red-700 flex items-center text-sm"
-                        >
-                          <Trash2 className="w-4 h-4 mr-1" />
-                          Supprimer
-                        </button>
-                      </div>
-
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Titre <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            value={step.title}
-                            onChange={(e) =>
-                              handleStepChange(index, "title", e.target.value)
-                            }
-                            required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Titre de l'étape"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Description
-                          </label>
-                          <textarea
-                            value={step.description || ""}
-                            onChange={(e) =>
-                              handleStepChange(index, "description", e.target.value)
-                            }
-                            rows="3"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Description détaillée de l'étape"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  <button
-                    type="button"
-                    onClick={addStep}
-                    className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm mt-2"
-                  >
-                    <PlusCircle className="w-4 h-4 mr-1" />
-                    Ajouter une étape
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -410,19 +278,19 @@ export default function TestCreationForm() {
             type="button"
             className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center"
           >
-            Annuler
+            Cancel
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center"
+            className="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <span className="inline-block animate-spin rounded-full h-4 w-4 border-t-2 border-white mr-2"></span>
             ) : (
               <Save className="w-4 h-4 mr-2" />
             )}
-            Enregistrer le test
+            {loading ? "Creating..." : "Save Test"}
           </button>
         </div>
       </form>

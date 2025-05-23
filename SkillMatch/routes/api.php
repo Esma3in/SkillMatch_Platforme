@@ -91,6 +91,19 @@ Route::get('/candidate/company/{id}/tests', [TestController::class, 'GetTestsCom
 Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
 Route::post('/results/store',[TestController::class,'storeResult']);
 Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::class,'getResult']);
+// Create test for company
+// GET route to show the form or return form data
+Route::get('/tests/company/create', [TestController::class, 'create'])->name('tests.create');
+    Route::post('/tests/company/create', [TestController::class, 'store'])->name('tests.store');
+
+    // Fetch QCMs
+    Route::get('/qcms/company', [TestController::class, 'getQcms'])->name('qcms.index');
+
+    // Fetch Companies
+    Route::get('/companies/company', [TestController::class, 'getCompanies'])->name('companies.index');
+
+    // Fetch Skills
+    Route::get('/skills/company', [TestController::class, 'getSkills'])->name('skills.index');
 
 //selected candidates for companby :
 Route::delete('/company/delete/candidate/selected',[CandidateSelectedController::class,'delete']);
