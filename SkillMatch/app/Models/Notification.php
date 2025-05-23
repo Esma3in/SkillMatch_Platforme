@@ -15,6 +15,7 @@ class Notification extends Model
         'destinataire',
         'company_id',
         'candidate_id',
+        'read'
     ];
 
     public function company(){

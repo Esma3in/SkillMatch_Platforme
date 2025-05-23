@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
-import NavbarCandidate from "../components/common/navbarCandidate";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import NavbarCandidate from "../components/common/navbarCandidate"
 import { api } from "../api/api";
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate } from "react-router";
 
 export const Roadmap = () => {
   const roadmapSteps = [
@@ -11,12 +11,12 @@ export const Roadmap = () => {
     { id: 4, name: "Quiz" },
   ];
 
-  const { id } = useParams();
+  const { id: roadmapId } = useParams();
   const navigate = useNavigate();
 
-  // Initialize stepCompletion and activeTab from localStorage
+  // State
   const [stepCompletion, setStepCompletion] = useState(() => {
-    const savedData = localStorage.getItem(`roadmapProgress_${id}`);
+    const savedData = localStorage.getItem(`roadmap_id`);
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
@@ -36,7 +36,7 @@ export const Roadmap = () => {
   });
 
   const [activeTab, setActiveTab] = useState(() => {
-    const savedData = localStorage.getItem(`roadmapProgress_${id}`);
+    const savedData = localStorage.getItem(`roadmapProgress_${roadmapId}`);
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
@@ -59,52 +59,133 @@ export const Roadmap = () => {
     userTools: [],
   });
   const [competitors, setCompetitors] = useState([]);
-  const [companySelected, setCompanySelected] = useState({ name: "Unknown Company" });
+  const [companySelected, setCompanySelected] = useState({ id: null, name: "Unknown Company", address: null });
   const [skillsCompanySelected, setSkillsCompanySelected] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [completed, setCompleted] = useState("pending");
+  const [roadmapName, setRoadmapName] = useState("Personalized Learning Roadmap");
+  const [isCreatingQcm, setIsCreatingQcm] = useState(false); // Fixed: Added initial value
+const [ companyId ,setCompanyId] = useState(null)
+const candidate_id = JSON.parse(localStorage.getItem("candidate_id"))
 
+// // get the comnpany id 
+// useEffect(()=>{
+//   const getCompanyId = async ()=>{
+//     const response = await api.get(`/api/company/${candidate_id}`)
+//     setCompanyId(response.data.id)
+//   }
+
+// },[])
+  // Fetch company info based on roadmap ID
+useEffect(() => {
+  const fetchCompanyInfo = async () => {
+    setError(null); // Reset error state
+    setLoading(true); // Set loading state
+
+    try {
+      const response = await api.get(`/api/company/candidate-roadmap/${roadmapId}`, {
+        params: { candidate_id },
+      });
+
+      const { company, candidate, roadmap } = response.data;
+
+      // Update state with response data
+      setCompanySelected({
+        id: company.id,
+        name: company.name || 'Unknown Company',
+        address: company.address || '',
+      });
+      setCompleted(roadmap.completed);
+      setRoadmapName(`${company.name || 'Unknown Company'} Career Roadmap`);
+
+      if (roadmap.completed === 'completed') {
+        const updatedStepCompletion = roadmapSteps.reduce((acc, step) => {
+          acc[step.id] = true;
+          return acc;
+        }, {});
+        setStepCompletion(updatedStepCompletion);
+        setActiveTab('4'); // Consider making this dynamic based on roadmapSteps length
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to load company information';
+      setError(errorMessage);
+    } finally {
+      setLoading(false); // Reset loading state
+    }
+  };
+
+  if (roadmapId && candidate_id) {
+    fetchCompanyInfo();
+  }
+}, [roadmapId, candidate_id]); // Removed roadmapSteps from dependencies
+  // Fetch roadmap details
   useEffect(() => {
-    const getRoadmapInfo = async () => {
+    const fetchRoadmapData = async () => {
       try {
-        const response = await api.get(`/api/roadmap/details/${id}`);
-        setCompleted(response.data.completed);
-        // If roadmap is completed, mark all steps as completed
-        if (response.data.completed === "completed") {
-          const updatedStepCompletion = roadmapSteps.reduce((acc, step) => {
-            acc[step.id] = true;
-            return acc;
-          }, {});
-          setStepCompletion(updatedStepCompletion);
-          setActiveTab("4"); // Set to the last step (Quiz) when completed
-        }
-      } catch (error) {
-        console.log("Error loading roadmap details:", error.message);
+        if (!companySelected.id) return;
+        const response = await api.get(`/api/roadmap/${companySelected.id}`);
+        const uniqueData = {
+          skills: removeDuplicates(response.data.skills || [], 'id'),
+          prerequisites: removeDuplicates(response.data.prerequisites || [], 'id'),
+          tools: removeDuplicates(response.data.tools || [], 'name'),
+          candidateCourses: removeDuplicates(response.data.candidateCourses || [], 'id'),
+          roadmapSkills: removeDuplicates(response.data.roadmapSkills || [], 'text'),
+          userTools: removeDuplicates(response.data.userTools || [], 'name'),
+        };
+        setData(uniqueData);
+        setSkillsCompanySelected(removeDuplicates(response.data.skills || [], 'id'));
+        setCompetitors(removeDuplicates(response.data.competitors || [], 'id'));
+        setLoading(false);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Error fetching roadmap data');
+        setLoading(false);
       }
     };
-    getRoadmapInfo();
-  }, [id ,roadmapSteps]);
+    fetchRoadmapData();
+  }, [companySelected.id]);
 
-  // Save progress and activeTab to localStorage whenever they change
+  // Save progress to localStorage
   useEffect(() => {
-    if (id) {
-      try {
-        const dataToSave = {
-          stepCompletion,
-          activeTab,
-          completed, // Save completed status to localStorage
-        };
-        localStorage.setItem(`roadmapProgress_${id}`, JSON.stringify(dataToSave));
-      } catch (e) {
-        console.warn("Failed to save progress to localStorage:", e);
-      }
+    try {
+      const dataToSave = {
+        stepCompletion,
+        activeTab,
+        completed,
+      };
+      localStorage.setItem(`roadmapProgress_${roadmapId}`, JSON.stringify(dataToSave));
+    } catch (e) {
+      console.warn("Failed to save progress to localStorage:", e);
     }
-  }, [stepCompletion, activeTab, completed, id]);
+  }, [stepCompletion, activeTab, completed, roadmapId]);
 
-  const handleTakeQuiz = () => {
-    navigate(`/qcm/roadmap/${id}`);
-  };
+  const handleTakeQuiz = useCallback(async () => {
+    if (isCreatingQcm) return;
+    setIsCreatingQcm(true);
+    console.log("handleTakeQuiz called with roadmapId:", roadmapId); // Debug log
+
+    try {
+      const payload = {
+        roadmap_id: roadmapId,
+      };
+      const response = await api.post('/api/createQcm/', payload);
+      const qcmId = response?.data?.id;
+      if (!qcmId) {
+        throw new Error('QCM ID not found in response');
+      }
+      navigate(`/qcmForRoadmap/${qcmId}`);
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.message || err.message || 'Failed to create QCM';
+      console.error('Error creating QCM:', {
+        message: errorMessage,
+        status: err.response?.status,
+      });
+      alert(`Error: ${errorMessage}`);
+    } finally {
+      setIsCreatingQcm(false);
+    }
+  }, [roadmapId, navigate]);
 
   const removeDuplicates = (array, criteria) => {
     const seen = new Set();
@@ -120,31 +201,6 @@ export const Roadmap = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`/api/roadmap/${id}`);
-        const uniqueData = {
-          skills: removeDuplicates(response.data.skills || [], 'id'),
-          prerequisites: removeDuplicates(response.data.prerequisites || [], 'id'),
-          tools: removeDuplicates(response.data.tools || [], 'name'),
-          candidateCourses: removeDuplicates(response.data.candidateCourses || [], 'id'),
-          roadmapSkills: removeDuplicates(response.data.roadmapSkills || [], 'text'),
-          userTools: removeDuplicates(response.data.userTools || [], 'name'),
-        };
-        setData(uniqueData);
-        setCompanySelected(response.data.company || { name: "Unknown Company" });
-        setSkillsCompanySelected(removeDuplicates(response.data.skills || [], 'id'));
-        setCompetitors(removeDuplicates(response.data.competitors || [], 'id'));
-        setLoading(false);
-      } catch (err) {
-        setError(err.response?.data?.message || 'Error fetching data');
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [id]);
-
   const filteredTools = useMemo(() => data.tools, [data.tools]);
   const filteredPrerequisites = useMemo(() => data.prerequisites, [data.prerequisites]);
   const filteredCourses = useMemo(() => data.candidateCourses, [data.candidateCourses]);
@@ -153,9 +209,7 @@ export const Roadmap = () => {
   const filteredCompetitors = useMemo(() => competitors, [competitors]);
   const filteredUserTools = useMemo(() => data.userTools, [data.userTools]);
 
-  const isStepCompleted = (stepId) => {
-    return stepCompletion[stepId] || false;
-  };
+  const isStepCompleted = (stepId) => stepCompletion[stepId] || false;
 
   const getNextTab = (currentTab) => {
     const currentIndex = roadmapSteps.findIndex(step => step.id.toString() === currentTab);
@@ -181,10 +235,9 @@ export const Roadmap = () => {
     <>
       <NavbarCandidate />
       <div className={`min-h-screen bg-gray-50 ${completed === "completed" ? "bg-green-50" : ""}`}>
-        {/* Roadmap Header */}
         <div className={`bg-gradient-to-r ${completed === "completed" ? "from-green-600 to-emerald-700" : "from-purple-600 to-indigo-700"} shadow-lg py-6`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-white">Personalized Learning Roadmap</h1>
+            <h1 className="text-3xl font-bold text-white">{roadmapName}</h1>
             <p className="mt-2 text-sm text-white">
               Tailored for: <span className="font-semibold">{companySelected.name || "Unknown Company"}</span>
               {completed === "completed" && (
@@ -196,10 +249,8 @@ export const Roadmap = () => {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Roadmap Timeline */}
             <div className="w-full lg:w-1/4 mb-6 lg:mb-0">
               <div className="bg-white rounded-xl shadow-lg p-4">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Your Learning Path</h2>
@@ -255,7 +306,6 @@ export const Roadmap = () => {
               </div>
             </div>
 
-            {/* Roadmap Content */}
             <div className="flex-1">
               {loading && (
                 <div className="bg-white rounded-xl shadow-md p-4">
@@ -270,7 +320,6 @@ export const Roadmap = () => {
 
               {!loading && !error && (
                 <>
-                  {/* How to Follow the Roadmap */}
                   <div className="bg-white rounded-xl shadow-md p-4 mb-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3">How to Succeed</h3>
                     <p className="text-sm text-gray-600 mb-3">
@@ -310,7 +359,6 @@ export const Roadmap = () => {
                     </ul>
                   </div>
 
-                  {/* Badge Information */}
                   <div className="bg-white rounded-xl shadow-md p-4 mb-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3">Badge Overview</h3>
                     <div className="space-y-4 text-sm text-gray-600">
@@ -345,7 +393,6 @@ export const Roadmap = () => {
                     )}
                   </div>
 
-                  {/* Tools and Resources */}
                   {filteredTools.length > 0 && (
                     <div className="bg-white rounded-xl shadow-md p-4 mb-6">
                       <h3 className="text-lg font-semibold text-gray-900 mb-3">Tools & Resources</h3>
@@ -365,7 +412,6 @@ export const Roadmap = () => {
                     </div>
                   )}
 
-                  {/* Tab Content */}
                   <div className="bg-white rounded-xl shadow-md p-4">
                     {activeTab === "1" && (
                       <div>
@@ -479,7 +525,7 @@ export const Roadmap = () => {
                           </div>
                           <div className="space-y-4">
                             {filteredRoadmapSkills.length > 0 ? (
-                              filteredRoadmapSkills.map((skill, index) => (
+                              filteredRoadmapSkills.map((skill) => (
                                 <div key={skill.id} className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition-all duration-300">
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center">
@@ -540,10 +586,10 @@ export const Roadmap = () => {
                         )}
                         <div className="mt-6 flex justify-end">
                           <button
-                            onClick={handleTakeQuiz}
-                            disabled={!isStepCompleted("3") || completed === "completed"}
-                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${(!isStepCompleted("3") || completed === "completed") ? "bg-gray-400 cursor-not-allowed" : ""}`}
-                            title={!isStepCompleted("3") ? "Complete Improve Skills first" : completed === "completed" ? "Quiz already completed" : "Take the Quiz"}
+                            onClick={handleTakeQuiz} // Fixed: Removed parentheses
+                            disabled={isCreatingQcm || !isStepCompleted("3") || completed === "completed"} // Fixed: Check step 3 completion
+                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${isCreatingQcm || !isStepCompleted("3") || completed === "completed" ? "bg-gray-400 cursor-not-allowed" : ""}`}
+                            title={isCreatingQcm ? "Quiz creation in progress" : !isStepCompleted("3") ? "Complete Improve Skills first" : completed === "completed" ? "Quiz already completed" : "Take the Quiz"} // Fixed: Updated title
                           >
                             Take the Quiz
                           </button>
@@ -559,4 +605,5 @@ export const Roadmap = () => {
       </div>
     </>
   );
-}
+};
+export default Roadmap;

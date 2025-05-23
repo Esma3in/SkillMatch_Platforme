@@ -4,7 +4,7 @@ import Sidebar from "../../components/common/sideBars/sidebarPlatforme";
 import AllCandidate from "../../components/common/admin/users/AllCandidate";
 
 
-export default function CompaniesList(){
+export default function CandidatesList(){
     return (
         <>
             <div className='flex' >

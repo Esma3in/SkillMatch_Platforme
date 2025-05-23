@@ -13,10 +13,6 @@ return new class extends Migration
     {
         Schema::create('qcm_for_roadmaps', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
-            $table->json('options');
-            $table->string('correct_answer')->nullable();
-            $table->foreignId('skill_id')->constrained()->onDelete('cascade');
             $table->foreignId('roadmap_id')->constrained("roadmaps")->onDelete('cascade');
             $table->timestamps();
 

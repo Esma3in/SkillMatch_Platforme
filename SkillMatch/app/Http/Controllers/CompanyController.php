@@ -191,5 +191,8 @@ class CompanyController extends Controller
             'test' => $test,
         ], 201);
     }
-
+    public function all(){
+        $companiesAll = Company::all();
+        return response()->json($companiesAll);
+    }
 }

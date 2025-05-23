@@ -24,6 +24,7 @@ export default function CandidateDashboard() {
 
   // Get the candidate_id from localStorage
   const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
+  console.log(candidate_id)
 
   // Fetch dashboard data
   useEffect(() => {
@@ -223,9 +224,10 @@ export default function CandidateDashboard() {
         setCompaniesData(
           Array.isArray(companiesResponse.data)
             ? companiesResponse.data.map((company) => ({
-                name: company.name || company.company_name || 'Unknown',
-                email: company.email || 'N/A',
-                image: company.logo || 'https://via.placeholder.com/40',
+                name: company.company_name || 'Unknown',
+                email: company.name || 'N/A',
+                image: company.icon || 'https://via.placeholder.com/40',
+      
               }))
             : []
         );
@@ -742,7 +744,7 @@ export default function CandidateDashboard() {
             {/* Companies */}
             <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-semibold text-gray-900">Selected Companies</h2>
+                <h2 className="text-lg font-semibold text-gray-900">Badges for your companies</h2>
                 <a href="/companies" className="text-sm text-indigo-600 hover:underline inline-flex items-center">
                   See All <ChevronRight size={16} />
                 </a>

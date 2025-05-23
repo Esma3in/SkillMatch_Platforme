@@ -123,9 +123,11 @@ function CompaniesRelated() {
           </p>
         </div>
         <div className="mt-6 flex flex-col space-y-3">
+          {console.log(company.company_id)}
           <button 
             className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-all"
             onClick={() => generateRoadMap(company.company_id)}
+            
 
 
 
@@ -145,49 +147,49 @@ function CompaniesRelated() {
 
   const generateRoadMap = async (companyId) => {
     try {
-
-        const responseRoadmapData =await api.get(`/api/roadmap/${companyId}`)
-      console.log( responseRoadmapData.data) 
-      // console.log(responseRoadmapData.data.prerequisties)
-      // console.log(responseRoadmapData.data.tools)
-        console.log(responseRoadmapData.data.message)
-
- 
-      // First, fetch the skills for the company
+      // Fetch the skills for the company
       const response = await api.get(`/api/skills/company/${companyId}`);
       const skillsData = response.data;
-      
+  
       // Store the skills data in state
       setCompaniesSkills(skillsData);
-      
+  
       console.log("Company skills data:", skillsData);
-      
- 
+  
       // Get the first skill ID from the skills array
-      const skillId = skillsData[0].skills[0].id;
-      
+      const skillId = skillsData[0]?.skills[0]?.id;
+      if (!skillId) {
+        throw new Error("No skill ID found for the company");
+      }
+  
       console.log(`Creating roadmap for company ID: ${companyId}, skill ID: ${skillId}`);
-      
+  
       // Create the roadmap
       const responseRoadmap = await api.post(`/api/create-roadmap`, {
-       name:"Roadmap ",
+        name: `Roadmap Junior`,
         skill_id: skillId,
-        completed : 'pending',
-        candidate_id: candidate_id
+        completed: 'pending',
+        company_id :companyId,
+        candidate_id: candidate_id,
       });
-      
+  
       console.log("Roadmap created:", responseRoadmap.data);
-      
-      // Navigate to the roadmap page or handle the roadmap display
-      // You might want to uncomment and adjust this based on your routing
-      navigate(`/candidate/roadmap/${companyId}`);
-     
+  
+      // Extract the roadmap ID from the response
+      const roadmapId = responseRoadmap.data.data.id; // Adjust based on your API response structure
+      if (!roadmapId) {
+        throw new Error("Roadmap ID not returned in response");
+      }
+  
+      // Navigate to the roadmap page with the new roadmap ID
+      navigate(`/candidate/roadmap/${roadmapId}`);
+  
     } catch (error) {
-      console.error("Error generating roadmap:", error);
-      // Handle error appropriately
+      console.error("Error generating roadmap:", error.message);
+      // Handle error appropriately (e.g., show a toast notification)
+      // Example: setError("Failed to generate roadmap. Please try again.");
     }
   };
-
   return (
     <>
       <NavbarCandidate />

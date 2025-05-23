@@ -64,21 +64,41 @@ class RoadmapController extends Controller
         ]);
     
     }
-    public function generateRoadmap(Request $request){
+ 
+    public function generateRoadmap(Request $request)
+    {
+        // Validate the request
         $validated = $request->validate([
-             'name'=>'nullable|string|max:120',
-            'skill_id' =>'required|integer|exists:skills,id',
-            'completed'=>'required|string',
-            'candidate_id'=>'required|integer|exists:candidates,id'
+            'name' => 'nullable|string|max:120',
+            'skill_id' => 'required|integer|exists:skills,id',
+            'completed' => 'required|string',
+            "company_id" => 'required |integer|exists:companies,id',
+            'candidate_id' => 'required|integer|exists:candidates,id'
         ]);
+
+        // Check for existing roadmap with the same candidate_id and skill_id
+        $existingRoadmap = Roadmap::where('candidate_id', $validated['candidate_id'])
+            ->where('skill_id', $validated['skill_id'])
+            ->first();
+
+        if ($existingRoadmap) {
+            return response()->json([
+                'message' => 'Existing roadmap found for this candidate and skill',
+                'data' => $existingRoadmap
+            ], 200); // 200 OK for existing resource
+        }
+
+        // Create new roadmap
         $roadmap = Roadmap::create([
-            'name'=>$validated['name'],
-            'skill_id'=>$validated['skill_id'],
-            'completed'=>$validated['completed'],
-            'candidate_id'=>$validated['candidate_id']
+            'name' => $validated['name'],
+            'skill_id' => $validated['skill_id'],
+            'completed' => $validated['completed'],
+            'company_id'=>$validated['company_id'],
+            'candidate_id' => $validated['candidate_id']
         ]);
+
         return response()->json([
-            'message' => 'Company selected successfully',
+            'message' => 'Roadmap created successfully',
             'data' => $roadmap
         ], 201);
     }
@@ -109,4 +129,55 @@ class RoadmapController extends Controller
             ], 500);
         }
     }
+    public function getSelectedCompanyForCandidate($roadmap_id)
+    {
+       // Validate query parameters
+    $candidate_id = request()->query('candidate_id');
+    
+    if (!$candidate_id || !is_numeric($candidate_id)) {
+        return response()->json(['message' => 'Invalid or missing candidate_id'], 400);
+    }
+
+    if (!is_numeric($roadmap_id)) {
+        return response()->json(['message' => 'Invalid roadmap_id'], 400);
+    }
+
+    // Fetch data with explicit columns
+    $result = DB::table('companies_selecteds')
+        ->join('roadmaps', 'companies_selecteds.company_id', '=', 'roadmaps.company_id')
+        ->join('companies', 'companies_selecteds.company_id', '=', 'companies.id')
+        ->where('companies_selecteds.candidate_id', $candidate_id)
+        ->where('roadmaps.id', $roadmap_id)
+        ->select([
+            'companies.id as company_id',
+            'companies.name as company_name',
+            'roadmaps.id as roadmap_id',
+            'roadmaps.completed as roadmap_completed',
+            'companies_selecteds.candidate_id as candidate_id'
+        ])
+        ->first();
+
+    if (!$result) {
+        return response()->json(['message' => 'No data found for the given candidate and roadmap'], 404);
+    }
+
+    // Structure the response to match frontend expectations
+    $response = [
+        'company' => [
+            'id' => $result->company_id,
+            'name' => $result->company_name ?? 'Unknown Company',
+     
+        ],
+        'candidate' => [
+            'id' => $result->candidate_id
+        ],
+        'roadmap' => [
+            'id' => $result->roadmap_id,
+            'completed' => $result->roadmap_completed
+        ]
+    ];
+
+    return response()->json($response);
+    }
+    
 }

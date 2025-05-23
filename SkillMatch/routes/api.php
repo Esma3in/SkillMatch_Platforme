@@ -30,7 +30,11 @@ use App\Http\Controllers\candidateCoursesController;
 use App\Http\Controllers\CandidateSelectedController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
+
+use App\Models\Roadmap;
+
 use App\Http\Controllers\ProfileCompanyController;
+use App\Models\Company;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -127,12 +131,13 @@ Route::get('/roadmap-skills', [skillsRoadmapController::class, 'index']);
 Route::get('/selected/companies/{candidate_id}', [CompaniesSelectedController::class, 'getSelectedCompaniess']);
 
 // skills of an companyId
-Route::get('/skills/company/{company_id}' , [CompaniesSelectedController::class , 'getSkillsByCompany']);
+Route::get('/skills/company/{companyId}' , [CompaniesSelectedController::class , 'getSkillsByCompany']);
 // genrate roadmap
 Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
+Route::post('/qcm/create', [QcmForRoadmapController::class, 'createQcmForRoadmap']);
 
 //All candidate for company
 Route::get('/Allcandidates', [AllCandidateController::class, 'index']);
@@ -198,6 +203,7 @@ Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
 Route::get('/notifications/{candidate_id}' , [CandidateController::class , "getNotifications"]);
+Route::put('/notifications/{id}/read'  , [CandidateController::class , "markasRead"]);
 
 
 Route::get('/badges/{candidate_id}' , [BadgeController::class , 'getBadges']);
@@ -213,3 +219,14 @@ Route::post('/create/tests/company', [CompanyController::class, 'storeTests']);
  Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
 
 Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
+Route::get("/company/candidate-roadmap/{roadmap_id}" , [RoadmapController::class , "getSelectedCompanyForCandidate"]);
+
+
+ Route::post('/create/badge' ,[BadgeController::class  , 'createBadge']);
+
+Route::get('/roadmap/details/{id}' ,[RoadmapController::class , 'details']);
+
+Route::post("/createQcm" ,[QcmForRoadmapController::class  , "createQcm"]);
+Route::get("/roadmap/qcm/{id}" ,[QcmForRoadmapController::class , "getIdRoadmap"]);
+
+Route::get("/all" , [CompanyController::class , "all"]);

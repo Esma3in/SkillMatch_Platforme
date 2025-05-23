@@ -7,6 +7,7 @@ import ProtectedRoute from './features/session/ProtectedRoute.jsx';
 import ProblemsList from './pages/problemsList.js';
 import Challenge from './pages/Challenge';
 
+
 import SeriesChallenge from './pages/SerieChallenges'
 
 
@@ -49,6 +50,8 @@ import { CompanyProfile } from './pages/ProfileCompany.jsx';
 import CreateProfileCompany  from './pages/createProfileCompany.jsx';
 import CreateSkill from './pages/createSkillsCompany.js';
 import TestCreationForm from './pages/CreateProgrammingTestForCompany.js';
+import Certificate from './pages/certificate.js';
+import CandidatesList from './pages/manage/candidatesList.jsx';
 export default function App() {
   return (
     <Router>
@@ -68,7 +71,7 @@ export default function App() {
         <Route path='/profile' element={<ProtectedRoute><ProfileCandidat/></ProtectedRoute>} />
         <Route path='/badges' element = {<BadgeList />}/>
         {/* <Route path='/companyProfile' element={<ProtectedRoute><CompanyProfile/></ProtectedRoute>}/>  */}
-        <Route path="/qcm/roadmap/:id" element={<QcmForRoadmap />} />
+        <Route path="/qcmForRoadmap/:id" element={<QcmForRoadmap />} />
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
         <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
@@ -103,10 +106,9 @@ export default function App() {
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
         <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
 
-        {/*<Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />*/}
+        <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
         <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
-
-
+        <Route path = "/certificate"  element={<Certificate />}/>
         {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}
       </Routes>
     </Router>

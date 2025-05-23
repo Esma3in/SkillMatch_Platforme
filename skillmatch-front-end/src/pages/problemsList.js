@@ -234,7 +234,7 @@ const ProblemsList = () => {
                       </div>
                     </div>
                     <button
-                      onClick={() => (window.location.href = `/serie-problems/${problem.skill?.name}`)}
+                      onClick={() => (window.location.href = `/problems/${problem.name}`)}
                       className="mt-4 sm:mt-0 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       aria-label={`Resolve problem: ${problem.name}`}
                     >

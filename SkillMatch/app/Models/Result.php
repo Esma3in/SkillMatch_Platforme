@@ -10,7 +10,6 @@ class Result extends Model
     use HasFactory;
     protected $fillable=[
         'candidate_id',
-        'test_id',
         'score',
         'candidateAnswer',
         "correctAnswer",

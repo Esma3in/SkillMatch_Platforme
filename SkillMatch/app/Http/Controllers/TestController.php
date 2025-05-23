@@ -144,30 +144,6 @@ class TestController extends Controller
     /**
      * Create a new test
      */
-     public function create()
-    {
-        try {
-            // Return the data needed for the form
-            $qcms = QCM::where('company_id', auth()->user()->company_id ?? null)->get();
-            $companies = Company::all();
-            $skills = Skill::where('company_id', auth()->user()->company_id ?? null)->get();
-
-            return response()->json([
-                'qcms' => $qcms,
-                'companies' => $companies,
-                'skills' => $skills,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to load form data',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    /**
-     * Create a new test (POST request)
-     */
     public function store(Request $request)
     {
         // Validate request data

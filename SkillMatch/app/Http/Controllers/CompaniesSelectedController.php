@@ -23,15 +23,13 @@ class CompaniesSelectedController extends Controller
     {
         $user = $request->user();
 
-        // Vérification si le candidat existe
-        $company = Candidate::find($company_id);
+        // Verify if the company exists
+        $company = Company::find($company_id);
         if (!$company) {
-            return response()->json(['error' => 'company not found'], 404);
+            return response()->json(['error' => 'Company not found'], 404);
         }
 
-
-
-        // Validation des données envoyées
+        // Validate the request data
         $validated = $request->validate([
             'candidate_id' => 'required|integer|exists:candidates,id',
             'name' => 'required|string',
@@ -39,12 +37,23 @@ class CompaniesSelectedController extends Controller
         ]);
 
         try {
-            // Création de l'entrée dans CompaniesSelected
+            // Check for existing selection
+            $existingSelection = CompaniesSelected::where('candidate_id', $validated['candidate_id'])
+                ->where('company_id', $company_id)
+                ->first();
+
+            if ($existingSelection) {
+                return response()->json([
+                    'message' => 'Existing company selection found for this candidate',
+                    'data' => $existingSelection
+                ], 200); // 200 OK for existing resource
+            }
+
+            // Create new selection
             $selection = CompaniesSelected::create([
                 'candidate_id' => $validated['candidate_id'],
                 'company_id' => $company_id,
                 'name' => $validated['name'],
-
                 'selected_at' => now(),
             ]);
 
@@ -53,14 +62,13 @@ class CompaniesSelectedController extends Controller
                 'data' => $selection
             ], 201);
 
-
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to select company: ' . $e->getMessage()], 500);
         }
     }
 
-    public function getSkillsByCompany($company_id){
-        $company_skills = Company::where('id' , $company_id)->with('skills')->get();
+    public function getSkillsByCompany($companyId){
+        $company_skills = Company::where('id' , $companyId)->with('skills')->get()->lazy();
         return response()->json($company_skills);
 
     }

@@ -28,7 +28,15 @@ use App\Models\Notification;
 use App\Models\RoadmapSkill;
 
 use App\Models\Administrator;
+
+
+
+
 use App\Models\ProfileCompany;
+
+
+
+
 use App\Models\SerieChallenge;
 
 use App\Models\CompaniesSkills;
@@ -160,15 +168,11 @@ class DatabaseSeeder extends Seeder
                 'skill_id' => $randomSkill->id
             ]);
             Badge::factory(1)->create(['candidate_id' => $candidate->id]);
-            Roadmap::factory(2)->create(['candidate_id' => $candidate->id]);
+            Roadmap::factory(1)->create(['candidate_id' => $candidate->id]);
 
             // Link Results to existing Tests
-            Test::inRandomOrder()->take(2)->get()->each(function ($test) use ($candidate) {
-                Result::factory()->create([
-                    'candidate_id' => $candidate->id,
-                    'test_id' => $test->id
-                ]);
-            });
+                Result::factory()->create(['candidate_id' => $candidate->id,]);
+
             Test::inRandomOrder()->get()->each(function ($test){
                 Step::factory(4)->create([
                     'test_id' => $test->id
@@ -351,10 +355,10 @@ class DatabaseSeeder extends Seeder
 
 
    // Create roadmaps and skills
-   Roadmap::factory()->count(10)->create();
+   Roadmap::factory()->count(1)->create();
    Skill::factory()->count(10)->create();
    // Create roadmap-skill relationships
-   RoadmapSkill::factory()->count(90)->create();
+   RoadmapSkill::factory()->count(20)->create();
 
    // Path to the JSON file
    $qcmForRoadmap = database_path('data/json/QcmForRoadmap.json');
@@ -381,19 +385,7 @@ class DatabaseSeeder extends Seeder
        }
 
        // For each roadmap, associate the questions
-       foreach ($roadmaps as $roadmap) {
-           foreach ($questions as $questionData) {
-               DB::table('qcm_for_roadmaps')->insert([
-                   'question' => $questionData['question'],
-                   'options' => json_encode($questionData['options']),
-                   'correct_answer' => $questionData['correctAnswer'],
-                   'skill_id' => $skill->id,
-                   'roadmap_id' => $roadmap->id,
-                   'created_at' => now(),
-                   'updated_at' => now(),
-               ]);
-           }
-       }
+
 
        $this->command->info("QCM inserted for skill: $skillName across all roadmaps");
    }
