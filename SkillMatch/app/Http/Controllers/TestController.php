@@ -146,7 +146,6 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate request data
         $validatedData = $request->validate([
             'objective' => 'required|string|max:255',
             'prerequisites' => 'nullable|string',
@@ -158,7 +157,6 @@ class TestController extends Controller
         ]);
 
         try {
-            // Create the test
             $test = Test::create([
                 'objective' => $validatedData['objective'],
                 'prerequisites' => $validatedData['prerequisites'],
@@ -168,11 +166,6 @@ class TestController extends Controller
                 'company_id' => $validatedData['company_id'],
                 'skill_id' => $validatedData['skill_id'],
             ]);
-
-            // Attach the skill to the test_skills pivot table
-            if (isset($validatedData['skill_id'])) {
-                $test->skills()->attach($validatedData['skill_id']);
-            }
 
             return response()->json([
                 'message' => 'Test created successfully',
@@ -185,6 +178,7 @@ class TestController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * Get a list of all QCMs

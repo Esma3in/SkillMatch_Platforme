@@ -66,7 +66,7 @@ export default function TestsListForCompany() {
 
   // Rediriger vers la création d'un nouveau test
   const handleNewTest = () => {
-    navigate('/create-test');
+    navigate('/training/start');
   };
 
   // Changer de page

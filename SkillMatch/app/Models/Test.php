@@ -12,7 +12,7 @@ class Test extends Model
     protected $fillable = [
         'objective',
         'prerequisites',
-        'tools_Required',
+        'tools_required',
         'before_answer',
         'qcm_id',
         'company_id',

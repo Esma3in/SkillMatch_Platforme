@@ -82,9 +82,9 @@ export default function App() {
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
 
         {/*test*/}
-        <Route path = '/CandidateListForCompany' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
-        <Route path = '/TestsListForCompany' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
-        <Route path = '/FilterCandidate' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
+        <Route path = '/candidates/list' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
+        <Route path = '/training/challenges' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
+        <Route path = '/candidates/related' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
 
        <Route path='/candidate/Test/:TestId' element={<ProtectedRoute><CandidateTest/></ProtectedRoute>}/>
@@ -99,7 +99,7 @@ export default function App() {
         <Route path='/company/profile' element={<CompanyProfile/>}/>
         <Route path='/company/create/profile' element={<CreateProfileCompany/>}/>
         <Route path='/company/create/skill' element={<CreateSkill/>}/>
-        <Route path='/company/create/test' element={<TestCreationForm/>}/>
+        <Route path='/training/start' element={<TestCreationForm/>}/>
         <Route path='*' element={<h1>Page Not Found For Now</h1>}></Route>
 
         {/* admin */}
