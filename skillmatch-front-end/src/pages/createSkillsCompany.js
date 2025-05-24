@@ -27,7 +27,7 @@ const CreateSkill = () => {
     level: 'Junior',
     usageFrequency: 'Daily',
     classement: 'Important',
-    company_id: ''
+    company_id: localStorage.getItem("company_id") || "",
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
