@@ -42,4 +42,26 @@ class ChallengeController extends Controller
 
         return response()->json($problems);
     }
+
+    // New method to redirect or proxy to training_app for challenge resolution
+    public function resolve(Challenge $challenge)
+    {
+        // Assume training_app is accessible at http://localhost:3000 (adjust as needed)
+        // Pass challenge id and skill info as query params
+        $baseUrl = 'http://localhost:3000';
+        $problems = $challenge->problems()->with('skill')->get();
+        $problemId = $problems->first() ? $problems->first()->id : null;
+        $skillName = $challenge->skill ? $challenge->skill->name : null;
+        $url = $baseUrl . '/solve?challenge_id=' . $challenge->id;
+        if ($problemId) {
+            $url .= '&problem_id=' . $problemId;
+        }
+        if ($skillName) {
+            $url .= '&skill=' . urlencode($skillName);
+        }
+        // Optionally, generate a signed token for security
+        // $token = Str::random(32); // or JWT, etc.
+        // $url .= '&token=' . $token;
+        return response()->json(['redirect_url' => $url]);
+    }
 }
