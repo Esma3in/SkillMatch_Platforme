@@ -41,7 +41,7 @@ const NavbarAdmin = () => {
         <div className="navbar-left">
           <div className="navbar-logo">SkillMatch</div>
           <nav className="navbar-nav">
-            <a href="/" className="nav-item">
+            <a href="/admin/Session/:id" className="nav-item">
               Home
             </a>
 
@@ -86,6 +86,10 @@ const NavbarAdmin = () => {
                   <a href="/training/challenges" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Challenges
+                  </a>
+                  <a href="/manage/addLeetcodeProblem" className="dropdown-item">
+                  <i className="menu-icon start-icon"></i>
+                  Add New Problem
                   </a>
                 </div>
               )}

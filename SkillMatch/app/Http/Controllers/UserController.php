@@ -70,7 +70,7 @@ class UserController extends Controller
     public function SignIn(Request $request)
     {
         // Validate input
-        
+
 
         if($request->role==='admin'){
             $validated = $request->validate([
@@ -111,12 +111,12 @@ class UserController extends Controller
                 if (!$company) {
                     return response()->json(['message' => 'Company not found'], 404);
                 }
-                return response()->json(['company' => $company, 'role' => $validated['role']], 200); 
-                
+                return response()->json(['company' => $company, 'role' => $validated['role']], 200);
+
             }
             return response()->json(['user'=>$user->id], 400);
         }
-        
+
     }
     public function getBannedUsers()
         {
@@ -184,5 +184,70 @@ class UserController extends Controller
             return response()->json(['message' => 'User state updated successfully'], 200);
         }
 
+    public function deleteUser(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
 
+        // Find the user
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Check the user's role and delete the related model
+        if ($user->role === 'candidate') {
+            // Delete the candidate
+            if ($user->candidate) {
+                $user->candidate->delete();
+            }
+        } elseif ($user->role === 'company') {
+            // Delete the company
+            if ($user->company) {
+                $user->company->delete();
+            }
+        }
+
+        // Delete the user
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully'], 200);
+    }
+
+    public function unbanUser(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        // Find the user
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Check the user's role and update the state in the related model
+        if ($user->role === 'candidate') {
+            // Update the candidate's state
+            if ($user->candidate) {
+                $user->candidate->update(['state' => 'active']);
+            } else {
+                return response()->json(['error' => 'Candidate not found'], 404);
+            }
+        } elseif ($user->role === 'company') {
+            // Update the company's state
+            if ($user->company) {
+                $user->company->update(['state' => 'active']);
+            } else {
+                return response()->json(['error' => 'Company not found'], 404);
+            }
+        } else {
+            return response()->json(['error' => 'Invalid user role'], 400);
+        }
+
+        return response()->json(['message' => 'User unbanned successfully'], 200);
+    }
 }

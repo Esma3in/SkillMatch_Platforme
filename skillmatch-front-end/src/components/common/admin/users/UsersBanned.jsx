@@ -5,6 +5,7 @@ import {
   CornerUpLeftIcon,
   SearchIcon,
   XIcon,
+  Trash2Icon,
 } from "lucide-react";
 import { api } from "../../../../api/api";
 
@@ -18,6 +19,7 @@ import { Badge } from "../badge";
 import { Button } from "../button";
 import { Card, CardContent } from "../card";
 import { Input } from "../input";
+import { toast } from "react-toastify";
 
 import {
   Table,
@@ -39,7 +41,7 @@ const UsersBanned = () => {
   useEffect(() => {
   const fetchUsers = async () => {
     try {
-      const response = await api.get('api/admin/Users');
+      const response = await api.get('api/admin/UsersList');
       if (response.status !== 200) {
         throw new Error('Failed to fetch Users');
       }
@@ -100,6 +102,34 @@ const UsersBanned = () => {
     } catch (err) {
       console.error(err.response?.data || err);
       // you could show a toast here
+    }
+  }
+
+  async function deleteUser(user_id) {
+    try {
+      if (window.confirm("Are you sure you want to delete this user permanently? This action cannot be undone.")) {
+        await api.post('api/admin/Users/delete', { user_id });
+        
+        // Remove the user from the state
+        setUser(prev => prev.filter(u => u.id !== user_id));
+        toast.success("User deleted successfully");
+      }
+    } catch (err) {
+      console.error(err.response?.data || err);
+      toast.error("Failed to delete user");
+    }
+  }
+
+  async function unbanUser(user_id) {
+    try {
+      await api.post('api/admin/Users/unban', { user_id });
+      
+      // Remove the user from the state since they're no longer banned
+      setUser(prev => prev.filter(u => u.id !== user_id));
+      toast.success("User unbanned successfully");
+    } catch (err) {
+      console.error(err.response?.data || err);
+      toast.error("Failed to unban user");
     }
   }
 
@@ -193,34 +223,59 @@ const UsersBanned = () => {
                           key={user.id}
                           className="border-b border-[#eaecf0]"
                         >
-                          <TableCell className="h-[72px] px-6 py-4 font-text-sm-medium text-gray-900">
+                          <TableCell className="h-[69.5px] px-6 py-3 font-text-sm-medium text-gray-900">
                             {user.id}
                           </TableCell>
-                          
-                          <TableCell className="h-[72px] px-6 py-4">
-                            {user.name}
+                          <TableCell className="h-[69.5px] px-6 py-3">
+                            <div className="flex items-center gap-3">
+                              <Avatar className="w-8 h-8">
+                                <AvatarFallback className="bg-primary-50 text-primary-600 text-sm font-medium">
+                                  {user.name.substring(0, 2).toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="flex flex-col">
+                                <span className="font-text-sm-normal text-gray-900">
+                                  {user.name}
+                                </span>
+                                <span className="font-text-sm-normal text-gray-500">
+                                  {user.email}
+                                </span>
+                              </div>
+                            </div>
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4 font-text-sm-normal text-gray-500">
+                          <TableCell className="h-[69.5px] px-6 py-3 font-text-sm-normal text-gray-600">
                             {user.role}
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4 font-text-sm-normal text-gray-500">
+                          <TableCell className="h-[69.5px] px-6 py-3 font-text-sm-normal text-gray-600">
                             {user.email}
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4 font-text-sm-normal text-gray-500">
+                          <TableCell className="h-[69.5px] px-6 py-3 font-text-sm-normal text-gray-600">
                             {user.date}
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4">
-                            <Button className="w-[103px] h-10 bg-[#0a84ff26] text-[#0a84ff] font-semibold text-base rounded-[10px]">
-                              Details
-                            </Button>
+                          <TableCell className="h-[69.5px] px-6 py-3 font-text-sm-normal text-gray-600">
+                            <Badge className="w-[66px] h-6 bg-error-50 border-error-50 text-error-700 font-text-xs-medium rounded-2xl py-[2px] px-2">
+                              Banned
+                            </Badge>
                           </TableCell>
-                          <TableCell className="h-[72px] px-6 py-4">
+                          <TableCell className="h-[69.5px] px-6 py-3">
                             <div className="flex gap-2">
                               <button
-                                onClick={() => updateState(user.user_id, 'unbanned')}
+                                onClick={() => unbanUser(user.id)}
+                                className="w-[103px] h-10 bg-[#42cd2f26] text-[#1bea59] font-semibold text-base rounded-[10px]"
+                              >
+                                <div className="flex items-center justify-center gap-1">
+                                  <CornerUpLeftIcon size={16} />
+                                  <span>Unban</span>
+                                </div>
+                              </button>
+                              <button
+                                onClick={() => deleteUser(user.id)}
                                 className="w-[103px] h-10 bg-[#ff0a0a26] text-[#ff0a0a] font-semibold text-base rounded-[10px]"
                               >
-                                unban
+                                <div className="flex items-center justify-center gap-1">
+                                  <Trash2Icon size={16} />
+                                  <span>Delete</span>
+                                </div>
                               </button>
                             </div>
                           </TableCell>
@@ -229,7 +284,7 @@ const UsersBanned = () => {
                   </TableBody>
                 </Table>
 
-                <div className="flex justify-center items-center gap-2 mt-4">
+                <div className="flex justify-center items-center gap-2 py-3">
                   <Button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
@@ -237,19 +292,19 @@ const UsersBanned = () => {
                   >
                     Prev
                   </Button>
-
-                  {[...Array(totalPages)].map((_, index) => (
+                  {[...Array(totalPages)].map((_, i) => (
                     <Button
-                      key={index}
-                      onClick={() => handlePageClick(index + 1)}
+                      key={i}
+                      onClick={() => handlePageClick(i + 1)}
                       className={`px-4 py-2 ${
-                        currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
+                        currentPage === i + 1
+                          ? "bg-primary-600 text-white"
+                          : "bg-white text-gray-700 border border-gray-300"
                       }`}
                     >
-                      {index + 1}
+                      {i + 1}
                     </Button>
                   ))}
-
                   <Button
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
@@ -258,8 +313,6 @@ const UsersBanned = () => {
                     Next
                   </Button>
                 </div>
-
-                
               </CardContent>
             </Card>
           </div>
@@ -269,6 +322,6 @@ const UsersBanned = () => {
   );
 };
 
-export default UsersBanned ;
+export default UsersBanned;
 
 

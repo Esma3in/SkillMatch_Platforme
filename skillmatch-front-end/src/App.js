@@ -1,4 +1,6 @@
 import { BrowserRouter as Router,Routes,Route } from 'react-router';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import SignPages from './pages/SignPages';
 import Candidates from './Espaces/Candidate.jsx';
 import ProfileCandidat from './pages/ProfileCandidate.jsx';
@@ -52,9 +54,16 @@ import CreateSkill from './pages/createSkillsCompany.js';
 import TestCreationForm from './pages/CreateProgrammingTestForCompany.js';
 import Certificate from './pages/certificate.js';
 import CandidatesList from './pages/manage/candidatesList.jsx';
+import LeetcodeProblems from './pages/LeetcodeProblems.jsx';
+import LeetcodeProblemWorkspace from './pages/LeetcodeProblemWorkspace.jsx';
+import AddLeetcodeProblem from './pages/manage/addLeetcodeProblem.jsx';
+import ManageLeetcodeProblems from './pages/manage/manageLeetcodeProblems.jsx';
+import EditLeetcodeProblem from './pages/manage/editLeetcodeProblem.jsx';
+
 export default function App() {
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         Page d'authentification (SignIn / SignUp toggle) 
         <Route path="/" element={<EnhancedLandingPage/>} />
@@ -73,7 +82,8 @@ export default function App() {
         {/* <Route path='/companyProfile' element={<ProtectedRoute><CompanyProfile/></ProtectedRoute>}/>  */}
         <Route path="/qcmForRoadmap/:id" element={<QcmForRoadmap />} />
          <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
-        <Route path="/problems" element={<ProtectedRoute ><ProblemsList /></ProtectedRoute>} />
+        <Route path="/problems" element={<ProtectedRoute ><LeetcodeProblems /></ProtectedRoute>} />
+        <Route path="/leetcode/problem/:id" element={<ProtectedRoute><LeetcodeProblemWorkspace /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
         <Route path="/performance" element= {<ProtectedRoute><CandidateDashboard/></ProtectedRoute>}/>
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
@@ -104,12 +114,18 @@ export default function App() {
 
         {/* admin */}
         <Route path="/admin/Session/:id" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><AdminHome/></ProtectedRoute>} />
         <Route path="/admin/companiesList" element={<ProtectedRoute><CompaniesList/></ProtectedRoute>} />
 
         <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
         <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
         <Route path = "/certificate"  element={<Certificate />}/>
         {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}
+        <Route path="/admin/addLeetcodeProblem" element={<ProtectedRoute><AddLeetcodeProblem /></ProtectedRoute>} />
+        <Route path="/manage/addLeetcodeProblem" element={<ProtectedRoute><AddLeetcodeProblem /></ProtectedRoute>} />
+        <Route path="/training/problems" element={<ProtectedRoute><ManageLeetcodeProblems /></ProtectedRoute>} />
+        <Route path="/admin/manageLeetcodeProblems" element={<ProtectedRoute><ManageLeetcodeProblems /></ProtectedRoute>} />
+        <Route path="/manage/editLeetcodeProblem/:id" element={<ProtectedRoute><EditLeetcodeProblem /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

@@ -15,12 +15,20 @@ return [
     |
     */
 
-'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout', 'store/candidate', 'candidate/*','admin/*','company/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', '*'],
 
-    'allowed_methods' => ['*'],
-    'allowed_origins' => ['http://localhost:3000'],
+    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+
+    'allowed_origins' => ['http://localhost:3000', 'http://localhost:3001', 'http://localhost', '*'],
+
     'allowed_origins_patterns' => [],
+
     'allowed_headers' => ['*'],
+
+    'exposed_headers' => ['*'],
+
+    'max_age' => 86400, // 1 day for preflight cache
+
     'supports_credentials' => true,
 
 ];
