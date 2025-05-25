@@ -185,6 +185,15 @@ Route::post('/admin/Users/setstate',[UserController::class,'setstate']);
 Route::post('/admin/Users/delete',[UserController::class,'deleteUser']);
 Route::post('/admin/Users/unban',[UserController::class,'unbanUser']);
 
+// Admin Dashboard Stats
+Route::get('/admin/stats/users',[UserController::class,'getUserStats']);
+Route::get('/admin/stats/problems',[LeetcodeProblemController::class,'getStats']);
+Route::get('/admin/recent-activity',[UserController::class,'getRecentActivity']);
+
+// Detailed user information for admin
+Route::get('/admin/candidates/{id}', [CandidateController::class, 'getDetailedCandidate']);
+Route::get('/admin/companies/{id}', [CompanyController::class, 'getDetailedCompany']);
+
 Route::get('api/admin/candidates/{id}', [CandidateController::class, 'show']);
 Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
 

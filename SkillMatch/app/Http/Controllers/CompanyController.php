@@ -195,4 +195,56 @@ class CompanyController extends Controller
         $companiesAll = Company::all();
         return response()->json($companiesAll);
     }
+
+    /**
+     * Get detailed company information for admin view
+     */
+    public function getDetailedCompany($id)
+    {
+        // Find the company
+        $company = Company::where('id', $id)
+            ->with([
+                'user',
+                'skills',
+                'profile'
+            ])
+            ->first();
+
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
+
+        // Format skills
+        $skills = $company->skills->map(function ($skill) {
+            return $skill->name;
+        });
+
+        // Get profile information
+        $profile = $company->profile ? [
+            'description' => $company->profile->description,
+            'address' => $company->profile->address,
+            'phone' => $company->profile->phone,
+            'website' => $company->profile->website
+        ] : null;
+
+        // Combine all data
+        $data = [
+            'id' => $company->id,
+            'name' => $company->name,
+            'email' => $company->user ? $company->user->email : null,
+            'sector' => $company->sector,
+            'logo' => $company->logo,
+            'file' => $company->file,
+            'state' => $company->state,
+            'skills' => $skills,
+            'description' => $profile ? $profile['description'] : null,
+            'address' => $profile ? $profile['address'] : null,
+            'phone' => $profile ? $profile['phone'] : null,
+            'website' => $profile ? $profile['website'] : null,
+            'created_at' => $company->created_at,
+            'updated_at' => $company->updated_at
+        ];
+
+        return response()->json($data);
+    }
 }

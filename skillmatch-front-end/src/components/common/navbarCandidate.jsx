@@ -78,14 +78,15 @@ const navigate= useNavigate();
       <div className="navbar">
         <div className="navbar-left">
         <div className="flex items-center gap-1 px-4 py-2">
-        <img src={logo} alt="Logo" className="h-11 w-auto" />
-        <h2 className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
-          SkillMatch  
-        </h2>
       </div>
 
           <nav className="navbar-nav">
-            <a href={`/candidate/Session/${candidate_id}`} className="nav-item">Home</a>
+            <a href={`/candidate/Session/${candidate_id}`} className="nav-item">
+              <img src={logo} alt="Logo" className="h-11 w-auto" />
+              <h2 className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
+                SkillMatch  
+              </h2>
+            </a>
             <div 
               className="nav-item dropdown m-5" 
               ref={trainingRef}

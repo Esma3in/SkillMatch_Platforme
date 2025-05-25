@@ -10,7 +10,7 @@ export default function CompaniesList(){
              <>
                 <NavbarAdmin />
                 <div className='flex' >
-                    <Sidebar className='inline' />
+                    {/* <Sidebar className='inline' /> */}
                     <AllCompanies />
                 </div>
             </>

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../../styles/pages/Navbar/navbarCandidate.css";
 import userAvatar from "../../assets/userAvatar.jpg";
+import logo from "../../assets/Logoo.png"
+
 
 const NavbarAdmin = () => {
   const [isTrainingOpen, setIsTrainingOpen] = useState(false);
@@ -12,6 +14,11 @@ const NavbarAdmin = () => {
   const companyRef = useRef(null);
   const documentsRef = useRef(null);
   const profileRef = useRef(null);
+  
+  // Add timeout refs for dropdown timers
+  const trainingTimeout = useRef(null);
+  const companyTimeout = useRef(null);
+  const documentsTimeout = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -35,21 +42,58 @@ const NavbarAdmin = () => {
     };
   }, []);
 
+  // Add handlers for mouse enter and leave with timeouts
+  const handleTrainingEnter = () => {
+    clearTimeout(trainingTimeout.current);
+    setIsTrainingOpen(true);
+  };
+
+  const handleTrainingLeave = () => {
+    trainingTimeout.current = setTimeout(() => {
+      setIsTrainingOpen(false);
+    }, 200);
+  };
+
+  const handleCompanyEnter = () => {
+    clearTimeout(companyTimeout.current);
+    setIsCompanyOpen(true);
+  };
+
+  const handleCompanyLeave = () => {
+    companyTimeout.current = setTimeout(() => {
+      setIsCompanyOpen(false);
+    }, 200);
+  };
+
+  const handleDocumentsEnter = () => {
+    clearTimeout(documentsTimeout.current);
+    setIsDocumentsOpen(true);
+  };
+
+  const handleDocumentsLeave = () => {
+    documentsTimeout.current = setTimeout(() => {
+      setIsDocumentsOpen(false);
+    }, 200);
+  };
+
   return (
     <div className="navbar-container">
       <div className="navbar">
         <div className="navbar-left">
-          <div className="navbar-logo">SkillMatch</div>
+          
           <nav className="navbar-nav">
             <a href="/admin/Session/:id" className="nav-item">
-              Home
+              <img src={logo} alt="Logo" className="h-11 w-auto" />
+              <h2 className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
+                SkillMatch  
+              </h2>
             </a>
 
             <div
               className="nav-item dropdown"
               ref={trainingRef}
-              onMouseEnter={() => setIsTrainingOpen(true)}
-              onMouseLeave={() => setIsTrainingOpen(false)}
+              onMouseEnter={handleTrainingEnter}
+              onMouseLeave={handleTrainingLeave}
             >
               <span>
                 Users <i className="dropdown-icon">▼</i>
@@ -71,8 +115,8 @@ const NavbarAdmin = () => {
             <div
               className="nav-item dropdown"
               ref={companyRef}
-              onMouseEnter={() => setIsCompanyOpen(true)}
-              onMouseLeave={() => setIsCompanyOpen(false)}
+              onMouseEnter={handleCompanyEnter}
+              onMouseLeave={handleCompanyLeave}
             >
               <span>
                 Training <i className="dropdown-icon">▼</i>
@@ -98,8 +142,8 @@ const NavbarAdmin = () => {
             <div
               className="nav-item dropdown"
               ref={documentsRef}
-              onMouseEnter={() => setIsDocumentsOpen(true)}
-              onMouseLeave={() => setIsDocumentsOpen(false)}
+              onMouseEnter={handleDocumentsEnter}
+              onMouseLeave={handleDocumentsLeave}
             >
               <span>
                 Documents <i className="dropdown-icon">▼</i>

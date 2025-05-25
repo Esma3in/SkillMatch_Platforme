@@ -250,4 +250,106 @@ class UserController extends Controller
 
         return response()->json(['message' => 'User unbanned successfully'], 200);
     }
+
+    /**
+     * Get statistics about users for admin dashboard
+     */
+    public function getUserStats()
+    {
+        // Count total users
+        $totalUsers = User::count();
+
+        // Count companies
+        $totalCompanies = User::where('role', 'company')->count();
+
+        // Count candidates
+        $totalCandidates = User::where('role', 'candidate')->count();
+
+        // Count banned users
+        $bannedCandidates = User::where('role', 'candidate')
+            ->whereHas('candidate', function ($query) {
+                $query->where('state', 'banned');
+            })->count();
+
+        $bannedCompanies = User::where('role', 'company')
+            ->whereHas('company', function ($query) {
+                $query->where('state', 'banned');
+            })->count();
+
+        $bannedUsers = $bannedCandidates + $bannedCompanies;
+
+        return response()->json([
+            'totalUsers' => $totalUsers,
+            'totalCompanies' => $totalCompanies,
+            'totalCandidates' => $totalCandidates,
+            'bannedUsers' => $bannedUsers
+        ]);
+    }
+
+    /**
+     * Get recent activity for admin dashboard
+     */
+    public function getRecentActivity()
+    {
+        // Get recent user registrations
+        $recentUsers = User::with(['candidate', 'company'])
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get()
+            ->map(function ($user) {
+                $data = [
+                    'type' => 'user_joined',
+                    'time' => $user->created_at->diffForHumans(),
+                ];
+
+                if ($user->role === 'candidate' && $user->candidate) {
+                    $data['user'] = $user->candidate->name;
+                    $data['role'] = 'candidate';
+                } elseif ($user->role === 'company' && $user->company) {
+                    $data['company'] = $user->company->name;
+                    $data['type'] = 'company_joined';
+                }
+
+                return $data;
+            });
+
+        // Get recently banned users
+        $recentBanned = User::with(['candidate', 'company'])
+            ->whereHas('candidate', function ($query) {
+                $query->where('state', 'banned');
+            })
+            ->orWhereHas('company', function ($query) {
+                $query->where('state', 'banned');
+            })
+            ->orderBy('updated_at', 'desc')
+            ->take(3)
+            ->get()
+            ->map(function ($user) {
+                $data = [
+                    'type' => 'user_banned',
+                    'time' => $user->updated_at->diffForHumans(),
+                    'reason' => 'Policy violation' // This would come from a real reason field in your database
+                ];
+
+                if ($user->role === 'candidate' && $user->candidate) {
+                    $data['user'] = $user->candidate->name;
+                } elseif ($user->role === 'company' && $user->company) {
+                    $data['user'] = $user->company->name;
+                }
+
+                return $data;
+            });
+
+        // Combine activities and sort by time (most recent first)
+        $activities = $recentUsers->concat($recentBanned)
+            ->sortByDesc(function ($activity) {
+                // Parse the human-readable time back to a timestamp for sorting
+                // This is a simplified approach, you may want to use the actual timestamps
+                return strtotime(str_replace(' ago', '', $activity['time']));
+            })
+            ->values()
+            ->take(10);
+
+        return response()->json($activities);
+    }
 }

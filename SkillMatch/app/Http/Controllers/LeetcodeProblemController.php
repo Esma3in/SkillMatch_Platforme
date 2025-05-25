@@ -1171,4 +1171,63 @@ console.log(JSON.stringify({
             ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
         }
     }
+
+    /**
+     * Get statistics about problems for admin dashboard
+     */
+    public function getStats()
+    {
+        // Count total problems
+        $total = LeetcodeProblem::count();
+
+        // Count problems by difficulty
+        $easyCount = LeetcodeProblem::where('difficulty', 'easy')->count();
+        $mediumCount = LeetcodeProblem::where('difficulty', 'medium')->count();
+        $hardCount = LeetcodeProblem::where('difficulty', 'hard')->count();
+
+        // Get most recent problems
+        $recentProblems = LeetcodeProblem::orderBy('created_at', 'desc')
+            ->take(3)
+            ->get()
+            ->map(function ($problem) {
+                return [
+                    'type' => 'problem_added',
+                    'title' => $problem->title,
+                    'difficulty' => $problem->difficulty,
+                    'time' => $problem->created_at->diffForHumans()
+                ];
+            });
+
+        // Get most attempted problems
+        $topProblems = LeetcodeSubmission::select('problem_id')
+            ->selectRaw('COUNT(*) as submission_count')
+            ->groupBy('problem_id')
+            ->orderBy('submission_count', 'desc')
+            ->take(5)
+            ->get()
+            ->map(function ($item) {
+                $problem = LeetcodeProblem::find($item->problem_id);
+                if ($problem) {
+                    return [
+                        'id' => $problem->id,
+                        'title' => $problem->title,
+                        'difficulty' => $problem->difficulty,
+                        'submission_count' => $item->submission_count
+                    ];
+                }
+                return null;
+            })
+            ->filter();
+
+        return response()->json([
+            'total' => $total,
+            'by_difficulty' => [
+                'easy' => $easyCount,
+                'medium' => $mediumCount,
+                'hard' => $hardCount
+            ],
+            'recent' => $recentProblems,
+            'top_problems' => $topProblems
+        ]);
+    }
 }

@@ -9,7 +9,7 @@ export default function CandidatesList(){
         <>
             <NavbarAdmin />
             <div className='flex' >
-                <Sidebar className='inline' />
+                {/* <Sidebar className='inline' /> */}
                 <AllCandidate />
             </div>
         </>

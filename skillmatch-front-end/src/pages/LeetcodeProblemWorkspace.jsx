@@ -25,7 +25,8 @@ const Notification = ({ type, message, onClose }) => {
   }, [onClose]);
   
   // Define styles based on notification type
-  const bgColor = type === 'success' ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500';
+  const bgColor = type === 'success' ? 'bg-green-50' : 'bg-red-50';
+  const borderColor = type === 'success' ? 'border-green-500' : 'border-red-500';
   const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
   const icon = type === 'success' ? <FaCheck className="text-green-500" /> : <FaTimes className="text-red-500" />;
   
@@ -34,13 +35,17 @@ const Notification = ({ type, message, onClose }) => {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
-      className={`fixed top-20 right-5 z-50 p-4 rounded-lg shadow-lg border ${bgColor} max-w-md`}
+      className={`fixed top-20 right-5 z-50 p-4 rounded-lg shadow-lg border ${borderColor} ${bgColor} max-w-md`}
+      style={{ 
+        fontFamily: 'Inter, sans-serif',
+        width: '350px'
+      }}
     >
       <div className="flex items-start">
         <div className="flex-shrink-0 mt-0.5">
           {icon}
         </div>
-        <div className="ml-3 w-0 flex-1">
+        <div className="ml-3 flex-1">
           <p className={`font-medium ${textColor}`}>
             {type === 'success' ? 'Success!' : 'Error'}
           </p>

@@ -9,7 +9,7 @@ export default function BanUsers(){
         <>
             <NavbarAdmin />
             <div className='flex' >
-                <Sidebar className='inline' />
+                {/* <Sidebar className='inline' /> */}
                 <UsersBanned />
             </div>
         </>
