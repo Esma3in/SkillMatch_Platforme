@@ -1,0 +1,93 @@
+[
+    {
+      "id": 1,
+      "problem_id": 1,
+      "candidate_id": 10,
+      "code_submitted": "def two_sum(nums, target):\n    hashmap = {}\n    for i, num in enumerate(nums):\n        diff = target - num\n        if diff in hashmap:\n            return [hashmap[diff], i]\n        hashmap[num] = i",
+      "language": "python",
+      "status": "accepted",
+      "test_results": [
+        {"input": "[2,7,11,15], 9", "output": "[0,1]", "passed": true}
+      ],
+      "execution_time": 23,
+      "memory_used": 1240,
+      "created_at": "2025-05-25T08:00:00",
+      "updated_at": "2025-05-25T08:00:00"
+    },
+    {
+      "id": 2,
+      "problem_id": 2,
+      "candidate_id": 11,
+      "code_submitted": "def is_valid(s):\n    return s.count('(') == s.count(')')",
+      "language": "python",
+      "status": "wrong_answer",
+      "test_results": [
+        {"input": "\"(]\"", "output": "true", "passed": false}
+      ],
+      "execution_time": 10,
+      "memory_used": 1120,
+      "created_at": "2025-05-25T09:00:00",
+      "updated_at": "2025-05-25T09:00:00"
+    },
+    {
+      "id": 3,
+      "problem_id": 3,
+      "candidate_id": 10,
+      "code_submitted": "def merge_two_lists(l1, l2):\n    # dummy code\n    return l1 + l2",
+      "language": "python",
+      "status": "runtime_error",
+      "test_results": [],
+      "execution_time": null,
+      "memory_used": null,
+      "created_at": "2025-05-25T10:15:00",
+      "updated_at": "2025-05-25T10:15:00"
+    },
+    {
+      "id": 4,
+      "problem_id": 4,
+      "candidate_id": 12,
+      "code_submitted": "def length_of_longest_substring(s):\n    return len(set(s))",
+      "language": "python",
+      "status": "wrong_answer",
+      "test_results": [
+        {"input": "abcabcbb", "output": "3", "passed": true},
+        {"input": "bbbbb", "output": "5", "passed": false}
+      ],
+      "execution_time": 40,
+      "memory_used": 1300,
+      "created_at": "2025-05-25T10:45:00",
+      "updated_at": "2025-05-25T10:45:00"
+    },
+    {
+      "id": 5,
+      "problem_id": 4,
+      "candidate_id": 13,
+      "code_submitted": "def length_of_longest_substring(s):\n    seen = {}\n    start = 0\n    max_len = 0\n    for i, c in enumerate(s):\n        if c in seen and seen[c] >= start:\n            start = seen[c] + 1\n        seen[c] = i\n        max_len = max(max_len, i - start + 1)\n    return max_len",
+      "language": "python",
+      "status": "accepted",
+      "test_results": [
+        {"input": "abcabcbb", "output": "3", "passed": true},
+        {"input": "bbbbb", "output": "1", "passed": true}
+      ],
+      "execution_time": 60,
+      "memory_used": 1420,
+      "created_at": "2025-05-25T11:00:00",
+      "updated_at": "2025-05-25T11:00:00"
+    },
+    {
+      "id": 6,
+      "problem_id": 1,
+      "candidate_id": 14,
+      "code_submitted": "def two_sum(nums, target):\n    for i in range(len(nums)):\n        for j in range(i+1, len(nums)):\n            if nums[i] + nums[j] == target:\n                return [i, j]",
+      "language": "python",
+      "status": "accepted",
+      "test_results": [
+        {"input": "[2,7,11,15], 9", "output": "[0,1]", "passed": true}
+      ],
+      "execution_time": 45,
+      "memory_used": 1300,
+      "created_at": "2025-05-25T11:30:00",
+      "updated_at": "2025-05-25T11:30:00"
+    }
+  ]
+  

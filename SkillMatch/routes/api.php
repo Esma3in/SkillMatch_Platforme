@@ -30,6 +30,7 @@ use App\Http\Controllers\candidateCoursesController;
 use App\Http\Controllers\CandidateSelectedController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CompaniesSelectedController;
+use App\Http\Controllers\LeetcodeProblemController;
 
 use App\Models\Roadmap;
 
@@ -41,7 +42,10 @@ Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['csrf' => csrf_token()]);
 });
 
-
+// Handle OPTIONS requests for CORS preflight
+Route::options('/{any}', function () {
+    return response()->json([], 200);
+})->where('any', '.*');
 
 // Candidate Routes
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);
@@ -95,6 +99,17 @@ Route::get('/candidate/company/{id}/tests', [TestController::class, 'GetTestsCom
 Route::get('/candidate/test/{id}',[TestController::class,'getTest']);
 Route::post('/results/store',[TestController::class,'storeResult']);
 Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::class,'getResult']);
+// Create test for company
+    Route::post('/tests/company/create', [TestController::class, 'store']);
+
+    // Fetch QCMs
+    Route::get('/qcms/company', [TestController::class, 'getQcms']);
+
+    // Fetch Companies
+    Route::get('/companies/company', [TestController::class, 'getCompanies']);
+
+    // Fetch Skills
+    Route::get('/skills/company', [TestController::class, 'getSkills']);
 
 //selected candidates for companby :
 Route::delete('/company/delete/candidate/selected',[CandidateSelectedController::class,'delete']);
@@ -167,6 +182,17 @@ Route::post('/admin/CompaniesList/setstate',[CompanyController::class,'setstate'
 
 Route::get('/admin/UsersList',[UserController::class,'getBannedUsers']);
 Route::post('/admin/Users/setstate',[UserController::class,'setstate']);
+Route::post('/admin/Users/delete',[UserController::class,'deleteUser']);
+Route::post('/admin/Users/unban',[UserController::class,'unbanUser']);
+
+// Admin Dashboard Stats
+Route::get('/admin/stats/users',[UserController::class,'getUserStats']);
+Route::get('/admin/stats/problems',[LeetcodeProblemController::class,'getStats']);
+Route::get('/admin/recent-activity',[UserController::class,'getRecentActivity']);
+
+// Detailed user information for admin
+Route::get('/admin/candidates/{id}', [CandidateController::class, 'getDetailedCandidate']);
+Route::get('/admin/companies/{id}', [CompanyController::class, 'getDetailedCompany']);
 
 Route::get('api/admin/candidates/{id}', [CandidateController::class, 'show']);
 Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
@@ -217,3 +243,33 @@ Route::post("/createQcm" ,[QcmForRoadmapController::class  , "createQcm"]);
 Route::get("/roadmap/qcm/{id}" ,[QcmForRoadmapController::class , "getIdRoadmap"]);
 
 Route::get("/all" , [CompanyController::class , "all"]);
+
+// LeetCode Problems Routes
+Route::get('/leetcode/problems', [LeetcodeProblemController::class, 'index']);
+Route::get('/leetcode/problems/{id}', [LeetcodeProblemController::class, 'show']);
+
+// Add delete route for LeetCode problems
+Route::delete('/leetcode/problems/{id}', [LeetcodeProblemController::class, 'destroy'])
+    ->withoutMiddleware(['csrf']);
+
+// Add update route for LeetCode problems
+Route::match(['put', 'options'], '/leetcode/problems/{id}', [LeetcodeProblemController::class, 'update'])
+    ->withoutMiddleware(['csrf']);
+
+// Route for creating problems with OPTIONS support for CORS
+Route::match(['post', 'options'], '/leetcode/problems', [LeetcodeProblemController::class, 'store'])
+    ->withoutMiddleware(['csrf']); // Disable CSRF for this route
+
+// Fix the submission route to handle both POST and OPTIONS requests properly
+Route::match(['post', 'options'], '/leetcode/problems/{id}/submit', [LeetcodeProblemController::class, 'submitSolution'])
+    ->name('leetcode.submit')
+    ->withoutMiddleware(['csrf']); // Disable CSRF for this route
+
+Route::get('/leetcode/problems/{id}/submissions', [LeetcodeProblemController::class, 'getSubmissions']);
+
+// Add a test route for debugging
+Route::post('/leetcode/test-submit', [LeetcodeProblemController::class, 'testSubmission']);
+
+// Debug endpoint - accepts any method
+Route::any('/leetcode/debug/{id?}', [LeetcodeProblemController::class, 'debugRequest'])
+    ->withoutMiddleware(['csrf']);

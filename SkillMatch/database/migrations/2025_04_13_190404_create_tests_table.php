@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-      
+
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
             $table->text('objective');
             $table->text('prerequisites');
-            $table->text('tools_Required');
+            $table->text('tools_required')->nullable();
             $table->text('before_answer');
             $table->foreignid('qcm_id')->constrained('qcms');
             $table->unsignedBigInteger('company_id');

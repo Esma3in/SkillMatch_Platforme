@@ -105,6 +105,9 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // Seed LeetCode problems
+        $this->call(LeetcodeProblemSeeder::class);
+
         // Create Administrators
 
         Administrator::factory()->create([

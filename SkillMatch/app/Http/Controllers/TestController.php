@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Qcm;
 use App\Models\Test;
+use App\Models\Skill;
 use App\Models\Result;
 use App\Models\Company;
 use App\Models\Candidate;
@@ -93,7 +95,7 @@ class TestController extends Controller
         return response()->json(['candidate'=>$candidate,'result'=>$results,'test'=>$test]);
     }
 
-    
+
 
 
     //for company
@@ -145,21 +147,85 @@ class TestController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'objective' => 'required|string',
+            'objective' => 'required|string|max:255',
             'prerequisites' => 'nullable|string',
-            'tools_Required' => 'nullable|string',
+            'tools_required' => 'nullable|string',
             'before_answer' => 'nullable|string',
             'qcm_id' => 'nullable|exists:qcms,id',
             'company_id' => 'required|exists:companies,id',
             'skill_id' => 'required|exists:skills,id',
         ]);
 
-        $test = Test::create($validatedData);
+        try {
+            $test = Test::create([
+                'objective' => $validatedData['objective'],
+                'prerequisites' => $validatedData['prerequisites'],
+                'tools_required' => $validatedData['tools_required'],
+                'before_answer' => $validatedData['before_answer'],
+                'qcm_id' => $validatedData['qcm_id'],
+                'company_id' => $validatedData['company_id'],
+                'skill_id' => $validatedData['skill_id'],
+            ]);
 
-        return response()->json([
-            'message' => 'Test created successfully',
-            'test' => $test,
-        ], 201);
+            return response()->json([
+                'message' => 'Test created successfully',
+                'test' => $test->load(['company', 'skill', 'qcm']),
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create test',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    /**
+     * Get a list of all QCMs
+     */
+    public function getQcms()
+    {
+        try {
+            $qcms = Qcm::select('id', 'question')->get();
+            return response()->json($qcms, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch QCMs',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get a list of all companies
+     */
+    public function getCompanies()
+    {
+        try {
+            $companies = Company::select('id', 'name')->get();
+            return response()->json($companies, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch companies',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get a list of all skills
+     */
+    public function getSkills()
+    {
+        try {
+            $skills = Skill::select('id', 'name')->get();
+            return response()->json($skills, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch skills',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

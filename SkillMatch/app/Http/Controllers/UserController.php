@@ -70,7 +70,7 @@ class UserController extends Controller
     public function SignIn(Request $request)
     {
         // Validate input
-        
+
 
         if($request->role==='admin'){
             $validated = $request->validate([
@@ -111,12 +111,12 @@ class UserController extends Controller
                 if (!$company) {
                     return response()->json(['message' => 'Company not found'], 404);
                 }
-                return response()->json(['company' => $company, 'role' => $validated['role']], 200); 
-                
+                return response()->json(['company' => $company, 'role' => $validated['role']], 200);
+
             }
             return response()->json(['user'=>$user->id], 400);
         }
-        
+
     }
     public function getBannedUsers()
         {
@@ -184,5 +184,172 @@ class UserController extends Controller
             return response()->json(['message' => 'User state updated successfully'], 200);
         }
 
+    public function deleteUser(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
 
+        // Find the user
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Check the user's role and delete the related model
+        if ($user->role === 'candidate') {
+            // Delete the candidate
+            if ($user->candidate) {
+                $user->candidate->delete();
+            }
+        } elseif ($user->role === 'company') {
+            // Delete the company
+            if ($user->company) {
+                $user->company->delete();
+            }
+        }
+
+        // Delete the user
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully'], 200);
+    }
+
+    public function unbanUser(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        // Find the user
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Check the user's role and update the state in the related model
+        if ($user->role === 'candidate') {
+            // Update the candidate's state
+            if ($user->candidate) {
+                $user->candidate->update(['state' => 'active']);
+            } else {
+                return response()->json(['error' => 'Candidate not found'], 404);
+            }
+        } elseif ($user->role === 'company') {
+            // Update the company's state
+            if ($user->company) {
+                $user->company->update(['state' => 'active']);
+            } else {
+                return response()->json(['error' => 'Company not found'], 404);
+            }
+        } else {
+            return response()->json(['error' => 'Invalid user role'], 400);
+        }
+
+        return response()->json(['message' => 'User unbanned successfully'], 200);
+    }
+
+    /**
+     * Get statistics about users for admin dashboard
+     */
+    public function getUserStats()
+    {
+        // Count total users
+        $totalUsers = User::count();
+
+        // Count companies
+        $totalCompanies = User::where('role', 'company')->count();
+
+        // Count candidates
+        $totalCandidates = User::where('role', 'candidate')->count();
+
+        // Count banned users
+        $bannedCandidates = User::where('role', 'candidate')
+            ->whereHas('candidate', function ($query) {
+                $query->where('state', 'banned');
+            })->count();
+
+        $bannedCompanies = User::where('role', 'company')
+            ->whereHas('company', function ($query) {
+                $query->where('state', 'banned');
+            })->count();
+
+        $bannedUsers = $bannedCandidates + $bannedCompanies;
+
+        return response()->json([
+            'totalUsers' => $totalUsers,
+            'totalCompanies' => $totalCompanies,
+            'totalCandidates' => $totalCandidates,
+            'bannedUsers' => $bannedUsers
+        ]);
+    }
+
+    /**
+     * Get recent activity for admin dashboard
+     */
+    public function getRecentActivity()
+    {
+        // Get recent user registrations
+        $recentUsers = User::with(['candidate', 'company'])
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get()
+            ->map(function ($user) {
+                $data = [
+                    'type' => 'user_joined',
+                    'time' => $user->created_at->diffForHumans(),
+                ];
+
+                if ($user->role === 'candidate' && $user->candidate) {
+                    $data['user'] = $user->candidate->name;
+                    $data['role'] = 'candidate';
+                } elseif ($user->role === 'company' && $user->company) {
+                    $data['company'] = $user->company->name;
+                    $data['type'] = 'company_joined';
+                }
+
+                return $data;
+            });
+
+        // Get recently banned users
+        $recentBanned = User::with(['candidate', 'company'])
+            ->whereHas('candidate', function ($query) {
+                $query->where('state', 'banned');
+            })
+            ->orWhereHas('company', function ($query) {
+                $query->where('state', 'banned');
+            })
+            ->orderBy('updated_at', 'desc')
+            ->take(3)
+            ->get()
+            ->map(function ($user) {
+                $data = [
+                    'type' => 'user_banned',
+                    'time' => $user->updated_at->diffForHumans(),
+                    'reason' => 'Policy violation' // This would come from a real reason field in your database
+                ];
+
+                if ($user->role === 'candidate' && $user->candidate) {
+                    $data['user'] = $user->candidate->name;
+                } elseif ($user->role === 'company' && $user->company) {
+                    $data['user'] = $user->company->name;
+                }
+
+                return $data;
+            });
+
+        // Combine activities and sort by time (most recent first)
+        $activities = $recentUsers->concat($recentBanned)
+            ->sortByDesc(function ($activity) {
+                // Parse the human-readable time back to a timestamp for sorting
+                // This is a simplified approach, you may want to use the actual timestamps
+                return strtotime(str_replace(' ago', '', $activity['time']));
+            })
+            ->values()
+            ->take(10);
+
+        return response()->json($activities);
+    }
 }

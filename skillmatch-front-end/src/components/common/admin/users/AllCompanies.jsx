@@ -24,11 +24,15 @@ import {
   TableHeader,
   TableRow,
 } from "../table";
+import UserDetailModal from "./UserDetailModal";
 
 const AllCompanies = () => {
   const [companies, setCompany] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [loading, setLoading] = useState(false);
   const itemsPerPage = 8;
 
 
@@ -206,11 +210,50 @@ const AllCompanies = () => {
       company.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const totalPages = 9;
+  const totalPages = Math.ceil(filteredCompanies.length / itemsPerPage) || 1;
   const paginatedCompanies = filteredCompanies.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const handleViewDetails = async (companyId) => {
+    try {
+      setLoading(true);
+      const response = await api.get(`api/admin/companies/${companyId}`);
+      
+      if (response.status === 200) {
+        // Merge the detailed data with the basic company data
+        const basicInfo = companies.find(c => c.id === companyId);
+        const detailedData = response.data;
+        
+        // Combine the data, giving preference to detailed data
+        const combinedData = {
+          ...basicInfo,
+          ...detailedData,
+          // Make sure these fields from the basic info are preserved
+          logo: basicInfo.logo,
+          date: basicInfo.date,
+          state: basicInfo.state
+        };
+        
+        setSelectedCompany(combinedData);
+        setIsModalOpen(true);
+      }
+    } catch (error) {
+      console.error("Error fetching company details:", error);
+      // Fallback to basic info if detailed fetch fails
+      const basicInfo = companies.find(c => c.id === companyId);
+      setSelectedCompany(basicInfo);
+      setIsModalOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCompany(null);
+  };
 
   return (
     <div className="w-full h-full">
@@ -284,8 +327,12 @@ const AllCompanies = () => {
                   </TableCell>
                   <TableCell className="px-6 py-4 text-gray-500">{company.date}</TableCell>
                   <TableCell className="px-6 py-4">
-                    <Button className="w-[103px] h-10 bg-[#0a84ff26] text-[#0a84ff] font-semibold text-base rounded-[10px]">
-                      Details
+                    <Button 
+                      className="w-[103px] h-10 bg-[#0a84ff26] text-[#0a84ff] font-semibold text-base rounded-[10px]"
+                      onClick={() => handleViewDetails(company.id)}
+                      disabled={loading}
+                    >
+                      {loading && selectedCompany?.id === company.id ? 'Loading...' : 'Details'}
                     </Button>
                   </TableCell>
                   <TableCell className="px-6 py-5">
@@ -324,23 +371,42 @@ const AllCompanies = () => {
             <Button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
               Prev
             </Button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <Button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`px-6 py-4 ${
-                  currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-white'
-                }`}
-              >
-                {i + 1}
-              </Button>
-            ))}
+            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+              // Show pages around current page
+              const pageToShow = currentPage > 3 && totalPages > 5
+                ? i + currentPage - 2
+                : i + 1;
+              
+              // Don't show pages beyond the total
+              if (pageToShow <= totalPages) {
+                return (
+                  <Button
+                    key={pageToShow}
+                    onClick={() => setCurrentPage(pageToShow)}
+                    className={`px-6 py-4 ${
+                      currentPage === pageToShow ? 'bg-blue-500 text-white' : 'bg-white'
+                    }`}
+                  >
+                    {pageToShow}
+                  </Button>
+                );
+              }
+              return null;
+            })}
             <Button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
               Next
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      {/* User Detail Modal */}
+      <UserDetailModal 
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        userData={selectedCompany}
+        userType="company"
+      />
     </div>
   );
 };

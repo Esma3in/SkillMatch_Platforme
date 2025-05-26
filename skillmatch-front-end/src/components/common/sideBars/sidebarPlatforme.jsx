@@ -11,11 +11,11 @@ export default function Sidebar() {
           welcome admin
       </button>
         <ul className="space-y-5">
-          <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide m-3">PLATFORME ANALYTICS</div>
+          {/* <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide m-3">PLATFORME ANALYTICS</div>
           <li className="flex items-center space-x-2 text-black font-semibold shadow-sm m-3 pb-5">
             <BarChart2 size={18} />
             <a href="/admin/Session/:id">Acceuil</a> 
-          </li>
+          </li> */}
 
           <div className="text-xs text-gray-400 mt-6 mb-2 tracking-wide m-3">USERS ANALYTICS</div>
           <li className="flex items-center justify-between m-3">
