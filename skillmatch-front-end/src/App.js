@@ -59,6 +59,7 @@ import LeetcodeProblemWorkspace from './pages/LeetcodeProblemWorkspace.jsx';
 import AddLeetcodeProblem from './pages/manage/addLeetcodeProblem.jsx';
 import ManageLeetcodeProblems from './pages/manage/manageLeetcodeProblems.jsx';
 import EditLeetcodeProblem from './pages/manage/editLeetcodeProblem.jsx';
+import DocumentsPage from './pages/manage/documentsPage.jsx';
 
 export default function App() {
   return (
@@ -123,6 +124,7 @@ export default function App() {
         {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}
         <Route path="/admin/addLeetcodeProblem" element={<ProtectedRoute><AddLeetcodeProblem /></ProtectedRoute>} />
         <Route path="/manage/addLeetcodeProblem" element={<ProtectedRoute><AddLeetcodeProblem /></ProtectedRoute>} />
+        <Route path="/documents/companies" element={<ProtectedRoute><DocumentsPage /></ProtectedRoute>} />
         <Route path="/training/problems" element={<ProtectedRoute><ManageLeetcodeProblems /></ProtectedRoute>} />
         <Route path="/admin/manageLeetcodeProblems" element={<ProtectedRoute><ManageLeetcodeProblems /></ProtectedRoute>} />
         <Route path="/manage/editLeetcodeProblem/:id" element={<ProtectedRoute><EditLeetcodeProblem /></ProtectedRoute>} />
