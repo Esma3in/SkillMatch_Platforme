@@ -127,7 +127,7 @@ const NavbarAdmin = () => {
                     <i className="menu-icon start-icon"></i>
                     Problems
                   </a>
-                  <a href="/training/challenges" className="dropdown-item">
+                  <a href="/admin/challenges" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Challenges
                   </a>
@@ -149,10 +149,6 @@ const NavbarAdmin = () => {
                   <a href="/documents/companies" className="dropdown-item">
                     <i className="menu-icon company-list-icon"></i>
                     Companies
-                  </a>
-                  <a href="/documents/candidates" className="dropdown-item">
-                    <i className="menu-icon company-related-icon"></i>
-                    Candidates
                   </a>
                 </div>
               )}
