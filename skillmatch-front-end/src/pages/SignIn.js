@@ -56,8 +56,8 @@ export default function SignIn({ onToggle }) {
   // Make the API call to check credentials
   const check = async (data) => {
     try {
-      await api.get('/sanctum/csrf-cookie');
-      const response = await api.post('/api/candidate/signin', data);
+      await api.get('sanctum/csrf-cookie');
+      const response = await api.post('candidate/signin', data);
       return response;
     } catch (err) {
       console.error(err);
