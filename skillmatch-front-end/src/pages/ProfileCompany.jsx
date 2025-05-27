@@ -13,221 +13,6 @@ import { useNavigate } from "react-router";
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
-
-const GroupByAnima = ({ services }) => {
-    return (
-        <section className="w-full py-8">
-            <Card className="w-full bg-[#f7f8f9] rounded-[25px] p-6 relative">
-                <h2 className="text-4xl font-bold mb-8 ml-6">Services</h2>
-
-                <div className="flex">
-                    {/* Timeline */}
-                    <div className="relative mt-20 mr-10 ml-6">
-                        {/* Vertical timeline line */}
-                        <div
-                            className="absolute w-[3px] bg-indigo-600 left-5"
-                            style={{
-                                top: '0',
-                                height: `${services.length > 1 ? ((services.length - 1) * 160) + 10 : 0}px`
-                            }}
-                        ></div>
-
-                        {/* Timeline nodes with labels */}
-                        {services.map((service, index) => (
-                            <div key={service.id || index} className="relative" style={{ marginTop: index > 0 ? '120px' : '0' }}>
-                                {/* Timeline node */}
-                                <div className="flex items-center">
-                                    <div className="relative">
-                                        <div className="w-10 h-10 bg-white rounded-full border-[3px] border-solid border-indigo-600 flex items-center justify-center">
-                                            <div className="w-[30px] h-[30px] bg-indigo-600 rounded-full" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Service Cards */}
-                    <div className="flex-1 space-y-8">
-                        {services.map((service, index) => (
-                            <Card
-                                key={service.id || index}
-                                className="border border-solid border-[#6c63ff] bg-[#f3f0fe] rounded-[25px]"
-                            >
-                                <CardContent className="p-6 flex">
-                                    <div className="mr-4">
-                                        <img
-                                            className="w-10 h-10 object-cover"
-                                            alt={service.iconAlt || `Service icon ${index + 1}`}
-                                            src={service.icon}
-                                        />
-                                    </div>
-
-                                    <div className="flex-1">
-                                        <h3 className="font-semibold text-[22px] leading-8 mb-2">
-                                            {service.title}
-                                        </h3>
-                                        <div className="font-medium text-[15px] leading-6">
-                                            {service.description && service.description.map((item, i) => (
-                                                <React.Fragment key={i}>
-                                                    {item}
-                                                    {i < service.description.length - 1 && <br />}
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <Button
-                                        className="w-[46px] h-[46px] p-0 rounded-full bg-[#a592ff] hover:bg-[#8a7ae0]"
-                                        aria-label={`Learn more about ${service.title}`}
-                                    >
-                                        <ArrowRightIcon className="h-6 w-6" />
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </Card>
-        </section>
-    );
-};
-
-
-const OverlapGroupWrapperByAnima = ({ Bio }) => {
-    const navigate = useNavigate();
-    const idCompany = localStorage.getItem("idCompany") || localStorage.getItem("company_id");
-    
-    // Corrected function to properly use the idCompany variable
-    const handleAddSkillClick = () => {
-        navigate(`/company/${idCompany}/add-skill`);
-    // Data for action buttons
-    const actionButtons = [
-        { id: 1, text: "Add skills", onClick: handleAddSkillClick },
-        { id: 2, text: "Add Test" },
-    ];
-
-    return (
-        <section className="w-full">
-            <div className="space-y-6">
-                {/* Actions Card */}
-                <Card className="rounded-[25px] bg-[#f7f8f9] border-none">
-                    <CardContent className="p-6">
-                        <h2 className="font-bold text-4xl font-['Inter',Helvetica] mb-6">
-                            Actions
-                        </h2>
-
-                        {/* Timeline with buttons */}
-                        <div className="flex">
-                            {/* Timeline dots and line */}
-                            <div className="relative mr-6 flex flex-col items-center">
-                                {/* Vertical line */}
-                                <div className="absolute top-0 bottom-0 w-[3px] bg-indigo-600 left-1/2 -translate-x-1/2 z-0" />
-
-                                {actionButtons.map((button, index) => (
-                                    <div
-                                        key={button.id}
-                                        className={`relative w-[25px] h-[25px] rounded-full border-[3px] border-indigo-600 bg-white z-10
-                                            ${index !== 0 ? "mt-[105px]" : ""}`}
-                                    >
-                                        <div className="absolute top-1/2 left-1/2 w-[19px] h-[18px] bg-indigo-600 rounded-full -translate-x-1/2 -translate-y-1/2" />
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Buttons column */}
-                            <div className="flex flex-col space-y-10">
-                                {actionButtons.map((button) => (
-                                    <Button
-                                        key={button.id}
-                                        onClick={button.onClick}
-                                        className="w-[223px] h-[55px] rounded-[9px] bg-indigo-600 border border-white"
-                                    >
-                                        <span className="font-poppins font-semibold text-white text-2xl tracking-[-0.20px]">
-                                            {button.text}
-                                        </span>
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Bio Card */}
-                <Card className="rounded-[25px] bg-[#f7f8f9] border-none">
-                    <CardContent className="p-6">
-                        <div className="flex justify-between items-center">
-                            <h2 className="font-bold text-4xl font-['Inter',Helvetica]">
-                                Bio
-                            </h2>
-                            <img
-                                className="w-11 h-11 object-cover"
-                                alt="Profile"
-                                src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
-                            />
-                        </div>
-
-                        <p className="mt-6 font-normal text-xl leading-8">
-                            {Bio}
-                        </p>
-                    </CardContent>
-                </Card>
-            </div>
-        </section>
-    );
-};
-}
-const OverlapWrapperByAnima = ({ companyData, techBadges }) => {
-    return (
-        <div className="w-full mx-auto">
-            <Card className="w-full bg-[#f7f8f9] rounded-[25px] p-6 relative">
-                <CardContent className="p-0 flex flex-col md:flex-row items-start gap-6">
-                    <div className="flex-shrink-0">
-                        <img
-                            className="w-[157px] h-[157px] object-cover"
-                            alt={`${companyData.name || 'Company'} logo`}
-                            src={companyData.logo || '/placeholder-logo.png'}
-                        />
-                    </div>
-
-                    <div className="flex flex-col">
-                        <h1 className="font-bold text-[40px] text-black font-sans mb-6">
-                            {companyData.name || 'Company Name'}
-                        </h1>
-
-                        <div className="text-xl leading-8 text-black">
-                            <p className="font-light mb-2">Creation date: {companyData.creationDate || 'N/A'}</p>
-                            <p className="font-light mb-2">Email: {companyData.email || 'N/A'}</p>
-                            <p className="mb-2">
-                                <span className="font-light">CEO of the company: </span>
-                                <span className="font-bold">{companyData.ceo || 'N/A'}</span>
-                            </p>
-                            <p className="font-light">Address: {companyData.address || 'N/A'}</p>
-                        </div>
-                    </div>
-                </CardContent>
-
-                {/* Bottom Right Badges */}
-                <div className="absolute bottom-6 right-6 flex gap-2">
-                    {techBadges && techBadges.map((badge, index) => (
-                        <Badge
-                            key={index}
-                            className={`h-[33px] px-3 py-1.5 rounded-full ${badge.color} font-bold text-[10px]`}
-                            variant="outline"
-                        >
-                            {badge.name}
-                        </Badge>
-                    ))}
-
-                    <div className="flex w-[31px] h-[29px] items-center justify-center p-1 bg-[#5bffa587] rounded-full">
-                        <PlusIcon className="w-3 h-3" />
-                    </div>
-                </div>
-            </Card>
-        </div>
-    );
-};
-
 const badgeVariants = cva(
     "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
     {
@@ -371,6 +156,228 @@ const Separator = React.forwardRef(
 );
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 
+const GroupByAnima = ({ services }) => {
+    return (
+        <section className="w-full py-8 flex-grow">
+            <Card className="w-full bg-[#f7f8f9] rounded-[25px] p-6 relative">
+                <h2 className="text-4xl font-bold mb-8 ml-6">Services</h2>
+
+                <div className="flex">
+                    {/* Timeline */}
+                    <div className="relative mt-20 mr-10 ml-6">
+                        {/* Vertical timeline line */}
+                        <div
+                            className="absolute w-[3px] bg-indigo-600 left-5"
+                            style={{
+                                top: '0',
+                                height: `${services.length > 1 ? ((services.length - 1) * 160) + 10 : 0}px`
+                            }}
+                        ></div>
+
+                        {/* Timeline nodes with labels */}
+                        {services.map((service, index) => (
+                            <div key={service.id || index} className="relative" style={{ marginTop: index > 0 ? '120px' : '0' }}>
+                                {/* Timeline node */}
+                                <div className="flex items-center">
+                                    <div className="relative">
+                                        <div className="w-10 h-10 bg-white rounded-full border-[3px] border-solid border-indigo-600 flex items-center justify-center">
+                                            <div className="w-[30px] h-[30px] bg-indigo-600 rounded-full" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Service Cards */}
+                    <div className="flex-1 space-y-8">
+                        {services.map((service, index) => (
+                            <Card
+                                key={service.id || index}
+                                className="border border-solid border-[#6c63ff] bg-[#f3f0fe] rounded-[25px]"
+                            >
+                                <CardContent className="p-6 flex">
+                                    <div className="mr-4">
+                                        <img
+                                            className="w-10 h-10 object-cover"
+                                            alt={service.iconAlt || `Service icon ${index + 1}`}
+                                            src={service.icon}
+                                        />
+                                    </div>
+
+                                    <div className="flex-1">
+                                        <h3 className="font-semibold text-[22px] leading-8 mb-2">
+                                            {service.title}
+                                        </h3>
+                                        <div className="font-medium text-[15px] leading-6">
+                                            {service.description && service.description.map((item, i) => (
+                                                <React.Fragment key={i}>
+                                                    {item}
+                                                    {i < service.description.length - 1 && <br />}
+                                                </React.Fragment>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <Button
+                                        className="w-[46px] h-[46px] p-0 rounded-full bg-[#a592ff] hover:bg-[#8a7ae0]"
+                                        aria-label={`Learn more about ${service.title}`}
+                                    >
+                                        <ArrowRightIcon className="h-6 w-6" />
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </div>
+            </Card>
+        </section>
+    );
+};
+
+
+
+
+const OverlapGroupWrapperByAnima = ({ Bio }) => {
+    const navigate = useNavigate();
+    const idCompany = localStorage.getItem("idCompany") || localStorage.getItem("company_id");
+
+    const handleAddSkillClick = () => {
+        navigate(`/company/${idCompany}/add-skill`);
+    };
+
+    const actionButtons = [
+        { id: 1, text: "Add skills", onClick: handleAddSkillClick },
+        { id: 2, text: "Add Test", onClick: () => { /* Handle Add Test click */ } },
+    ];
+
+    return (
+        // Added h-full here - this section needs a parent with defined height for h-full to work
+        <section className="w-full h-full">
+            {/* Added flex, flex-col, and h-full to make this container a flex column and give it height */}
+            <div className="space-y-6 flex flex-col h-full">
+                {/* Actions Card - This card will take its necessary height */}
+                <Card className="rounded-[25px] bg-[#f7f8f9] border-none">
+                    <CardContent className="p-6">
+                        <h2 className="font-bold text-4xl font-['Inter',Helvetica] mb-6">
+                            Actions
+                        </h2>
+
+                        {/* Timeline with buttons */}
+                        <div className="flex">
+                            {/* Timeline dots and line */}
+                            <div className="relative mr-6 flex flex-col items-center">
+                                {/* Vertical line */}
+                                <div className="absolute top-0 bottom-0 w-[3px] bg-indigo-600 left-1/2 -translate-x-1/2 z-0" />
+
+                                {actionButtons.map((button, index) => (
+                                    <div
+                                        key={button.id}
+                                        className={`relative w-[25px] h-[25px] rounded-full border-[3px] border-indigo-600 bg-white z-10
+                                            ${index !== 0 ? "mt-[105px]" : ""}`}
+                                    >
+                                        {/* Inner dot */}
+                                        <div className="absolute top-1/2 left-1/2 w-[19px] h-[18px] bg-indigo-600 rounded-full -translate-x-1/2 -translate-y-1/2" />
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Buttons column */}
+                            <div className="flex flex-col space-y-10">
+                                {actionButtons.map((button) => (
+                                    <Button
+                                        key={button.id}
+                                        onClick={button.onClick}
+                                        className="w-[223px] h-[55px] rounded-[9px] bg-indigo-600 border border-white flex items-center justify-center"
+                                    >
+                                        <span className="font-poppins font-semibold text-white text-2xl tracking-[-0.20px]">
+                                            {button.text}
+                                        </span>
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Bio Card - Added flex-grow to make it fill remaining space */}
+                <Card className="rounded-[25px] bg-[#f7f8f9] border-none flex-grow"> {/* <-- Added flex-grow here */}
+                    <CardContent className="p-6">
+                        <div className="flex justify-between items-center">
+                            <h2 className="font-bold text-4xl font-['Inter',Helvetica]">
+                                Bio
+                            </h2>
+                            <img
+                                className="w-11 h-11 object-cover"
+                                alt="Profile"
+                                src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
+                            />
+                        </div>
+
+                        <p className="mt-6 font-normal text-xl leading-8">
+                            {Bio}
+                        </p>
+                    </CardContent>
+                </Card>
+            </div>
+        </section>
+    );
+};
+
+
+const OverlapWrapperByAnima = ({ companyData, techBadges }) => {
+    return (
+        <div className="w-full mx-auto">
+            <Card className="w-full bg-[#f7f8f9] rounded-[25px] p-6 relative">
+                <CardContent className="p-0 flex flex-col md:flex-row items-start gap-6">
+                    <div className="flex-shrink-0">
+                        <img
+                            className="w-[157px] h-[157px] object-cover"
+                            alt={`${companyData.name || 'Company'} logo`}
+                            src={companyData.logo || '/placeholder-logo.png'}
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <h1 className="font-bold text-[40px] text-black font-sans mb-6">
+                            {companyData.name || 'Company Name'}
+                        </h1>
+
+                        <div className="text-xl leading-8 text-black">
+                            <p className="font-light mb-2">Creation date: {companyData.creationDate || 'N/A'}</p>
+                            <p className="font-light mb-2">Email: {companyData.email || 'N/A'}</p>
+                            <p className="mb-2">
+                                <span className="font-light">CEO of the company: </span>
+                                <span className="font-bold">{companyData.ceo || 'N/A'}</span>
+                            </p>
+                            <p className="font-light">Address: {companyData.address || 'N/A'}</p>
+                        </div>
+                    </div>
+                </CardContent>
+
+                {/* Bottom Right Badges */}
+                <div className="absolute bottom-6 right-6 flex gap-2">
+                    {techBadges && techBadges.map((badge, index) => (
+                        <Badge
+                            key={index}
+                            className={`h-[33px] px-3 py-1.5 rounded-full ${badge.color} font-bold text-[10px]`}
+                            variant="outline"
+                        >
+                            {badge.name}
+                        </Badge>
+                    ))}
+
+                    <div className="flex w-[31px] h-[29px] items-center justify-center p-1 bg-[#5bffa587] rounded-full">
+                        <PlusIcon className="w-3 h-3" />
+                    </div>
+                </div>
+            </Card>
+        </div>
+    );
+};
+
+
+
 export const CompanyProfile = () => {
     const companyId = localStorage.getItem('company_id');
     const [companyInfo, setCompanyInfo] = useState(null);
@@ -476,12 +483,12 @@ export const CompanyProfile = () => {
     return (
         <>
             <NavbarCompany />
-            <div className="relative w-full max-w-[1440px] mx-auto bg-white">
+            <div className="relative w-full max-w-full mx-auto bg-white">
                 <main className="flex flex-col w-full p-8">
                     {/* Main Content with Two Columns */}
                     <div className="flex flex-col lg:flex-row gap-8 mb-8">
                         {/* Left Section */}
-                        <section className="w-full lg:w-2/3">
+                        <section className="w-full lg:w-2/3 flex-grow">
                             <div className="relative mb-8">
                                 <OverlapWrapperByAnima companyData={companyData} techBadges={techBadges} />
                                 <img
@@ -494,7 +501,8 @@ export const CompanyProfile = () => {
                         </section>
 
                         {/* Right Section */}
-                        <section className="w-full lg:w-1/3">
+                        <section className="w-full lg:w-1/3 flex-grow">
+
                             <OverlapGroupWrapperByAnima Bio={companyInfo?.profile?.Bio || 'Add A Bio'} />
                         </section>
                     </div>
