@@ -75,6 +75,16 @@ const NavbarAdmin = () => {
       setIsDocumentsOpen(false);
     }, 200);
   };
+  const handleStatisticEnter = () => {
+    clearTimeout(documentsTimeout.current);
+    setIsDocumentsOpen(true);
+  };
+
+  const handleStatisticLeave = () => {
+    documentsTimeout.current = setTimeout(() => {
+      setIsDocumentsOpen(false);
+    }, 200);
+  };
 
   return (
     <div className="navbar-container">
@@ -149,6 +159,28 @@ const NavbarAdmin = () => {
                   <a href="/documents/companies" className="dropdown-item">
                     <i className="menu-icon company-list-icon"></i>
                     Companies
+                  </a>
+                </div>
+              )}
+            </div>
+            <div
+              className="nav-item dropdown"
+              ref={trainingRef}
+              onMouseEnter={handleStatisticEnter}
+              onMouseLeave={handleStatisticLeave}
+            >
+              <span>
+                statistics <i className="dropdown-icon">▼</i>
+              </span>
+              {isTrainingOpen && (
+                <div className="dropdown-menu">
+                  <a href="/admin/companiesStatistics" className="dropdown-item">
+                    <i className="menu-icon company-list-icon"></i>
+                    Companies
+                  </a>
+                  <a href="/admin/candidatesStatistics" className="dropdown-item">
+                    <i className="menu-icon company-related-icon"></i>
+                    Candidates
                   </a>
                 </div>
               )}
