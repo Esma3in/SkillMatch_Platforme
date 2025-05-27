@@ -243,12 +243,15 @@ const OverlapGroupWrapperByAnima = ({ Bio }) => {
     const idCompany = localStorage.getItem("idCompany") || localStorage.getItem("company_id");
 
     const handleAddSkillClick = () => {
-        navigate(`/company/${idCompany}/add-skill`);
+        navigate(`/company/create/skill`);
+    };
+    const handleAddTestClick = () => {
+        navigate(`/training/start`);
     };
 
     const actionButtons = [
         { id: 1, text: "Add skills", onClick: handleAddSkillClick },
-        { id: 2, text: "Add Test", onClick: () => { /* Handle Add Test click */ } },
+        { id: 2, text: "Add Test", onClick: handleAddTestClick },
     ];
 
     return (
