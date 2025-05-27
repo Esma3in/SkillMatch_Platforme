@@ -29,7 +29,7 @@ class AllCandidateController extends Controller
                 // Utiliser la table results avec le nom en minuscules
                 $testStatus = DB::table('results')
                     ->where('candidate_id', $candidate->id)
-                    ->select('test_id', 'score as status', 'created_at')
+                    ->select('score as status', 'created_at')
                     ->orderBy('created_at', 'desc')
                     ->get();
 
@@ -157,6 +157,7 @@ class AllCandidateController extends Controller
             'destinataire' => $candidate->email, // or any field identifying the candidate
             'candidate_id' => $candidate->id,
             'company_id' => $candidate->company_id ?? 1,
+            'read' => 0,
         ]);
 
         return response()->json(['message' => 'Candidate accepted and notification sent successfully']);
@@ -189,6 +190,7 @@ class AllCandidateController extends Controller
             'destinataire' => $candidate->email,
             'candidate_id' => $candidate->id,
             'company_id' => $candidate->company_id ?? 1,
+            'read' => 0,
         ]);
 
         return response()->json(['message' => 'Candidate rejected and notification sent successfully']);

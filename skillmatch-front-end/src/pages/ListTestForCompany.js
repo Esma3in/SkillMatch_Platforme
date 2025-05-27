@@ -3,7 +3,7 @@ import { api } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 
 // Icons pour le composant
-import { List, Plus, Trash2, Eye, MoreVertical } from 'lucide-react';
+import { List, Plus, Trash2, Eye } from 'lucide-react';
 
 export default function TestsListForCompany() {
   const [tests, setTests] = useState([]);
@@ -21,7 +21,7 @@ export default function TestsListForCompany() {
   const fetchTests = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await api.get(`api/tests?page=${page}`);
+      const response = await api.get(`/api/tests/company/index?page=${page}`);
       setTests(response.data.tests.data);
       setCurrentPage(response.data.tests.current_page);
       setTotalPages(response.data.tests.last_page);
@@ -36,7 +36,7 @@ export default function TestsListForCompany() {
   const fetchCandidates = async (testId) => {
     try {
       setCandidatesLoading(true);
-      const response = await api.get(`/tests/${testId}/candidates`);
+      const response = await api.get(`/api/tests/${testId}/candidates/company/solved`);
       setCandidates(response.data.candidates);
     } catch (error) {
       console.error('Error fetching candidates:', error);
@@ -49,10 +49,22 @@ export default function TestsListForCompany() {
   const handleDeleteAll = async () => {
     if (window.confirm('Are you sure you want to delete all tests?')) {
       try {
-        await api.delete('/tests');
+        await api.delete('/api/tests/company/delete');
         fetchTests();
       } catch (error) {
         console.error('Error deleting tests:', error);
+      }
+    }
+  };
+
+  // Supprimer un test individuel
+  const handleDeleteTest = async (testId) => {
+    if (window.confirm('Are you sure you want to delete this test?')) {
+      try {
+        await api.delete(`/api/tests/${testId}/company/destroy`);
+        fetchTests();
+      } catch (error) {
+        console.error('Error deleting test:', error);
       }
     }
   };
@@ -193,7 +205,7 @@ export default function TestsListForCompany() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date creation</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last updated</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Solved By</th>
-                  <th className="px-6 py-3"></th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -220,14 +232,17 @@ export default function TestsListForCompany() {
                     <td className="px-6 py-4">
                       <button
                         onClick={() => handleViewCandidates(test)}
-                        className="px-4 py-2 bg-blue-100 text-blue-600 rounded hover:bg-blue-200"
+                        className="px-4 py-2 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 flex items-center"
                       >
-                        View
+                        <Eye size={16} className="mr-1" /> View
                       </button>
                     </td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="text-gray-400 hover:text-gray-600">
-                        <MoreVertical size={16} />
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => handleDeleteTest(test.id)}
+                        className="px-3 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 flex items-center"
+                      >
+                        <Trash2 size={16} className="mr-1" /> Delete
                       </button>
                     </td>
                   </tr>
@@ -272,7 +287,7 @@ export default function TestsListForCompany() {
                   currentPage === totalPages 
                     ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
+                  }`}
               >
                 Next
               </button>

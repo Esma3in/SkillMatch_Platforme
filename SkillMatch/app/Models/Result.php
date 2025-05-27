@@ -24,6 +24,11 @@ class Result extends Model
     public function Test(){
         return $this->belongsTo(Test::class);
     }
-    
+
+    public function qcmForRoadmap()
+    {
+        return $this->belongsTo(QcmForRoadmap::class, 'qcm_for_roadmapId');
+    }
+
 }
 
