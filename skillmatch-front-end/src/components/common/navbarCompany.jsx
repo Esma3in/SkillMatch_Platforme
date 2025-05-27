@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/pages/Navbar/navbarCandidate.css';
 import userAvatar from '../../assets/userAvatar.jpg'; 
 import UseLogout from '../../hooks/useLogout';
+import {Link} from 'react-router-dom';
 
 const NavbarCompany = () => {
   const logout =UseLogout();
@@ -49,10 +50,10 @@ const NavbarCompany = () => {
               <span>Tests <i className="dropdown-icon">▼</i></span>
               {isTrainingOpen && (
                 <div className="dropdown-menu">
-                  <a href="/training/start" className="dropdown-item">
+                  <Link to="/training/start" className="dropdown-item">
                     <i className="menu-icon start-icon"></i>
                     Create new Test
-                  </a>
+                  </Link>
                   <a href="/testsList" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Tests
