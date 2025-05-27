@@ -333,3 +333,11 @@ Route::prefix('admin')->group(function () {
     Route::put('challenges/{challenge}', [ChallengeController::class, 'update']);
     Route::delete('challenges/{challenge}', [ChallengeController::class, 'destroy']);
 });
+
+// Add training admin challenge routes
+Route::prefix('training/admin')->group(function () {
+    Route::get('/challenges', [ChallengeController::class, 'getAdminChallenges']);
+    Route::post('/challenges', [ChallengeController::class, 'store']);
+    Route::put('/challenges/{challenge}', [ChallengeController::class, 'update']);
+    Route::delete('/challenges/{challenge}', [ChallengeController::class, 'destroy']);
+});

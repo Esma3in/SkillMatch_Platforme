@@ -79,25 +79,50 @@ export default function AdminChallenges() {
       'api/training/problems'
     ];
     
-    let success = false;
+    let allProblems = [];
+    let successfulEndpoints = 0;
     
-    // Try each endpoint until one works
+    // Try all endpoints and combine their results
     for (const endpoint of endpoints) {
-      if (success) break;
-      
       try {
         console.log(`Attempting to fetch problems from ${endpoint}...`);
         const response = await api.get(endpoint);
         
         // Check if we got valid data
         if (response.data && (Array.isArray(response.data) || Array.isArray(response.data.data))) {
-          const problemsData = Array.isArray(response.data) ? response.data : response.data.data;
-          console.log(`Success! Loaded ${problemsData.length} problems from ${endpoint}`);
+          const rawProblemsData = Array.isArray(response.data) ? response.data : response.data.data;
+          console.log(`Raw problems data from ${endpoint}:`, rawProblemsData.slice(0, 2)); // Log sample
           
-          setProblems(problemsData);
-          setFilteredProblems(problemsData);
-          success = true;
-          break;
+          // Filter and validate problems to ensure they have valid IDs
+          const validatedProblems = rawProblemsData
+            .filter(problem => problem && problem.id && !isNaN(Number(problem.id)))
+            .map(problem => {
+              // Normalize problem structure to handle both standard and leetcode problems
+              let normalizedProblem = {
+                ...problem,
+                id: Number(problem.id), // Ensure ID is a number
+                name: problem.name || problem.title || `Problem #${problem.id}`,
+                level: problem.level || problem.difficulty || 'medium',
+                description: problem.description || '',
+                source: endpoint.includes('leetcode') ? 'leetcode' : 'standard'
+              };
+              
+              // Ensure skill information is properly formatted
+              if (problem.skill_id && !problem.skill) {
+                normalizedProblem.skill = { id: problem.skill_id };
+              }
+              
+              return normalizedProblem;
+            });
+          
+          console.log(`Success! Loaded ${validatedProblems.length} valid problems from ${endpoint}`);
+          if (validatedProblems.length < rawProblemsData.length) {
+            console.warn(`Filtered out ${rawProblemsData.length - validatedProblems.length} problems with invalid IDs`);
+          }
+          
+          // Add to our collection
+          allProblems = [...allProblems, ...validatedProblems];
+          successfulEndpoints++;
         } else {
           console.warn(`Endpoint ${endpoint} returned invalid data format:`, response.data);
         }
@@ -106,8 +131,26 @@ export default function AdminChallenges() {
       }
     }
     
-    if (!success) {
-      console.error('All problem endpoints failed');
+    // De-duplicate problems by ID
+    const uniqueProblems = [];
+    const seenIds = new Set();
+    
+    allProblems.forEach(problem => {
+      if (!seenIds.has(problem.id)) {
+        seenIds.add(problem.id);
+        uniqueProblems.push(problem);
+      } else {
+        console.warn(`Duplicate problem ID found: ${problem.id}`);
+      }
+    });
+    
+    console.log(`Total unique problems loaded: ${uniqueProblems.length} from ${successfulEndpoints} endpoints`);
+    
+    if (uniqueProblems.length > 0) {
+      setProblems(uniqueProblems);
+      setFilteredProblems(uniqueProblems);
+    } else {
+      console.error('No valid problems found from any endpoint');
       toast.error('Failed to load problems. Please check the console for details.');
       setProblems([]);
       setFilteredProblems([]);
@@ -183,21 +226,38 @@ export default function AdminChallenges() {
   };
   
   const handleProblemSelection = (problemId) => {
-    const isSelected = selectedProblems.includes(problemId);
+    // Debug the incoming problem ID
+    console.log('Problem selection - original ID:', problemId, 'type:', typeof problemId);
+    
+    // Ensure problemId is a number
+    const numericId = Number(problemId);
+    if (isNaN(numericId)) {
+      console.error('Invalid problem ID:', problemId);
+      toast.error(`Invalid problem ID: ${problemId}`);
+      return;
+    }
+    
+    console.log('Problem selection - converted ID:', numericId, 'type:', typeof numericId);
+    
+    const isSelected = selectedProblems.includes(numericId);
     
     if (isSelected) {
-      setSelectedProblems(prev => prev.filter(id => id !== problemId));
+      setSelectedProblems(prev => prev.filter(id => id !== numericId));
       setForm(prev => ({
         ...prev,
-        problem_ids: prev.problem_ids.filter(id => id !== problemId)
+        problem_ids: prev.problem_ids.filter(id => id !== numericId)
       }));
     } else {
-      setSelectedProblems(prev => [...prev, problemId]);
+      setSelectedProblems(prev => [...prev, numericId]);
       setForm(prev => ({
         ...prev,
-        problem_ids: [...prev.problem_ids, problemId]
+        problem_ids: [...prev.problem_ids, numericId]
       }));
     }
+
+    // Log the updated selected problems
+    console.log('Updated selected problems:', selectedProblems);
+    console.log('Updated form problem_ids:', form.problem_ids);
   };
   
   const resetForm = () => {
@@ -212,9 +272,12 @@ export default function AdminChallenges() {
   };
   
   const openCreateModal = () => {
+    console.log('Opening create modal - resetting form state');
     resetForm();
     setSelectedChallenge(null);
     setIsModalOpen(true);
+    console.log('Form after reset:', form);
+    console.log('Selected problems after reset:', selectedProblems);
   };
   
   const openEditModal = async (challenge) => {
@@ -250,32 +313,48 @@ export default function AdminChallenges() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    console.log('Form submission - Raw form data:', form);
+    console.log('Form submission - Selected problems:', selectedProblems);
+    
     if (form.problem_ids.length === 0) {
       toast.warning('Please select at least one problem for the challenge');
       return;
     }
     
-    // Create a cleaned version of the form data
-    const formData = {
-      ...form,
-      skill_id: parseInt(form.skill_id)
-    };
-    
-    // Debug log the form data
-    console.log('Submitting form data:', formData);
-    
     try {
+      // Ensure problem_ids are properly formatted (convert to numbers)
+      const validatedProblemIds = form.problem_ids.map(id => {
+        const numId = Number(id);
+        if (isNaN(numId) || numId <= 0) {
+          throw new Error(`Invalid problem ID: ${id}`);
+        }
+        return numId;
+      });
+      
+      console.log('Form submission - Validated problem IDs:', validatedProblemIds);
+      
+      // Create a cleaned version of the form data
+      const formData = {
+        ...form,
+        skill_id: parseInt(form.skill_id),
+        problem_ids: validatedProblemIds
+      };
+      
+      // Debug log the form data
+      console.log('Form submission - Final form data to submit:', formData);
+      
       let response;
+      let url;
       
       if (selectedChallenge) {
-        // Update existing challenge - Use direct admin route
-        const url = `api/admin/challenges/${selectedChallenge.id}`;
+        // Update existing challenge - Use the correct route
+        url = `api/admin/challenges/${selectedChallenge.id}`;
         console.log(`Sending PUT request to: ${url}`);
         response = await api.put(url, formData);
         toast.success('Challenge updated successfully');
       } else {
-        // Create new challenge - Use direct admin route
-        const url = 'api/admin/challenges';
+        // Create new challenge - Use the correct route
+        url = 'api/admin/challenges';
         console.log(`Sending POST request to: ${url}`);
         response = await api.post(url, formData);
         toast.success('Challenge created successfully');
@@ -285,18 +364,46 @@ export default function AdminChallenges() {
       setIsModalOpen(false);
       fetchChallenges();
     } catch (error) {
-      console.error('Full error object:', error);
+      // Check if this is our validation error first
+      if (error.message && error.message.startsWith('Invalid problem ID:')) {
+        toast.error(error.message);
+        return;
+      }
+      
+      console.error('Form submission error:', error);
       console.error('Error response data:', error.response ? error.response.data : 'No response data');
       console.error('Error status:', error.response ? error.response.status : 'No status code');
       
+      if (error.response && error.response.data && error.response.data.error) {
+        toast.error(`Error: ${error.response.data.error}`);
+        return;
+      }
+      
       let errorMessage = 'Failed to save challenge';
       
-      // Display more specific error if available
-      if (error.response && error.response.data && error.response.data.errors) {
-        const errors = error.response.data.errors;
-        const firstError = Object.values(errors)[0];
-        if (firstError && firstError.length > 0) {
-          errorMessage = firstError[0];
+      // Enhanced error handling
+      if (error.response) {
+        const { status, data } = error.response;
+        
+        // Handle validation errors (422)
+        if (status === 422 && data.errors) {
+          const errors = data.errors;
+          
+          // Problem IDs validation error
+          if (errors.problem_ids) {
+            errorMessage = `Problem IDs error: ${errors.problem_ids[0]}`;
+            console.error('Problem with problem_ids:', errors.problem_ids);
+          } 
+          // Other validation errors
+          else {
+            const firstErrorField = Object.keys(errors)[0];
+            const firstError = errors[firstErrorField][0];
+            errorMessage = `${firstErrorField}: ${firstError}`;
+          }
+        } 
+        // Other error statuses
+        else if (data && data.message) {
+          errorMessage = data.message;
         }
       }
       
@@ -307,8 +414,8 @@ export default function AdminChallenges() {
   const handleDeleteChallenge = async (challengeId) => {
     if (window.confirm('Are you sure you want to delete this challenge?')) {
       try {
-        // Use direct admin route
-        await api.delete(`api/admin/challenges/${challengeId}`);
+        // Use training admin route
+        await api.delete(`api/training/admin/challenges/${challengeId}`);
         toast.success('Challenge deleted successfully');
         fetchChallenges();
       } catch (error) {
@@ -352,6 +459,19 @@ export default function AdminChallenges() {
     }
     return 'N/A';
   };
+  
+  // Add a function to check if problems data is correctly loaded
+  useEffect(() => {
+    if (problems.length > 0) {
+      console.log('Problems data structure sample:', problems.slice(0, 2));
+      
+      // Check if problems have proper IDs
+      const problematicProblems = problems.filter(p => !p.id || isNaN(Number(p.id)));
+      if (problematicProblems.length > 0) {
+        console.warn('Problems with missing or invalid IDs:', problematicProblems);
+      }
+    }
+  }, [problems]);
   
   return (
     <>
@@ -511,7 +631,7 @@ export default function AdminChallenges() {
       
       {/* Create/Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center z-[9999]">
           <div className="relative bg-white rounded-lg shadow-xl mx-auto max-w-4xl w-full">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
@@ -600,14 +720,47 @@ export default function AdminChallenges() {
                   <div className="flex flex-wrap gap-2 mb-4">
                     {selectedProblems.length > 0 ? (
                       selectedProblems.map(problemId => {
-                        const problem = problems.find(p => p.id === problemId);
+                        // Ensure we have a proper numeric ID
+                        const numericId = Number(problemId);
+                        if (isNaN(numericId)) {
+                          console.error('Invalid problem ID in selectedProblems:', problemId);
+                          return null;
+                        }
+                        
+                        // Find the problem object by ID
+                        const problem = problems.find(p => Number(p.id) === numericId);
+                        if (!problem) {
+                          console.error(`Problem with ID ${numericId} not found in problems list`);
+                          return (
+                            <div key={numericId} className="bg-red-100 rounded-full px-3 py-1 text-sm text-red-800 flex items-center">
+                              Error: Invalid ID {numericId}
+                              <button
+                                type="button"
+                                onClick={() => handleProblemSelection(numericId)}
+                                className="ml-2 text-red-600 hover:text-red-800"
+                              >
+                                <FaTimes />
+                              </button>
+                            </div>
+                          );
+                        }
+                        
+                        // Determine badge color based on source
+                        const badgeClass = problem.source === 'leetcode' 
+                          ? 'bg-orange-100 text-orange-800' 
+                          : 'bg-blue-100 text-blue-800';
+                        
                         return (
-                          <div key={problemId} className="bg-blue-100 rounded-full px-3 py-1 text-sm text-blue-800 flex items-center">
-                            {getProblemName(problem)}
+                          <div key={numericId} className={`rounded-full px-3 py-1 text-sm flex items-center ${badgeClass}`}>
+                            <span className="mr-1 text-xs text-gray-500">[{numericId}]</span>
+                            {problem.name}
+                            <span className="mx-1 text-xs px-1.5 py-0.5 rounded-full bg-gray-200 text-gray-700">
+                              {problem.source || 'standard'}
+                            </span>
                             <button
                               type="button"
-                              onClick={() => handleProblemSelection(problemId)}
-                              className="ml-2 text-blue-600 hover:text-blue-800"
+                              onClick={() => handleProblemSelection(numericId)}
+                              className="ml-2 text-gray-600 hover:text-gray-800"
                             >
                               <FaTimes />
                             </button>
@@ -687,6 +840,9 @@ export default function AdminChallenges() {
                               Select
                             </th>
                             <th className="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                              Problem ID
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                               Problem Name
                             </th>
                             <th className="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
@@ -695,36 +851,61 @@ export default function AdminChallenges() {
                             <th className="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                               Skill
                             </th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                              Source
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
                           {filteredProblems.length > 0 ? (
-                            filteredProblems.map(problem => (
-                              <tr key={problem.id} className="hover:bg-gray-50">
-                                <td className="px-4 py-2">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedProblems.includes(problem.id)}
-                                    onChange={() => handleProblemSelection(problem.id)}
-                                    className="h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
-                                  />
-                                </td>
-                                <td className="px-4 py-2">
-                                  {getProblemName(problem)}
-                                </td>
-                                <td className="px-4 py-2">
-                                  <span className={`text-xs px-2 py-1 rounded-full ${getLevelBadgeClass(getProblemLevel(problem))}`}>
-                                    {getProblemLevel(problem)}
-                                  </span>
-                                </td>
-                                <td className="px-4 py-2">
-                                  {getProblemSkill(problem)}
-                                </td>
-                              </tr>
-                            ))
+                            filteredProblems.map(problem => {
+                              // Ensure problem ID is a number
+                              const problemId = problem?.id ? Number(problem.id) : null;
+                              
+                              if (!problemId) {
+                                console.warn('Problem with missing or invalid ID:', problem);
+                                return null; // Skip rendering this problem
+                              }
+                              
+                              return (
+                                <tr key={problemId} className="hover:bg-gray-50">
+                                  <td className="px-4 py-2">
+                                    <input
+                                      type="checkbox"
+                                      checked={selectedProblems.includes(problemId)}
+                                      onChange={() => handleProblemSelection(problemId)}
+                                      className="h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                                    />
+                                  </td>
+                                  <td className="px-4 py-2 text-xs text-gray-500">
+                                    {problemId}
+                                  </td>
+                                  <td className="px-4 py-2">
+                                    {problem.name}
+                                  </td>
+                                  <td className="px-4 py-2">
+                                    <span className={`text-xs px-2 py-1 rounded-full ${getLevelBadgeClass(problem.level)}`}>
+                                      {problem.level}
+                                    </span>
+                                  </td>
+                                  <td className="px-4 py-2">
+                                    {getProblemSkill(problem)}
+                                  </td>
+                                  <td className="px-4 py-2">
+                                    <span className={`text-xs px-2 py-1 rounded-full ${
+                                      problem.source === 'leetcode' 
+                                        ? 'bg-orange-100 text-orange-800' 
+                                        : 'bg-blue-100 text-blue-800'
+                                    }`}>
+                                      {problem.source || 'standard'}
+                                    </span>
+                                  </td>
+                                </tr>
+                              );
+                            })
                           ) : (
                             <tr>
-                              <td colSpan="4" className="px-4 py-2 text-center text-gray-500">
+                              <td colSpan="6" className="px-4 py-2 text-center text-gray-500">
                                 No problems found matching your filters
                               </td>
                             </tr>

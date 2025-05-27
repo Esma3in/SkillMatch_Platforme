@@ -6,9 +6,10 @@ use App\Models\Skill;
 use App\Models\Problem;
 use App\Models\Challenge;
 use App\Models\Candidate;
+use App\Models\LeetcodeProblem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,38 +45,117 @@ class ChallengeController extends Controller
      */
     public function store(Request $request)
     {
+        // Log incoming request data for debugging
+        Log::info('Challenge store request data:', $request->all());
+
+        // Ensure problem_ids is an array of integers
+        $problemIds = collect($request->input('problem_ids', []))
+            ->map(function ($id) {
+                return is_numeric($id) ? (int) $id : $id;
+            })
+            ->toArray();
+
+        // Replace the request problem_ids with our sanitized version
+        $request->merge(['problem_ids' => $problemIds]);
+
+        // Log sanitized problem IDs
+        Log::info('Sanitized problem IDs:', $problemIds);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'level' => 'required|in:beginner,easy,medium,intermediate,hard,advanced,expert',
             'skill_id' => 'required|exists:skills,id',
-            'problem_ids' => 'required|array',
-            'problem_ids.*' => 'exists:problems,id',
+            'problem_ids' => 'required|array|min:1',
+            'problem_ids.*' => 'integer',
         ]);
 
         if ($validator->fails()) {
+            Log::error('Challenge validation failed:', $validator->errors()->toArray());
+
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Create the challenge
-        $challenge = Challenge::create($request->only([
-            'name', 'description', 'level', 'skill_id'
-        ]));
+        // Separate LeetCode problems from standard problems
+        $standardProblemIds = Problem::whereIn('id', $problemIds)->pluck('id')->toArray();
+        $leetcodeProblemIds = LeetcodeProblem::whereIn('id', $problemIds)->pluck('id')->toArray();
 
-        // Attach problems with order
-        $problems = $request->input('problem_ids');
-        $problemOrder = [];
-        foreach ($problems as $index => $problemId) {
-            $problemOrder[$problemId] = ['order' => $index];
+        // Check if all requested problems exist in either table
+        $totalFoundProblems = count($standardProblemIds) + count($leetcodeProblemIds);
+
+        Log::info("Problem validation counts:", [
+            'standard_problems' => count($standardProblemIds),
+            'leetcode_problems' => count($leetcodeProblemIds),
+            'total_found' => $totalFoundProblems,
+            'requested' => count($problemIds)
+        ]);
+
+        if ($totalFoundProblems !== count($problemIds)) {
+            // Find which IDs are invalid
+            $foundIds = array_merge($standardProblemIds, $leetcodeProblemIds);
+            $missingIds = array_diff($problemIds, $foundIds);
+
+            Log::error('Some problems do not exist in either table:', [
+                'submitted' => $problemIds,
+                'found_in_problems' => $standardProblemIds,
+                'found_in_leetcode' => $leetcodeProblemIds,
+                'missing' => $missingIds
+            ]);
+
+            return response()->json([
+                'errors' => [
+                    'problem_ids' => ["The following problem IDs don't exist in our database: " . implode(', ', $missingIds)]
+                ]
+            ], 422);
         }
-        $challenge->problems()->attach($problemOrder);
 
-        // Return the challenge with problems
-        $challenge->load(['skill', 'problems' => function($query) {
-            $query->with('skill')->orderBy('challenge_problem.order');
-        }]);
+        try {
+            DB::beginTransaction();
 
-        return response()->json($challenge, 201);
+            // Create the challenge
+            $challenge = Challenge::create($request->only([
+                'name', 'description', 'level', 'skill_id'
+            ]));
+
+            // Handle standard problems
+            if (!empty($standardProblemIds)) {
+                // Attach standard problems with order
+                $problemOrder = [];
+                foreach ($standardProblemIds as $index => $problemId) {
+                    $problemOrder[$problemId] = ['order' => $index];
+                }
+                $challenge->problems()->attach($problemOrder);
+            }
+
+            // Handle LeetCode problems
+            if (!empty($leetcodeProblemIds)) {
+                // Update challenge_id for LeetCode problems
+                LeetcodeProblem::whereIn('id', $leetcodeProblemIds)
+                    ->update(['challenge_id' => $challenge->id]);
+            }
+
+            DB::commit();
+
+            // Return the challenge with problems
+            $challenge->load(['skill', 'problems' => function($query) {
+                $query->with('skill')->orderBy('challenge_problem.order');
+            }, 'leetcodeProblems']);
+
+            return response()->json($challenge, 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Error creating challenge: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'data' => $request->all(),
+                'exception_type' => get_class($e)
+            ]);
+
+            return response()->json([
+                'message' => 'Failed to create challenge',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -83,44 +163,137 @@ class ChallengeController extends Controller
      */
     public function update(Request $request, Challenge $challenge)
     {
+        // Log incoming request data for debugging
+        Log::info('Challenge update request data:', [
+            'challenge_id' => $challenge->id,
+            'data' => $request->all()
+        ]);
+
+        // Ensure problem_ids is an array of integers if provided
+        if ($request->has('problem_ids')) {
+            $problemIds = collect($request->input('problem_ids', []))
+                ->map(function ($id) {
+                    return is_numeric($id) ? (int) $id : $id;
+                })
+                ->toArray();
+
+            // Replace the request problem_ids with our sanitized version
+            $request->merge(['problem_ids' => $problemIds]);
+
+            // Log sanitized problem IDs
+            Log::info('Update - Sanitized problem IDs:', $problemIds);
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
             'level' => 'sometimes|required|in:beginner,easy,medium,intermediate,hard,advanced,expert',
             'skill_id' => 'sometimes|required|exists:skills,id',
-            'problem_ids' => 'sometimes|required|array',
-            'problem_ids.*' => 'exists:problems,id',
+            'problem_ids' => 'sometimes|required|array|min:1',
+            'problem_ids.*' => 'integer',
         ]);
 
         if ($validator->fails()) {
+            Log::error('Challenge update validation failed:', $validator->errors()->toArray());
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Update the challenge
-        $challenge->update($request->only([
-            'name', 'description', 'level', 'skill_id'
-        ]));
-
-        // Update problems if provided
+        // Check if all problem IDs exist if problem_ids is provided
         if ($request->has('problem_ids')) {
-            // Detach all problems
-            $challenge->problems()->detach();
+            $problemIds = $request->input('problem_ids');
 
-            // Attach new problems with order
-            $problems = $request->input('problem_ids');
-            $problemOrder = [];
-            foreach ($problems as $index => $problemId) {
-                $problemOrder[$problemId] = ['order' => $index];
+            // Separate LeetCode problems from standard problems
+            $standardProblemIds = Problem::whereIn('id', $problemIds)->pluck('id')->toArray();
+            $leetcodeProblemIds = LeetcodeProblem::whereIn('id', $problemIds)->pluck('id')->toArray();
+
+            // Check if all requested problems exist in either table
+            $totalFoundProblems = count($standardProblemIds) + count($leetcodeProblemIds);
+
+            Log::info("Update - Problem validation counts:", [
+                'standard_problems' => count($standardProblemIds),
+                'leetcode_problems' => count($leetcodeProblemIds),
+                'total_found' => $totalFoundProblems,
+                'requested' => count($problemIds)
+            ]);
+
+            if ($totalFoundProblems !== count($problemIds)) {
+                // Find which IDs are invalid
+                $foundIds = array_merge($standardProblemIds, $leetcodeProblemIds);
+                $missingIds = array_diff($problemIds, $foundIds);
+
+                Log::error('Update - Some problems do not exist in either table:', [
+                    'submitted' => $problemIds,
+                    'found_in_problems' => $standardProblemIds,
+                    'found_in_leetcode' => $leetcodeProblemIds,
+                    'missing' => $missingIds
+                ]);
+
+                return response()->json([
+                    'errors' => [
+                        'problem_ids' => ["The following problem IDs don't exist in our database: " . implode(', ', $missingIds)]
+                    ]
+                ], 422);
             }
-            $challenge->problems()->attach($problemOrder);
         }
 
-        // Return the challenge with problems
-        $challenge->load(['skill', 'problems' => function($query) {
-            $query->with('skill')->orderBy('challenge_problem.order');
-        }]);
+        try {
+            DB::beginTransaction();
 
-        return response()->json($challenge);
+            // Update the challenge
+            $challenge->update($request->only([
+                'name', 'description', 'level', 'skill_id'
+            ]));
+
+            // Update problems if provided
+            if ($request->has('problem_ids')) {
+                // Handle standard problems
+                // Detach all standard problems
+                $challenge->problems()->detach();
+
+                // Attach new standard problems with order if any
+                if (!empty($standardProblemIds)) {
+                    $problemOrder = [];
+                    foreach ($standardProblemIds as $index => $problemId) {
+                        $problemOrder[$problemId] = ['order' => $index];
+                    }
+                    $challenge->problems()->attach($problemOrder);
+                }
+
+                // Handle LeetCode problems
+                // First, reset all leetcode problems that were previously part of this challenge
+                LeetcodeProblem::where('challenge_id', $challenge->id)
+                    ->update(['challenge_id' => null]);
+
+                // Then set the challenge_id for any leetcode problems in the new list
+                if (!empty($leetcodeProblemIds)) {
+                    LeetcodeProblem::whereIn('id', $leetcodeProblemIds)
+                        ->update(['challenge_id' => $challenge->id]);
+                }
+            }
+
+            DB::commit();
+
+            // Return the challenge with problems
+            $challenge->load(['skill', 'problems' => function($query) {
+                $query->with('skill')->orderBy('challenge_problem.order');
+            }, 'leetcodeProblems']);
+
+            return response()->json($challenge);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Error updating challenge: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'challenge_id' => $challenge->id,
+                'data' => $request->all(),
+                'exception_type' => get_class($e)
+            ]);
+
+            return response()->json([
+                'message' => 'Failed to update challenge',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

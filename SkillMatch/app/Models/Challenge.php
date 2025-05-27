@@ -29,7 +29,7 @@ class Challenge extends Model
     }
 
     /**
-     * Get the problems in this challenge.
+     * Get the standard problems in this challenge.
      */
     public function problems()
     {
@@ -37,6 +37,30 @@ class Challenge extends Model
             ->withPivot('order')
             ->orderBy('order')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the leetcode problems in this challenge.
+     */
+    public function leetcodeProblems()
+    {
+        return $this->hasMany(LeetcodeProblem::class);
+    }
+
+    /**
+     * Get all problems (both standard and leetcode) for this challenge.
+     * This is a custom method, not a relationship.
+     */
+    public function getAllProblems()
+    {
+        // Get standard problems
+        $standardProblems = $this->problems()->get();
+
+        // Get leetcode problems
+        $leetcodeProblems = $this->leetcodeProblems()->get();
+
+        // Combine and return
+        return $standardProblems->concat($leetcodeProblems);
     }
 
     /**
