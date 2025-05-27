@@ -53,16 +53,19 @@ Route::options('/{any}', function () {
     return response()->json([], 200);
 })->where('any', '.*');
 
+
+Route::post('/signUp', [UserController::class, 'SignUp']);
+Route::post('/signin', [UserController::class, 'SignIn']);
+
 // Candidate Routes
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);
-Route::post('/candidate/signUp', [UserController::class, 'SignUp']);
+
 Route::post('/profiles', [CandidateController::class, 'storeProfile']);
 Route::get('/candidate/suggestedcompanies/{id}', [CandidateController::class, 'CompaniesMatched']);
 Route::get('/candidate/companies/all', [CompanyController::class, 'index']);
 Route::get('/ProfileCandidate/{id}', [CandidateController::class, 'GetProfile']);
 Route::post('/candidate/NewLanguage', [LanguageController::class, 'store']);
 Route::put('/candidate/setdescription', [ProfileCandidateController::class, 'EditDescription']);
-Route::post('/candidate/signin', [UserController::class, 'SignIn']);
 Route::get('/logout', [CandidateController::class, 'Logout']);
 Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);
 Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);
@@ -196,12 +199,14 @@ Route::post('/admin/CompaniesList/setstate',[CompanyController::class,'setstate'
 // Document management routes
 Route::get('/admin/documents/companies', [CompanyDocumentController::class, 'index']);
 Route::get('/admin/documents/company/{companyId}', [CompanyDocumentController::class, 'getCompanyDocuments']);
+Route::get('/admin/documents', [CompanyDocumentController::class, 'getAllDocuments']);
 Route::get('/admin/documents/filter-options', [CompanyDocumentController::class, 'getFilterOptions']);
 Route::post('/admin/documents/upload', [CompanyDocumentController::class, 'upload']);
 Route::post('/admin/documents/validate/{id}', [CompanyDocumentController::class, 'validateDocument']);
 Route::post('/admin/documents/invalidate/{id}', [CompanyDocumentController::class, 'invalidateDocument']);
 Route::post('/admin/documents/status/{id}', [CompanyDocumentController::class, 'updateStatus']);
 Route::get('/admin/documents/download/{id}', [CompanyDocumentController::class, 'download']);
+Route::get('/admin/documents/preview/{id}', [CompanyDocumentController::class, 'preview']);
 Route::delete('/admin/documents/{id}', [CompanyDocumentController::class, 'destroy']);
 
 Route::get('/admin/UsersList',[UserController::class,'getBannedUsers']);

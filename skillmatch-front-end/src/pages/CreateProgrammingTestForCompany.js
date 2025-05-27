@@ -3,6 +3,7 @@ import { api } from "../api/api";
 import { Save, ArrowLeft, AlertCircle, CheckCircle2, Users, Target, Settings, FileText, Loader2 } from "lucide-react";
 import NavbarCompany from "../components/common/navbarCompany";
 import { useNavigate } from "react-router";
+import Select from "react-select"; // Import react-select
 
 export default function TestCreationForm() {
   const [formData, setFormData] = useState({
@@ -11,8 +12,8 @@ export default function TestCreationForm() {
     tools_required: "",
     before_answer: "",
     qcm_ids: [],
-    company_id: localStorage.getItem("company_id") || "", // Initialize with company_id from localStorage
-    skill_ids: [], 
+    company_id: localStorage.getItem("company_id") || "",
+    skill_ids: [],
   });
   const [qcms, setQcms] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -51,20 +52,33 @@ export default function TestCreationForm() {
     fetchData();
   }, []);
 
+  // Convert skills and QCMs to react-select options
+  const skillOptions = skills.map((skill) => ({
+    value: skill.id,
+    label: skill.name,
+  }));
+
+  const qcmOptions = qcms.map((qcm) => ({
+    value: qcm.id,
+    label: qcm.question,
+  }));
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    // Prevent changing company_id if it's set from localStorage
-    if (name === "company_id" && formData.company_id) return;
-    
-    // Gérer la sélection multiple pour skills et qcms
-    if (name === "skill_ids" || name === "qcm_ids") {
-      const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-      setFormData({ ...formData, [name]: selectedOptions });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-    
+    if (name === "company_id" && formData.company_id) return; // Prevent changing company_id
+    setFormData({ ...formData, [name]: value });
+    if (error) setError(null);
+  };
+
+  const handleSkillChange = (selectedOptions) => {
+    const selectedIds = selectedOptions ? selectedOptions.map((option) => option.value) : [];
+    setFormData({ ...formData, skill_ids: selectedIds });
+    if (error) setError(null);
+  };
+
+  const handleQcmChange = (selectedOptions) => {
+    const selectedIds = selectedOptions ? selectedOptions.map((option) => option.value) : [];
+    setFormData({ ...formData, qcm_ids: selectedIds });
     if (error) setError(null);
   };
 
@@ -99,10 +113,14 @@ export default function TestCreationForm() {
         prerequisites: formData.prerequisites || null,
         tools_required: formData.tools_required || null,
         before_answer: formData.before_answer || null,
-        qcm_ids: formData.qcm_ids.length ? formData.qcm_ids.map(id => parseInt(id)) : null,
         company_id: parseInt(formData.company_id),
-        skill_ids: formData.skill_ids.map(id => parseInt(id)),
+        skill_id: parseInt(formData.skill_ids[0]),
       };
+
+      // Only add qcm_id if a QCM is selected
+      if (formData.qcm_ids.length > 0) {
+        submitData.qcm_id = parseInt(formData.qcm_ids[0]);
+      }
 
       const response = await api.post("/api/tests/company/create", submitData);
       console.log("Test created:", response.data);
@@ -118,7 +136,8 @@ export default function TestCreationForm() {
       });
       setTimeout(() => {
         setSuccess(false);
-      }, 5000);
+        navigate('/testsList'); // Redirect to tests list after success
+      }, 2000);
     } catch (err) {
       console.error("Error while creating the test:", err);
       if (err.response?.data?.errors) {
@@ -161,7 +180,10 @@ export default function TestCreationForm() {
           {/* Header Section */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200" onClick={() => handleBack()}>
+              <button
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
+                onClick={handleBack}
+              >
                 <ArrowLeft className="w-5 h-5 mr-1" />
                 <span className="text-sm font-medium">Back to Tests</span>
               </button>
@@ -213,7 +235,7 @@ export default function TestCreationForm() {
                   </div>
                   <h2 className="text-lg font-semibold text-gray-900">Test Details</h2>
                 </div>
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <div className="lg:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -282,58 +304,92 @@ export default function TestCreationForm() {
                   </div>
                   <h2 className="text-lg font-semibold text-gray-900">Test Configuration</h2>
                 </div>
-                
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Hidden company_id field */}
-                  <input
-                    type="hidden"
-                    name="company_id"
-                    value={formData.company_id}
-                  />
+                  <input type="hidden" name="company_id" value={formData.company_id} />
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Primary Skill <span className="text-red-500">*</span>
+                      Skills <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <select
-                        name="skill_id"
-                        value={formData.skill_id}
-                        onChange={handleChange}
-                        required
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 bg-white"
-                      >
-                        <option value="">Select primary skill</option>
-                        {skills.map((skill) => (
-                          <option key={skill.id} value={skill.id}>
-                            {skill.name}
-                          </option>
-                        ))}
-                      </select>
+                      <Select
+                        isMulti
+                        options={skillOptions}
+                        value={skillOptions.filter((option) => formData.skill_ids.includes(option.value))}
+                        onChange={handleSkillChange}
+                        placeholder="Select skills..."
+                        className="w-full text-sm"
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            borderRadius: "8px",
+                            borderColor: "#6c63ff",
+                            backgroundColor: "#f3f0fe",
+                            boxShadow: "none",
+                            "&:hover": { borderColor: "#8a7ae0" },
+                          }),
+                          multiValue: (base) => ({
+                            ...base,
+                            backgroundColor: "#e0e7ff",
+                            borderRadius: "4px",
+                          }),
+                          multiValueLabel: (base) => ({
+                            ...base,
+                            color: "#4b46af",
+                            fontWeight: "medium",
+                          }),
+                          option: (base) => ({
+                            ...base,
+                            backgroundColor: "white",
+                            color: "black",
+                            "&:hover": { backgroundColor: "#f3f0fe" },
+                          }),
+                        }}
+                      />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Associated QCM
-                      <span className="text-gray-400 text-xs ml-1">(Optional)</span>
+                      Associated QCMs <span className="text-gray-400 text-xs">(Optional)</span>
                     </label>
                     <div className="relative">
-                      <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <select
-                        name="qcm_id"
-                        value={formData.qcm_id}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 bg-white"
-                      >
-                        <option value="">Select a QCM</option>
-                        {qcms.map((qcm) => (
-                          <option key={qcm.id} value={qcm.id}>
-                            {qcm.question}
-                          </option>
-                        ))}
-                      </select>
+                      <Select
+                        isMulti
+                        options={qcmOptions}
+                        value={qcmOptions.filter((option) => formData.qcm_ids.includes(option.value))}
+                        onChange={handleQcmChange}
+                        placeholder="Select QCMs..."
+                        className="w-full text-sm"
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            borderRadius: "8px",
+                            borderColor: "#6c63ff",
+                            backgroundColor: "#f3f0fe",
+                            boxShadow: "none",
+                            "&:hover": { borderColor: "#8a7ae0" },
+                          }),
+                          multiValue: (base) => ({
+                            ...base,
+                            backgroundColor: "#e0e7ff",
+                            borderRadius: "4px",
+                          }),
+                          multiValueLabel: (base) => ({
+                            ...base,
+                            color: "#4b46af",
+                            fontWeight: "medium",
+                          }),
+                          option: (base) => ({
+                            ...base,
+                            backgroundColor: "white",
+                            color: "black",
+                            "&:hover": { backgroundColor: "#f3f0fe" },
+                          }),
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -343,6 +399,7 @@ export default function TestCreationForm() {
               <div className="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
                 <button
                   type="button"
+                  onClick={handleBack}
                   className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
                 >
                   Cancel

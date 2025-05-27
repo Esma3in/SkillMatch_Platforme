@@ -116,11 +116,19 @@ class DatabaseSeeder extends Seeder
 
         // Create Administrators
 
-        Administrator::factory()->create([
+        User::create([
             'name' => 'Super Admin',
             'email' => 'admin@example.com',
-            'password' => Hash::make('Admin@12345'), // Strong default password
-        ]);
+            'password' => Hash::make('Admin@12345'), 
+            'role'=>'admin',
+        ])->each(function ($user){
+            Administrator::create([
+            'name' => $user->name,
+            'email' => $user->email,
+            'password' => $user->password, 
+            'user_id'=>$user->id 
+            ]);
+        });
 
 
         // Create Companies and their Profiles, Roadmaps, Challenges

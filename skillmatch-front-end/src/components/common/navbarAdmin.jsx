@@ -2,23 +2,30 @@ import React, { useState, useRef, useEffect } from "react";
 import "../../styles/pages/Navbar/navbarCandidate.css";
 import userAvatar from "../../assets/userAvatar.jpg";
 import logo from "../../assets/Logoo.png"
+import UseLogout from '../../hooks/useLogout';
+
 
 
 const NavbarAdmin = () => {
+  const logout = UseLogout()
   const [isTrainingOpen, setIsTrainingOpen] = useState(false);
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   const [isDocumentsOpen, setIsDocumentsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isStatisticOpen, setIsStatisticOpen] = useState(false);
 
+  // Create mutable refs with proper initialization
   const trainingRef = useRef(null);
   const companyRef = useRef(null);
   const documentsRef = useRef(null);
   const profileRef = useRef(null);
+  const StatisticRef = useRef(null);
   
-  // Add timeout refs for dropdown timers
-  const trainingTimeout = useRef(null);
-  const companyTimeout = useRef(null);
-  const documentsTimeout = useRef(null);
+  // Timeout refs
+  const trainingTimeoutRef = useRef(null);
+  const companyTimeoutRef = useRef(null);
+  const documentsTimeoutRef = useRef(null);
+  const StatisticTimeoutRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -34,55 +41,64 @@ const NavbarAdmin = () => {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setIsProfileOpen(false);
       }
+      if (StatisticRef.current && !StatisticRef.current.contains(event.target)) {
+        setIsStatisticOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      // Clear any lingering timeouts
+      if (trainingTimeoutRef.current) clearTimeout(trainingTimeoutRef.current);
+      if (companyTimeoutRef.current) clearTimeout(companyTimeoutRef.current);
+      if (documentsTimeoutRef.current) clearTimeout(documentsTimeoutRef.current);
+      if (StatisticTimeoutRef.current) clearTimeout(StatisticTimeoutRef.current);
     };
   }, []);
 
   // Add handlers for mouse enter and leave with timeouts
   const handleTrainingEnter = () => {
-    clearTimeout(trainingTimeout.current);
+    if (trainingTimeoutRef.current) clearTimeout(trainingTimeoutRef.current);
     setIsTrainingOpen(true);
   };
 
   const handleTrainingLeave = () => {
-    trainingTimeout.current = setTimeout(() => {
+    trainingTimeoutRef.current = setTimeout(() => {
       setIsTrainingOpen(false);
     }, 200);
   };
 
   const handleCompanyEnter = () => {
-    clearTimeout(companyTimeout.current);
+    if (companyTimeoutRef.current) clearTimeout(companyTimeoutRef.current);
     setIsCompanyOpen(true);
   };
 
   const handleCompanyLeave = () => {
-    companyTimeout.current = setTimeout(() => {
+    companyTimeoutRef.current = setTimeout(() => {
       setIsCompanyOpen(false);
     }, 200);
   };
 
   const handleDocumentsEnter = () => {
-    clearTimeout(documentsTimeout.current);
+    if (documentsTimeoutRef.current) clearTimeout(documentsTimeoutRef.current);
     setIsDocumentsOpen(true);
   };
 
   const handleDocumentsLeave = () => {
-    documentsTimeout.current = setTimeout(() => {
+    documentsTimeoutRef.current = setTimeout(() => {
       setIsDocumentsOpen(false);
     }, 200);
   };
+  
   const handleStatisticEnter = () => {
-    clearTimeout(documentsTimeout.current);
-    setIsDocumentsOpen(true);
+    if (StatisticTimeoutRef.current) clearTimeout(StatisticTimeoutRef.current);
+    setIsStatisticOpen(true);
   };
 
   const handleStatisticLeave = () => {
-    documentsTimeout.current = setTimeout(() => {
-      setIsDocumentsOpen(false);
+    StatisticTimeoutRef.current = setTimeout(() => {
+      setIsStatisticOpen(false);
     }, 200);
   };
 
@@ -117,6 +133,10 @@ const NavbarAdmin = () => {
                   <a href="/admin/candidatesList" className="dropdown-item">
                     <i className="menu-icon company-related-icon"></i>
                     Candidates
+                  </a>
+                  <a href="/admin/banUsers" className="dropdown-item">
+                    <i className="menu-icon material-icons"></i>
+                    banned users
                   </a>
                 </div>
               )}
@@ -165,14 +185,14 @@ const NavbarAdmin = () => {
             </div>
             <div
               className="nav-item dropdown"
-              ref={trainingRef}
+              ref={StatisticRef}
               onMouseEnter={handleStatisticEnter}
               onMouseLeave={handleStatisticLeave}
             >
               <span>
                 statistics <i className="dropdown-icon">▼</i>
               </span>
-              {isTrainingOpen && (
+              {isStatisticOpen && (
                 <div className="dropdown-menu">
                   <a href="/admin/companiesStatistics" className="dropdown-item">
                     <i className="menu-icon company-list-icon"></i>
@@ -189,18 +209,18 @@ const NavbarAdmin = () => {
         </div>
 
         <div className="navbar-right">
-          <div className="search-container">
+          {/* <div className="search-container">
             <input type="text" placeholder="Search" className="search-input" />
             <i className="search-icon"></i>
-          </div>
+          </div> */}
 
           <div className="navbar-icons">
-            <button className="icon-button notification-button">
+            {/* <button className="icon-button notification-button">
               <i className="notification-icon"></i>
             </button>
             <button className="icon-button settings-button">
               <i className="settings-icon"></i>
-            </button>
+            </button> */}
 
             <div className="profile-dropdown" ref={profileRef}>
               <button
@@ -224,7 +244,7 @@ const NavbarAdmin = () => {
                     </div>
                   </div>
                   <div className="profile-options">
-                    <a href="/profile" className="profile-option">
+                    {/* <a href="/profile" className="profile-option">
                       <i className="option-icon profile-icon"></i>
                       View profile
                     </a>
@@ -239,11 +259,11 @@ const NavbarAdmin = () => {
                     <a href="/support" className="profile-option">
                       <i className="option-icon support-icon"></i>
                       Support
-                    </a>
-                    <a href="/logout" className="profile-option">
+                    </a> */}
+                    <button onClick={logout} className="profile-option">
                       <i className="option-icon logout-icon"></i>
                       Log out
-                    </a>
+                    </button>
                   </div>
                 </div>
               )}

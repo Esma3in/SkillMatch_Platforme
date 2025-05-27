@@ -98,48 +98,7 @@ class TestController extends Controller
 
 
 
-    //for company
-    /**
-     * Get paginated list of tests
-     */
-    public function index(Request $request)
-    {
-        $tests = Test::with(['skill', 'candidate'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
 
-        return response()->json([
-            'tests' => $tests,
-        ]);
-    }
-
-    /**
-     * Get candidates who solved a specific test
-     */
-    public function getSolvedCandidates($id)
-    {
-        $test = Test::findOrFail($id);
-        $candidates = $test->candidate()->get();
-
-        return response()->json([
-            'candidates' => $candidates,
-        ]);
-    }
-
-    /**
-     * Delete all tests
-     */
-    public function deleteAll()
-    {
-        // You might want to add authorization check here
-        Test::truncate();
-        // Or if you want to delete only tests for a specific company
-        // Test::where('company_id', auth()->user()->company_id)->delete();
-
-        return response()->json([
-            'message' => 'All tests have been deleted successfully',
-        ]);
-    }
 
     /**
      * Create a new test
@@ -157,15 +116,22 @@ class TestController extends Controller
         ]);
 
         try {
-            $test = Test::create([
+            // Prepare the data array for creation
+            $testData = [
                 'objective' => $validatedData['objective'],
                 'prerequisites' => $validatedData['prerequisites'],
                 'tools_required' => $validatedData['tools_required'],
                 'before_answer' => $validatedData['before_answer'],
-                'qcm_id' => $validatedData['qcm_id'],
                 'company_id' => $validatedData['company_id'],
                 'skill_id' => $validatedData['skill_id'],
-            ]);
+            ];
+
+            // Only add qcm_id if it's provided and not null
+            if (isset($validatedData['qcm_id']) && $validatedData['qcm_id'] !== null) {
+                $testData['qcm_id'] = $validatedData['qcm_id'];
+            }
+
+            $test = Test::create($testData);
 
             return response()->json([
                 'message' => 'Test created successfully',

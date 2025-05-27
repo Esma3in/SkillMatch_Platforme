@@ -15,8 +15,8 @@ class CompanyDocumentSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get some existing companies
-        $companies = Company::take(3)->get();
+        // Get all companies instead of just the first 3
+        $companies = Company::all();
 
         if ($companies->isEmpty()) {
             $this->command->info('No companies found. Please run the company seeder first.');
