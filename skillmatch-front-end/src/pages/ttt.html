@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dédicace et Remerciements</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .decorative-header {
+            height: 80px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .decorative-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" width="25" height="25" patternUnits="userSpaceOnUse"><polygon points="12.5,2 15.5,8.5 22.5,8.5 17,13 18.5,20 12.5,16 6.5,20 8,13 2.5,8.5 9.5,8.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+        }
+
+        .wave-decoration {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: white;
+            clip-path: polygon(0 100%, 100% 100%, 100% 0%, 90% 15px, 80% 5px, 70% 20px, 60% 8px, 50% 18px, 40% 10px, 30% 22px, 20% 12px, 10% 25px, 0 15px);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 60px 50px;
+            position: relative;
+        }
+
+        .section {
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 36px;
+            color: #2c3e50;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed, #ec4899);
+            border-radius: 2px;
+        }
+
+        .decorative-quote {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 80px;
+            color: rgba(79, 70, 229, 0.1);
+            font-family: 'Times New Roman', serif;
+            line-height: 1;
+            z-index: 0;
+        }
+
+        .dedicace-content {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 40px;
+            border-radius: 20px;
+            border-left: 6px solid #4f46e5;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .dedicace-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #2c3e50;
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .signature {
+            text-align: right;
+            font-size: 16px;
+            color: #7f8c8d;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .remerciements-content {
+            background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+            padding: 40px;
+            border-radius: 20px;
+            border-left: 6px solid #f59e0b;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .remerciements-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #374151;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .remerciements-list {
+            list-style: none;
+            margin: 25px 0;
+        }
+
+        .remerciements-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .remerciements-list li::before {
+            content: '♦';
+            position: absolute;
+            left: 0;
+            color: #f59e0b;
+            font-size: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(79, 70, 229, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.03), rgba(124, 58, 237, 0.03));
+        }
+
+        .shape-1 {
+            width: 150px;
+            height: 150px;
+            top: 20%;
+            right: -75px;
+            animation: float-slow 10s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 100px;
+            height: 100px;
+            bottom: 30%;
+            left: -50px;
+            animation: float-slow 12s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            right: 20%;
+            animation: float-slow 8s ease-in-out infinite;
+        }
+
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        .ornamental-border {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            right: 30px;
+            bottom: 30px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .corner-ornament {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 2px solid #4f46e5;
+        }
+
+        .corner-ornament.top-left {
+            top: -2px;
+            left: -2px;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 10px 0 0 0;
+        }
+
+        .corner-ornament.top-right {
+            top: -2px;
+            right: -2px;
+            border-left: none;
+            border-bottom: none;
+            border-radius: 0 10px 0 0;
+        }
+
+        .corner-ornament.bottom-left {
+            bottom: -2px;
+            left: -2px;
+            border-right: none;
+            border-top: none;
+            border-radius: 0 0 0 10px;
+        }
+
+        .corner-ornament.bottom-right {
+            bottom: -2px;
+            right: -2px;
+            border-left: none;
+            border-top: none;
+            border-radius: 0 0 10px 0;
+        }
+
+        .gratitude-ending {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            border-radius: 15px;
+            border: 1px solid rgba(79, 70, 229, 0.2);
+        }
+
+        .gratitude-ending p {
+            font-size: 18px;
+            color: #4338ca;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .heart-icon {
+            display: inline-block;
+            color: #ef4444;
+            font-size: 20px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="floating-elements">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+        </div>
+
+        <div class="ornamental-border">
+            <div class="corner-ornament top-left"></div>
+            <div class="corner-ornament top-right"></div>
+            <div class="corner-ornament bottom-left"></div>
+            <div class="corner-ornament bottom-right"></div>
+        </div>
+
+        <div class="decorative-header">
+            <div class="wave-decoration"></div>
+        </div>
+
+        <div class="main-content">
+            <!-- Section Dédicace -->
+            <div class="section">
+                <div class="decorative-quote">"</div>
+                <h2 class="section-title">Dédicace</h2>
+                <div class="dedicace-content">
+                    <p class="dedicace-text">
+                        Je dédie ce travail à mes <span class="highlight">parents</span> bien-aimés, qui ont toujours cru en moi et m'ont soutenu dans tous mes projets. Leur amour inconditionnel et leurs encouragements constants ont été ma source de motivation.
+                    </p>
+                    <p class="dedicace-text">
+                        À ma <span class="highlight">famille</span> et mes <span class="highlight">amis</span> qui ont su m'entourer de leur affection et de leur patience durant cette période intensive de travail.
+                    </p>
+                    <p class="dedicace-text">
+                        À tous ceux qui croient en l'innovation et au pouvoir de la technologie pour améliorer notre monde professionnel.
+                    </p>
+                    <div class="signature">— L'équipe SKILLMATCH</div>
+                </div>
+            </div>
+
+            <!-- Section Remerciements -->
+            <div class="section">
+                <div class="decorative-quote">"</div>
+                <h2 class="section-title">Remerciements</h2>
+                <div class="remerciements-content">
+                    <p class="remerciements-text">
+                        Nous tenons à exprimer notre profonde gratitude à toutes les personnes qui ont contribué de près ou de loin à la réalisation de ce projet de synthèse.
+                    </p>
+                    
+                    <ul class="remerciements-list">
+                        <li>À notre <span class="highlight">encadrant M. LFHAL JOAIRIA</span>, pour ses conseils précieux, sa disponibilité et son expertise qui nous ont guidés tout au long de ce projet.</li>
+                        
+                        <li>À l'<span class="highlight">Office de la Formation Professionnelle et de la Promotion du Travail (OFPPT)</span> pour nous avoir offert un environnement propice à l'apprentissage et à l'innovation.</li>
+                        
+                        <li>À nos <span class="highlight">professeurs et formateurs</span> qui nous ont transmis les connaissances techniques et méthodologiques nécessaires à la concrétisation de ce projet.</li>
+                        
+                        <li>À nos <span class="highlight">camarades de promotion</span> pour leurs échanges enrichissants et leur soutien mutuel.</li>
+                        
+                        <li>Aux <span class="highlight">professionnels du secteur</span> qui ont accepté de partager leur expérience et leurs retours sur notre concept.</li>
+                        
+                        <li>À nos <span class="highlight">familles</span> pour leur patience, leur compréhension et leur soutien indéfectible.</li>
+                    </ul>
+
+                    <p class="remerciements-text">
+                        Ce projet n'aurait pas pu voir le jour sans cette synergie collective. Nous espérons que SKILLMATCH contribuera positivement à l'évolution du marché du recrutement digital.
+                    </p>
+
+                    <div class="gratitude-ending">
+                        <p>Merci à tous pour avoir rendu ce rêve possible <span class="heart-icon">♥</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

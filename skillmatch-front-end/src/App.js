@@ -42,7 +42,6 @@ import { ListCandidateSelected } from './pages/CandidateSelected.jsx';
 import Company from './pages/Company.jsx';
 import CandidateProfileForCompany from './pages/CandidateProfileForCompany.jsx';
 import ResultTest from './pages/Testresult.jsx';
-import TestsListForCompany from './pages/ListTestForCompany.js';
 import FilterCandidate from './pages/FilterCandidate.js';
 import {BadgeList} from './pages/BadgesListes.jsx';
 import NotificationCandidate from './pages/NotificationCandidate.js';
@@ -59,6 +58,8 @@ import LeetcodeProblemWorkspace from './pages/LeetcodeProblemWorkspace.jsx';
 import AddLeetcodeProblem from './pages/manage/addLeetcodeProblem.jsx';
 import ManageLeetcodeProblems from './pages/manage/manageLeetcodeProblems.jsx';
 import EditLeetcodeProblem from './pages/manage/editLeetcodeProblem.jsx';
+import TestsListForCompany from './pages/ListTestForCompany.js';
+import TestListShowCompany from './pages/TestListShowCompany.js';
 
 export default function App() {
   return (
@@ -93,7 +94,8 @@ export default function App() {
 
         {/*test*/}
         <Route path = '/candidates/list' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
-        <Route path = '/training/challenges' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
+        {/*<Route path = '/training/challenges' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>*/}
+        <Route path = '/testsList' element={<ProtectedRoute><TestListShowCompany/></ProtectedRoute>}/>
         <Route path = '/candidates/related' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
 
