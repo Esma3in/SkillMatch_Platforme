@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { FaDownload, FaCheck, FaTimes, FaArrowLeft, FaArrowRight, FaExclamationTriangle, FaFile } from 'react-icons/fa';
-import api from '../api/axios';
+import { api } from '../api/api';
 
 // Set worker path for PDF.js
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;

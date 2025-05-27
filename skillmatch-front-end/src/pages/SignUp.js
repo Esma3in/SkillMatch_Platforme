@@ -25,7 +25,7 @@ export default function SignUp({ onToggle }) {
 
   const storeData = async () => {
     try {
-      await api.get('/sanctum/csrf-cookie');
+      await api.get('sanctum/csrf-cookie');
       const formDataToSend = new FormData();
       // Append normal fields
       formDataToSend.append('name', formData.name);

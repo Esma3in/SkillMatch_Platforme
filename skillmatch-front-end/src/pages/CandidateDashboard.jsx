@@ -552,7 +552,7 @@ export default function CandidateDashboard() {
                 ></div>
               </div>
               <a
-                href="/edit-profile"
+                href="/createprofile"
                 className="mt-3 inline-flex items-center gap-1 bg-white text-indigo-700 px-3 py-1 text-sm font-medium rounded-lg hover:bg-opacity-90 transition-colors"
               >
                 <UserCircle size={16} /> Complete Your Profile

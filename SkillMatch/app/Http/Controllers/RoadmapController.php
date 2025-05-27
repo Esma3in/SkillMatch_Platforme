@@ -180,4 +180,70 @@ class RoadmapController extends Controller
     return response()->json($response);
     }
     
+    public function saveRoadmapProgress(Request $request)
+    {
+        // Validate the request
+        $validated = $request->validate([
+            'roadmap_id' => 'required|integer|exists:roadmaps,id',
+            'progress' => 'required|integer|min:0|max:100'
+        ]);
+
+        // Find or create roadmap progress record
+        $roadmapProgress = DB::table('roadmapsprogress')
+            ->where('roadmap_id', $validated['roadmap_id'])
+            ->first();
+
+        if ($roadmapProgress) {
+            // Update existing record
+            DB::table('roadmapsprogress')
+                ->where('roadmap_id', $validated['roadmap_id'])
+                ->update(['progress' => $validated['progress']]);
+        } else {
+            // Create new record
+            DB::table('roadmapsprogress')->insert([
+                'roadmap_id' => $validated['roadmap_id'],
+                'progress' => $validated['progress'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Roadmap progress saved successfully',
+            'data' => [
+                'roadmap_id' => $validated['roadmap_id'],
+                'progress' => $validated['progress']
+            ]
+        ], 200);
+    }
+    
+    public function getRoadmapProgress($roadmap_id)
+    {
+        if (!is_numeric($roadmap_id)) {
+            return response()->json(['message' => 'Invalid roadmap_id'], 400);
+        }
+
+        // Fetch progress data
+        $progress = DB::table('roadmapsprogress')
+            ->where('roadmap_id', $roadmap_id)
+            ->first();
+
+        if (!$progress) {
+            return response()->json([
+                'message' => 'No progress data found for this roadmap',
+                'data' => [
+                    'roadmap_id' => (int)$roadmap_id,
+                    'progress' => 0
+                ]
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Roadmap progress retrieved successfully',
+            'data' => [
+                'roadmap_id' => (int)$roadmap_id,
+                'progress' => (int)$progress->progress
+            ]
+        ], 200);
+    }
 }

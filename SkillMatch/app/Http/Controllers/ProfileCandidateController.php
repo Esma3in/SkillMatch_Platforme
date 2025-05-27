@@ -9,6 +9,7 @@ use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ProfileCandidateController extends Controller
 {
@@ -64,12 +65,12 @@ class ProfileCandidateController extends Controller
         // Validate the request data
         $validated = $request->validate([
             'candidate_id' => 'required|exists:candidates,id',
-            'degree' => 'required|string|max:255',
-            'field_of_study' => 'required|string|max:255',
             'institution_name' => 'required|string|max:255',
+            'degree' => 'required|string|max:255',
             'start_date' => 'required|date_format:d/m/Y',
             'end_date' => 'nullable|date_format:d/m/Y',
-            'grade' => 'required|string|max:50',
+            'field_of_study' => 'required|string|max:255',
+            'grade' => 'nullable|string|max:50',
             'description' => 'nullable|string|max:1000',
         ]);
 
@@ -86,16 +87,17 @@ class ProfileCandidateController extends Controller
                 // Handle custom fields for "Other" options
                 $degree = $validated['degree'];
                 $fieldOfStudy = $validated['field_of_study'];
-                $institution = $validated['institution'];
+                $institutionName = $validated['institution_name'];
 
+                // Check for custom values if "Other" is selected (assuming frontend sends "Other" with custom fields)
                 if ($degree === 'Other' && $request->has('customDegree')) {
                     $degree = $request->input('customDegree');
                 }
                 if ($fieldOfStudy === 'Other' && $request->has('customFieldOfStudy')) {
                     $fieldOfStudy = $request->input('customFieldOfStudy');
                 }
-                if ($institution === 'Other' && $request->has('customInstitution')) {
-                    $institution = $request->input('customInstitution');
+                if ($institutionName === 'Other' && $request->has('customInstitution')) {
+                    $institutionName = $request->input('customInstitution');
                 }
 
                 // Format dates for database storage (convert from DD/MM/YYYY to YYYY-MM-DD)
@@ -111,12 +113,11 @@ class ProfileCandidateController extends Controller
                 // Create education record
                 return Formation::create([
                     'candidate_profile_id' => $profile->id,
+                    'institution_name' => $institutionName,
                     'degree' => $degree,
-                    'field_of_study' => $fieldOfStudy,
-                    'institution' => $institution,
                     'start_date' => $startDateFormatted,
                     'end_date' => $endDateFormatted,
-                    'grade' => $validated['grade'],
+                    'field_of_study' => $fieldOfStudy,
                     'description' => $validated['description'] ?? null,
                 ]);
             });
@@ -134,5 +135,43 @@ class ProfileCandidateController extends Controller
             ], 500);
         }
     }
+    public function getEducationByCandidate($candidateId)
+    {
+        try {
+            // Validate the candidate ID
+            if (!is_numeric($candidateId) || $candidateId <= 0) {
+                return response()->json([
+                    'error' => 'Invalid candidate ID.',
+                ], 400);
+            }
 
+            // Perform the query using Laravel's query builder
+            $formations = DB::table('formations')
+                ->select('formations.*')
+                ->join('profile_candidates', 'profile_candidates.id', '=', 'formations.candidate_profile_id')
+                ->join('candidates', 'profile_candidates.candidate_id', '=', 'candidates.id')
+                ->where('candidates.id', $candidateId)
+                ->get();
+
+            // Check if any records were found
+            if ($formations->isEmpty()) {
+                return response()->json([
+                    'message' => 'No education records found for this candidate.',
+                    'data' => [],
+                ], 200);
+            }
+
+            // Return the formations data
+            return response()->json([
+                'message' => 'Education records retrieved successfully.',
+                'data' => $formations,
+            ], 200);
+        } catch (\Exception $e) {
+            // Log the error and return a failure response
+            Log::error('Error retrieving education records: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Failed to retrieve education records: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }

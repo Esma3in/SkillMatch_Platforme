@@ -19,7 +19,7 @@ import ProfileSettings from './pages/Settings.js';
 
 import ProfileForm, { Box } from './pages/createProfileCandidate.jsx';
 import CompanyProfileForCandidate from './pages/CompanyProfileForCandidate.jsx';
-import { Roadmap } from './pages/Roadmap.js';
+import Roadmap  from './pages/Roadmap.js';
 import CompaniesRelated from './pages/CompaniesRelated.jsx';
 import { CandidateTest } from './pages/CandidateTest.jsx';
 import { LandingPage } from './Espaces/LandingPage.jsx';

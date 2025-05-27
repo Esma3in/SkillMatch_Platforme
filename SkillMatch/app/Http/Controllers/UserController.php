@@ -272,6 +272,8 @@ class UserController extends Controller
 
     /**
      * Get recent activity for admin dashboard
+     * Returns activities sorted in descending order (newest first)
+     * The frontend may reverse this order if ascending display (oldest first) is needed
      */
     public function getRecentActivity()
     {

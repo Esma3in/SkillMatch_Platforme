@@ -6,15 +6,34 @@ const UseLogout = () => {
 
   const logout = async () => {
     try {
-      await api.get('/api/logout'); // Call the Laravel logout route
-      localStorage.removeItem('candidate_id'); 
-      navigate('/'); // Redirect to the login or home page
+      // Make the logout API call
+      await api.get('/logout');
+      
+      // Clear all local storage items
+      localStorage.removeItem('candidate_id');
+      localStorage.removeItem('user_id');
+      localStorage.removeItem('admin_id');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user_role');
+      
+      // Clear any session storage items
+      sessionStorage.clear();
+      
+      console.log('Logout successful');
+      
+      // Redirect to home page
+      navigate('/');
     } catch (error) {
-      console.error('Logout failed:', error.message);
+      console.error('Logout failed:', error);
+      
+      // If the API call fails, still clear storage and redirect
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate('/');
     }
   };
 
-  return logout; // Return the logout function to use in components
+  return logout;
 };
 
 export default UseLogout;

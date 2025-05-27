@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FaFileAlt, FaCheck, FaDownload, FaEye, FaTimes, FaSearch, FaFilter, FaTimesCircle, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import api from '../../api/axios';
+import { api } from '../../api/api';
 import NavbarAdmin from '../../components/common/navbarAdmin';
-import DocumentViewerModal from '../../components/DocumentViewerModal';
 import { toast } from 'react-toastify';
 import { debounce } from 'lodash';
 
 export default function DocumentsPage() {
-  const [companies, setCompanies] = useState([]);
+  const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDocument, setSelectedDocument] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   
   // Pagination state
@@ -38,10 +35,10 @@ export default function DocumentsPage() {
     const fetchFilterOptions = async () => {
       try {
         const response = await api.get('/admin/documents/filter-options');
-        if (response.data && response.data.document_types) {
+        if (response.data) {
           setFilterOptions({
-            documentTypes: response.data.document_types || [],
-            statusOptions: response.data.status_options || ['pending', 'valid', 'invalid']
+            documentTypes: response.data.documentTypes || [],
+            statusOptions: response.data.statusOptions || ['pending', 'valid', 'invalid']
           });
         }
       } catch (error) {
@@ -52,14 +49,15 @@ export default function DocumentsPage() {
     fetchFilterOptions();
   }, []);
   
-  // Fetch companies with filters and pagination
+  // Fetch documents with filters and pagination
   useEffect(() => {
-    fetchCompanies();
-  }, [pagination.currentPage]); // Refetch when page changes
+    // Trigger fetch when component mounts
+    fetchDocuments();
+  }, []);
   
   // Debounced fetch for async filtering
   const debouncedFetch = debounce(() => {
-    fetchCompanies();
+    fetchDocuments();
   }, 500);
   
   // Effect for filter changes
@@ -69,9 +67,9 @@ export default function DocumentsPage() {
     }
     // Cancel debounce on cleanup
     return () => debouncedFetch.cancel();
-  }, [filters]);
+  }, [filters, pagination.currentPage, pagination.perPage]);
   
-  const fetchCompanies = async () => {
+  const fetchDocuments = async () => {
     try {
       setLoading(true);
       
@@ -84,29 +82,35 @@ export default function DocumentsPage() {
       params.append('page', pagination.currentPage);
       params.append('per_page', pagination.perPage);
       
-      const response = await api.get(`/admin/documents/companies?${params.toString()}`);
+      const response = await api.get(`/admin/documents?${params.toString()}`);
       
-      if (response.data && response.data.data) {
-        setCompanies(response.data.data);
+      if (response.data) {
+        setDocuments(response.data.data || []);
         setPagination(prev => ({
           ...prev,
-          total: response.data.meta.total,
-          totalPages: response.data.meta.total_pages,
-          currentPage: response.data.meta.current_page
+          total: response.data.meta?.total || 0,
+          totalPages: response.data.meta?.last_page || 0,
+          currentPage: response.data.meta?.current_page || 1
         }));
       }
       
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching companies:', error);
-      toast.error('Failed to fetch companies');
+      console.error('Error fetching documents:', error);
+      toast.error('Failed to fetch documents');
       setLoading(false);
     }
   };
 
   const handlePreviewDocument = (document) => {
-    setSelectedDocument(document);
-    setIsModalOpen(true);
+    try {
+      // Open document in new tab using the preview endpoint
+      const previewUrl = `${api.defaults.baseURL}/admin/documents/preview/${document.id}`;
+      window.open(previewUrl, '_blank');
+    } catch (error) {
+      console.error('Error previewing document:', error);
+      toast.error('Failed to preview document');
+    }
   };
 
   const handleDownloadDocument = async (documentId) => {
@@ -128,17 +132,14 @@ export default function DocumentsPage() {
       await api.post(`/admin/documents/status/${documentId}`, { status });
       
       // Update local state
-      setCompanies(companies.map(company => ({
-        ...company,
-        documents: company.documents.map(doc =>
-          doc.id === documentId ? { 
-            ...doc, 
-            status,
-            is_validated: status === 'valid',
-            validated_at: new Date().toISOString() 
-          } : doc
-        )
-      })));
+      setDocuments(documents.map(doc =>
+        doc.id === documentId ? { 
+          ...doc, 
+          status,
+          is_validated: status === 'valid',
+          validated_at: new Date().toISOString() 
+        } : doc
+      ));
       
       const statusMessage = status === 'valid' ? 'validated' : 'invalidated';
       toast.success(`Document ${statusMessage} successfully`);
@@ -149,20 +150,16 @@ export default function DocumentsPage() {
     }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedDocument(null);
-  };
-
-  const cancelConfirmation = () => {
-    setShowConfirmation(false);
-  };
-  
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prevFilters => ({
       ...prevFilters,
       [name]: value
+    }));
+    // Reset to first page when changing filters
+    setPagination(prev => ({
+      ...prev,
+      currentPage: 1
     }));
   };
   
@@ -181,6 +178,10 @@ export default function DocumentsPage() {
       documentType: '',
       status: ''
     });
+    setPagination(prev => ({
+      ...prev,
+      currentPage: 1
+    }));
   };
   
   // Get status badge color based on status
@@ -205,6 +206,10 @@ export default function DocumentsPage() {
       default:
         return 'Pending Review';
     }
+  };
+
+  const cancelConfirmation = () => {
+    setShowConfirmation(false);
   };
 
   return (
@@ -331,104 +336,100 @@ export default function DocumentsPage() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {companies.length > 0 && companies.some(company => company.documents && company.documents.length > 0) ? (
-                      companies.map(company => (
-                        company.documents && company.documents.length > 0 ? (
-                          company.documents.map(document => (
-                            <tr key={document.id}>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div className="ml-4">
-                                    <div className="text-sm font-medium text-gray-900">
-                                      {company.name}
-                                    </div>
-                                    <div className="text-sm text-gray-500">
-                                      {company.profile?.address || 'No address'}
-                                    </div>
-                                  </div>
+                    {documents.length > 0 ? (
+                      documents.map(document => (
+                        <tr key={document.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="ml-4">
+                                <div className="text-sm font-medium text-gray-900">
+                                  {document.company?.name || 'Unknown Company'}
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <FaFileAlt className="text-blue-500 mr-2" />
-                                  <span className="text-sm text-gray-900">{document.document_type}</span>
+                                <div className="text-sm text-gray-500">
+                                  {document.company?.profile?.address || 'No address'}
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(document.status)}`}>
-                                  {getStatusText(document.status)}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {new Date(document.created_at).toLocaleDateString()}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {document.validated_at ? new Date(document.validated_at).toLocaleDateString() : 'Not validated'}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium relative">
-                                <div className="flex space-x-2">
-                                  <button
-                                    onClick={() => handlePreviewDocument(document)}
-                                    className="text-blue-600 hover:text-blue-900"
-                                    title="Preview"
-                                  >
-                                    <FaEye />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDownloadDocument(document.id)}
-                                    className="text-green-600 hover:text-green-900"
-                                    title="Download"
-                                  >
-                                    <FaDownload />
-                                  </button>
-                                  {document.status !== 'valid' && (
-                                    <button
-                                      onClick={() => handleUpdateDocumentStatus(document.id, 'valid')}
-                                      className="text-indigo-600 hover:text-indigo-900"
-                                      title="Approve Document"
-                                    >
-                                      <FaCheck />
-                                    </button>
-                                  )}
-                                  {document.status !== 'invalid' && (
-                                    <button
-                                      onClick={() => handleUpdateDocumentStatus(document.id, 'invalid')}
-                                      className="text-red-600 hover:text-red-900"
-                                      title="Reject Document"
-                                    >
-                                      <FaTimes />
-                                    </button>
-                                  )}
-                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <FaFileAlt className="text-blue-500 mr-2" />
+                              <span className="text-sm text-gray-900">{document.document_type}</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(document.status)}`}>
+                              {getStatusText(document.status)}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {new Date(document.created_at).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {document.validated_at ? new Date(document.validated_at).toLocaleDateString() : 'Not validated'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium relative">
+                            <div className="flex space-x-2">
+                              <button
+                                onClick={() => handlePreviewDocument(document)}
+                                className="text-blue-600 hover:text-blue-900"
+                                title="Preview"
+                              >
+                                <FaEye />
+                              </button>
+                              <button
+                                onClick={() => handleDownloadDocument(document.id)}
+                                className="text-green-600 hover:text-green-900"
+                                title="Download"
+                              >
+                                <FaDownload />
+                              </button>
+                              {document.status !== 'valid' && (
+                                <button
+                                  onClick={() => handleUpdateDocumentStatus(document.id, 'valid')}
+                                  className="text-indigo-600 hover:text-indigo-900"
+                                  title="Approve Document"
+                                >
+                                  <FaCheck />
+                                </button>
+                              )}
+                              {document.status !== 'invalid' && (
+                                <button
+                                  onClick={() => handleUpdateDocumentStatus(document.id, 'invalid')}
+                                  className="text-red-600 hover:text-red-900"
+                                  title="Reject Document"
+                                >
+                                  <FaTimes />
+                                </button>
+                              )}
+                            </div>
 
-                                {/* Confirmation dialog */}
-                                {showConfirmation && showConfirmation.id === document.id && (
-                                  <div className="absolute right-0 bg-white shadow-lg rounded-md border p-4 z-10 mt-2 w-64">
-                                    <p className="text-sm text-gray-700 mb-3">
-                                      {showConfirmation.status === 'valid' 
-                                        ? 'Are you sure you want to approve this legal document?' 
-                                        : 'Are you sure you want to reject this legal document?'}
-                                    </p>
-                                    <div className="flex justify-end space-x-2">
-                                      <button
-                                        onClick={cancelConfirmation}
-                                        className="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm"
-                                      >
-                                        Cancel
-                                      </button>
-                                      <button
-                                        onClick={() => handleUpdateDocumentStatus(document.id, showConfirmation.status)}
-                                        className={`px-3 py-1 text-white rounded text-sm ${showConfirmation.status === 'valid' ? 'bg-indigo-600' : 'bg-red-600'}`}
-                                      >
-                                        Confirm
-                                      </button>
-                                    </div>
-                                  </div>
-                                )}
-                              </td>
-                            </tr>
-                          ))
-                        ) : null
+                            {/* Confirmation dialog */}
+                            {showConfirmation && showConfirmation.id === document.id && (
+                              <div className="absolute right-0 bg-white shadow-lg rounded-md border p-4 z-10 mt-2 w-64">
+                                <p className="text-sm text-gray-700 mb-3">
+                                  {showConfirmation.status === 'valid' 
+                                    ? 'Are you sure you want to approve this legal document?' 
+                                    : 'Are you sure you want to reject this legal document?'}
+                                </p>
+                                <div className="flex justify-end space-x-2">
+                                  <button
+                                    onClick={cancelConfirmation}
+                                    className="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    onClick={() => handleUpdateDocumentStatus(document.id, showConfirmation.status)}
+                                    className={`px-3 py-1 text-white rounded text-sm ${showConfirmation.status === 'valid' ? 'bg-indigo-600' : 'bg-red-600'}`}
+                                  >
+                                    Confirm
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
                       ))
                     ) : (
                       <tr>
@@ -442,8 +443,8 @@ export default function DocumentsPage() {
               </div>
             </div>
             
-            {/* Pagination */}
-            {pagination.totalPages > 1 && (
+            {/* Pagination Controls */}
+            {pagination.total > 0 && (
               <div className="flex items-center justify-between bg-white px-4 py-3 sm:px-6 mt-4 rounded-lg shadow-sm">
                 <div className="flex flex-1 justify-between sm:hidden">
                   <button
@@ -476,7 +477,7 @@ export default function DocumentsPage() {
                       <span className="font-medium">
                         {Math.min(pagination.currentPage * pagination.perPage, pagination.total)}
                       </span>{' '}
-                      of <span className="font-medium">{pagination.total}</span> results
+                      of <span className="font-medium">{pagination.total}</span> documents
                     </p>
                   </div>
                   <div>
@@ -498,12 +499,45 @@ export default function DocumentsPage() {
                         const pageNumber = i + 1;
                         const isCurrentPage = pageNumber === pagination.currentPage;
                         
-                        // Show first page, last page, current page, and pages around current page
-                        if (
-                          pageNumber === 1 || 
-                          pageNumber === pagination.totalPages || 
-                          (pageNumber >= pagination.currentPage - 1 && pageNumber <= pagination.currentPage + 1)
-                        ) {
+                        // For many pages, show limited page numbers with ellipsis
+                        if (pagination.totalPages > 7) {
+                          // Always show first page, last page, current page and pages around current
+                          if (
+                            pageNumber === 1 || 
+                            pageNumber === pagination.totalPages || 
+                            (pageNumber >= pagination.currentPage - 1 && pageNumber <= pagination.currentPage + 1)
+                          ) {
+                            return (
+                              <button
+                                key={pageNumber}
+                                onClick={() => handlePageChange(pageNumber)}
+                                className={`relative inline-flex items-center px-4 py-2 text-sm font-medium ${
+                                  isCurrentPage 
+                                    ? 'bg-indigo-50 text-indigo-600 z-10' 
+                                    : 'text-gray-500 hover:bg-gray-50'
+                                }`}
+                              >
+                                {pageNumber}
+                              </button>
+                            );
+                          } else if (
+                            (pageNumber === 2 && pagination.currentPage > 3) ||
+                            (pageNumber === pagination.totalPages - 1 && pagination.currentPage < pagination.totalPages - 2)
+                          ) {
+                            // Show ellipsis for skipped pages
+                            return (
+                              <span
+                                key={`ellipsis-${pageNumber}`}
+                                className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700"
+                              >
+                                ...
+                              </span>
+                            );
+                          }
+                          
+                          return null;
+                        } else {
+                          // If fewer pages, show all page numbers
                           return (
                             <button
                               key={pageNumber}
@@ -517,22 +551,7 @@ export default function DocumentsPage() {
                               {pageNumber}
                             </button>
                           );
-                        } else if (
-                          (pageNumber === 2 && pagination.currentPage > 3) ||
-                          (pageNumber === pagination.totalPages - 1 && pagination.currentPage < pagination.totalPages - 2)
-                        ) {
-                          // Show ellipsis for skipped pages
-                          return (
-                            <span
-                              key={`ellipsis-${pageNumber}`}
-                              className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700"
-                            >
-                              ...
-                            </span>
-                          );
                         }
-                        
-                        return null;
                       })}
                       
                       <button
@@ -554,18 +573,6 @@ export default function DocumentsPage() {
           </>
         )}
       </div>
-
-      {/* Document Viewer Modal */}
-      {isModalOpen && selectedDocument && (
-        <DocumentViewerModal
-          document={selectedDocument}
-          onClose={closeModal}
-          onDownload={() => handleDownloadDocument(selectedDocument.id)}
-          onValidate={() => handleUpdateDocumentStatus(selectedDocument.id, 'valid')}
-          onInvalidate={() => handleUpdateDocumentStatus(selectedDocument.id, 'invalid')}
-          status={selectedDocument.status}
-        />
-      )}
     </>
   );
 } 
