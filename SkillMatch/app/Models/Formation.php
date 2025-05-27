@@ -24,8 +24,7 @@ class Formation extends Model
 
     public function candidate(){
         return $this->hasOneThrough(
-            //Candidate::class
-            //Profile_candidate::class
+
             'id',
             'id',
             'candidate_id',

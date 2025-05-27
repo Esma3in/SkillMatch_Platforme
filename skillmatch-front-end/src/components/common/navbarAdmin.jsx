@@ -100,11 +100,11 @@ const NavbarAdmin = () => {
               </span>
               {isTrainingOpen && (
                 <div className="dropdown-menu">
-                  <a href="/users/companies" className="dropdown-item">
+                  <a href="/admin/companiesList" className="dropdown-item">
                     <i className="menu-icon company-list-icon"></i>
                     Companies
                   </a>
-                  <a href="/users/candidates" className="dropdown-item">
+                  <a href="/admin/candidatesList" className="dropdown-item">
                     <i className="menu-icon company-related-icon"></i>
                     Candidates
                   </a>
@@ -130,10 +130,6 @@ const NavbarAdmin = () => {
                   <a href="/training/challenges" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Challenges
-                  </a>
-                  <a href="/manage/addLeetcodeProblem" className="dropdown-item">
-                  <i className="menu-icon start-icon"></i>
-                  Add New Problem
                   </a>
                 </div>
               )}

@@ -90,7 +90,9 @@ class Candidate extends Model
         return $this->belongsToMany(Company::class,'companies_selecteds')
         ->withTimestamps();
     }
-
+    public function educations(){
+        return $this->belongsToMany(Formation::class);
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }

@@ -14,9 +14,10 @@ export default function ProfileCandidate() {
   const [candidateInfo, setCandidateInfo] = useState(null);
   const [error, setError] = useState(null);
   const [experiences, setExperiences] = useState([]);
+  const [education, setEducation] = useState([]);
   const [skills, setSkills] = useState([]);
   const [showSkillModal, setShowSkillModal] = useState(false);
-  const [ showEducationModal , setEducationModal] = useState(false);
+  const [showEducationModal, setEducationModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +35,10 @@ export default function ProfileCandidate() {
 
         const skillsResponse = await api.get(`/api/skills/candidate/${candidate_id}`);
         setSkills(skillsResponse.data);
+
+        const educationResponse = await api.get(`/api/education/candidate/${candidate_id}`);
+        setEducation(educationResponse.data.data);
+        console.log(education)
       } catch (err) {
         console.error("Failed to fetch data:", err);
         setError("There was an error loading your profile. Please try again later.");
@@ -98,17 +103,10 @@ export default function ProfileCandidate() {
     <>
       <NavbarCandidate />
    
-      < div className="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
-          {/* Descriptive Hero Section */}
-          {/* <div className="mb-10 text-center bg-white p-6 rounded-xl shadow-lg border border-gray-200 animate-fade-in">
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">Welcome to Your SkillMatch Journey</h1>
-            <p className="text-lg text-gray-600 mb-4">
-              Build a standout profile to showcase your skills and connect with opportunities in the digital world. Follow these steps to create a professional presence—let’s get started!
-            </p> */}
-       
-            <p className="text-sm text-gray-500 mt-2">Step 2: Complete Your Profile</p>
-          </div>
+      <div className="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-sm text-gray-500 mt-2">Step 2: Complete Your Profile</p>
+        </div>
         
         {/* Profile Header */}
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
@@ -282,13 +280,34 @@ export default function ProfileCandidate() {
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-lg font-semibold text-gray-900">Education</h2>
                 <button
-                  onClick={() =>setEducationModal(true)}
+                  onClick={() => setEducationModal(true)}
                   className="text-indigo-600 hover:text-blue-700 text-sm font-medium"
                 >
                   Add
                 </button>
               </div>
-              <p className="text-sm text-gray-500">Add your education details to enhance your profile.</p>
+              <div className="space-y-4">
+                {education && education.length > 0 ? (
+                  education.map((edu, index) => (
+                    <div key={index} className="border-l-2 border-indigo-600 pl-4">
+                      <h3 className="text-base font-semibold text-gray-900">{edu.degree}</h3>
+                      <p className="text-sm text-gray-700 font-medium">{edu.field_of_study} at {edu.institution_name}</p>
+                      <p className="text-sm text-gray-500">
+                        {new Date(edu.start_date).toLocaleDateString()} -{" "}
+                        {edu.end_date ? new Date(edu.end_date).toLocaleDateString() : "Present"}
+                      </p>
+                      {edu.grade && (
+                        <p className="mt-1 text-sm text-gray-600">Grade: {edu.grade}</p>
+                      )}
+                      {edu.description && (
+                        <p className="mt-1 text-sm text-gray-600">{edu.description}</p>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">Add your education details to enhance your profile.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -321,7 +340,7 @@ export default function ProfileCandidate() {
                 api
                   .get(`/api/education/candidate/${candidateInfo.id}`)
                   .then((response) => {
-                    setSkills(response.data);
+                    setEducation(response.data);
                   })
                   .catch((err) => {
                     console.error("Failed to refresh education", err);
@@ -331,7 +350,7 @@ export default function ProfileCandidate() {
           />
         )}
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

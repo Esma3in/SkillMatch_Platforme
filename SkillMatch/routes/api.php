@@ -42,6 +42,10 @@ Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['csrf' => csrf_token()]);
 });
 
+// Roadmap Progress Routes
+Route::post('/roadmap/progress', [RoadmapController::class, 'saveRoadmapProgress']);
+Route::get('/roadmap/progress/{roadmap_id}/{candidate_id}', [RoadmapController::class, 'getRoadmapProgress']);
+
 // Handle OPTIONS requests for CORS preflight
 Route::options('/{any}', function () {
     return response()->json([], 200);
@@ -75,6 +79,7 @@ Route::post('/skills', [SkillController::class, 'store']);
 Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
 // Education Routes
 Route::post('/education' , [ProfileCandidateController::class , 'storeEducation']);
+Route::get("/education/candidate/{candidateId}" , [ProfileCandidateController::class   ,"getEducationByCandidate"]);
 // Challenge Routes
 Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
 Route::get('/challenges/{challenge}', [ChallengeController::class, 'show']);
@@ -139,7 +144,7 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
-Route::post('/qcm/create', [QcmForRoadmapController::class, 'createQcmForRoadmap']);
+Route::post('/createQcm', [QcmForRoadmapController::class, 'ccreateQcm']);
 
 //All candidate for company
 Route::get('/Allcandidates', [AllCandidateController::class, 'index']);

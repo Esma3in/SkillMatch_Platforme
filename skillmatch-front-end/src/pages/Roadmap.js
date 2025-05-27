@@ -1,55 +1,41 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import NavbarCandidate from "../components/common/navbarCandidate"
+import { useParams, useNavigate } from "react-router-dom";
+import NavbarCandidate from "../components/common/navbarCandidate.jsx";
 import { api } from "../api/api";
-import { useParams, useNavigate } from "react-router";
 
-export const Roadmap = () => {
-  const roadmapSteps = [
-    { id: 1, name: "Prerequisites" },
-    { id: 2, name: "Courses" },
-    { id: 3, name: "Improve Skills" },
-    { id: 4, name: "Quiz" },
-  ];
+// Define roadmap steps as a constant
+const ROADMAP_STEPS = [
+  { id: 1, name: "Prerequisites" },
+  { id: 2, name: "Courses" },
+  { id: 3, name: "Improve Skills" },
+  { id: 4, name: "Quiz" },
+];
 
+// Utility to remove duplicates from an array
+const removeDuplicates = (array, criteria) => {
+  if (!array || !array.length) return [];
+  const seen = new Set();
+  return array.filter(item => {
+    if (!item) return false;
+    const value = typeof criteria === "string" ? item[criteria] : criteria.map(key => item[key] ?? "").join("|");
+    if (value === undefined || value === null) return false;
+    const dedupeKey = typeof value === "string" ? value.toLowerCase() : value;
+    if (seen.has(dedupeKey)) return false;
+    seen.add(dedupeKey);
+    return true;
+  });
+};
+
+const Roadmap = () => {
   const { id: roadmapId } = useParams();
   const navigate = useNavigate();
+  const candidateId = JSON.parse(localStorage.getItem("candidate_id"));
 
-  // State
-  const [stepCompletion, setStepCompletion] = useState(() => {
-    const savedData = localStorage.getItem(`roadmap_id`);
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        if (parsedData.stepCompletion && Object.keys(parsedData.stepCompletion).length === roadmapSteps.length) {
-          return parsedData.stepCompletion;
-        }
-      } catch (e) {
-        console.warn("Invalid localStorage data, using default:", e);
-      }
-    }
-    return {
-      "1": false,
-      "2": false,
-      "3": false,
-      "4": false,
-    };
-  });
-
-  const [activeTab, setActiveTab] = useState(() => {
-    const savedData = localStorage.getItem(`roadmapProgress_${roadmapId}`);
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        if (parsedData.activeTab && roadmapSteps.some(step => step.id.toString() === parsedData.activeTab)) {
-          return parsedData.activeTab;
-        }
-      } catch (e) {
-        console.warn("Invalid activeTab in localStorage, using default:", e);
-      }
-    }
-    return "1";
-  });
-
+  // State management
+  const [stepCompletion, setStepCompletion] = useState({});
+  const [activeTab, setActiveTab] = useState("1");
+  const [completed, setCompleted] = useState("pending");
+  const [pathProgress, setPathProgress] = useState(0);
   const [data, setData] = useState({
     skills: [],
     prerequisites: [],
@@ -58,353 +44,491 @@ export const Roadmap = () => {
     roadmapSkills: [],
     userTools: [],
   });
-  const [competitors, setCompetitors] = useState([]);
   const [companySelected, setCompanySelected] = useState({ id: null, name: "Unknown Company", address: null });
   const [skillsCompanySelected, setSkillsCompanySelected] = useState([]);
+  const [competitors, setCompetitors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [completed, setCompleted] = useState("pending");
   const [roadmapName, setRoadmapName] = useState("Personalized Learning Roadmap");
-  const [isCreatingQcm, setIsCreatingQcm] = useState(false); // Fixed: Added initial value
-const [ companyId ,setCompanyId] = useState(null)
-const candidate_id = JSON.parse(localStorage.getItem("candidate_id"))
+  const [isCreatingQcm, setIsCreatingQcm] = useState(false);
+  const [courseProgress, setCourseProgress] = useState(() => {
+    const courses = JSON.parse(localStorage.getItem("all_courses")) || [];
+    return courses.reduce((acc, course) => ({
+      ...acc,
+      [course.id]: JSON.parse(localStorage.getItem(`course_progress_${course.id}`)) || false
+    }), {});
+  });
 
-// // get the comnpany id 
-// useEffect(()=>{
-//   const getCompanyId = async ()=>{
-//     const response = await api.get(`/api/company/${candidate_id}`)
-//     setCompanyId(response.data.id)
-//   }
-
-// },[])
-  // Fetch company info based on roadmap ID
-useEffect(() => {
-  const fetchCompanyInfo = async () => {
-    setError(null); // Reset error state
-    setLoading(true); // Set loading state
-
-    try {
-      const response = await api.get(`/api/company/candidate-roadmap/${roadmapId}`, {
-        params: { candidate_id },
-      });
-
-      const { company, candidate, roadmap } = response.data;
-
-      // Update state with response data
-      setCompanySelected({
-        id: company.id,
-        name: company.name || 'Unknown Company',
-        address: company.address || '',
-      });
-      setCompleted(roadmap.completed);
-      setRoadmapName(`${company.name || 'Unknown Company'} Career Roadmap`);
-
-      if (roadmap.completed === 'completed') {
-        const updatedStepCompletion = roadmapSteps.reduce((acc, step) => {
-          acc[step.id] = true;
-          return acc;
-        }, {});
-        setStepCompletion(updatedStepCompletion);
-        setActiveTab('4'); // Consider making this dynamic based on roadmapSteps length
-      }
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Failed to load company information';
-      setError(errorMessage);
-    } finally {
-      setLoading(false); // Reset loading state
-    }
-  };
-
-  if (roadmapId && candidate_id) {
-    fetchCompanyInfo();
-  }
-}, [roadmapId, candidate_id]); // Removed roadmapSteps from dependencies
-  // Fetch roadmap details
+  // Initialize or load roadmap progress
   useEffect(() => {
-    const fetchRoadmapData = async () => {
-      try {
-        if (!companySelected.id) return;
-        const response = await api.get(`/api/roadmap/${companySelected.id}`);
-        const uniqueData = {
-          skills: removeDuplicates(response.data.skills || [], 'id'),
-          prerequisites: removeDuplicates(response.data.prerequisites || [], 'id'),
-          tools: removeDuplicates(response.data.tools || [], 'name'),
-          candidateCourses: removeDuplicates(response.data.candidateCourses || [], 'id'),
-          roadmapSkills: removeDuplicates(response.data.roadmapSkills || [], 'text'),
-          userTools: removeDuplicates(response.data.userTools || [], 'name'),
-        };
-        setData(uniqueData);
-        setSkillsCompanySelected(removeDuplicates(response.data.skills || [], 'id'));
-        setCompetitors(removeDuplicates(response.data.competitors || [], 'id'));
+    const initializeProgress = async () => {
+      if (!roadmapId || !candidateId) {
         setLoading(false);
-      } catch (err) {
-        setError(err.response?.data?.message || 'Error fetching roadmap data');
+        return;
+      }
+
+      setLoading(true);
+      try {
+        // Fetch progress from backend
+        const response = await api.get(`/api/roadmap/progress/${roadmapId}/${candidateId}`);
+        const progressData = response.data.data;
+
+        // Parse the steps column (JSON string) into an object, using database data as primary source
+        const steps = progressData.steps ? JSON.parse(progressData.steps) : {};
+
+        // Initialize all steps if no data is returned
+        const newStepCompletion = {};
+        ROADMAP_STEPS.forEach(step => {
+          newStepCompletion[step.id] = steps[step.id] !== undefined ? steps[step.id] : false;
+        });
+
+        // Calculate progress percentage
+        const completedSteps = Object.values(newStepCompletion).filter(Boolean).length;
+        const totalSteps = ROADMAP_STEPS.length;
+        const calculatedProgress = Math.round((completedSteps / totalSteps) * 100);
+
+        setStepCompletion(newStepCompletion);
+        setPathProgress(calculatedProgress);
+        setCompleted(calculatedProgress >= 100 ? "completed" : "pending");
+
+        // Set active tab to the first incomplete step or last step if all complete
+        const firstIncompleteStep = ROADMAP_STEPS.find(step => !newStepCompletion[step.id]);
+        setActiveTab(firstIncompleteStep ? firstIncompleteStep.id.toString() : "4");
+      } catch (error) {
+        console.error('Failed to fetch roadmap progress:', error);
+        // Use localStorage as a fallback only if database fetch fails
+        const savedData = localStorage.getItem(`roadmapProgress_${roadmapId}`);
+        if (savedData) {
+          try {
+            const parsedData = JSON.parse(savedData);
+            if (
+              parsedData.stepCompletion &&
+              Object.keys(parsedData.stepCompletion).length === ROADMAP_STEPS.length &&
+              ROADMAP_STEPS.every(step => typeof parsedData.stepCompletion[step.id] === "boolean")
+            ) {
+              setStepCompletion(parsedData.stepCompletion);
+              setActiveTab(parsedData.activeTab || "1");
+              setCompleted(parsedData.completed || "pending");
+              setPathProgress(parsedData.pathProgress || 0);
+            } else {
+              const initialState = ROADMAP_STEPS.reduce((acc, step) => ({ ...acc, [step.id]: false }), {});
+              setStepCompletion(initialState);
+              setActiveTab("1");
+              setCompleted("pending");
+              setPathProgress(0);
+            }
+          } catch (e) {
+            console.warn("Failed to parse localStorage data:", e);
+            const initialState = ROADMAP_STEPS.reduce((acc, step) => ({ ...acc, [step.id]: false }), {});
+            setStepCompletion(initialState);
+            setActiveTab("1");
+            setCompleted("pending");
+            setPathProgress(0);
+          }
+        } else {
+          const initialState = ROADMAP_STEPS.reduce((acc, step) => ({ ...acc, [step.id]: false }), {});
+          setStepCompletion(initialState);
+          setActiveTab("1");
+          setCompleted("pending");
+          setPathProgress(0);
+        }
+      } finally {
         setLoading(false);
       }
     };
+
+    initializeProgress();
+  }, [roadmapId, candidateId]);
+
+  // Save progress to localStorage and backend
+  useEffect(() => {
+    const saveProgress = async () => {
+      if (!roadmapId || !candidateId) return;
+
+      const completedSteps = Object.values(stepCompletion).filter(Boolean).length;
+      const totalSteps = ROADMAP_STEPS.length;
+      const calculatedProgress = Math.round((completedSteps / totalSteps) * 100);
+
+      // Update state
+      setPathProgress(calculatedProgress);
+      setCompleted(calculatedProgress >= 100 ? "completed" : "pending");
+
+      // Save to localStorage
+      try {
+        localStorage.setItem(`roadmapProgress_${roadmapId}`, JSON.stringify({
+          stepCompletion,
+          activeTab,
+          completed,
+          pathProgress: calculatedProgress
+        }));
+      } catch (e) {
+        console.warn("Failed to save progress to localStorage:", e);
+      }
+
+      // Save to backend
+      try {
+        await api.post('/api/roadmap/progress', {
+          roadmap_id: roadmapId,
+          candidate_id: candidateId,
+          steps: JSON.stringify(stepCompletion),
+          progress: calculatedProgress
+        });
+      } catch (error) {
+        console.error('Failed to save roadmap progress to backend:', error);
+        // Attempt to retry saving if it fails
+        setTimeout(() => {
+          api.post('/api/roadmap/progress', {
+            roadmap_id: roadmapId,
+            candidate_id: candidateId,
+            steps: JSON.stringify(stepCompletion),
+            progress: calculatedProgress
+          }).catch(err => console.error('Retry failed:', err));
+        }, 2000);
+      }
+    };
+
+    saveProgress();
+  }, [stepCompletion, activeTab, roadmapId, candidateId]);
+
+  // Fetch company and roadmap data
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      if (!roadmapId || !candidateId) return;
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await api.get(`/api/company/candidate-roadmap/${roadmapId}`, { params: { candidate_id: candidateId } });
+        const { company, roadmap } = response.data;
+
+        setCompanySelected({
+          id: company.id,
+          name: company.name || "Unknown Company",
+          address: company.address || "",
+        });
+        setRoadmapName(`${company.name || "Unknown Company"} Career Roadmap`);
+      } catch (error) {
+        setError(error.response?.data?.message || "Failed to load company information");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompanyInfo();
+  }, [roadmapId, candidateId]);
+
+  // Fetch roadmap data
+  useEffect(() => {
+    const fetchRoadmapData = async () => {
+      if (!companySelected.id) return;
+      try {
+        const response = await api.get(`/api/roadmap/${companySelected.id}`);
+        const uniqueData = {
+          skills: removeDuplicates(response.data.skills || [], "id"),
+          prerequisites: removeDuplicates(response.data.prerequisites || [], "id"),
+          tools: removeDuplicates(response.data.tools || [], "name"),
+          candidateCourses: removeDuplicates(response.data.candidateCourses || [], "id"),
+          roadmapSkills: removeDuplicates(response.data.roadmapSkills || [], "text"),
+          userTools: removeDuplicates(response.data.userTools || [], "name"),
+        };
+        setData(uniqueData);
+        setSkillsCompanySelected(removeDuplicates(response.data.skills || [], "id"));
+        setCompetitors(removeDuplicates(response.data.competitors || [], "id"));
+      } catch (err) {
+        setError(err.response?.data?.message || "Error fetching roadmap data");
+      }
+    };
+
     fetchRoadmapData();
   }, [companySelected.id]);
 
-  // Save progress to localStorage
-  useEffect(() => {
-    try {
-      const dataToSave = {
-        stepCompletion,
-        activeTab,
-        completed,
-      };
-      localStorage.setItem(`roadmapProgress_${roadmapId}`, JSON.stringify(dataToSave));
-    } catch (e) {
-      console.warn("Failed to save progress to localStorage:", e);
+  // Handle course completion
+  const handleMarkCourseComplete = useCallback((courseId) => {
+    setCourseProgress(prev => {
+      const updated = { ...prev, [courseId]: true };
+      localStorage.setItem(`course_progress_${courseId}`, JSON.stringify(true));
+      return updated;
+    });
+
+    const allCoursesCompleted = data.candidateCourses.every(course => courseProgress[course.id] || course.id === courseId);
+    if (allCoursesCompleted) {
+      setStepCompletion(prev => ({ ...prev, "2": true }));
     }
-  }, [stepCompletion, activeTab, completed, roadmapId]);
+  }, [courseProgress, data.candidateCourses]);
 
+  // Handle quiz creation and navigation
   const handleTakeQuiz = useCallback(async () => {
-    if (isCreatingQcm) return;
+    if (isCreatingQcm || !data.roadmapSkills.length) return;
     setIsCreatingQcm(true);
-    console.log("handleTakeQuiz called with roadmapId:", roadmapId); // Debug log
 
     try {
-      const payload = {
-        roadmap_id: roadmapId,
-      };
-      const response = await api.post('/api/createQcm/', payload);
+      const questionCount = Math.floor(Math.random() * (30 - 20 + 1)) + 20;
+      const questions = Array.from({ length: questionCount }, (_, i) => {
+        const skill = data.roadmapSkills[i % data.roadmapSkills.length];
+        return {
+          question: `What is a key concept in ${skill.text}?`,
+          options: [
+            `A correct answer related to ${skill.text}`,
+            `A plausible but wrong answer`,
+            `Another incorrect option`,
+            `Yet another wrong choice`,
+          ],
+          correctAnswer: 0,
+          skillId: skill.id,
+        };
+      });
+
+      const response = await api.post("/api/createQcm/", { roadmap_id: roadmapId, questions });
       const qcmId = response?.data?.id;
-      if (!qcmId) {
-        throw new Error('QCM ID not found in response');
-      }
+      if (!qcmId) throw new Error("QCM ID not found in response");
       navigate(`/qcmForRoadmap/${qcmId}`);
     } catch (err) {
-      const errorMessage =
-        err.response?.data?.message || err.message || 'Failed to create QCM';
-      console.error('Error creating QCM:', {
-        message: errorMessage,
-        status: err.response?.status,
-      });
-      alert(`Error: ${errorMessage}`);
+      alert(`Error: ${err.response?.data?.message || err.message || "Failed to create QCM"}`);
     } finally {
       setIsCreatingQcm(false);
     }
-  }, [roadmapId, navigate]);
+  }, [isCreatingQcm, roadmapId, navigate, data.roadmapSkills]);
 
-  const removeDuplicates = (array, criteria) => {
-    const seen = new Set();
-    return array.filter(item => {
-      const value = typeof criteria === 'string'
-        ? item[criteria]
-        : criteria.map(key => item[key]).join('|');
-      if (value === undefined || value === null) return false;
-      const dedupeKey = typeof value === 'string' ? value.toLowerCase() : value;
-      if (seen.has(dedupeKey)) return false;
-      seen.add(dedupeKey);
-      return true;
+  // Handle next step logic
+  const handleNextStep = useCallback((currentTab) => {
+    const currentIndex = ROADMAP_STEPS.findIndex(step => step.id.toString() === currentTab);
+    const nextTab = ROADMAP_STEPS[currentIndex + 1]?.id.toString() || currentTab;
+
+    setStepCompletion(prev => {
+      const updated = { ...prev, [currentTab]: true };
+      return updated;
     });
-  };
+    setActiveTab(nextTab);
+    if(currentTab === "1"){
+      setPathProgress(25);
+    }
+    if(currentTab ==="2"){
+      setPathProgress(50)
+    }
+    if(currentTab === "3"){
+      setPathProgress(75)
+    }
+    if (currentTab === "4") {
+      setCompleted("completed");
+      setPathProgress(100);
+    }
+  }, []);
 
+  // Calculate progress
+  const calculateProgress = useMemo(() => {
+    const completedSteps = Object.values(stepCompletion).filter(Boolean).length;
+    return Math.round((completedSteps / ROADMAP_STEPS.length) * 100);
+  }, [stepCompletion]);
+
+  // Memoized data filters
   const filteredTools = useMemo(() => data.tools, [data.tools]);
   const filteredPrerequisites = useMemo(() => data.prerequisites, [data.prerequisites]);
   const filteredCourses = useMemo(() => data.candidateCourses, [data.candidateCourses]);
   const filteredRoadmapSkills = useMemo(() => data.roadmapSkills, [data.roadmapSkills]);
   const filteredSkillsCompanySelected = useMemo(() => skillsCompanySelected, [skillsCompanySelected]);
-  const filteredCompetitors = useMemo(() => competitors, [competitors]);
   const filteredUserTools = useMemo(() => data.userTools, [data.userTools]);
-
-  const isStepCompleted = (stepId) => stepCompletion[stepId] || false;
-
-  const getNextTab = (currentTab) => {
-    const currentIndex = roadmapSteps.findIndex(step => step.id.toString() === currentTab);
-    return roadmapSteps[currentIndex + 1]?.id.toString() || currentTab;
-  };
-
-  const handleNextStep = (currentTab) => {
-    const updatedStepCompletion = {
-      ...stepCompletion,
-      [currentTab]: true,
-    };
-    setStepCompletion(updatedStepCompletion);
-    const nextTab = getNextTab(currentTab);
-    setActiveTab(nextTab);
-  };
-
-  const calculateProgress = () => {
-    const completedSteps = Object.values(stepCompletion).filter(Boolean).length;
-    return (completedSteps / roadmapSteps.length) * 100;
-  };
 
   return (
     <>
       <NavbarCandidate />
-      <div className={`min-h-screen bg-gray-50 ${completed === "completed" ? "bg-green-50" : ""}`}>
-        <div className={`bg-gradient-to-r ${completed === "completed" ? "from-green-600 to-emerald-700" : "from-purple-600 to-indigo-700"} shadow-lg py-6`}>
+      <div className={`min-h-screen bg-gray-100 ${completed === "completed" ? "bg-green-50" : "bg-gradient-to-b from-gray-50 to-gray-100"} font-sans`}>
+        <div className={`bg-gradient-to-r ${completed === "completed" ? "from-green-700 to-emerald-600" : "from-indigo-700 to-purple-600"} py-8 shadow-xl`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-white">{roadmapName}</h1>
-            <p className="mt-2 text-sm text-white">
-              Tailored for: <span className="font-semibold">{companySelected.name || "Unknown Company"}</span>
+            <h1 className="text-3xl font-extrabold text-white tracking-tight">{roadmapName}</h1>
+            <div className="mt-3 flex items-center space-x-2">
+              <p className="text-sm text-white/90">
+                Tailored for: <span className="font-semibold">{companySelected.name}</span>
+              </p>
               {completed === "completed" && (
-                <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-200 text-green-900">
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
                   Completed
                 </span>
               )}
-            </p>
+            </div>
           </div>
         </div>
 
+        {/* Learning Path Progress Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="w-full lg:w-1/4 mb-6 lg:mb-0">
-              <div className="bg-white rounded-xl shadow-lg p-4">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Your Learning Path</h2>
-                <div className="relative">
-                  {roadmapSteps.map((step, index) => (
-                    <div
-                      key={step.id}
-                      className="mb-6 last:mb-0"
-                      onClick={() => setActiveTab(step.id.toString())}
-                    >
-                      <div className="flex items-center cursor-pointer">
-                        <div className="flex flex-col items-center mr-4">
-                          {step.id === 1 ? (
-                            <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                          ) : (
-                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300 ${
-                              activeTab === step.id.toString()
-                                ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
-                                : isStepCompleted(step.id.toString())
-                                ? "bg-green-500 text-white"
-                                : "bg-gray-200 text-gray-600"
-                            }`}>
-                              {step.id}
-                            </div>
-                          )}
-                          {index < roadmapSteps.length - 1 && (
-                            <div className={`w-px h-full absolute left-3 top-6 ${
-                              isStepCompleted(step.id.toString()) ? "bg-green-500" : "bg-gray-300"
-                            }`}></div>
-                          )}
-                        </div>
-                        <div className={`text-sm font-medium transition-all duration-300 ${
-                          activeTab === step.id.toString()
-                            ? "text-purple-600 font-semibold"
-                            : isStepCompleted(step.id.toString())
-                            ? "text-green-600"
-                            : "text-gray-700 hover:text-gray-900"
-                        }`}>
-                          {step.name}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4">
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 h-2.5 rounded-full transition-all duration-300" style={{ width: `${calculateProgress()}%` }}></div>
-                  </div>
-                  <p className="text-xs text-gray-600 mt-1">{calculateProgress()}% Complete</p>
-                </div>
+          <div className="bg-white rounded-2xl shadow-md p-6 mb-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Your Learning Path</h3>
+            <div className="mb-4">
+              <div className="flex justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700">Progress</span>
+                <span className="text-sm font-medium text-gray-700">{pathProgress}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className={`h-2.5 rounded-full ${completed === "completed" ? "bg-green-600" : "bg-indigo-600"}`}
+                  style={{ width: `${pathProgress}%` }}
+                ></div>
               </div>
             </div>
 
-            <div className="flex-1">
+            {/* Path Steps Visualization */}
+            <div className="relative">
+              <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-gray-200"></div>
+              <div className="flex justify-between relative z-10">
+                {ROADMAP_STEPS.map((step, index) => {
+                  const isActive = activeTab === step.id.toString();
+                  const isCompleted = stepCompletion[step.id];
+                  const isLast = index === ROADMAP_STEPS.length - 1;
+
+                  return (
+                    <div key={step.id} className="flex flex-col items-center">
+                      <button
+                        onClick={() => {
+                          if (isCompleted || isActive) {
+                            setActiveTab(step.id.toString());
+                          }
+                        }}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${isCompleted
+                          ? "bg-green-500 text-white"
+                          : isActive
+                            ? "bg-indigo-600 text-white"
+                            : "bg-white border-2 border-gray-300 text-gray-400"}
+                          transition-all duration-300 ${(isCompleted || isActive) ? "cursor-pointer hover:scale-110" : "cursor-not-allowed"}`}
+                      >
+                        {isCompleted ? (
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          step.id
+                        )}
+                      </button>
+                      <span className={`mt-2 text-xs font-medium ${isActive ? "text-indigo-600" : isCompleted ? "text-green-600" : "text-gray-500"}`}>
+                        {step.name}
+                      </span>
+                      {!isLast && (
+                        <div
+                          className={`absolute h-1 top-1/2 -translate-y-1/2 left-0 ${isCompleted ? "bg-green-500" : "bg-gray-200"}`}
+                          style={{
+                            width: `${100 / (ROADMAP_STEPS.length - 1)}%`,
+                            left: `${(index * 100) / (ROADMAP_STEPS.length - 1)}%`
+                          }}
+                        ></div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex-1 space-y-8">
               {loading && (
-                <div className="bg-white rounded-xl shadow-md p-4">
-                  <p className="text-sm text-gray-600">Loading roadmap data...</p>
+                <div className="bg-white rounded-2xl shadow-md p-6">
+                  <p className="text-sm text-gray-600 animate-pulse">Loading roadmap data...</p>
                 </div>
               )}
               {error && (
-                <div className="bg-red-50 rounded-xl shadow-md p-4">
-                  <p className="text-sm text-red-600">Error: {error}</p>
+                <div className="bg-red-50 rounded-2xl shadow-md p-6">
+                  <p className="text-sm text-red-600 font-medium">Error: {error}</p>
                 </div>
               )}
 
               {!loading && !error && (
                 <>
-                  <div className="bg-white rounded-xl shadow-md p-4 mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">How to Succeed</h3>
-                    <p className="text-sm text-gray-600 mb-3">
-                      This roadmap is designed to prepare you for a role at {companySelected.name || "your chosen company"} by building skills in {filteredSkillsCompanySelected.length > 0 ? filteredSkillsCompanySelected.map(skill => skill.name).join(", ") : "various areas"}.
+                  <div className="bg-white rounded-2xl shadow-md p-6">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">How to Succeed</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      This roadmap is designed to prepare you for a role at{" "}
+                      <span className="font-semibold">{companySelected.name}</span> by mastering skills in{" "}
+                      {filteredSkillsCompanySelected.length > 0
+                        ? filteredSkillsCompanySelected.map(skill => skill.name).join(", ")
+                        : "key areas"}.
                     </p>
-                    <ul className="space-y-2 text-sm text-gray-600">
-                      <li className="flex items-start">
-                        <svg className="w-5 h-5 text-purple-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span><strong>Prerequisites:</strong> Review and set up your environment.</span>
-                      </li>
-                      <li className="flex items-start">
-                        <svg className="w-5 h-5 text-purple-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span><strong>Courses:</strong> Complete recommended courses to build skills.</span>
-                      </li>
-                      <li className="flex items-start">
-                        <svg className="w-5 h-5 text-purple-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span><strong>Improve Skills:</strong> Practice through hands-on projects.</span>
-                      </li>
-                      <li className="flex items-start">
-                        <svg className="w-5 h-5 text-purple-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span><strong>Quiz:</strong> Test your knowledge to unlock your badge.</span>
-                      </li>
-                      <li className="flex items-start">
-                        <svg className="w-5 h-5 text-purple-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span><strong>Badge:</strong> Showcase your achievement to employers.</span>
-                      </li>
+                    <ul className="space-y-3 text-sm text-gray-600">
+                      {[
+                        { text: "Review and set up your environment.", label: "Prerequisites" },
+                        { text: "Complete recommended courses to build skills.", label: "Courses" },
+                        { text: "Practice through hands-on projects.", label: "Improve Skills" },
+                        { text: "Test your knowledge to unlock your badge.", label: "Quiz" },
+                        { text: "Showcase your achievement to employers.", label: "Badge" },
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <svg className="w-5 h-5 text-indigo-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span>
+                            <strong>{item.label}:</strong> {item.text}
+                          </span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
 
-                  <div className="bg-white rounded-xl shadow-md p-4 mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Badge Overview</h3>
-                    <div className="space-y-4 text-sm text-gray-600">
-                      <div className="flex items-start">
-                        <img width="40" height="40" src="https://img.icons8.com/pulsar-gradient/48/warranty-card.png" alt="badge" className="mr-3" />
-                        <div>
-                          <h4 className="font-medium text-gray-800">What is a Badge?</h4>
-                          <p className="text-xs">A digital credential certifying your skills for {companySelected.name || "company"} roles, shareable on SkillMatch and LinkedIn.</p>
+                  <div className="bg-white rounded-2xl shadow-md p-6">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Badge Overview</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {[
+                        {
+                          icon: "https://img.icons8.com/pulsar-gradient/48/warranty-card.png",
+                          title: "What is a Badge?",
+                          desc: `A digital credential certifying your skills for ${companySelected.name} roles, shareable on SkillMatch and LinkedIn.`,
+                        },
+                        {
+                          icon: "https://img.icons8.com/pulsar-gradient/48/positive-dynamic.png",
+                          title: "Benefits",
+                          desc: "Stand out to recruiters and boost your profile visibility.",
+                        },
+                        {
+                          icon: "https://img.icons8.com/pulsar-gradient/48/how-quest.png",
+                          title: "How to Earn",
+                          desc: "Pass the quiz with a score of 80% or higher.",
+                        },
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-start p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-300">
+                          <img src={item.icon} alt={item.title} className="w-10 h-10 mr-3" />
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-800">{item.title}</h4>
+                            <p className="text-xs text-gray-600">{item.desc}</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-start">
-                        <img width="40" height="40" src="https://img.icons8.com/pulsar-gradient/48/positive-dynamic.png" alt="benefits" className="mr-3" />
-                        <div>
-                          <h4 className="font-medium text-gray-800">Benefits</h4>
-                          <p className="text-xs">Stand out to recruiters and boost your profile visibility.</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <img width="40" height="40" src="https://img.icons8.com/pulsar-gradient/48/how-quest.png" alt="how" className="mr-3" />
-                        <div>
-                          <h4 className="font-medium text-gray-800">How to Earn</h4>
-                          <p className="text-xs">Pass the quiz with a score of 80% or higher.</p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                     {completed === "completed" && (
-                      <div className="mt-4 p-3 bg-green-50 border-l-4 border-green-400 rounded-lg">
-                        <p className="text-sm text-green-700">
-                          Congratulations! You've earned your badge for {companySelected.name || "this roadmap"}.
+                      <div className="mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg">
+                        <p className="text-sm text-green-700 font-medium">
+                          Congratulations! You've earned your badge for {companySelected.name}.
                         </p>
                       </div>
                     )}
                   </div>
 
                   {filteredTools.length > 0 && (
-                    <div className="bg-white rounded-xl shadow-md p-4 mb-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Tools & Resources</h3>
-                      <p className="text-sm text-gray-600 mb-3">Set up your environment with these essentials.</p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {filteredTools.map((tool) => (
-                          <div key={tool.id} className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all">
-                            <img src={tool.image || "https://via.placeholder.com/40"} alt={tool.name || "Tool"} className="w-10 h-10 rounded-full mr-3" />
+                    <div className="bg-white rounded-2xl shadow-md p-6">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-4">Tools & Resources</h3>
+                      <p className="text-sm text-gray-600 mb-4">Set up your environment with these essential tools.</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {filteredTools.map((tool, index) => (
+                          <div
+                            key={tool.id ? `${tool.id}-${index}` : index}
+                            className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-300"
+                          >
+                            <img
+                              src={tool.image || "https://via.placeholder.com/40"}
+                              alt={tool.name}
+                              className="w-12 h-12 rounded-full mr-3 object-cover"
+                            />
                             <div>
-                              <h4 className="text-sm font-medium text-gray-800">{tool.name || "Unknown Tool"}</h4>
-                              <p className="text-xs text-gray-600">{tool.description || "No description"}</p>
-                              <a href={tool.link || "#"} target="_blank" rel="noopener noreferrer" className="text-purple-600 text-xs font-medium hover:underline">Download</a>
+                              <h4 className="text-sm font-semibold text-gray-800">{tool.name || "Unknown Tool"}</h4>
+                              <p className="text-xs text-gray-600 line-clamp-2">{tool.description || "No description"}</p>
+                              <a
+                                href={tool.link || "#"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-indigo-600 text-xs font-medium hover:underline"
+                              >
+                                Download
+                              </a>
                             </div>
                           </div>
                         ))}
@@ -412,186 +536,214 @@ useEffect(() => {
                     </div>
                   )}
 
-                  <div className="bg-white rounded-xl shadow-md p-4">
+                  <div className="bg-white rounded-2xl shadow-md p-6">
                     {activeTab === "1" && (
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-3">Prerequisites</h3>
-                        <div className="mb-6 p-3 bg-gray-50 rounded-lg">
-                          <h4 className="text-sm font-medium text-gray-800 mb-2">Necessary Prerequisites</h4>
-                          <p className="text-xs text-gray-600 mb-3">
-                            Ensure you have the following skills and knowledge to succeed in this roadmap:
-                          </p>
-                          <ul className="space-y-2 text-sm text-gray-600">
-                            {filteredPrerequisites.length > 0 ? (
-                              filteredPrerequisites.map((prereq) => (
-                                <li key={prereq.id} className="flex items-start">
-                                  <svg className="w-4 h-4 text-purple-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                  </svg>
-                                  <span>{prereq.text || "No description available"}</span>
-                                </li>
-                              ))
-                            ) : (
-                              <li className="text-sm text-gray-600">Basic programming knowledge and tools setup required.</li>
-                            )}
-                          </ul>
-                        </div>
-                        <div className="mb-6 p-3 bg-gray-50 rounded-lg">
-                          <h4 className="text-sm font-medium text-gray-800 mb-2">Tools You Have</h4>
-                          <p className="text-xs text-gray-600 mb-3">
-                            Based on your profile, here are the tools you already possess:
-                          </p>
-                          <div className="grid grid-cols-2 gap-2">
-                            {filteredUserTools.length > 0 ? (
-                              filteredUserTools.map((tool) => (
-                                <span key={tool.id} className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">{tool.name || "Unknown Tool"}</span>
-                              ))
-                            ) : (
-                              <p className="text-sm text-gray-600">No tools detected. Install required tools to proceed.</p>
-                            )}
+                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Prerequisites</h3>
+                        <div className="space-y-6">
+                          <div className="p-4 bg-gray-50 rounded-lg">
+                            <h4 className="text-sm font-semibold text-gray-800 mb-2">Necessary Prerequisites</h4>
+                            <p className="text-xs text-gray-600 mb-3">Ensure you have the following skills and knowledge:</p>
+                            <ul className="space-y-2 text-sm text-gray-600">
+                              {filteredPrerequisites.length > 0 ? (
+                                filteredPrerequisites.map((prereq, index) => (
+                                  <li key={prereq.id ? `${prereq.id}-${index}` : index} className="flex items-start">
+                                    <svg
+                                      className="w-4 h-4 text-indigo-600 mr-2 mt-0.5 flex-shrink-0"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span>{prereq.text || "No description available"}</span>
+                                  </li>
+                                ))
+                              ) : (
+                                <li className="text-sm text-gray-600">Basic programming knowledge and tools setup required.</li>
+                              )}
+                            </ul>
+                          </div>
+                          <div className="p-4 bg-gray-50 rounded-lg">
+                            <h4 className="text-sm font-semibold text-gray-800 mb-2">Tools You Have</h4>
+                            <p className="text-xs text-gray-600 mb-3">Based on your profile, you already possess:</p>
+                            <div className="flex flex-wrap gap-2">
+                              {filteredUserTools.length > 0 ? (
+                                filteredUserTools.map((tool, index) => (
+                                  <span
+                                    key={tool.id ? `${tool.id}-${index}` : index}
+                                    className="text-xs bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full"
+                                  >
+                                    {tool.name || "Unknown Tool"}
+                                  </span>
+                                ))
+                              ) : (
+                                <p className="text-sm text-gray-600">No tools detected. Install required tools to proceed.</p>
+                              )}
+                            </div>
                           </div>
                         </div>
                         <div className="mt-6 flex justify-end">
                           <button
                             onClick={() => handleNextStep("1")}
                             disabled={completed === "completed"}
-                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${completed === "completed" ? "bg-gray-400 cursor-not-allowed" : ""}`}
+                            className="px-6 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-md"
                           >
-                            Next Step
+                            Mark as Complete
                           </button>
                         </div>
                       </div>
                     )}
                     {activeTab === "2" && (
-                      <div className="-ml-4 sm:-ml-6 lg:-ml-8">
-                        <div className="flex items-center px-4 sm:px-6 lg:px-8">
-                          <div className="w-6 h-6 bg-gray-200 rounded-full mr-3"></div>
-                          <h3 className="text-lg font-semibold text-gray-900">Courses</h3>
-                        </div>
-                        <div className="mt-4 w-full bg-gray-50">
-                          {filteredCourses.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
-                              {filteredCourses.map((course) => (
-                                <div key={course.id} className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                                  <img
-                                    src={course.image || `https://ui-avatars.com/api/?name=${course.name}&background=0D8ABC&color=fff&size=150`}
-                                    alt={course.name || "Course"}
-                                    className="w-full h-48 object-cover"
-                                  />
-                                  <div className="p-4">
-                                    <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2">{course.name || "Unknown Course"}</h4>
-                                    <p className="text-xs text-gray-600 mb-1">{course.provider || "N/A"}</p>
-                                    <p className="text-xs text-gray-600 mb-1">{course.duration || "N/A"}</p>
-                                    <p className="text-xs text-indigo-600 font-medium mb-2">{course.level}</p>
-                                    <div className="w-full bg-gray-200 rounded-full h-1.5 mb-2">
-                                      <div className="bg-purple-600 h-1.5 rounded-full" style={{ width: "30%" }}></div>
-                                    </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Courses</h3>
+                        {filteredCourses.length > 0 ? (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredCourses.map((course, index) => (
+                              <div
+                                key={course.id ? `${course.id}-${index}` : index}
+                                className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                              >
+                                <img
+                                  className="w-full h-40 object-cover"
+                                  src={course.image || `https://ui-avatars.com/api/?name=${course.name}&background=6366f1&color=fff&size=150`}
+                                  alt={course.name}
+                                />
+                                <div className="p-4 flex flex-col">
+                                  <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2">{course.name || "Unknown Course"}</h4>
+                                  <p className="text-xs text-gray-600 mb-1">{course.provider || "N/A"}</p>
+                                  <p className="text-xs text-gray-600 mb-1">{course.duration || "N/A"}</p>
+                                  <p className="text-xs text-indigo-600 font-medium mb-3">{course.level || "N/A"}</p>
+                                  <div className="flex items-center justify-between mt-auto">
                                     <a
                                       href={course.link || "#"}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="text-purple-600 text-xs font-medium hover:underline inline-block"
+                                      className="text-indigo-600 text-xs font-medium hover:underline"
                                     >
-                                      Continue Learning
+                                      View Course
                                     </a>
+                                    <button
+                                      onClick={() => handleMarkCourseComplete(course.id)}
+                                      disabled={courseProgress[course.id]}
+                                      className={`px-3 py-1 rounded text-xs font-semibold transition-colors duration-300 ${
+                                        courseProgress[course.id]
+                                          ? "bg-green-100 text-green-700"
+                                          : "bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
+                                      }`}
+                                    >
+                                      {courseProgress[course.id] ? "Completed" : "Mark as Complete"}
+                                    </button>
                                   </div>
                                 </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-sm text-gray-600 p-4">Enroll in recommended courses to build skills.</p>
-                          )}
-                        </div>
-                        <div className="mt-6 flex justify-end px-4 sm:px-6 lg:px-8">
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-gray-600 p-4">Enroll in recommended courses to build skills.</p>
+                        )}
+                        <div className="mt-6 flex justify-end">
                           <button
                             onClick={() => handleNextStep("2")}
-                            disabled={completed === "completed"}
-                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${completed === "completed" ? "bg-gray-400 cursor-not-allowed" : ""}`}
+                            disabled={completed === "completed" || !data.candidateCourses.every(course => courseProgress[course.id])}
+                            className="px-6 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-md"
+                            title={data.candidateCourses.every(course => courseProgress[course.id]) ? "Mark as Complete" : "Complete all courses first"}
                           >
-                            Next Step
+                            Mark as Complete
                           </button>
                         </div>
                       </div>
                     )}
                     {activeTab === "3" && (
                       <div>
-                        <div className="flex items-center">
-                          <div className="w-6 h-6 bg-gray-200 rounded-full mr-3"></div>
-                          <h3 className="text-lg font-semibold text-gray-900">Improve Your Skills</h3>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Improve Your Skills</h3>
+                        <div className="bg-indigo-50 p-3 rounded-lg mb-6">
+                          <span className="text-xs font-semibold text-indigo-700 uppercase">Skills to Master</span>
                         </div>
-                        <div className="mt-6 ml-9">
-                          <div className="bg-purple-50 p-2 rounded-lg mb-4">
-                            <span className="text-xs font-bold text-purple-600">SKILLS TO MASTER</span>
-                          </div>
-                          <div className="space-y-4">
-                            {filteredRoadmapSkills.length > 0 ? (
-                              filteredRoadmapSkills.map((skill) => (
-                                <div key={skill.id} className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition-all duration-300">
-                                  <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                      <div className={`w-5 h-5 rounded-full flex items-center justify-center mr-3 ${
+                        <div className="space-y-4">
+                          {filteredRoadmapSkills.length > 0 ? (
+                            filteredRoadmapSkills.map((skill, index) => (
+                              <div
+                                key={skill.id ? `${skill.id}-${index}` : index}
+                                className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-all duration-300"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center">
+                                    <div
+                                      className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 ${
                                         skill.completed || completed === "completed" ? "bg-green-500" : "bg-gray-200 border border-gray-300"
-                                      }`}>
-                                        {(skill.completed || completed === "completed") && (
-                                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                          </svg>
-                                        )}
-                                      </div>
-                                      <p className="text-sm font-medium text-gray-800">{skill.text || "No skill description"}</p>
+                                      }`}
+                                    >
+                                      {(skill.completed || completed === "completed") && (
+                                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                      )}
                                     </div>
-                                    <div className="flex items-center">
-                                      <div className="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                        <div className="bg-purple-600 h-2 rounded-full" style={{ width: skill.completed || completed === "completed" ? "100%" : "50%" }}></div>
-                                      </div>
-                                      <button className="text-xs text-purple-600 hover:underline">Practice</button>
+                                    <p className="text-sm font-medium text-gray-800">{skill.text || "No skill description"}</p>
+                                  </div>
+                                  <div className="flex items-center space-x-3">
+                                    <div className="w-32 bg-gray-200 rounded-full h-2">
+                                      <div
+                                        className="bg-indigo-600 h-2 rounded-full transition-all duration-500"
+                                        style={{ width: skill.completed || completed === "completed" ? "100%" : "50%" }}
+                                      />
                                     </div>
+                                    <button className="text-xs text-indigo-600 hover:underline font-medium">Practice</button>
                                   </div>
                                 </div>
-                              ))
-                            ) : (
-                              <p className="text-sm text-gray-600">Complete prerequisites and courses first.</p>
-                            )}
-                          </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-sm text-gray-600 p-4">Complete prerequisites and courses first.</p>
+                          )}
                         </div>
                         <div className="mt-6 flex justify-end">
                           <button
                             onClick={() => handleNextStep("3")}
                             disabled={completed === "completed"}
-                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${completed === "completed" ? "bg-gray-400 cursor-not-allowed" : ""}`}
+                            className="px-6 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-md"
                           >
-                            Next Step
+                            Mark as Complete
                           </button>
                         </div>
                       </div>
                     )}
                     {activeTab === "4" && (
                       <div>
-                        <div className="flex items-center">
-                          <div className="w-6 h-6 bg-gray-200 rounded-full mr-3"></div>
-                          <h3 className="text-lg font-semibold text-gray-900">Take the Quiz</h3>
-                        </div>
-                        <div className="mt-4 ml-9 p-3 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
-                          <h4 className="text-sm font-medium text-yellow-800">Before You Start</h4>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Take the Quiz</h3>
+                        <div className="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg mb-6">
+                          <h4 className="text-sm font-semibold text-yellow-800">Before You Start</h4>
                           <p className="text-xs text-yellow-700 mt-2">
-                            Assess skills in {filteredSkillsCompanySelected.length > 0 ? filteredSkillsCompanySelected.map(skill => skill.name).join(", ") : "various areas"}. Pass with 80% to earn a badge.
+                            Assess your skills in{" "}
+                            {filteredSkillsCompanySelected.length > 0
+                              ? filteredSkillsCompanySelected.map(skill => skill.name).join(", ")
+                              : "various areas"}. Pass with 80% to earn your badge.
                           </p>
                         </div>
                         {completed === "completed" && (
-                          <div className="mt-4 ml-9 p-3 bg-green-50 border-l-4 border-green-400 rounded-lg">
-                            <p className="text-sm text-green-700">
+                          <div className="p-4 bg-green-50 border-l-4 border-green-500 rounded-lg mb-6">
+                            <p className="text-sm text-green-700 font-medium">
                               Quiz completed! You've successfully finished the roadmap.
                             </p>
                           </div>
                         )}
                         <div className="mt-6 flex justify-end">
                           <button
-                            onClick={handleTakeQuiz} // Fixed: Removed parentheses
-                            disabled={isCreatingQcm || !isStepCompleted("3") || completed === "completed"} // Fixed: Check step 3 completion
-                            className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 ${isCreatingQcm || !isStepCompleted("3") || completed === "completed" ? "bg-gray-400 cursor-not-allowed" : ""}`}
-                            title={isCreatingQcm ? "Quiz creation in progress" : !isStepCompleted("3") ? "Complete Improve Skills first" : completed === "completed" ? "Quiz already completed" : "Take the Quiz"} // Fixed: Updated title
+                            onClick={handleTakeQuiz}
+                            disabled={isCreatingQcm || !stepCompletion["3"] || completed === "completed"}
+                            className="px-6 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-md"
+                            title={
+                              isCreatingQcm
+                                ? "Quiz creation in progress"
+                                : !stepCompletion["3"]
+                                ? "Complete Improve Skills first"
+                                : completed === "completed"
+                                ? "Quiz already completed"
+                                : "Take the Quiz"
+                            }
                           >
-                            Take the Quiz
+                            {isCreatingQcm ? "Creating Quiz..." : "Take the Quiz"}
                           </button>
                         </div>
                       </div>
@@ -606,4 +758,5 @@ useEffect(() => {
     </>
   );
 };
+
 export default Roadmap;
