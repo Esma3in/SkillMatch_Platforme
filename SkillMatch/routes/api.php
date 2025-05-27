@@ -27,6 +27,19 @@ use App\Http\Controllers\AllCandidateController;
 use App\Http\Controllers\prerequisitesController;
 use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\ProfileSettingsController;
+use App\Http\Controllers\candidateCoursesController;
+use App\Http\Controllers\CandidateSelectedController;
+use App\Http\Controllers\ProfileCandidateController;
+use App\Http\Controllers\CompaniesSelectedController;
+use App\Http\Controllers\LeetcodeProblemController;
+use App\Http\Controllers\CompanyDocumentController;
+
+use App\Models\Roadmap;
+
+>>>>>>> 34efebb3b4f523b8d49df78f24569703058cb452
 use App\Http\Controllers\ProfileCompanyController;
 use App\Http\Controllers\LeetcodeProblemController;
 use App\Http\Controllers\ProfileSettingsController;
@@ -186,6 +199,17 @@ Route::post('/admin/CanidatesList/setstate',[CandidateController::class,'setstat
 
 Route::get('/admin/CompaniesList',[CompanyController::class,'AllCompanies']);
 Route::post('/admin/CompaniesList/setstate',[CompanyController::class,'setstate']);
+
+// Document management routes
+Route::get('/admin/documents/companies', [CompanyDocumentController::class, 'index']);
+Route::get('/admin/documents/company/{companyId}', [CompanyDocumentController::class, 'getCompanyDocuments']);
+Route::get('/admin/documents/filter-options', [CompanyDocumentController::class, 'getFilterOptions']);
+Route::post('/admin/documents/upload', [CompanyDocumentController::class, 'upload']);
+Route::post('/admin/documents/validate/{id}', [CompanyDocumentController::class, 'validateDocument']);
+Route::post('/admin/documents/invalidate/{id}', [CompanyDocumentController::class, 'invalidateDocument']);
+Route::post('/admin/documents/status/{id}', [CompanyDocumentController::class, 'updateStatus']);
+Route::get('/admin/documents/download/{id}', [CompanyDocumentController::class, 'download']);
+Route::delete('/admin/documents/{id}', [CompanyDocumentController::class, 'destroy']);
 
 Route::get('/admin/UsersList',[UserController::class,'getBannedUsers']);
 Route::post('/admin/Users/setstate',[UserController::class,'setstate']);

@@ -9,7 +9,8 @@ RoadMap_TestFactory.php : methode : withCandidates : utiliser pour associes les 
 to run the app : 
     1-in this path : C:\SkillMatch_Platforme\SkillMatch> 
         run this command line : setup_leetcode.bat
-    2-in this path : C:\SkillMatch_Platforme\SkillMatch-front-end> run this command line : npm install 
+    2-in this path : C:\SkillMatch_Platforme\SkillMatch-front-end> run this command line : npm install and npm install react@18.2.0 react-dom@18.2.0
+    
         and then npm start
     3-in this path : C:\SkillMatch_Platforme\SkillMatch> run this command line : php artisan migrate:fresh --seed
         and then php artisan serve

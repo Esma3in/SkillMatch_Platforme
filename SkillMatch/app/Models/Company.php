@@ -14,9 +14,9 @@ class Company extends Model
         'name',
         'logo',
         'sector',
-        'files',
+        'file',
         'state',
-        'documentState'
+        'docstate'
     ];
 
     // get the notifications send by this company
@@ -49,6 +49,10 @@ class Company extends Model
 
     public function legaldocuments(){
         return $this->hasMany(CompanyLegalDocuments::class);
+    }
+
+    public function documents(){
+        return $this->hasMany(CompanyDocument::class);
     }
     public function user(){
         return $this->belongsTo(User::class);

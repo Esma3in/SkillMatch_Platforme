@@ -6,6 +6,7 @@ use App\Models\Administrator;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Candidate;
+use App\Models\CompanyDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -48,7 +49,7 @@ class UserController extends Controller
                 ]);
 
                 // Handle file upload for the company sector file and logo
-                $filePath = $request->file('file')->store('files', 'public');
+                $filePath = $request->file('file')->store('company_documents', 'public');
                 $logoPath = $request->file('logo')->store('images', 'public');
 
                 // Create company record
@@ -59,6 +60,16 @@ class UserController extends Controller
                     'logo' => $logoPath,
                     'sector' => $validatedSecondaryfields['sector']
                 ]);
+
+                // Create a CompanyDocument record for the legal document
+                CompanyDocument::create([
+                    'company_id' => $company->id,
+                    'document_type' => 'Legal Identification Document', // Default document type for registration
+                    'file_path' => $filePath,
+                    'is_validated' => false,
+                    'status' => 'pending'
+                ]);
+
                 return response()->json($company, 201);
 
             default:
