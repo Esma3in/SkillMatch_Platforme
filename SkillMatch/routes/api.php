@@ -2,7 +2,7 @@
 
 use App\Models\Company;
 use App\Models\Problem;
-use App\Models\Roadmap;
+
 use App\Models\Candidate;
 use App\Models\ProfileCandidate;
 
@@ -27,25 +27,13 @@ use App\Http\Controllers\AllCandidateController;
 use App\Http\Controllers\prerequisitesController;
 use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
-<<<<<<< HEAD
-=======
-use App\Http\Controllers\ProfileSettingsController;
-use App\Http\Controllers\candidateCoursesController;
-use App\Http\Controllers\CandidateSelectedController;
-use App\Http\Controllers\ProfileCandidateController;
-use App\Http\Controllers\CompaniesSelectedController;
-use App\Http\Controllers\LeetcodeProblemController;
-use App\Http\Controllers\CompanyDocumentController;
-
-use App\Models\Roadmap;
-
->>>>>>> 34efebb3b4f523b8d49df78f24569703058cb452
 use App\Http\Controllers\ProfileCompanyController;
+
+use App\Http\Controllers\CompanyDocumentController;
 use App\Http\Controllers\LeetcodeProblemController;
 use App\Http\Controllers\ProfileSettingsController;
 
 use App\Http\Controllers\candidateCoursesController;
-
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CandidateSelectedController;
 use App\Http\Controllers\CompaniesSelectedController;

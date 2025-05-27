@@ -53,7 +53,7 @@ const NavbarCompany = () => {
                     <i className="menu-icon start-icon"></i>
                     Create new Test
                   </a>
-                  <a href="/training/challenges" className="dropdown-item">
+                  <a href="/testsList" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Tests
                   </a>
