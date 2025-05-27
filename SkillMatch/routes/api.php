@@ -49,16 +49,19 @@ Route::options('/{any}', function () {
     return response()->json([], 200);
 })->where('any', '.*');
 
+
+Route::post('/signUp', [UserController::class, 'SignUp']);
+Route::post('/signin', [UserController::class, 'SignIn']);
+
 // Candidate Routes
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);
-Route::post('/candidate/signUp', [UserController::class, 'SignUp']);
+
 Route::post('/profiles', [CandidateController::class, 'storeProfile']);
 Route::get('/candidate/suggestedcompanies/{id}', [CandidateController::class, 'CompaniesMatched']);
 Route::get('/candidate/companies/all', [CompanyController::class, 'index']);
 Route::get('/ProfileCandidate/{id}', [CandidateController::class, 'GetProfile']);
 Route::post('/candidate/NewLanguage', [LanguageController::class, 'store']);
 Route::put('/candidate/setdescription', [ProfileCandidateController::class, 'EditDescription']);
-Route::post('/candidate/signin', [UserController::class, 'SignIn']);
 Route::get('/logout', [CandidateController::class, 'Logout']);
 Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);
 Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);

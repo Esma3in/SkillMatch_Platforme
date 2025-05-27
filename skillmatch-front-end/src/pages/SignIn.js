@@ -8,7 +8,6 @@ export default function SignIn({ onToggle }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    role: 'candidate', // Add role to the state
     remember_me: false,
   });
 
@@ -57,7 +56,7 @@ export default function SignIn({ onToggle }) {
   const check = async (data) => {
     try {
       await api.get('/sanctum/csrf-cookie');
-      const response = await api.post('/api/candidate/signin', data);
+      const response = await api.post('/api/signin', data);
       return response;
     } catch (err) {
       console.error(err);
@@ -96,20 +95,6 @@ export default function SignIn({ onToggle }) {
           <fieldset>
             <legend>Sign In</legend>
             <form onSubmit={handleSubmit}>
-              {/* Role Selection */}
-              <div className="form-field">
-                <label htmlFor="role">Role</label>
-                <select
-                  id="role"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                >
-                  <option value="candidate">Candidate</option>
-                  <option value="company">Company</option>
-                  <option value="admin">admin</option>
-                </select>
-              </div>
 
               {/* Email Field */}
               <div className="form-field">
