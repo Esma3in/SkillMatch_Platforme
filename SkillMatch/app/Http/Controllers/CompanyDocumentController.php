@@ -24,6 +24,9 @@ class CompanyDocumentController extends Controller
         try {
             $query = Company::query()->with(['profile']);
 
+            // Log the initial query count
+            Log::info("Initial companies count: " . $query->count());
+
             // Filter documents by search term, document type, or status
             $query->with(['documents' => function($query) use ($request) {
                 // Apply document filters if provided
@@ -49,11 +52,21 @@ class CompanyDocumentController extends Controller
             // Get the companies
             $companies = $query->get();
 
+            // Log companies count and data
+            Log::info("Companies found: " . $companies->count());
+
+            foreach ($companies as $company) {
+                Log::info("Company ID: {$company->id}, Name: {$company->name}, Documents count: " . $company->documents->count());
+            }
+
             // Filter out companies with no matching documents when filters are applied
             if ($request->has('search') || $request->has('document_type') || $request->has('status')) {
                 $companies = $companies->filter(function($company) {
                     return $company->documents->isNotEmpty();
                 });
+
+                // Log filtered results
+                Log::info("Companies after filtering: " . $companies->count());
             }
 
             // Get pagination parameters
@@ -63,6 +76,9 @@ class CompanyDocumentController extends Controller
             // Paginate the filtered results
             $paginator = collect($companies->values())->forPage($page, $perPage);
             $total = $companies->count();
+
+            // Log paginated results
+            Log::info("Companies after pagination: " . $paginator->count());
 
             return response()->json([
                 'data' => $paginator->values(),
@@ -75,7 +91,58 @@ class CompanyDocumentController extends Controller
             ], 200);
         } catch (\Exception $e) {
             Log::error('Error fetching company documents: ' . $e->getMessage());
+            Log::error('Exception stack trace: ' . $e->getTraceAsString());
             return response()->json(['error' => 'Failed to retrieve companies and documents'], 500);
+        }
+    }
+
+    /**
+     * Get all documents with pagination and filtering
+     * This endpoint returns documents directly, not nested within companies
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllDocuments(Request $request)
+    {
+        try {
+            $query = CompanyDocument::query()
+                ->with(['company' => function($query) {
+                    $query->with('profile');
+                }]);
+
+            // Apply filters if provided
+            if ($request->has('search')) {
+                $search = $request->get('search');
+                $query->where('document_type', 'like', "%{$search}%");
+            }
+
+            if ($request->has('document_type')) {
+                $query->where('document_type', $request->get('document_type'));
+            }
+
+            if ($request->has('status')) {
+                $query->where('status', $request->get('status'));
+            }
+
+            // Filter by company name if provided
+            if ($request->has('company_name')) {
+                $companyName = $request->get('company_name');
+                $query->whereHas('company', function($q) use ($companyName) {
+                    $q->where('name', 'like', "%{$companyName}%");
+                });
+            }
+
+            // Paginate the results
+            $perPage = $request->get('per_page', 10);
+            $documents = $query->orderBy('created_at', 'desc')
+                ->paginate($perPage);
+
+            return response()->json($documents, 200);
+        } catch (\Exception $e) {
+            Log::error('Error fetching documents: ' . $e->getMessage());
+            Log::error('Exception stack trace: ' . $e->getTraceAsString());
+            return response()->json(['error' => 'Failed to retrieve documents'], 500);
         }
     }
 
@@ -97,8 +164,8 @@ class CompanyDocumentController extends Controller
             $statusOptions = CompanyDocument::getStatusOptions();
 
             return response()->json([
-                'document_types' => $documentTypes,
-                'status_options' => $statusOptions
+                'documentTypes' => $documentTypes,
+                'statusOptions' => $statusOptions
             ], 200);
         } catch (\Exception $e) {
             Log::error('Error fetching filter options: ' . $e->getMessage());
@@ -265,5 +332,61 @@ class CompanyDocumentController extends Controller
         $document->delete();
 
         return response()->json(['message' => 'Document deleted successfully'], 200);
+    }
+
+    /**
+     * Preview a document (display in browser rather than download)
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function preview($id)
+    {
+        $document = CompanyDocument::find($id);
+
+        if (!$document) {
+            return response()->json(['message' => 'Document not found'], 404);
+        }
+
+        $path = storage_path('app/public/' . $document->file_path);
+
+        if (!file_exists($path)) {
+            return response()->json(['message' => 'File not found'], 404);
+        }
+
+        // Get file extension to determine content type
+        $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
+
+        // Set content type based on file extension
+        $contentType = 'application/octet-stream'; // Default
+
+        switch (strtolower($extension)) {
+            case 'pdf':
+                $contentType = 'application/pdf';
+                break;
+            case 'doc':
+                $contentType = 'application/msword';
+                break;
+            case 'docx':
+                $contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                break;
+            case 'txt':
+                $contentType = 'text/plain';
+                break;
+            case 'jpg':
+            case 'jpeg':
+                $contentType = 'image/jpeg';
+                break;
+            case 'png':
+                $contentType = 'image/png';
+                break;
+        }
+
+        // Return the file with the appropriate content type
+        // This will display in the browser instead of downloading
+        return response()->file($path, [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'inline; filename="' . basename($document->file_path) . '"',
+        ]);
     }
 }

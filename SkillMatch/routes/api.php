@@ -44,6 +44,10 @@ Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['csrf' => csrf_token()]);
 });
 
+// Roadmap Progress Routes
+Route::post('/roadmap/progress', [RoadmapController::class, 'saveRoadmapProgress']);
+Route::get('/roadmap/progress/{roadmap_id}/{candidate_id}', [RoadmapController::class, 'getRoadmapProgress']);
+
 // Handle OPTIONS requests for CORS preflight
 Route::options('/{any}', function () {
     return response()->json([], 200);
@@ -77,6 +81,7 @@ Route::post('/skills', [SkillController::class, 'store']);
 Route::get('/skills/candidate/{candidateId}', [SkillController::class, 'getSkillsByCandidate']);
 // Education Routes
 Route::post('/education' , [ProfileCandidateController::class , 'storeEducation']);
+Route::get("/education/candidate/{candidateId}" , [ProfileCandidateController::class   ,"getEducationByCandidate"]);
 // Challenge Routes
 Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges.index');
 Route::get('/challenges/{challenge}', [ChallengeController::class, 'show']);
@@ -141,7 +146,7 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
-Route::post('/qcm/create', [QcmForRoadmapController::class, 'createQcmForRoadmap']);
+Route::post('/createQcm', [QcmForRoadmapController::class, 'ccreateQcm']);
 
 //All candidate for company
 Route::get('/Allcandidates', [AllCandidateController::class, 'index']);
@@ -191,12 +196,14 @@ Route::post('/admin/CompaniesList/setstate',[CompanyController::class,'setstate'
 // Document management routes
 Route::get('/admin/documents/companies', [CompanyDocumentController::class, 'index']);
 Route::get('/admin/documents/company/{companyId}', [CompanyDocumentController::class, 'getCompanyDocuments']);
+Route::get('/admin/documents', [CompanyDocumentController::class, 'getAllDocuments']);
 Route::get('/admin/documents/filter-options', [CompanyDocumentController::class, 'getFilterOptions']);
 Route::post('/admin/documents/upload', [CompanyDocumentController::class, 'upload']);
 Route::post('/admin/documents/validate/{id}', [CompanyDocumentController::class, 'validateDocument']);
 Route::post('/admin/documents/invalidate/{id}', [CompanyDocumentController::class, 'invalidateDocument']);
 Route::post('/admin/documents/status/{id}', [CompanyDocumentController::class, 'updateStatus']);
 Route::get('/admin/documents/download/{id}', [CompanyDocumentController::class, 'download']);
+Route::get('/admin/documents/preview/{id}', [CompanyDocumentController::class, 'preview']);
 Route::delete('/admin/documents/{id}', [CompanyDocumentController::class, 'destroy']);
 
 Route::get('/admin/UsersList',[UserController::class,'getBannedUsers']);

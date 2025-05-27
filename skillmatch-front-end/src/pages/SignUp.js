@@ -36,7 +36,7 @@ export default function SignUp({ onToggle }) {
 
   const storeData = async () => {
     try {
-      await api.get('/sanctum/csrf-cookie');
+      await api.get('sanctum/csrf-cookie');
       const formDataToSend = new FormData();
       // Append normal fields
       formDataToSend.append('name', formData.name);
@@ -50,7 +50,7 @@ export default function SignUp({ onToggle }) {
         formDataToSend.append('sector', formData.sector);
       }
       
-      const response = await api.post('/api/candidate/signUp', formDataToSend, {
+      const response = await api.post('candidate/signUp', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data', // Indicating that this is a form with files
         },

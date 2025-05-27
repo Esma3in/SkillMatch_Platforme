@@ -32,4 +32,6 @@ use HasFactory ;
     {
         return $this->ManyToMany(ProfileCompany::class);
     }
+
+
 }

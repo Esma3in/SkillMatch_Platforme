@@ -52,7 +52,8 @@ export default function AdminHome() {
         
         // Use real activity data if available
         if (recentActivityData.data && Array.isArray(recentActivityData.data)) {
-          setRecentActivity(recentActivityData.data);
+          // Reverse the array to display activities in ascending order (oldest first)
+          setRecentActivity([...recentActivityData.data].reverse());
         }
         
         setIsLoading(false);
