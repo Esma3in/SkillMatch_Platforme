@@ -12,7 +12,7 @@ const CreateSkillsModal = ({ user, onClose }) => {
     type: "",
     usageFrequency: "",
     classement: "",
-    language: "", // Added language field
+
   });
   const [skills, setSkills] = useState([]);
   const [errors, setErrors] = useState({});
@@ -31,16 +31,6 @@ const CreateSkillsModal = ({ user, onClose }) => {
     getSkills();
   }, []);
 
-  // Predefined language options (since no database for languages)
-  const languageOptions = [
-    { value: "", label: "Select a language" },
-    { value: "English", label: "English" },
-    { value: "Spanish", label: "Spanish" },
-    { value: "French", label: "French" },
-    { value: "German", label: "German" },
-    { value: "Chinese", label: "Chinese" },
-    { value: "Japanese", label: "Japanese" },
-  ];
 
   const formFields = [
     {
@@ -52,12 +42,7 @@ const CreateSkillsModal = ({ user, onClose }) => {
         ...skills.map(skill => ({ value: skill.name, label: skill.name })),
       ],
     },
-    {
-      id: "language",
-      label: "Language",
-      type: "select",
-      options: languageOptions,
-    },
+
     {
       id: "level",
       label: "Proficiency Level",
@@ -169,7 +154,7 @@ const CreateSkillsModal = ({ user, onClose }) => {
       type: "",
       usageFrequency: "",
       classement: "",
-      language: "",
+
     });
     setErrors({});
     if (onClose) onClose();

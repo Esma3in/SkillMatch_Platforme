@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("candidate_profile_id");
             $table->foreign('candidate_profile_id')->references("id")->on('profile_candidates')->onDelete('cascade')->onUpdate('cascade');
             $table->string('institution_name');
-            $table->float('degree');
+            $table->string('degree');
             $table->date('start_date');
             $table->date('end_date');
             $table->string('field_of_study');
