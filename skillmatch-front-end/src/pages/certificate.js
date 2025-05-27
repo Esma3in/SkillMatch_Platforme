@@ -125,29 +125,7 @@ const Certificate = ({
         </div>
       </section>
 
-      {/* Related Courses Section */}
-      <section className="py-12 sm:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Explore More Courses</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-800">Machine Learning Fundamentals</h3>
-              <p className="text-gray-600 mt-2">Master the basics of machine learning with hands-on projects.</p>
-              <a href="#" className="text-indigo-600 hover:underline mt-4 inline-block">Learn More</a>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-800">Data Science with Python</h3>
-              <p className="text-gray-600 mt-2">Dive into data analysis and visualization using Python.</p>
-              <a href="#" className="text-indigo-600 hover:underline mt-4 inline-block">Learn More</a>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-800">Web Development Bootcamp</h3>
-              <p className="text-gray-600 mt-2">Build modern web applications with React and Node.js.</p>
-              <a href="#" className="text-indigo-600 hover:underline mt-4 inline-block">Learn More</a>
-            </div>
-          </div>
-        </div>
-      </section>
+ 
 
       <Footer />
     </div>
