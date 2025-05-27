@@ -1,18 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/pages/Navbar/navbarCandidate.css';
-import userAvatar from '../../assets/userAvatar.jpg'; 
-import UseLogout from '../../hooks/useLogout';
-import {Link} from 'react-router-dom';
+import userAvatar from '../../assets/userAvatar.jpg';
+import useLogout from '../../hooks/useLogout'; // Fixed hook naming convention
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const NavbarCompany = () => {
-  const logout =UseLogout();
+  const logout = useLogout(); // Fixed hook naming
   const [isTrainingOpen, setIsTrainingOpen] = useState(false);
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  
+
   const trainingRef = useRef(null);
   const companyRef = useRef(null);
   const profileRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleCreateTest = () => {
+    navigate('/training/start');
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -31,7 +37,7 @@ const NavbarCompany = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [navigate]); // Added navigate to dependency array
 
   return (
     <div className="navbar-container">
@@ -39,9 +45,9 @@ const NavbarCompany = () => {
         <div className="navbar-left">
           <div className="navbar-logo">SkillMatch</div>
           <nav className="navbar-nav">
-            <a href="/" className="nav-item">Home</a>
+            <Link to="/" className="nav-item">Home</Link>
             
-            <div 
+            <div
               className="nav-item dropdown"
               ref={trainingRef}
               onMouseEnter={() => setIsTrainingOpen(true)}
@@ -50,19 +56,19 @@ const NavbarCompany = () => {
               <span>Tests <i className="dropdown-icon">▼</i></span>
               {isTrainingOpen && (
                 <div className="dropdown-menu">
-                  <Link to="/training/start" className="dropdown-item">
+                  <button onClick={handleCreateTest} className="dropdown-item">
                     <i className="menu-icon start-icon"></i>
                     Create new Test
-                  </Link>
-                  <a href="/testsList" className="dropdown-item">
+                  </button>
+                  <Link to="/testsList" className="dropdown-item">
                     <i className="menu-icon challenge-icon"></i>
                     Tests
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
             
-            <div 
+            <div
               className="nav-item dropdown"
               ref={companyRef}
               onMouseEnter={() => setIsCompanyOpen(true)}
@@ -71,18 +77,18 @@ const NavbarCompany = () => {
               <span>Candidate <i className="dropdown-icon">▼</i></span>
               {isCompanyOpen && (
                 <div className="dropdown-menu">
-                  <a href="/candidates/list" className="dropdown-item">
+                  <Link to="/candidates/list" className="dropdown-item">
                     <i className="menu-icon company-list-icon"></i>
                     Candidate list
-                  </a>
-                  <a href="/candidates/related" className="dropdown-item">
+                  </Link>
+                  <Link to="/candidates/related" className="dropdown-item">
                     <i className="menu-icon company-related-icon"></i>
                     Candidate Filter
-                  </a>
-                  <a href="/company/Candidate-Selected" className="dropdown-item">
+                  </Link>
+                  <Link to="/company/Candidate-Selected" className="dropdown-item">
                     <i className="menu-icon company-related-icon"></i>
                     Candidate Selected
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -104,7 +110,7 @@ const NavbarCompany = () => {
             </button>
             
             <div className="profile-dropdown" ref={profileRef}>
-              <button 
+              <button
                 className="profile-button"
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
               >
@@ -121,22 +127,22 @@ const NavbarCompany = () => {
                     </div>
                   </div>
                   <div className="profile-options">
-                    <a href="/company/profile" className="profile-option">
+                    <Link to="/company/profile" className="profile-option">
                       <i className="option-icon profile-icon"></i>
                       View profile
-                    </a>
-                    <a href="/settings" className="profile-option">
+                    </Link>
+                    <Link to="/settings" className="profile-option">
                       <i className="option-icon settings-icon"></i>
                       Settings
-                    </a>
-                    <a href="/dashboard" className="profile-option">
+                    </Link>
+                    <Link to="/dashboard" className="profile-option">
                       <i className="option-icon performance-icon"></i>
                       Dashboard
-                    </a>
-                    <a href="/support" className="profile-option">
+                    </Link>
+                    <Link to="/support" className="profile-option">
                       <i className="option-icon support-icon"></i>
                       Support
-                    </a>
+                    </Link>
                     <button onClick={logout} className="profile-option">
                       <i className="option-icon logout-icon"></i>
                       Log out
@@ -148,8 +154,7 @@ const NavbarCompany = () => {
           </div>
         </div>
       </div>
-      <div className="content-background">
-      </div>
+      <div className="content-background"></div>
     </div>
   );
 };

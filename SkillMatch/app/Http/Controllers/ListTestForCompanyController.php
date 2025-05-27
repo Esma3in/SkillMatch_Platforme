@@ -14,10 +14,17 @@ class ListTestForCompanyController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10);
+        $companyId = $request->get('company_id');
 
-        $tests = Test::with(['qcm', 'company', 'skill'])
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
+        // Construction de la requête avec filtrage par company_id
+        $query = Test::with(['qcm', 'company', 'skill']);
+
+        // Filtrer par company_id si fourni
+        if ($companyId) {
+            $query->where('company_id', $companyId);
+        }
+
+        $tests = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
         $tests->getCollection()->transform(function ($test) {
             // On récupère les résultats liés à ce test via le qcm_id
@@ -52,7 +59,6 @@ class ListTestForCompanyController extends Controller
             ]
         ]);
     }
-
 
     public function show($id)
     {
@@ -89,7 +95,6 @@ class ListTestForCompanyController extends Controller
         ]);
     }
 
-
     public function destroy($id)
     {
         try {
@@ -101,6 +106,15 @@ class ListTestForCompanyController extends Controller
                     'message' => 'Test not found'
                 ], 404);
             }
+
+            // Optionnel: Vérifier que le test appartient à la bonne compagnie
+            // $companyId = request()->get('company_id');
+            // if ($companyId && $test->company_id != $companyId) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Unauthorized to delete this test'
+            //     ], 403);
+            // }
 
             $test->delete();
 
@@ -125,7 +139,15 @@ class ListTestForCompanyController extends Controller
         ]);
 
         try {
-            $deletedCount = Test::whereIn('id', $request->ids)->delete();
+            $query = Test::whereIn('id', $request->ids);
+
+            // Optionnel: Vérifier que tous les tests appartiennent à la bonne compagnie
+            // $companyId = $request->get('company_id');
+            // if ($companyId) {
+            //     $query->where('company_id', $companyId);
+            // }
+
+            $deletedCount = $query->delete();
 
             return response()->json([
                 'success' => true,
@@ -187,6 +209,7 @@ class ListTestForCompanyController extends Controller
     {
         $query = Test::with(['qcm', 'company', 'skill', 'candidate']);
 
+        // Toujours filtrer par company_id si fourni
         if ($request->has('company_id') && $request->company_id) {
             $query->where('company_id', $request->company_id);
         }

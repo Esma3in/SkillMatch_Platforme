@@ -20,11 +20,33 @@ export default function TestListShowCompany() {
   
   const navigate = useNavigate();
   
-  // Récupérer la liste des tests
+  // Récupérer le company_id depuis les données utilisateur stockées
+  const getCompanyId = () => {
+    // Récupérer depuis localStorage - vous pouvez adapter selon votre structure de données
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const companyId = userData.company_id || localStorage.getItem('company_id');
+    
+    if (!companyId) {
+      console.error('Company ID not found in localStorage');
+      return null;
+    }
+    
+    return companyId;
+  };
+  
+  // Récupérer la liste des tests filtrés par company_id
   const fetchTests = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await api.get(`/api/tests/ch?page=${page}&per_page=${perPage}`);
+      const companyId = getCompanyId();
+      
+      if (!companyId) {
+        setTests([]);
+        setLoading(false);
+        return;
+      }
+      
+      const response = await api.get(`/api/tests/ch?page=${page}&per_page=${perPage}&company_id=${companyId}`);
       
       if (response.data.success) {
         setTests(response.data.data);
@@ -135,6 +157,17 @@ export default function TestListShowCompany() {
     fetchTests();
   }, []);
 
+  // Vérifier si l'utilisateur a un company_id valide
+  if (!getCompanyId()) {
+    return (
+      <div className="bg-white p-6 rounded-lg shadow">
+        <div className="text-center py-10">
+          <p className="text-red-600">Company information not found. Please login again.</p>
+        </div>
+      </div>
+    );
+  }
+
   // Modal des candidats
   const CandidatesModal = () => {
     if (!selectedTest) return null;
@@ -231,7 +264,7 @@ export default function TestListShowCompany() {
   return (
     <div className="bg-white p-6 rounded-lg shadow">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Tests List</h1>
+        <h1 className="text-2xl font-bold">My Company Tests</h1>
         <div className="flex space-x-2">
           {selectedTestIds.length > 0 && (
             <button 
@@ -253,7 +286,10 @@ export default function TestListShowCompany() {
       {loading ? (
         <div className="text-center py-10">Loading tests...</div>
       ) : tests.length === 0 ? (
-        <div className="text-center py-10">No tests found.</div>
+        <div className="text-center py-10">
+          <p>No tests found for your company.</p>
+          <p className="text-sm text-gray-500 mt-2">Create your first test to get started!</p>
+        </div>
       ) : (
         <>
           <div className="overflow-x-auto">

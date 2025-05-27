@@ -127,7 +127,7 @@ export default function TestCreationForm() {
   };
 
   const handleBack = () => {
-    navigate('/training/challenges');
+    navigate('/testsList');
   };
 
   if (dataLoading) {
