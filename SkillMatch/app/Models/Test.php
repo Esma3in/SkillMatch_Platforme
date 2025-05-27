@@ -46,13 +46,18 @@ class Test extends Model
         return $this->belongsTo(Skill::class);
     }
 
+
     public function candidate()
     {
-        return $this->belongsToMany(Candidate::class, 'Results')
-                    ->withPivot('score')  // Utilisez 'score' au lieu de 'result'
-                    ->withTimestamps();
+        return $this->hasManyThrough(
+            Candidate::class,
+            Result::class,
+            'qcm_for_roadmapId', // Clé étrangère dans results
+            'id',                // Clé locale dans candidates
+            'qcm_id',            // Clé locale dans tests
+            'candidate_id'       // Clé étrangère dans results
+        );
     }
-
     public function prerequisites()
 {
     return $this->hasManyThrough(
@@ -66,6 +71,3 @@ class Test extends Model
 }
 
 }
-
-
-

@@ -173,23 +173,28 @@ export default function SignUp({ onToggle }) {
                   </div>
                   {errors.sector && <p className="error-message">{errors.sector[0]}</p>}
                   <div className="form-field">
-                    <label htmlFor="fileInput">File</label>
+                    <label htmlFor="fileInput">Legal Identification Document (PDF)</label>
+                    <p className="help-text" style={{ fontSize: '0.8rem', color: '#666' }}>
+                      Please upload your company registration certificate or business license
+                    </p>
                     <input
                       type="file"
                       id="fileInput"
                       name="file"
                       onChange={handleChange}
+                      accept=".pdf,.docx"
                       required
                     />
                   </div>
                   {errors.file && <p className="error-message">{errors.file[0]}</p>}
                   <div className="form-field">
-                    <label htmlFor="logoInput">Logo</label>
+                    <label htmlFor="logoInput">Company Logo</label>
                     <input
                       type="file"
                       id="logoInput"
                       name="logo"
                       onChange={handleChange}
+                      accept=".png,.jpg,.jpeg"
                       required
                     />
                   </div>

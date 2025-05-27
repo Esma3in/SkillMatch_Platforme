@@ -22,6 +22,7 @@ export default function ProfileCandidate() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        
         const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
         if (!candidate_id) {
           throw new Error("Candidate ID not found in localStorage");

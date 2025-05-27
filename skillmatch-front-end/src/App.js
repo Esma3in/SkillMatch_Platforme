@@ -1,4 +1,4 @@
-import { BrowserRouter as Router,Routes,Route } from 'react-router';
+import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SignPages from './pages/SignPages';
@@ -42,7 +42,6 @@ import { ListCandidateSelected } from './pages/CandidateSelected.jsx';
 import Company from './pages/Company.jsx';
 import CandidateProfileForCompany from './pages/CandidateProfileForCompany.jsx';
 import ResultTest from './pages/Testresult.jsx';
-import TestsListForCompany from './pages/ListTestForCompany.js';
 import FilterCandidate from './pages/FilterCandidate.js';
 import {BadgeList} from './pages/BadgesListes.jsx';
 import NotificationCandidate from './pages/NotificationCandidate.js';
@@ -59,6 +58,10 @@ import LeetcodeProblemWorkspace from './pages/LeetcodeProblemWorkspace.jsx';
 import AddLeetcodeProblem from './pages/manage/addLeetcodeProblem.jsx';
 import ManageLeetcodeProblems from './pages/manage/manageLeetcodeProblems.jsx';
 import EditLeetcodeProblem from './pages/manage/editLeetcodeProblem.jsx';
+
+import TestListShowCompany from './pages/TestListShowCompany.js';
+import DocumentsPage from './pages/manage/documentsPage.jsx';
+
 
 export default function App() {
   return (
@@ -93,7 +96,7 @@ export default function App() {
 
         {/*test*/}
         <Route path = '/candidates/list' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>
-        <Route path = '/training/challenges' element={<ProtectedRoute><TestsListForCompany/></ProtectedRoute>}/>
+        <Route path = '/testsList' element={<ProtectedRoute><TestListShowCompany/></ProtectedRoute>}/>
         <Route path = '/candidates/related' element={<ProtectedRoute><FilterCandidate/></ProtectedRoute>}/>
         <Route path='/candidate/company/test/:companyId' element={<CandidateTest/>}/>
 
@@ -123,6 +126,7 @@ export default function App() {
         {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}
         <Route path="/admin/addLeetcodeProblem" element={<ProtectedRoute><AddLeetcodeProblem /></ProtectedRoute>} />
         <Route path="/manage/addLeetcodeProblem" element={<ProtectedRoute><AddLeetcodeProblem /></ProtectedRoute>} />
+        <Route path="/documents/companies" element={<ProtectedRoute><DocumentsPage /></ProtectedRoute>} />
         <Route path="/training/problems" element={<ProtectedRoute><ManageLeetcodeProblems /></ProtectedRoute>} />
         <Route path="/admin/manageLeetcodeProblems" element={<ProtectedRoute><ManageLeetcodeProblems /></ProtectedRoute>} />
         <Route path="/manage/editLeetcodeProblem/:id" element={<ProtectedRoute><EditLeetcodeProblem /></ProtectedRoute>} />

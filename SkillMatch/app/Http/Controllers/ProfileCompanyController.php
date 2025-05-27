@@ -124,7 +124,7 @@ class ProfileCompanyController extends Controller
                     'address' => $validatedData['jsonData']['companyProfileData']['address'],
                     'phone' => $validatedData['jsonData']['companyProfileData']['phone'],
                     'Bio' => $validatedData['jsonData']['companyProfileData']['Bio'],
-                    'DataCreation' => $validatedData['jsonData']['companyProfileData']['Datecreation'], // Ensure field name matches DB
+                    'DateCreation' => $validatedData['jsonData']['companyProfileData']['Datecreation'], // Ensure field name matches DB
                 ]
             );
 

@@ -1,11 +1,13 @@
 <?php
 
+use App\Models\Company;
 use App\Models\Problem;
+
 use App\Models\Candidate;
 use App\Models\ProfileCandidate;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
@@ -25,17 +27,17 @@ use App\Http\Controllers\AllCandidateController;
 use App\Http\Controllers\prerequisitesController;
 use App\Http\Controllers\QcmForRoadmapController;
 use App\Http\Controllers\skillsRoadmapController;
-use App\Http\Controllers\ProfileSettingsController;
-use App\Http\Controllers\candidateCoursesController;
-use App\Http\Controllers\CandidateSelectedController;
-use App\Http\Controllers\ProfileCandidateController;
-use App\Http\Controllers\CompaniesSelectedController;
-use App\Http\Controllers\LeetcodeProblemController;
-
-use App\Models\Roadmap;
-
 use App\Http\Controllers\ProfileCompanyController;
-use App\Models\Company;
+
+use App\Http\Controllers\CompanyDocumentController;
+use App\Http\Controllers\LeetcodeProblemController;
+use App\Http\Controllers\ProfileSettingsController;
+
+use App\Http\Controllers\candidateCoursesController;
+use App\Http\Controllers\ProfileCandidateController;
+use App\Http\Controllers\CandidateSelectedController;
+use App\Http\Controllers\CompaniesSelectedController;
+use App\Http\Controllers\ListTestForCompanyController;
 
 // CSRF Token Route
 Route::get('/sanctum/csrf-cookie', function () {
@@ -154,11 +156,17 @@ Route::put('/Allcandidates/{id}/reject', [AllCandidateController::class, 'reject
 
 //Tests Routes for company
 // Test routes
-Route::get('/tests', [TestController::class, 'index']);
-Route::get('/tests/{id}/candidates', [TestController::class, 'getSolvedCandidates']);
-Route::delete('/tests', [TestController::class, 'deleteAll']);
-Route::post('/tests', [TestController::class, 'store']);
-Route::delete('/tests/{id}', [TestController::class, 'destroy']);
+//Route::get('/tests/company/index', [ListTestForCompanyController::class, 'index']);
+//Route::get('/tests/{id}/candidates/company/solved', [ListTestForCompanyController::class, 'getSolvedCandidates']);
+//Route::delete('/tests/company/delete', [ListTestForCompanyController::class, 'deleteAll']);
+//Route::delete('/tests/{id}/company/destroy', [ListTestForCompanyController::class, 'destroy']);
+
+Route::get('/tests/ch', [ListTestForCompanyController::class, 'index']);
+Route::get('/tests/{id}/ch', [ListTestForCompanyController::class, 'show']);
+Route::delete('/tests/{id}/ch', [ListTestForCompanyController::class, 'destroy']);
+Route::delete('/tests/ch/destroy', [ListTestForCompanyController::class, 'destroyMultiple']);
+Route::get('/tests/{id}/resolved-by/ch', [ListTestForCompanyController::class, 'getResolvedByDetails']);
+Route::get('/tests/filter/ch', [ListTestForCompanyController::class, 'filter']);
 
 // Candidate filtering routes
 Route::get('/candidates/filter', [CandidateController::class, 'filterCandidates']);
@@ -184,6 +192,17 @@ Route::post('/admin/CanidatesList/setstate',[CandidateController::class,'setstat
 
 Route::get('/admin/CompaniesList',[CompanyController::class,'AllCompanies']);
 Route::post('/admin/CompaniesList/setstate',[CompanyController::class,'setstate']);
+
+// Document management routes
+Route::get('/admin/documents/companies', [CompanyDocumentController::class, 'index']);
+Route::get('/admin/documents/company/{companyId}', [CompanyDocumentController::class, 'getCompanyDocuments']);
+Route::get('/admin/documents/filter-options', [CompanyDocumentController::class, 'getFilterOptions']);
+Route::post('/admin/documents/upload', [CompanyDocumentController::class, 'upload']);
+Route::post('/admin/documents/validate/{id}', [CompanyDocumentController::class, 'validateDocument']);
+Route::post('/admin/documents/invalidate/{id}', [CompanyDocumentController::class, 'invalidateDocument']);
+Route::post('/admin/documents/status/{id}', [CompanyDocumentController::class, 'updateStatus']);
+Route::get('/admin/documents/download/{id}', [CompanyDocumentController::class, 'download']);
+Route::delete('/admin/documents/{id}', [CompanyDocumentController::class, 'destroy']);
 
 Route::get('/admin/UsersList',[UserController::class,'getBannedUsers']);
 Route::post('/admin/Users/setstate',[UserController::class,'setstate']);

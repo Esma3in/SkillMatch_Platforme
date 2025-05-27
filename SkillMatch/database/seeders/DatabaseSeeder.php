@@ -83,6 +83,12 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // Run seed to migrate existing company files to documents
+        $this->call(MigrateCompanyFilesToDocumentsSeeder::class);
+
+        // Seed company documents for testing
+        $this->call(CompanyDocumentSeeder::class);
+
         $candidates = Candidate::factory(10)->create();
         // Création de 20 challenges avec chacun 20 problèmes
         Challenge::factory(20)->create()->each(function ($challenge) use ($skillsCreated, $candidates) {

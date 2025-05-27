@@ -66,11 +66,16 @@ class Candidate extends Model
                     ->withTimestamps();
     }
 
-    public function tests(): BelongsToMany
+    public function tests()
     {
-        return $this->belongsToMany(Test::class, 'Results')
-                    ->withPivot('score')  // Utilisez 'score' au lieu de 'result'
-                    ->withTimestamps();
+        return $this->hasManyThrough(
+            Test::class,
+            Result::class,
+            'candidate_id',      // Clé étrangère dans results
+            'id',                // Clé locale dans tests
+            'id',                // Clé locale dans candidates
+            'qcm_for_roadmapId'  // Clé étrangère dans results
+        );
     }
 
 
