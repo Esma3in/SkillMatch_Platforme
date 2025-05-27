@@ -34,7 +34,7 @@ export default function DocumentsPage() {
   useEffect(() => {
     const fetchFilterOptions = async () => {
       try {
-        const response = await api.get('/admin/documents/filter-options');
+        const response = await api.get('api/admin/documents/filter-options');
         if (response.data) {
           setFilterOptions({
             documentTypes: response.data.documentTypes || [],
@@ -82,7 +82,7 @@ export default function DocumentsPage() {
       params.append('page', pagination.currentPage);
       params.append('per_page', pagination.perPage);
       
-      const response = await api.get(`/admin/documents?${params.toString()}`);
+      const response = await api.get(`api/admin/documents?${params.toString()}`);
       
       if (response.data) {
         setDocuments(response.data.data || []);
@@ -129,16 +129,16 @@ export default function DocumentsPage() {
     }
 
     try {
-      await api.post(`/admin/documents/status/${documentId}`, { status });
+      await api.post(`api/admin/documents/status/${documentId}`, { status });
       
       // Update local state
       setDocuments(documents.map(doc =>
-        doc.id === documentId ? { 
-          ...doc, 
-          status,
-          is_validated: status === 'valid',
-          validated_at: new Date().toISOString() 
-        } : doc
+          doc.id === documentId ? { 
+            ...doc, 
+            status,
+            is_validated: status === 'valid',
+            validated_at: new Date().toISOString() 
+          } : doc
       ));
       
       const statusMessage = status === 'valid' ? 'validated' : 'invalidated';
@@ -149,7 +149,7 @@ export default function DocumentsPage() {
       toast.error('Failed to update document status');
     }
   };
-
+  
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prevFilters => ({
@@ -338,98 +338,98 @@ export default function DocumentsPage() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {documents.length > 0 ? (
                       documents.map(document => (
-                        <tr key={document.id}>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">
+                            <tr key={document.id}>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div className="ml-4">
+                                    <div className="text-sm font-medium text-gray-900">
                                   {document.company?.name || 'Unknown Company'}
-                                </div>
-                                <div className="text-sm text-gray-500">
+                                    </div>
+                                    <div className="text-sm text-gray-500">
                                   {document.company?.profile?.address || 'No address'}
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <FaFileAlt className="text-blue-500 mr-2" />
-                              <span className="text-sm text-gray-900">{document.document_type}</span>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(document.status)}`}>
-                              {getStatusText(document.status)}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {new Date(document.created_at).toLocaleDateString()}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {document.validated_at ? new Date(document.validated_at).toLocaleDateString() : 'Not validated'}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium relative">
-                            <div className="flex space-x-2">
-                              <button
-                                onClick={() => handlePreviewDocument(document)}
-                                className="text-blue-600 hover:text-blue-900"
-                                title="Preview"
-                              >
-                                <FaEye />
-                              </button>
-                              <button
-                                onClick={() => handleDownloadDocument(document.id)}
-                                className="text-green-600 hover:text-green-900"
-                                title="Download"
-                              >
-                                <FaDownload />
-                              </button>
-                              {document.status !== 'valid' && (
-                                <button
-                                  onClick={() => handleUpdateDocumentStatus(document.id, 'valid')}
-                                  className="text-indigo-600 hover:text-indigo-900"
-                                  title="Approve Document"
-                                >
-                                  <FaCheck />
-                                </button>
-                              )}
-                              {document.status !== 'invalid' && (
-                                <button
-                                  onClick={() => handleUpdateDocumentStatus(document.id, 'invalid')}
-                                  className="text-red-600 hover:text-red-900"
-                                  title="Reject Document"
-                                >
-                                  <FaTimes />
-                                </button>
-                              )}
-                            </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <FaFileAlt className="text-blue-500 mr-2" />
+                                  <span className="text-sm text-gray-900">{document.document_type}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(document.status)}`}>
+                                  {getStatusText(document.status)}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {new Date(document.created_at).toLocaleDateString()}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {document.validated_at ? new Date(document.validated_at).toLocaleDateString() : 'Not validated'}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium relative">
+                                <div className="flex space-x-2">
+                                  <button
+                                    onClick={() => handlePreviewDocument(document)}
+                                    className="text-blue-600 hover:text-blue-900"
+                                    title="Preview"
+                                  >
+                                    <FaEye />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDownloadDocument(document.id)}
+                                    className="text-green-600 hover:text-green-900"
+                                    title="Download"
+                                  >
+                                    <FaDownload />
+                                  </button>
+                                  {document.status !== 'valid' && (
+                                    <button
+                                      onClick={() => handleUpdateDocumentStatus(document.id, 'valid')}
+                                      className="text-indigo-600 hover:text-indigo-900"
+                                      title="Approve Document"
+                                    >
+                                      <FaCheck />
+                                    </button>
+                                  )}
+                                  {document.status !== 'invalid' && (
+                                    <button
+                                      onClick={() => handleUpdateDocumentStatus(document.id, 'invalid')}
+                                      className="text-red-600 hover:text-red-900"
+                                      title="Reject Document"
+                                    >
+                                      <FaTimes />
+                                    </button>
+                                  )}
+                                </div>
 
-                            {/* Confirmation dialog */}
-                            {showConfirmation && showConfirmation.id === document.id && (
-                              <div className="absolute right-0 bg-white shadow-lg rounded-md border p-4 z-10 mt-2 w-64">
-                                <p className="text-sm text-gray-700 mb-3">
-                                  {showConfirmation.status === 'valid' 
-                                    ? 'Are you sure you want to approve this legal document?' 
-                                    : 'Are you sure you want to reject this legal document?'}
-                                </p>
-                                <div className="flex justify-end space-x-2">
-                                  <button
-                                    onClick={cancelConfirmation}
-                                    className="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm"
-                                  >
-                                    Cancel
-                                  </button>
-                                  <button
-                                    onClick={() => handleUpdateDocumentStatus(document.id, showConfirmation.status)}
-                                    className={`px-3 py-1 text-white rounded text-sm ${showConfirmation.status === 'valid' ? 'bg-indigo-600' : 'bg-red-600'}`}
-                                  >
-                                    Confirm
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
+                                {/* Confirmation dialog */}
+                                {showConfirmation && showConfirmation.id === document.id && (
+                                  <div className="absolute right-0 bg-white shadow-lg rounded-md border p-4 z-10 mt-2 w-64">
+                                    <p className="text-sm text-gray-700 mb-3">
+                                      {showConfirmation.status === 'valid' 
+                                        ? 'Are you sure you want to approve this legal document?' 
+                                        : 'Are you sure you want to reject this legal document?'}
+                                    </p>
+                                    <div className="flex justify-end space-x-2">
+                                      <button
+                                        onClick={cancelConfirmation}
+                                        className="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm"
+                                      >
+                                        Cancel
+                                      </button>
+                                      <button
+                                        onClick={() => handleUpdateDocumentStatus(document.id, showConfirmation.status)}
+                                        className={`px-3 py-1 text-white rounded text-sm ${showConfirmation.status === 'valid' ? 'bg-indigo-600' : 'bg-red-600'}`}
+                                      >
+                                        Confirm
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
                       ))
                     ) : (
                       <tr>
@@ -502,40 +502,40 @@ export default function DocumentsPage() {
                         // For many pages, show limited page numbers with ellipsis
                         if (pagination.totalPages > 7) {
                           // Always show first page, last page, current page and pages around current
-                          if (
-                            pageNumber === 1 || 
-                            pageNumber === pagination.totalPages || 
-                            (pageNumber >= pagination.currentPage - 1 && pageNumber <= pagination.currentPage + 1)
-                          ) {
-                            return (
-                              <button
-                                key={pageNumber}
-                                onClick={() => handlePageChange(pageNumber)}
-                                className={`relative inline-flex items-center px-4 py-2 text-sm font-medium ${
-                                  isCurrentPage 
-                                    ? 'bg-indigo-50 text-indigo-600 z-10' 
-                                    : 'text-gray-500 hover:bg-gray-50'
-                                }`}
-                              >
-                                {pageNumber}
-                              </button>
-                            );
-                          } else if (
-                            (pageNumber === 2 && pagination.currentPage > 3) ||
-                            (pageNumber === pagination.totalPages - 1 && pagination.currentPage < pagination.totalPages - 2)
-                          ) {
-                            // Show ellipsis for skipped pages
-                            return (
-                              <span
-                                key={`ellipsis-${pageNumber}`}
-                                className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700"
-                              >
-                                ...
-                              </span>
-                            );
-                          }
-                          
-                          return null;
+                        if (
+                          pageNumber === 1 || 
+                          pageNumber === pagination.totalPages || 
+                          (pageNumber >= pagination.currentPage - 1 && pageNumber <= pagination.currentPage + 1)
+                        ) {
+                          return (
+                            <button
+                              key={pageNumber}
+                              onClick={() => handlePageChange(pageNumber)}
+                              className={`relative inline-flex items-center px-4 py-2 text-sm font-medium ${
+                                isCurrentPage 
+                                  ? 'bg-indigo-50 text-indigo-600 z-10' 
+                                  : 'text-gray-500 hover:bg-gray-50'
+                              }`}
+                            >
+                              {pageNumber}
+                            </button>
+                          );
+                        } else if (
+                          (pageNumber === 2 && pagination.currentPage > 3) ||
+                          (pageNumber === pagination.totalPages - 1 && pagination.currentPage < pagination.totalPages - 2)
+                        ) {
+                          // Show ellipsis for skipped pages
+                          return (
+                            <span
+                              key={`ellipsis-${pageNumber}`}
+                              className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700"
+                            >
+                              ...
+                            </span>
+                          );
+                        }
+                        
+                        return null;
                         } else {
                           // If fewer pages, show all page numbers
                           return (

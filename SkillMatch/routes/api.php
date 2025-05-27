@@ -88,6 +88,29 @@ Route::get('/challenges/{challenge}', [ChallengeController::class, 'show']);
 Route::get('/challenges/{challenge}/problems', [ChallengeController::class, 'getProblems']);
 Route::get('/serie-challenges/{skill}', [ChallengeController::class, 'getSerieChallenges']);
 
+// Enhanced Challenge Routes
+Route::prefix('training')->group(function () {
+    // Public routes
+    Route::get('challenges', [ChallengeController::class, 'index']);
+    Route::get('challenges/{challenge}', [ChallengeController::class, 'show']);
+    Route::get('challenges/{challenge}/problems', [ChallengeController::class, 'getProblems']);
+
+    // Candidate routes
+    Route::post('challenges/{challenge}/start', [ChallengeController::class, 'startChallenge']);
+    Route::post('challenges/{challenge}/update-progress', [ChallengeController::class, 'updateProgress']);
+    Route::get('certificates/{certificateId}', [ChallengeController::class, 'getCertificate']);
+    Route::get('candidates/{candidateId}/certificates', [ChallengeController::class, 'getCandidateCertificates']);
+    Route::get('challenges/{challenge}/enrollment/{candidateId}', [ChallengeController::class, 'getEnrollmentStatus']);
+
+    // Admin routes
+    Route::prefix('admin')->group(function () {
+        Route::get('challenges', [ChallengeController::class, 'getAdminChallenges']);
+        Route::post('challenges', [ChallengeController::class, 'store']);
+        Route::put('challenges/{challenge}', [ChallengeController::class, 'update']);
+        Route::delete('challenges/{challenge}', [ChallengeController::class, 'destroy']);
+    });
+});
+
 // Problem Routes (retained for backward compatibility, remove if not needed)
 Route::get('/problems', [ProblemController::class, 'index']);
 Route::get('/serie-problems/{skill}', [ProblemController::class, 'getSerieProblems']);

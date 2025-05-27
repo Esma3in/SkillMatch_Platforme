@@ -12,12 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('company_documents', function (Blueprint $table) {
-            $table->string('status')->default('pending')->after('is_validated');
-        });
+        // Check if the column exists before adding it
+        if (!Schema::hasColumn('company_documents', 'status')) {
+            Schema::table('company_documents', function (Blueprint $table) {
+                $table->string('status')->default('pending')->after('is_validated');
+            });
 
-        // Update existing records after the column is created
-        DB::statement("UPDATE company_documents SET status = CASE WHEN is_validated = 1 THEN 'valid' ELSE 'pending' END");
+            // Update existing records after the column is created
+            DB::statement("UPDATE company_documents SET status = CASE WHEN is_validated = 1 THEN 'valid' ELSE 'pending' END");
+        }
     }
 
     /**
@@ -25,8 +28,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('company_documents', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        if (Schema::hasColumn('company_documents', 'status')) {
+            Schema::table('company_documents', function (Blueprint $table) {
+                $table->dropColumn('status');
+            });
+        }
     }
 };
