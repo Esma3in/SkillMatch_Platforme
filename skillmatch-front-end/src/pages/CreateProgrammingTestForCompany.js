@@ -10,9 +10,9 @@ export default function TestCreationForm() {
     prerequisites: "",
     tools_required: "",
     before_answer: "",
-    qcm_id: "",
+    qcm_ids: [],
     company_id: localStorage.getItem("company_id") || "", // Initialize with company_id from localStorage
-    skill_id: "",
+    skill_ids: [], 
   });
   const [qcms, setQcms] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -53,9 +53,18 @@ export default function TestCreationForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
     // Prevent changing company_id if it's set from localStorage
     if (name === "company_id" && formData.company_id) return;
-    setFormData({ ...formData, [name]: value });
+    
+    // Gérer la sélection multiple pour skills et qcms
+    if (name === "skill_ids" || name === "qcm_ids") {
+      const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+      setFormData({ ...formData, [name]: selectedOptions });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+    
     if (error) setError(null);
   };
 
@@ -68,8 +77,8 @@ export default function TestCreationForm() {
       setError("Company ID is missing. Please ensure you are logged in.");
       return false;
     }
-    if (!formData.skill_id) {
-      setError("Please select a primary skill.");
+    if (!formData.skill_ids.length) {
+      setError("Please select at least one skill.");
       return false;
     }
     return true;
@@ -90,9 +99,9 @@ export default function TestCreationForm() {
         prerequisites: formData.prerequisites || null,
         tools_required: formData.tools_required || null,
         before_answer: formData.before_answer || null,
-        qcm_id: formData.qcm_id ? parseInt(formData.qcm_id) : null,
-        company_id: parseInt(formData.company_id), // Use the preselected company_id
-        skill_id: parseInt(formData.skill_id),
+        qcm_ids: formData.qcm_ids.length ? formData.qcm_ids.map(id => parseInt(id)) : null,
+        company_id: parseInt(formData.company_id),
+        skill_ids: formData.skill_ids.map(id => parseInt(id)),
       };
 
       const response = await api.post("/api/tests/company/create", submitData);
@@ -103,9 +112,9 @@ export default function TestCreationForm() {
         prerequisites: "",
         tools_required: "",
         before_answer: "",
-        qcm_id: "",
-        company_id: localStorage.getItem("company_id") || "", // Reset with company_id
-        skill_id: "",
+        qcm_ids: [],
+        company_id: localStorage.getItem("company_id") || "",
+        skill_ids: [],
       });
       setTimeout(() => {
         setSuccess(false);
