@@ -207,7 +207,19 @@ export default function CandidateListForCompany() {
   // Accepter un candidat
   const acceptCandidate = async (candidateId) => {
     try {
-      await api.put(`/api/Allcandidates/${candidateId}/accept`);
+      // Get company ID from localStorage
+      const companyId = localStorage.getItem('company_id') || localStorage.getItem('companyId');
+      
+      if (!companyId) {
+        showNotification('Company ID not found. Please log in again.', 'error');
+        return false;
+      }
+
+      // Send both candidate ID and company ID to the backend
+      await api.put(`/api/Allcandidates/${candidateId}/accept`, {
+        company_id: companyId
+      });
+
       showNotification('Candidate accepted successfully');
       fetchCandidates();
       return true;

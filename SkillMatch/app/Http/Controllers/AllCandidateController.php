@@ -8,6 +8,7 @@ use App\Models\Badge;
 use App\Models\Result;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
+use App\Models\CandidateSelected;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -141,26 +142,36 @@ class AllCandidateController extends Controller
     {
         // Find the candidate
         $candidate = Candidate::find($id);
-
         if (!$candidate) {
             return response()->json(['message' => 'Candidate not found'], 404);
         }
 
-        // Update candidate status (adjust according to your logic)
-        $candidate->state = 'accepted'; // Make sure the 'status' column exists
+        // Get company_id from request (sent by frontend)
+        $companyId = request('company_id') ?? $candidate->company_id ?? 1;
+
+        // Update candidate status
+        $candidate->state = 'accepted';
         $candidate->save();
 
         // Create a notification
         Notification::create([
             'message' => 'You have been accepted by our company. Congratulations!',
             'dateEnvoi' => now(),
-            'destinataire' => $candidate->email, // or any field identifying the candidate
+            'destinataire' => $candidate->email,
             'candidate_id' => $candidate->id,
-            'company_id' => $candidate->company_id ?? 1,
+            'company_id' => $companyId, // ✅ Utiliser la variable $companyId
             'read' => 0,
         ]);
 
-        return response()->json(['message' => 'Candidate accepted and notification sent successfully']);
+        // Store in candidate_selecteds table
+        CandidateSelected::create([
+            'candidate_id' => $candidate->id,
+            'company_id' => $companyId, // ✅ Utiliser la variable $companyId
+        ]);
+
+        return response()->json([
+            'message' => 'Candidate accepted and notification sent successfully'
+        ]);
     }
 
 
