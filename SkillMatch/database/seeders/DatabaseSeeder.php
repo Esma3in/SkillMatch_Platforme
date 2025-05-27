@@ -102,14 +102,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Super Admin',
             'email' => 'admin@example.com',
-            'password' => Hash::make('Admin@12345'), 
+            'password' => Hash::make('Admin@12345'),
             'role'=>'admin',
         ])->each(function ($user){
             Administrator::create([
             'name' => $user->name,
             'email' => $user->email,
-            'password' => $user->password, 
-            'user_id'=>$user->id 
+            'password' => $user->password,
+            'user_id'=>$user->id
             ]);
         });
 

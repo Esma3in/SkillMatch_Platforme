@@ -246,8 +246,8 @@ Route::get('/admin/recent-activity',[UserController::class,'getRecentActivity'])
 Route::get('/admin/candidates/{id}', [CandidateController::class, 'getDetailedCandidate']);
 Route::get('/admin/companies/{id}', [CompanyController::class, 'getDetailedCompany']);
 
-Route::get('api/admin/candidates/{id}', [CandidateController::class, 'show']);
-Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
+Route::get('/admin/candidates/{id}', [CandidateController::class, 'show']);
+Route::get('/admin/companies/{id}', [CompanyController::class, 'show']);
 
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
@@ -325,3 +325,11 @@ Route::post('/leetcode/test-submit', [LeetcodeProblemController::class, 'testSub
 // Debug endpoint - accepts any method
 Route::any('/leetcode/debug/{id?}', [LeetcodeProblemController::class, 'debugRequest'])
     ->withoutMiddleware(['csrf']);
+
+// Admin routes for challenges (direct access)
+Route::prefix('admin')->group(function () {
+    Route::get('challenges', [ChallengeController::class, 'getAdminChallenges']);
+    Route::post('challenges', [ChallengeController::class, 'store']);
+    Route::put('challenges/{challenge}', [ChallengeController::class, 'update']);
+    Route::delete('challenges/{challenge}', [ChallengeController::class, 'destroy']);
+});

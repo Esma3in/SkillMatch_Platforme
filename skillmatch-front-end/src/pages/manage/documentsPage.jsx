@@ -34,7 +34,7 @@ export default function DocumentsPage() {
   useEffect(() => {
     const fetchFilterOptions = async () => {
       try {
-        const response = await api.get('api/admin/documents/filter-options');
+        const response = await api.get('/api/admin/documents/filter-options');
         if (response.data) {
           setFilterOptions({
             documentTypes: response.data.documentTypes || [],

@@ -153,7 +153,7 @@ const AllCandidate = () => {
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const response = await api.get('/admin/CanidatesList');
+        const response = await api.get('/api/admin/CanidatesList');
         if (response.status !== 200) {
           throw new Error('Failed to fetch candidates');
         }

@@ -41,11 +41,20 @@ export default function AdminChallenges() {
   const fetchChallenges = async () => {
     setLoading(true);
     try {
-      const response = await api.get(`api/training/admin/challenges?page=${currentPage}`);
+      // Try direct admin route first, fallback to training/admin if needed
+      let response;
+      try {
+        response = await api.get(`api/admin/challenges?page=${currentPage}`);
+      } catch (error) {
+        console.log('Falling back to training/admin route');
+        response = await api.get(`api/training/admin/challenges?page=${currentPage}`);
+      }
+      
       setChallenges(response.data.data);
       setTotalPages(response.data.last_page || 1);
       setLoading(false);
     } catch (error) {
+      console.error('Error loading challenges:', error);
       toast.error('Failed to load challenges');
       setLoading(false);
     }
@@ -107,12 +116,17 @@ export default function AdminChallenges() {
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
     
-    // If skill changes, update the problem_ids
+    // Special handling for skill_id to ensure it's stored as a number
     if (name === 'skill_id') {
-      setForm(prev => ({ ...prev, problem_ids: [] }));
+      setForm(prev => ({ 
+        ...prev, 
+        [name]: value ? parseInt(value) : '', 
+        problem_ids: [] 
+      }));
       setSelectedProblems([]);
+    } else {
+      setForm(prev => ({ ...prev, [name]: value }));
     }
   };
   
@@ -205,8 +219,15 @@ export default function AdminChallenges() {
   
   const openEditModal = async (challenge) => {
     try {
-      // Get challenge details with problems
-      const response = await api.get(`api/training/challenges/${challenge.id}`);
+      // Try direct admin route first
+      let response;
+      try {
+        response = await api.get(`api/training/challenges/${challenge.id}`);
+      } catch (error) {
+        console.log('Falling back to alternate route');
+        response = await api.get(`api/challenges/${challenge.id}`);
+      }
+      
       const challengeData = response.data;
       
       setSelectedChallenge(challengeData);
@@ -214,13 +235,14 @@ export default function AdminChallenges() {
         name: challengeData.name,
         description: challengeData.description,
         level: challengeData.level,
-        skill_id: challengeData.skill_id.toString(),
+        skill_id: parseInt(challengeData.skill_id),
         problem_ids: challengeData.problems.map(p => p.id)
       });
       
       setSelectedProblems(challengeData.problems.map(p => p.id));
       setIsModalOpen(true);
     } catch (error) {
+      console.error('Failed to load challenge details:', error);
       toast.error('Failed to load challenge details');
     }
   };
@@ -233,34 +255,64 @@ export default function AdminChallenges() {
       return;
     }
     
+    // Create a cleaned version of the form data
+    const formData = {
+      ...form,
+      skill_id: parseInt(form.skill_id)
+    };
+    
+    // Debug log the form data
+    console.log('Submitting form data:', formData);
+    
     try {
       let response;
       
       if (selectedChallenge) {
-        // Update existing challenge
-        response = await api.put(`api/training/admin/challenges/${selectedChallenge.id}`, form);
+        // Update existing challenge - Use direct admin route
+        const url = `api/admin/challenges/${selectedChallenge.id}`;
+        console.log(`Sending PUT request to: ${url}`);
+        response = await api.put(url, formData);
         toast.success('Challenge updated successfully');
       } else {
-        // Create new challenge
-        response = await api.post('api/training/admin/challenges', form);
+        // Create new challenge - Use direct admin route
+        const url = 'api/admin/challenges';
+        console.log(`Sending POST request to: ${url}`);
+        response = await api.post(url, formData);
         toast.success('Challenge created successfully');
       }
       
+      console.log('API Response:', response.data);
       setIsModalOpen(false);
       fetchChallenges();
     } catch (error) {
-      console.error('Error saving challenge:', error);
-      toast.error('Failed to save challenge');
+      console.error('Full error object:', error);
+      console.error('Error response data:', error.response ? error.response.data : 'No response data');
+      console.error('Error status:', error.response ? error.response.status : 'No status code');
+      
+      let errorMessage = 'Failed to save challenge';
+      
+      // Display more specific error if available
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errors = error.response.data.errors;
+        const firstError = Object.values(errors)[0];
+        if (firstError && firstError.length > 0) {
+          errorMessage = firstError[0];
+        }
+      }
+      
+      toast.error(errorMessage);
     }
   };
   
   const handleDeleteChallenge = async (challengeId) => {
     if (window.confirm('Are you sure you want to delete this challenge?')) {
       try {
-        await api.delete(`api/training/admin/challenges/${challengeId}`);
+        // Use direct admin route
+        await api.delete(`api/admin/challenges/${challengeId}`);
         toast.success('Challenge deleted successfully');
         fetchChallenges();
       } catch (error) {
+        console.error('Error deleting challenge:', error);
         toast.error('Failed to delete challenge');
       }
     }

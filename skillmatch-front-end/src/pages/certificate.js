@@ -19,7 +19,7 @@ export default function Certificate() {
     const fetchCertificate = async () => {
       setLoading(true);
       try {
-        const response = await api.get(`/training/certificates/${certificateId}`);
+        const response = await api.get(`api/training/certificates/${certificateId}`);
         setCertificate(response.data);
         setLoading(false);
       } catch (err) {

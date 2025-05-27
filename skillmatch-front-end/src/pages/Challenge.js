@@ -28,7 +28,7 @@ export default function ChallengeList() {
       setLoading(true);
       try {
         // Fetch challenges
-        const response = await api.get(`/training/challenges?page=${currentPage}`);
+        const response = await api.get(`api/training/challenges?page=${currentPage}`);
         setChallenges(response.data.data);
         setFilteredChallenges(response.data.data);
         setLastPage(response.data.last_page || 1);
@@ -37,7 +37,7 @@ export default function ChallengeList() {
         // Fetch certificates if logged in
         if (candidateId) {
           try {
-            const certificatesResponse = await api.get(`/training/candidates/${candidateId}/certificates`);
+            const certificatesResponse = await api.get(`api/training/candidates/${candidateId}/certificates`);
             setCertificates(certificatesResponse.data);
           } catch (err) {
             console.error("Error fetching certificates:", err);

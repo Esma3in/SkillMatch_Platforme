@@ -219,7 +219,7 @@ const AllCompanies = () => {
   const handleViewDetails = async (companyId) => {
     try {
       setLoading(true);
-      const response = await api.get(`/admin/companies/${companyId}`);
+      const response = await api.get(`/api/admin/companies/${companyId}`);
       
       if (response.status === 200) {
         // Merge the detailed data with the basic company data

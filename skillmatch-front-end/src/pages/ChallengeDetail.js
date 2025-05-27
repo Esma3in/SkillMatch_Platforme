@@ -30,18 +30,18 @@ export default function ChallengeDetail() {
       setLoading(true);
       try {
         // Fetch challenge details
-        const challengeResponse = await api.get(`/training/challenges/${challengeId}`);
+        const challengeResponse = await api.get(`api/training/challenges/${challengeId}`);
         setChallenge(challengeResponse.data);
         
         // Fetch problems
-        const problemsResponse = await api.get(`/training/challenges/${challengeId}/problems`);
+        const problemsResponse = await api.get(`api/training/challenges/${challengeId}/problems`);
         setProblems(problemsResponse.data);
         
         // Check enrollment status if candidateId exists
         if (candidateId) {
           try {
             // This endpoint would check if the candidate is enrolled and return progress
-            const enrollmentResponse = await api.get(`/training/challenges/${challengeId}/enrollment/${candidateId}`);
+            const enrollmentResponse = await api.get(`api/training/challenges/${challengeId}/enrollment/${candidateId}`);
             setIsEnrolled(true);
             setProgress({
               completed: enrollmentResponse.data.completed_problems || 0,
@@ -52,7 +52,7 @@ export default function ChallengeDetail() {
             
             // If challenge is completed, fetch certificate
             if (enrollmentResponse.data.is_completed && enrollmentResponse.data.certificate_id) {
-              const certificateResponse = await api.get(`/training/certificates/${enrollmentResponse.data.certificate_id}`);
+              const certificateResponse = await api.get(`api/training/certificates/${enrollmentResponse.data.certificate_id}`);
               setCertificate(certificateResponse.data);
             }
           } catch (err) {
@@ -86,7 +86,7 @@ export default function ChallengeDetail() {
     }
     
     try {
-      await api.post(`/training/challenges/${challengeId}/start`, { candidate_id: candidateId });
+      await api.post(`api/training/challenges/${challengeId}/start`, { candidate_id: candidateId });
       setIsEnrolled(true);
       toast.success('Challenge started successfully!');
       
@@ -108,7 +108,7 @@ export default function ChallengeDetail() {
     }
     
     try {
-      const response = await api.post(`/training/challenges/${challengeId}/update-progress`, {
+      const response = await api.post(`api/training/challenges/${challengeId}/update-progress`, {
         candidate_id: candidateId,
         problem_id: problemId,
         completed: true
@@ -126,7 +126,7 @@ export default function ChallengeDetail() {
       
       // If challenge is completed and certificate is available
       if (response.data.certificate_id) {
-        const certificateResponse = await api.get(`/training/certificates/${response.data.certificate_id}`);
+        const certificateResponse = await api.get(`api/training/certificates/${response.data.certificate_id}`);
         setCertificate(certificateResponse.data);
       }
     } catch (error) {
