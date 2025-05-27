@@ -1,0 +1,31 @@
+[2025-05-27 12:54:20] local.ERROR: There are no commands defined in the "db:" namespace.
+
+Did you mean this?
+    db {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"db:\" namespace.
+
+Did you mean this?
+    db at C:\\Users\\YASSINE\\laravelProject\\SkillMatch_Platforme\\SkillMatch\\vendor\\symfony\\console\\Application.php:660)
+[stacktrace]
+#0 C:\\Users\\YASSINE\\laravelProject\\SkillMatch_Platforme\\SkillMatch\\vendor\\symfony\\console\\Application.php(709): Symfony\\Component\\Console\\Application->findNamespace()
+#1 C:\\Users\\YASSINE\\laravelProject\\SkillMatch_Platforme\\SkillMatch\\vendor\\symfony\\console\\Application.php(284): Symfony\\Component\\Console\\Application->find()
+#2 C:\\Users\\YASSINE\\laravelProject\\SkillMatch_Platforme\\SkillMatch\\vendor\\symfony\\console\\Application.php(193): Symfony\\Component\\Console\\Application->doRun()
+#3 C:\\Users\\YASSINE\\laravelProject\\SkillMatch_Platforme\\SkillMatch\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(197): Symfony\\Component\\Console\\Application->run()
+#4 C:\\Users\\YASSINE\\laravelProject\\SkillMatch_Platforme\\SkillMatch\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1234): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 C:\\Users\\YASSINE\\laravelProject\\SkillMatch_Platforme\\SkillMatch\\artisan(16): Illuminate\\Foundation\\Application->handleCommand()
+#6 {main}
+"} 
+[2025-05-27 12:59:14] local.INFO: array (
+  'title' => 'service 1',
+  'descriptions' => 
+  array (
+    0 => 'descrition ',
+  ),
+)  
+[2025-05-27 13:02:06] local.ERROR: JSON content validation failed {"errors":{"legalDocuments":["The legal documents field is required."]}} 
+[2025-05-27 13:02:20] local.INFO: array (
+  'title' => 'bio ',
+  'descriptions' => 
+  array (
+    0 => 'bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio ',
+  ),
+)  

@@ -1,19 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../../styles/pages/Navbar/navbarCandidate.css';
+import '../../styles/pages/Navbar/navbarCandidate.css'; // Assuming this CSS file is shared or relevant
 import userAvatar from '../../assets/userAvatar.jpg';
-import useLogout from '../../hooks/useLogout'; // Fixed hook naming convention
+import useLogout from '../../hooks/useLogout';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const NavbarCompany = () => {
-  const logout = useLogout(); // Fixed hook naming
-  const [isTrainingOpen, setIsTrainingOpen] = useState(false);
-  const [isCompanyOpen, setIsCompanyOpen] = useState(false);
+  const logout = useLogout();
+  const [isTestOpen, setIsTestOpen] = useState(false); // Renamed for clarity (was isTrainingOpen)
+  const [isCandidateOpen, setIsCandidateOpen] = useState(false); // Renamed for clarity (was isCompanyOpen)
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const trainingRef = useRef(null);
-  const companyRef = useRef(null);
+  const testRef = useRef(null); // Ref for the "Tests" dropdown
+  const candidateRef = useRef(null); // Ref for the "Candidate" dropdown
   const profileRef = useRef(null);
+
+  // Refs for timeout IDs
+  const testTimeout = useRef(null);
+  const candidateTimeout = useRef(null);
+
   const navigate = useNavigate();
 
   const handleCreateTest = () => {
@@ -22,11 +27,15 @@ const NavbarCompany = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (trainingRef.current && !trainingRef.current.contains(event.target)) {
-        setIsTrainingOpen(false);
+      // Clear timeouts when clicking outside to prevent unexpected menu re-opening
+      clearTimeout(testTimeout.current);
+      clearTimeout(candidateTimeout.current);
+
+      if (testRef.current && !testRef.current.contains(event.target)) {
+        setIsTestOpen(false);
       }
-      if (companyRef.current && !companyRef.current.contains(event.target)) {
-        setIsCompanyOpen(false);
+      if (candidateRef.current && !candidateRef.current.contains(event.target)) {
+        setIsCandidateOpen(false);
       }
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setIsProfileOpen(false);
@@ -36,8 +45,35 @@ const NavbarCompany = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      // Cleanup timeouts on component unmount
+      clearTimeout(testTimeout.current);
+      clearTimeout(candidateTimeout.current);
     };
-  }, [navigate]); // Added navigate to dependency array
+  }, []); // Empty dependency array as navigate is not used inside handleClickOutside directly
+
+  // Handlers for 'Tests' dropdown
+  const handleTestEnter = () => {
+    clearTimeout(testTimeout.current); // Clear any pending hide timeout
+    setIsTestOpen(true);
+  };
+
+  const handleTestLeave = () => {
+    testTimeout.current = setTimeout(() => {
+      setIsTestOpen(false);
+    }, 200); // 200ms delay before hiding
+  };
+
+  // Handlers for 'Candidate' dropdown
+  const handleCandidateEnter = () => {
+    clearTimeout(candidateTimeout.current); // Clear any pending hide timeout
+    setIsCandidateOpen(true);
+  };
+
+  const handleCandidateLeave = () => {
+    candidateTimeout.current = setTimeout(() => {
+      setIsCandidateOpen(false);
+    }, 200); // 200ms delay before hiding
+  };
 
   return (
     <div className="navbar-container">
@@ -49,12 +85,12 @@ const NavbarCompany = () => {
             
             <div
               className="nav-item dropdown"
-              ref={trainingRef}
-              onMouseEnter={() => setIsTrainingOpen(true)}
-              onMouseLeave={() => setIsTrainingOpen(false)}
+              ref={testRef}
+              onMouseEnter={handleTestEnter}
+              onMouseLeave={handleTestLeave}
             >
               <span>Tests <i className="dropdown-icon">▼</i></span>
-              {isTrainingOpen && (
+              {isTestOpen && (
                 <div className="dropdown-menu">
                   <button onClick={handleCreateTest} className="dropdown-item">
                     <i className="menu-icon start-icon"></i>
@@ -70,12 +106,12 @@ const NavbarCompany = () => {
             
             <div
               className="nav-item dropdown"
-              ref={companyRef}
-              onMouseEnter={() => setIsCompanyOpen(true)}
-              onMouseLeave={() => setIsCompanyOpen(false)}
+              ref={candidateRef}
+              onMouseEnter={handleCandidateEnter}
+              onMouseLeave={handleCandidateLeave}
             >
               <span>Candidate <i className="dropdown-icon">▼</i></span>
-              {isCompanyOpen && (
+              {isCandidateOpen && (
                 <div className="dropdown-menu">
                   <Link to="/candidates/list" className="dropdown-item">
                     <i className="menu-icon company-list-icon"></i>
