@@ -1,0 +1,226 @@
+[
+    {
+      "id": 1,
+      "title": "Two Sum",
+      "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+      "constraints": "2 <= nums.length <= 10^4\n-10^9 <= nums[i] <= 10^9\n-10^9 <= target <= 10^9",
+      "examples": [
+        {"input": "nums = [2,7,11,15], target = 9", "output": "[0,1]"},
+        {"input": "nums = [3,2,4], target = 6", "output": "[1,2]"}
+      ],
+      "difficulty": "easy",
+      "test_cases": [
+        {"input": [2, 7, 11, 15], "target": 9, "expected_output": [0, 1]},
+        {"input": [3, 2, 4], "target": 6, "expected_output": [1, 2]}
+      ],
+      "starter_code": {
+        "javascript": "function twoSum(nums, target) {\n  // Your code here\n}",
+        "python": "def two_sum(nums, target):\n    # Your code here\n    pass",
+        "java": "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Your code here\n        return new int[0];\n    }\n}",
+        "php": "function twoSum($nums, $target) {\n    // Your code here\n}"
+      },
+      "solution_code": {
+        "javascript": "function twoSum(nums, target) {\n  const map = {};\n  for (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    if (map[complement] !== undefined) {\n      return [map[complement], i];\n    }\n    map[nums[i]] = i;\n  }\n  return [];\n}",
+        "python": "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []"
+      },
+      "skill_id": 1,
+      "challenge_id": null,
+      "creator_id": 1
+    },
+    {
+      "id": 2,
+      "title": "Valid Parentheses",
+      "description": "Check if the input string containing brackets is valid.",
+      "constraints": "1 <= s.length <= 10^4",
+      "examples": [
+        {"input": "s = \"()[]{}\"", "output": "true"},
+        {"input": "s = \"(]\"", "output": "false"}
+      ],
+      "difficulty": "easy",
+      "test_cases": [
+        {"input": "()[]{}", "expected_output": true},
+        {"input": "(]", "expected_output": false}
+      ],
+      "starter_code": {
+        "javascript": "function isValid(s) {\n  // Your code here\n}",
+        "python": "def is_valid(s):\n    # Your code here\n    pass",
+        "java": "class Solution {\n    public boolean isValid(String s) {\n        // Your code here\n        return false;\n    }\n}",
+        "php": "function isValid($s) {\n    // Your code here\n}"
+      },
+      "solution_code": {
+        "javascript": "function isValid(s) {\n  const stack = [];\n  const mapping = {')': '(', '}': '{', ']': '['};\n  \n  for (let char of s) {\n    if (char in mapping) {\n      const topElement = stack.pop() || '#';\n      if (topElement !== mapping[char]) {\n        return false;\n      }\n    } else {\n      stack.push(char);\n    }\n  }\n  \n  return stack.length === 0;\n}",
+        "python": "def is_valid(s):\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in mapping.values():\n            stack.append(char)\n        elif char in mapping:\n            if not stack or stack.pop() != mapping[char]:\n                return False\n    return not stack"
+      },
+      "skill_id": 2,
+      "challenge_id": 1,
+      "creator_id": 1
+    },
+    {
+      "id": 3,
+      "title": "Merge Two Sorted Lists",
+      "description": "Merge two sorted linked lists and return it as a new list.",
+      "constraints": "The number of nodes in both lists is in the range [0, 50].",
+      "examples": [
+        {"input": "l1 = [1,2,4], l2 = [1,3,4]", "output": "[1,1,2,3,4,4]"}
+      ],
+      "difficulty": "easy",
+      "test_cases": [
+        {"input": {"l1": [1, 2, 4], "l2": [1, 3, 4]}, "expected_output": [1, 1, 2, 3, 4, 4]}
+      ],
+      "starter_code": {
+        "javascript": "function mergeTwoLists(l1, l2) {\n  // Your code here\n}",
+        "python": "def merge_two_lists(l1, l2):\n    # Your code here\n    pass"
+      },
+      "solution_code": {
+        "javascript": "function mergeTwoLists(l1, l2) {\n  let dummy = { val: -1, next: null };\n  let current = dummy;\n  \n  while (l1 && l2) {\n    if (l1.val < l2.val) {\n      current.next = l1;\n      l1 = l1.next;\n    } else {\n      current.next = l2;\n      l2 = l2.next;\n    }\n    current = current.next;\n  }\n  \n  current.next = l1 || l2;\n  return dummy.next;\n}",
+        "python": "def merge_two_lists(l1, l2):\n    dummy = ListNode(-1)\n    current = dummy\n    \n    while l1 and l2:\n        if l1.val < l2.val:\n            current.next = l1\n            l1 = l1.next\n        else:\n            current.next = l2\n            l2 = l2.next\n        current = current.next\n    \n    current.next = l1 or l2\n    return dummy.next"
+      },
+      "skill_id": 3,
+      "challenge_id": 2,
+      "creator_id": 1
+    },
+    {
+      "id": 4,
+      "title": "Longest Substring Without Repeating Characters",
+      "description": "Given a string, find the length of the longest substring without repeating characters.",
+      "constraints": "0 <= s.length <= 5 * 10^4",
+      "examples": [
+        {"input": "s = \"abcabcbb\"", "output": "3"}
+      ],
+      "difficulty": "medium",
+      "test_cases": [
+        {"input": "abcabcbb", "expected_output": 3},
+        {"input": "bbbbb", "expected_output": 1}
+      ],
+      "starter_code": {
+        "javascript": "function lengthOfLongestSubstring(s) {\n  // Your code here\n}",
+        "python": "def length_of_longest_substring(s):\n    # Your code here\n    pass"
+      },
+      "solution_code": {
+        "javascript": "function lengthOfLongestSubstring(s) {\n  let maxLength = 0;\n  let start = 0;\n  const charMap = {};\n  \n  for (let i = 0; i < s.length; i++) {\n    const char = s[i];\n    if (char in charMap && charMap[char] >= start) {\n      start = charMap[char] + 1;\n    } else {\n      maxLength = Math.max(maxLength, i - start + 1);\n    }\n    charMap[char] = i;\n  }\n  \n  return maxLength;\n}",
+        "python": "def length_of_longest_substring(s):\n    seen = {}\n    max_len = 0\n    start = 0\n    \n    for i, char in enumerate(s):\n        if char in seen and seen[char] >= start:\n            start = seen[char] + 1\n        else:\n            max_len = max(max_len, i - start + 1)\n        seen[char] = i\n        \n    return max_len"
+      },
+      "skill_id": 4,
+      "challenge_id": null,
+      "creator_id": 1
+    }
+    ,
+    {
+        "id": 5,
+        "title": "Palindrome Number",
+        "description": "Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.",
+        "constraints": "-2^31 <= x <= 2^31 - 1",
+        "examples": [
+            {"input": "x = 121", "output": "true"},
+            {"input": "x = -121", "output": "false"}
+        ],
+        "difficulty": "easy",
+        "test_cases": [
+            {"input": 121, "expected_output": true},
+            {"input": -121, "expected_output": false}
+        ],
+        "starter_code": {
+            "javascript": "function isPalindrome(x) {\n  // Your code here\n}",
+            "python": "def is_palindrome(x):\n    # Your code here\n    pass",
+            "java": "class Solution {\n    public boolean isPalindrome(int x) {\n        // Your code here\n        return false;\n    }\n}"
+        },
+        "solution_code": {
+            "javascript": "function isPalindrome(x) {\n  if (x < 0) return false;\n  return x === +x.toString().split('').reverse().join('');\n}",
+            "python": "def is_palindrome(x):\n    return str(x) == str(x)[::-1]",
+            "java": "public boolean isPalindrome(int x) {\n    if (x < 0) return false;\n    int reversed = 0, original = x;\n    while (x != 0) {\n        int pop = x % 10;\n        x /= 10;\n        reversed = reversed * 10 + pop;\n    }\n    return original == reversed;\n}"
+        },
+        "skill_id": 5,
+        "challenge_id": null,
+        "creator_id": 1
+    },
+    {
+        "id": 6,
+        "title": "Roman to Integer",
+        "description": "Convert a roman numeral to an integer.",
+        "constraints": "1 <= s.length <= 15",
+        "examples": [
+            {"input": "s = 'III'", "output": "3"},
+            {"input": "s = 'IV'", "output": "4"}
+        ],
+        "difficulty": "easy",
+        "test_cases": [
+            {"input": "III", "expected_output": 3},
+            {"input": "IV", "expected_output": 4}
+        ],
+        "starter_code": {
+            "javascript": "function romanToInt(s) {\n  // Your code here\n}",
+            "python": "def roman_to_int(s):\n    # Your code here\n    pass",
+            "java": "class Solution {\n    public int romanToInt(String s) {\n        // Your code here\n        return 0;\n    }\n}"
+        },
+        "solution_code": {
+            "javascript": "function romanToInt(s) {\n  const map = {I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000};\n  let total = 0;\n  for (let i = 0; i < s.length; i++) {\n    const current = map[s[i]];\n    const next = map[s[i + 1]];\n    total += current < next ? -current : current;\n  }\n  return total;\n}",
+            "python": "def roman_to_int(s):\n    roman = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}\n    total = 0\n    for i in range(len(s)):\n        if i + 1 < len(s) and roman[s[i]] < roman[s[i + 1]]:\n            total -= roman[s[i]]\n        else:\n            total += roman[s[i]]\n    return total",
+            "java": "public int romanToInt(String s) {\n    Map<Character, Integer> map = Map.of('I', 1, 'V', 5, 'X', 10, 'L', 50, 'C', 100, 'D', 500, 'M', 1000);\n    int total = 0;\n    for (int i = 0; i < s.length(); i++) {\n        int curr = map.get(s.charAt(i));\n        int next = i + 1 < s.length() ? map.get(s.charAt(i + 1)) : 0;\n        total += curr < next ? -curr : curr;\n    }\n    return total;\n}"
+        },
+        "skill_id": 6,
+        "challenge_id": 2,
+        "creator_id": 1
+    },
+    {
+        "id": 7,
+        "title": "Reverse Integer",
+        "description": "Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range, return 0.",
+        "constraints": "-2^31 <= x <= 2^31 - 1",
+        "examples": [
+            {"input": "x = 123", "output": "321"},
+            {"input": "x = -123", "output": "-321"}
+        ],
+        "difficulty": "medium",
+        "test_cases": [
+            {"input": 123, "expected_output": 321},
+            {"input": -123, "expected_output": -321}
+        ],
+        "starter_code": {
+            "javascript": "function reverse(x) {\n  // Your code here\n}",
+            "python": "def reverse(x):\n    # Your code here\n    pass",
+            "java": "class Solution {\n    public int reverse(int x) {\n        // Your code here\n        return 0;\n    }\n}"
+        },
+        "solution_code": {
+            "javascript": "function reverse(x) {\n  const sign = x < 0 ? -1 : 1;\n  const reversed = parseInt(Math.abs(x).toString().split('').reverse().join(''));\n  if (reversed > 2 ** 31 - 1) return 0;\n  return sign * reversed;\n}",
+            "python": "def reverse(x):\n    sign = -1 if x < 0 else 1\n    x_abs = abs(x)\n    reversed_x = int(str(x_abs)[::-1])\n    if reversed_x > 2**31 - 1:\n        return 0\n    return sign * reversed_x",
+            "java": "public int reverse(int x) {\n    int rev = 0;\n    while (x != 0) {\n        int pop = x % 10;\n        x /= 10;\n        if (rev > Integer.MAX_VALUE/10 || (rev == Integer.MAX_VALUE / 10 && pop > 7)) return 0;\n        if (rev < Integer.MIN_VALUE/10 || (rev == Integer.MIN_VALUE / 10 && pop < -8)) return 0;\n        rev = rev * 10 + pop;\n    }\n    return rev;\n}"
+        },
+        "skill_id": 7,
+        "challenge_id": null,
+        "creator_id": 1
+    },
+    {
+        "id": 8,
+        "title": "Integer to Roman",
+        "description": "Convert an integer to a Roman numeral.",
+        "constraints": "1 <= num <= 3999",
+        "examples": [
+            {"input": "num = 3", "output": "\"III\""},
+            {"input": "num = 58", "output": "\"LVIII\""},
+            {"input": "num = 1994", "output": "\"MCMXCIV\""}
+        ],
+        "difficulty": "medium",
+        "test_cases": [
+            {"input": 3, "expected_output": "III"},
+            {"input": 58, "expected_output": "LVIII"},
+            {"input": 1994, "expected_output": "MCMXCIV"}
+        ],
+        "starter_code": {
+            "javascript": "function intToRoman(num) {\n  // Your code here\n}",
+            "python": "def int_to_roman(num):\n    # Your code here\n    pass",
+            "java": "class Solution {\n    public String intToRoman(int num) {\n        // Your code here\n        return \"\";\n    }\n}"
+        },
+        "solution_code": {
+            "javascript": "function intToRoman(num) {\n  const val = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];\n  const syms = [\"M\", \"CM\", \"D\", \"CD\", \"C\", \"XC\", \"L\", \"XL\", \"X\", \"IX\", \"V\", \"IV\", \"I\"];\n  let roman = '';\n  for (let i = 0; i < val.length; i++) {\n    while (num >= val[i]) {\n      num -= val[i];\n      roman += syms[i];\n    }\n  }\n  return roman;\n}",
+            "python": "def int_to_roman(num):\n    val = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]\n    syms = [\"M\", \"CM\", \"D\", \"CD\", \"C\", \"XC\", \"L\", \"XL\", \"X\", \"IX\", \"V\", \"IV\", \"I\"]\n    roman = ''\n    for i in range(len(val)):\n        while num >= val[i]:\n            num -= val[i]\n            roman += syms[i]\n    return roman",
+            "java": "public String intToRoman(int num) {\n    int[] val = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};\n    String[] syms = {\"M\", \"CM\", \"D\", \"CD\", \"C\", \"XC\", \"L\", \"XL\", \"X\", \"IX\", \"V\", \"IV\", \"I\"};\n    StringBuilder roman = new StringBuilder();\n    for (int i = 0; i < val.length; i++) {\n        while (num >= val[i]) {\n            num -= val[i];\n            roman.append(syms[i]);\n        }\n    }\n    return roman.toString();\n}"
+        },
+        "skill_id": 7,
+        "challenge_id": null,
+        "creator_id": 1
+    }
+
+
+
+
+]

@@ -1,431 +1,366 @@
 import { useState, useEffect } from "react";
 import { api } from "../api/api";
-import { PlusCircle, Trash2, Save, ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
+import { Save, ArrowLeft, AlertCircle, CheckCircle2, Users, Target, Settings, FileText, Loader2 } from "lucide-react";
+import NavbarCompany from "../components/common/navbarCompany";
+import { useNavigate } from "react-router";
 
 export default function TestCreationForm() {
-  // États pour gérer les données du formulaire
   const [formData, setFormData] = useState({
     objective: "",
     prerequisites: "",
-    tools_Required: "",
+    tools_required: "",
     before_answer: "",
     qcm_id: "",
-    company_id: "",
+    company_id: localStorage.getItem("company_id") || "", // Initialize with company_id from localStorage
     skill_id: "",
-    skill_ids: [],
-    steps: [
-      {
-        title: "",
-        description: "",
-        order: 1,
-      },
-    ],
   });
-
-  // États pour les données externes
   const [qcms, setQcms] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const [isStepsOpen, setIsStepsOpen] = useState(true);
-  const [isSkillsOpen, setIsSkillsOpen] = useState(true);
 
-  // Chargement des données externes
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setDataLoading(true);
         const [qcmsRes, companiesRes, skillsRes] = await Promise.all([
-          api.get("/api/qcms"),
-          api.get("/api/companies"),
-          api.get("/api/skills"),
+          api.get("/api/qcms/company"),
+          api.get("/api/companies/company"),
+          api.get("/api/skills/company"),
         ]);
-        setQcms(qcmsRes.data);
-        setCompanies(companiesRes.data);
-        setSkills(skillsRes.data);
+        setQcms(Array.isArray(qcmsRes.data) ? qcmsRes.data : []);
+        setCompanies(Array.isArray(companiesRes.data) ? companiesRes.data : []);
+        setSkills(Array.isArray(skillsRes.data) ? skillsRes.data : []);
       } catch (err) {
-        console.error("Erreur lors du chargement des données:", err);
-        setError("Impossible de charger les données nécessaires au formulaire.");
+        console.error("Error loading data:", err);
+        setError(
+          err.response?.status === 404
+            ? "Requested resource not found. Please check the server configuration."
+            : "Unable to load the data required for the form."
+        );
+      } finally {
+        setDataLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  // Gestion des changements dans le formulaire
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Prevent changing company_id if it's set from localStorage
+    if (name === "company_id" && formData.company_id) return;
     setFormData({ ...formData, [name]: value });
+    if (error) setError(null);
   };
 
-  // Gestion des changements pour les compétences multiples
-  const handleSkillCheckbox = (skillId) => {
-    const updatedSkillIds = formData.skill_ids.includes(skillId)
-      ? formData.skill_ids.filter((id) => id !== skillId)
-      : [...formData.skill_ids, skillId];
-
-    setFormData({ ...formData, skill_ids: updatedSkillIds });
+  const validateForm = () => {
+    if (!formData.objective.trim()) {
+      setError("The test objective is required.");
+      return false;
+    }
+    if (!formData.company_id) {
+      setError("Company ID is missing. Please ensure you are logged in.");
+      return false;
+    }
+    if (!formData.skill_id) {
+      setError("Please select a primary skill.");
+      return false;
+    }
+    return true;
   };
 
-  // Gestion des étapes
-  const addStep = () => {
-    const newStep = {
-      title: "",
-      description: "",
-      order: formData.steps.length + 1,
-    };
-    setFormData({ ...formData, steps: [...formData.steps, newStep] });
-  };
-
-  const handleStepChange = (index, field, value) => {
-    const updatedSteps = [...formData.steps];
-    updatedSteps[index][field] = value;
-    setFormData({ ...formData, steps: updatedSteps });
-  };
-
-  const removeStep = (index) => {
-    const updatedSteps = formData.steps.filter((_, i) => i !== index);
-    // Réorganiser les ordres après suppression
-    const reorderedSteps = updatedSteps.map((step, i) => ({
-      ...step,
-      order: i + 1,
-    }));
-    setFormData({ ...formData, steps: reorderedSteps });
-  };
-
-  // Soumission du formulaire
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleSubmit = async () => {
     setError(null);
 
+    if (!validateForm()) {
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const response = await api.post("/api/create/tests/company", formData);
-      console.log("Test créé:", response.data);
+      const submitData = {
+        objective: formData.objective,
+        prerequisites: formData.prerequisites || null,
+        tools_required: formData.tools_required || null,
+        before_answer: formData.before_answer || null,
+        qcm_id: formData.qcm_id ? parseInt(formData.qcm_id) : null,
+        company_id: parseInt(formData.company_id), // Use the preselected company_id
+        skill_id: parseInt(formData.skill_id),
+      };
+
+      const response = await api.post("/api/tests/company/create", submitData);
+      console.log("Test created:", response.data);
       setSuccess(true);
-      // Réinitialiser le formulaire ou rediriger
+      setFormData({
+        objective: "",
+        prerequisites: "",
+        tools_required: "",
+        before_answer: "",
+        qcm_id: "",
+        company_id: localStorage.getItem("company_id") || "", // Reset with company_id
+        skill_id: "",
+      });
       setTimeout(() => {
         setSuccess(false);
-      }, 3000);
+      }, 5000);
     } catch (err) {
-      console.error("Erreur lors de la création du test:", err);
-      setError(
-        err.response?.data?.message ||
-          "Une erreur s'est produite lors de la création du test."
-      );
+      console.error("Error while creating the test:", err);
+      if (err.response?.data?.errors) {
+        const validationErrors = Object.values(err.response.data.errors).flat();
+        setError(validationErrors.join(", "));
+      } else {
+        setError(
+          err.response?.data?.message ||
+            "An error occurred while creating the test."
+        );
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  const handleBack = () => {
+    navigate('/testsList');
+  };
+
+  if (dataLoading) {
+    return (
+      <>
+        <NavbarCompany />
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="w-12 h-12 animate-spin text-indigo-600 mx-auto mb-4" />
+            <p className="text-gray-600 text-lg">Loading form data...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-2">
-          <ArrowLeft className="w-5 h-5 text-gray-600" />
-          <a href="#" className="text-blue-600 hover:underline text-sm">
-            Retour à la liste
-          </a>
-        </div>
-        <h1 className="text-2xl font-bold text-gray-800">Créer un nouveau test</h1>
-        <p className="text-gray-600 mt-1">
-          Configurez les détails du test et ajoutez des étapes pour les candidats.
-        </p>
-      </div>
-
-      {success && (
-        <div className="mb-6 p-4 bg-green-50 text-green-700 rounded-md border border-green-200">
-          Test créé avec succès !
-        </div>
-      )}
-
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 text-red-700 rounded-md border border-red-200">
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Informations principales */}
-          <div className="md:col-span-2">
-            <h2 className="text-lg font-medium text-gray-700 mb-4">
-              Informations principales
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Objectif <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="objective"
-                  value={formData.objective}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Objectif du test"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Prérequis
-                </label>
-                <input
-                  type="text"
-                  name="prerequisites"
-                  value={formData.prerequisites}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Prérequis pour le test"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Outils requis <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="tools_Required"
-                  value={formData.tools_Required}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Outils nécessaires"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Instructions préalables <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="before_answer"
-                  value={formData.before_answer}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Instructions avant de commencer"
-                />
+    <>
+      <NavbarCompany />
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header Section */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200" onClick={() => handleBack()}>
+                <ArrowLeft className="w-5 h-5 mr-1" />
+                <span className="text-sm font-medium">Back to Tests</span>
+              </button>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-indigo-600" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Create New Test</h1>
+                  <p className="text-gray-600 mt-1">
+                    Set up comprehensive test parameters for candidate evaluation
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Sélections */}
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Entreprise <span className="text-red-500">*</span>
-              </label>
-              <select
-                name="company_id"
-                value={formData.company_id}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Sélectionner une entreprise</option>
-                {companies.map((company) => (
-                  <option key={company.id} value={company.id}>
-                    {company.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                QCM associé <span className="text-red-500">*</span>
-              </label>
-              <select
-                name="qcm_id"
-                value={formData.qcm_id}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Sélectionner un QCM</option>
-                {qcms.map((qcm) => (
-                  <option key={qcm.id} value={qcm.id}>
-                    {qcm.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Compétence principale <span className="text-red-500">*</span>
-              </label>
-              <select
-                name="skill_id"
-                value={formData.skill_id}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Sélectionner une compétence principale</option>
-                {skills.map((skill) => (
-                  <option key={skill.id} value={skill.id}>
-                    {skill.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Compétences additionnelles */}
-          <div className="md:col-span-2">
-            <div className="border border-gray-200 rounded-lg p-4">
-              <div 
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => setIsSkillsOpen(!isSkillsOpen)}
-              >
-                <h2 className="text-lg font-medium text-gray-700">
-                  Compétences additionnelles
-                </h2>
-                {isSkillsOpen ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500" />
-                )}
+          {/* Alert Messages */}
+          {success && (
+            <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="text-green-800 font-medium">Test Created Successfully!</h3>
+                <p className="text-green-700 text-sm mt-1">Your test has been saved and is ready for use.</p>
               </div>
-              
-              {isSkillsOpen && (
-                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                  {skills.map((skill) => (
-                    <div key={skill.id} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id={`skill-${skill.id}`}
-                        checked={formData.skill_ids.includes(skill.id)}
-                        onChange={() => handleSkillCheckbox(skill.id)}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label
-                        htmlFor={`skill-${skill.id}`}
-                        className="ml-2 block text-sm text-gray-700"
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="text-red-800 font-medium">Error</h3>
+                <p className="text-red-700 text-sm mt-1">{error}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Main Form */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="divide-y divide-gray-200">
+              {/* Test Details Section */}
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Target className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <h2 className="text-lg font-semibold text-gray-900">Test Details</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="lg:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Test Objective <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      name="objective"
+                      value={formData.objective}
+                      onChange={handleChange}
+                      required
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 resize-none"
+                      placeholder="Describe the main objective and purpose of this test..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Prerequisites
+                    </label>
+                    <textarea
+                      name="prerequisites"
+                      value={formData.prerequisites}
+                      onChange={handleChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 resize-none"
+                      placeholder="List any required knowledge or experience..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Required Tools
+                    </label>
+                    <textarea
+                      name="tools_required"
+                      value={formData.tools_required}
+                      onChange={handleChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 resize-none"
+                      placeholder="Specify tools, software, or resources needed..."
+                    />
+                  </div>
+
+                  <div className="lg:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Pre-Test Instructions
+                    </label>
+                    <textarea
+                      name="before_answer"
+                      value={formData.before_answer}
+                      onChange={handleChange}
+                      rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 resize-none"
+                      placeholder="Instructions candidates should read before starting..."
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Configuration Section */}
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Settings className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <h2 className="text-lg font-semibold text-gray-900">Test Configuration</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Hidden company_id field */}
+                  <input
+                    type="hidden"
+                    name="company_id"
+                    value={formData.company_id}
+                  />
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Primary Skill <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <select
+                        name="skill_id"
+                        value={formData.skill_id}
+                        onChange={handleChange}
+                        required
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 bg-white"
                       >
-                        {skill.name}
-                      </label>
+                        <option value="">Select primary skill</option>
+                        {skills.map((skill) => (
+                          <option key={skill.id} value={skill.id}>
+                            {skill.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+                  </div>
 
-          {/* Étapes du test */}
-          <div className="md:col-span-2">
-            <div className="border border-gray-200 rounded-lg p-4">
-              <div 
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => setIsStepsOpen(!isStepsOpen)}
-              >
-                <h2 className="text-lg font-medium text-gray-700">
-                  Étapes du test
-                </h2>
-                {isStepsOpen ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500" />
-                )}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Associated QCM
+                      <span className="text-gray-400 text-xs ml-1">(Optional)</span>
+                    </label>
+                    <div className="relative">
+                      <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <select
+                        name="qcm_id"
+                        value={formData.qcm_id}
+                        onChange={handleChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 bg-white"
+                      >
+                        <option value="">Select a QCM</option>
+                        {qcms.map((qcm) => (
+                          <option key={qcm.id} value={qcm.id}>
+                            {qcm.question}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              {isStepsOpen && (
-                <div className="mt-4 space-y-6">
-                  {formData.steps.map((step, index) => (
-                    <div
-                      key={index}
-                      className="border border-gray-200 rounded-md p-4 bg-gray-50"
-                    >
-                      <div className="flex justify-between items-center mb-3">
-                        <h3 className="text-md font-medium text-gray-700">{`Étape ${step.order}`}</h3>
-                        <button
-                          type="button"
-                          onClick={() => removeStep(index)}
-                          className="text-red-500 hover:text-red-700 flex items-center text-sm"
-                        >
-                          <Trash2 className="w-4 h-4 mr-1" />
-                          Supprimer
-                        </button>
-                      </div>
 
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Titre <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            value={step.title}
-                            onChange={(e) =>
-                              handleStepChange(index, "title", e.target.value)
-                            }
-                            required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Titre de l'étape"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Description
-                          </label>
-                          <textarea
-                            value={step.description || ""}
-                            onChange={(e) =>
-                              handleStepChange(index, "description", e.target.value)
-                            }
-                            rows="3"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Description détaillée de l'étape"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  <button
-                    type="button"
-                    onClick={addStep}
-                    className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm mt-2"
-                  >
-                    <PlusCircle className="w-4 h-4 mr-1" />
-                    Ajouter une étape
-                  </button>
-                </div>
-              )}
+              {/* Action Buttons */}
+              <div className="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
+                <button
+                  type="button"
+                  className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  className="px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Creating Test...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Create Test
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-
-        <div className="pt-4 flex justify-end space-x-3 border-t border-gray-200">
-          <button
-            type="button"
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center"
-          >
-            Annuler
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center"
-          >
-            {loading ? (
-              <span className="inline-block animate-spin rounded-full h-4 w-4 border-t-2 border-white mr-2"></span>
-            ) : (
-              <Save className="w-4 h-4 mr-2" />
-            )}
-            Enregistrer le test
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+    </>
   );
 }

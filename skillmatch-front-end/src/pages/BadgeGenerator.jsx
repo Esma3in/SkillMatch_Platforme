@@ -4,6 +4,7 @@ import { api } from "../api/api";
 const BadgeGenerator = ({ candidateId, qcmForRoadmapId, score, refreshBadges }) => {
   const [badgeMessage, setBadgeMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [BadgeName  ,setBadgeName] = useState("")
 
   const createBadge = async () => {
     try {
@@ -22,13 +23,23 @@ const BadgeGenerator = ({ candidateId, qcmForRoadmapId, score, refreshBadges }) 
         });
         return;
       }
-
+      if (score < 50) {
+        setBadgeName("Spark Starter");
+      } else if (score >= 50 && score < 81) {
+        setBadgeName("Trailblazer");
+      } else if (score === 81) {
+        setBadgeName("Grit Vanguard");
+      } else if (score > 81 && score <= 90) {
+        setBadgeName("Stellar Striver");
+      } else if (score > 90) {
+        setBadgeName("Cosmic Champion");
+      }
       console.log("BadgeGenerator candidateId:", candidateId);
       console.log("BadgeGenerator qcmForRoadmapId:", qcmForRoadmapId);
       const payload = {
         candidate_id: Number(candidateId),
         qcm_for_roadmap_id: Number(qcmForRoadmapId),
-        name: String(`Badge for Roadmap ${qcmForRoadmapId}`),
+        name: String(`Badge with grade ${BadgeName}`),
         icon: String("https://img.icons8.com/pulsar-gradient/48/warranty-card.png"),
         description: String(`Earned by completing the roadmap with ID ${qcmForRoadmapId} with a score of ${score}`),
         Date_obtained: new Date().toISOString().split("T")[0],

@@ -35,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "../table";
+import UserDetailModal from "./UserDetailModal";
 
 const AllCandidate = () => {
   // Data for candidates
@@ -141,12 +142,14 @@ const AllCandidate = () => {
   //   },
   // ];
 
-  const [candidates,setCandidate] = useState([]);
-
+  const [candidates, setCandidate] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const itemsPerPage = 8;
 
-
-  
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
@@ -200,8 +203,45 @@ const AllCandidate = () => {
     }
   }
 
+  const handleViewDetails = async (candidateId) => {
+    try {
+      setLoading(true);
+      const response = await api.get(`api/admin/candidates/${candidateId}`);
+      
+      if (response.status === 200) {
+        // Merge the detailed data with the basic candidate data
+        const basicInfo = candidates.find(c => c.id === candidateId);
+        const detailedData = response.data;
+        
+        // Combine the data, giving preference to detailed data
+        const combinedData = {
+          ...basicInfo,
+          ...detailedData,
+          // Make sure these fields from the basic info are preserved
+          avatar: basicInfo.avatar,
+          date: basicInfo.date,
+          state: basicInfo.state
+        };
+        
+        setSelectedCandidate(combinedData);
+        setIsModalOpen(true);
+      }
+    } catch (error) {
+      console.error("Error fetching candidate details:", error);
+      // Fallback to basic info if detailed fetch fails
+      const basicInfo = candidates.find(c => c.id === candidateId);
+      setSelectedCandidate(basicInfo);
+      setIsModalOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCandidate(null);
+  };
+
   // Column headers
   const columns = [
     { key: "id", label: "ID Candidate" },
@@ -212,34 +252,18 @@ const AllCandidate = () => {
     { key: "action", label: "Action" },
   ];
 
-
   const filteredCandidates = candidates.filter(candidate =>
     candidate.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     candidate.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   //pagination 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage) || 1;
 
   const paginatedCandidates = filteredCandidates.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  const totalPages = 9;
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
-  const handlePageClick = (page) => {
-    setCurrentPage(page);
-  };
 
   return (
     <div className="w-full h-full">
@@ -343,8 +367,12 @@ const AllCandidate = () => {
                             {candidate.date}
                           </TableCell>
                           <TableCell className="h-[69.5px] px-3 py-3">
-                            <Button className="w-[103px] h-10 bg-[#0a84ff26] text-[#0a84ff] font-semibold text-base rounded-[10px]">
-                              Details
+                            <Button 
+                              className="w-[103px] h-10 bg-[#0a84ff26] text-[#0a84ff] font-semibold text-base rounded-[10px]"
+                              onClick={() => handleViewDetails(candidate.id)}
+                              disabled={loading}
+                            >
+                              {loading && selectedCandidate?.id === candidate.id ? 'Loading...' : 'Details'}
                             </Button>
                           </TableCell>
                           <TableCell className="h-[69.5px] px-3 py-3">
@@ -381,42 +409,59 @@ const AllCandidate = () => {
 
                 <div className="flex justify-center items-center gap-2 py-1 ">
                   <Button
-                    onClick={handlePreviousPage}
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
                     className="px-4 py-2"
                   >
                     Prev
                   </Button>
 
-                  {[...Array(totalPages)].map((_, index) => (
-                    <Button
-                      key={index}
-                      onClick={() => handlePageClick(index + 1)}
-                      className={`px-4 py-2 ${
-                        currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
-                      }`}
-                    >
-                      {index + 1}
-                    </Button>
-                  ))}
+                  {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                    // Show pages around current page
+                    const pageToShow = currentPage > 3 && totalPages > 5
+                      ? i + currentPage - 2
+                      : i + 1;
+                    
+                    // Don't show pages beyond the total
+                    if (pageToShow <= totalPages) {
+                      return (
+                        <Button
+                          key={pageToShow}
+                          onClick={() => setCurrentPage(pageToShow)}
+                          className={`px-4 py-2 ${
+                            currentPage === pageToShow ? "bg-blue-500 text-white" : "bg-white"
+                          }`}
+                        >
+                          {pageToShow}
+                        </Button>
+                      );
+                    }
+                    return null;
+                  })}
 
                   <Button
-                    onClick={handleNextPage}
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
                     className="px-4 py-2"
                   >
                     Next
                   </Button>
                 </div>
-
-                
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
+
+      {/* User Detail Modal */}
+      <UserDetailModal 
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        userData={selectedCandidate}
+        userType="candidate"
+      />
     </div>
   );
 };
 
-export default AllCandidate ;
+export default AllCandidate;

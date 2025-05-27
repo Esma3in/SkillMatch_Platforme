@@ -13,8 +13,8 @@ use App\Models\ProfileCandidate;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
+// use Illuminate\Support\Facades\Hash;
+// use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class CandidateController extends Controller
 {
@@ -503,5 +503,89 @@ class CandidateController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function markasRead($id){
+        $notification = Notification::where("id" , $id )->get();
+
+
+    }
+
+    /**
+     * Get detailed candidate information for admin view
+     */
+    public function getDetailedCandidate($id)
+    {
+        // Find the candidate
+        $candidate = Candidate::where('id', $id)
+            ->with([
+                'user',
+                'skills',
+                'experiences',
+                'educations',
+                'profile'
+            ])
+            ->first();
+
+        if (!$candidate) {
+            return response()->json(['error' => 'Candidate not found'], 404);
+        }
+
+        // Format skills
+        $skills = $candidate->skills->map(function ($skill) {
+            return $skill->name;
+        });
+
+        // Format experiences
+        $experiences = $candidate->experiences->map(function ($exp) {
+            return [
+                'company' => $exp->company_name,
+                'position' => $exp->position,
+                'startDate' => $exp->start_date,
+                'endDate' => $exp->end_date,
+                'description' => $exp->description
+            ];
+        });
+
+        // Format education
+        $education = $candidate->educations->map(function ($edu) {
+            return [
+                'institution' => $edu->school,
+                'degree' => $edu->degree,
+                'field' => $edu->field_of_study,
+                'startYear' => $edu->start_date,
+                'endYear' => $edu->end_date,
+                'description' => $edu->description
+            ];
+        });
+
+        // Get profile information
+        $profile = $candidate->profile ? [
+            'description' => $candidate->profile->description,
+            'address' => $candidate->profile->address,
+            'phone' => $candidate->profile->phone,
+            'website' => $candidate->profile->website,
+            'avatar' => $candidate->profile->avatar
+        ] : null;
+
+        // Combine all data
+        $data = [
+            'id' => $candidate->id,
+            'name' => $candidate->name,
+            'email' => $candidate->email,
+            'state' => $candidate->state,
+            'skills' => $skills,
+            'experience' => $experiences,
+            'education' => $education,
+            'description' => $profile ? $profile['description'] : null,
+            'address' => $profile ? $profile['address'] : null,
+            'phone' => $profile ? $profile['phone'] : null,
+            'website' => $profile ? $profile['website'] : null,
+            'avatar' => $profile ? $profile['avatar'] : null,
+            'created_at' => $candidate->created_at,
+            'updated_at' => $candidate->updated_at
+        ];
+
+        return response()->json($data);
     }
 }

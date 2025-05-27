@@ -14,28 +14,33 @@ use Illuminate\Support\Facades\Validator;
 
 class BadgeController extends Controller
 {
-    public function getBadges($candidateId)
+    public function getBadges($candidate_id)
     {
-        if (!is_numeric($candidateId) || $candidateId <= 0) {
-            return response()->json(['error' => 'Invalid candidate ID'], 400);
-        }
-    
         try {
             $badges = DB::table('badges')
-                ->join('candidates', 'candidates.id', '=', 'badges.candidate_id')
-                ->where('badges.candidate_id', $candidateId)
+                ->select(
+                    'companies.name as company_name',
+                    'badges.*',
+                    'candidates.name as candidate_name'
+                )
+                ->join('candidates', 'badges.candidate_id', '=', 'candidates.id')
+                ->join('companies_selecteds', 'companies_selecteds.candidate_id', '=', 'badges.candidate_id')
+                ->join('companies', 'companies.id', '=', 'companies_selecteds.company_id')
+                ->where('badges.candidate_id' , $candidate_id)
                 ->get();
-    
-            if ($badges->isEmpty()) {
-                return response()->json(['message' => 'No badges found for this candidate', 'data' => []], 200);
-            }
-    
-            return response()->json(['message' => 'Badges retrieved successfully', 'data' => $badges], 200);
-    
-        } catch (\Exception $e) {
+
             return response()->json([
-                'error' => 'An error occurred',
-                'message' => $e->getMessage(),
+                'success' => true,
+                'data' => $badges
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Failed to retrieve badges', [
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while retrieving badges'
             ], 500);
         }
     }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaTrophy, FaSearch, FaFilter, FaExclamationCircle } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
 import NavbarCandidate from "../components/common/navbarCandidate";
@@ -16,6 +16,7 @@ const Challenge = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSkill, setSelectedSkill] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChallenges = async () => {
@@ -168,7 +169,7 @@ const Challenge = () => {
       <div className="mt-4 text-center">
         <button
           className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition-colors"
-          onClick={() => alert("Certificate preview coming soon!")}
+          onClick={() => navigate("/certificate")}
           aria-label="Preview certificate"
         >
           Preview Certificate

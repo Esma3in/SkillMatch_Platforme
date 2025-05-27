@@ -83,6 +83,12 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // Run seed to migrate existing company files to documents
+        $this->call(MigrateCompanyFilesToDocumentsSeeder::class);
+
+        // Seed company documents for testing
+        $this->call(CompanyDocumentSeeder::class);
+
         $candidates = Candidate::factory(10)->create();
         // Création de 20 challenges avec chacun 20 problèmes
         Challenge::factory(20)->create()->each(function ($challenge) use ($skillsCreated, $candidates) {
@@ -104,6 +110,9 @@ class DatabaseSeeder extends Seeder
                 'challenge_id' => null, // Pas lié à un challenge
             ]);
         }
+
+        // Seed LeetCode problems
+        $this->call(LeetcodeProblemSeeder::class);
 
         // Create Administrators
 
@@ -168,7 +177,7 @@ class DatabaseSeeder extends Seeder
                 'skill_id' => $randomSkill->id
             ]);
             Badge::factory(1)->create(['candidate_id' => $candidate->id]);
-            Roadmap::factory(2)->create(['candidate_id' => $candidate->id]);
+            Roadmap::factory(1)->create(['candidate_id' => $candidate->id]);
 
             // Link Results to existing Tests
                 Result::factory()->create(['candidate_id' => $candidate->id,]);

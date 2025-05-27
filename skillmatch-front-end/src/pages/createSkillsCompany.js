@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../api/api';
 
-// Import icons from lucide-react
 import { 
   Code, 
   Check,
@@ -28,14 +27,13 @@ const CreateSkill = () => {
     level: 'Junior',
     usageFrequency: 'Daily',
     classement: 'Important',
-    company_id: ''
+    company_id: localStorage.getItem("company_id") || "",
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Retrieve company ID
   useEffect(() => {
     let id = companyId;
     
@@ -51,7 +49,6 @@ const CreateSkill = () => {
     }
   }, [companyId, navigate]);
 
-  // Programming skills with icons/colors
   const programmingSkills = [
     { name: "HTML", color: "bg-orange-100 text-orange-600" },
     { name: "CSS", color: "bg-blue-100 text-blue-600" },
@@ -70,7 +67,6 @@ const CreateSkill = () => {
     { name: "TypeScript", color: "bg-blue-100 text-blue-600" }
   ];
 
-  // Skill types with icons
   const skillTypes = [
     { name: 'Web Development', icon: <Code size={18} /> },
     { name: 'Mobile Development', icon: <Code size={18} /> },
@@ -139,8 +135,6 @@ const CreateSkill = () => {
       setLoading(false);
     }
   };
-
-  // Function to get badge color based on level
   const getLevelBadgeColor = (level) => {
     switch (level) {
       case 'Junior': return 'bg-emerald-100 text-emerald-600';
@@ -150,7 +144,6 @@ const CreateSkill = () => {
     }
   };
 
-  // Function to get badge color based on frequency
   const getFrequencyBadgeColor = (frequency) => {
     switch (frequency) {
       case 'Daily': return 'bg-sky-100 text-sky-600';
@@ -159,8 +152,6 @@ const CreateSkill = () => {
       default: return 'bg-gray-100 text-gray-600';
     }
   };
-
-  // Function to get badge color based on importance
   const getClassementBadgeColor = (classement) => {
     switch (classement) {
       case 'Important': return 'bg-rose-100 text-rose-600';
@@ -171,7 +162,6 @@ const CreateSkill = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-lg max-w-3xl mx-auto mt-8 overflow-hidden">
-      {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-4">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <Star className="h-6 w-6" />
@@ -181,7 +171,6 @@ const CreateSkill = () => {
       </div>
       
       <form onSubmit={handleSubmit} className="p-6">
-        {/* Skill Type Selector - Modern Tabs */}
         <div className="mb-8">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Skill Category
@@ -206,8 +195,6 @@ const CreateSkill = () => {
             ))}
           </div>
         </div>
-
-        {/* Skill Name with Autocomplete */}
         <div className="mb-8 relative">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Skill Name
@@ -256,8 +243,6 @@ const CreateSkill = () => {
             )}
           </div>
         </div>
-
-        {/* Preview Badge for Selected Skill */}
         {formData.name && (
           <div className="mb-8">
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -284,10 +269,7 @@ const CreateSkill = () => {
             </div>
           </div>
         )}
-
-        {/* Skill Properties - Card Layout */}
         <div className="mb-8 grid grid-cols-1 gap-6">
-          {/* Required Proficiency */}
           <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
             <div className="flex items-center mb-3">
               <Star className="h-5 w-5 text-amber-500 mr-2" />
@@ -317,8 +299,6 @@ const CreateSkill = () => {
               ))}
             </div>
           </div>
-
-          {/* Usage Frequency */}
           <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
             <div className="flex items-center mb-3">
               <Calendar className="h-5 w-5 text-blue-500 mr-2" />
@@ -348,8 +328,6 @@ const CreateSkill = () => {
               ))}
             </div>
           </div>
-
-          {/* Importance Level */}
           <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
             <div className="flex items-center mb-3">
               <Clock className="h-5 w-5 text-rose-500 mr-2" />
@@ -380,15 +358,11 @@ const CreateSkill = () => {
             </div>
           </div>
         </div>
-
-        {/* Hidden Company ID */}
         <input 
           type="hidden" 
           name="company_id" 
           value={formData.company_id} 
         />
-
-        {/* Action Buttons */}
         <div className="flex items-center justify-end gap-3 pt-4 border-t">
           <button
             type="button"

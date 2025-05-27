@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('skill_id')->constrained()->cascadeOnDelete();
             $table->string('completed');
             $table->foreignId('candidate_id')->constrained();
+            $table->foreignId("company_id")->nullable()->constrained('companies')->cascadeOnDelete();
             $table->timestamps();
 
         });
