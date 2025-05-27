@@ -352,7 +352,7 @@ function CompaniesRelated() {
           whileHover={{ scale: 1.05, boxShadow: "0 6px 16px rgba(0,0,0,0.2)" }}
           whileTap={{ scale: 0.95 }}
           className="bg-purple-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          onClick={() => window.location.href = "/candidate/next-action"}
+          onClick={() => window.location.href = "/problems"}
           aria-label="Start the next step in your application process"
         >
           Take the Next Step
@@ -377,7 +377,7 @@ function CompaniesRelated() {
                 to excel in your assessments.
               </p>
               <a
-                href="#"
+                href="/support"
                 className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
               >
                 Learn More
@@ -392,7 +392,7 @@ function CompaniesRelated() {
                 showcase your skills.
               </p>
               <a
-                href="#"
+                href="/profile"
                 className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
               >
                 Update Profile
@@ -407,7 +407,7 @@ function CompaniesRelated() {
                 tailor your applications.
               </p>
               <a
-                href="#"
+                href="/support#overview"
                 className="text-purple-600 text-sm font-medium hover:underline mt-3 inline-block"
               >
                 Explore Resources

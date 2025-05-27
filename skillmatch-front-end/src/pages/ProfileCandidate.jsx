@@ -6,11 +6,10 @@ import CreateExperienceModal from "../components/modals/createExperience";
 import ModalSkill from "../components/modals/createSkillsCandidate";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { Footer } from "../components/common/footer";
-import ModalEducation from "../components/modals/createEducation";
 import CreateFormationModal from "../components/modals/createEducation";
+import NoProfilePrompt from "../layouts/noProfileCandidate"; // Import the new component
 
 export default function ProfileCandidate() {
-  // state 
   const [candidateInfo, setCandidateInfo] = useState(null);
   const [error, setError] = useState(null);
   const [experiences, setExperiences] = useState([]);
@@ -22,7 +21,6 @@ export default function ProfileCandidate() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
         const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
         if (!candidate_id) {
           throw new Error("Candidate ID not found in localStorage");
@@ -38,8 +36,7 @@ export default function ProfileCandidate() {
         setSkills(skillsResponse.data);
 
         const educationResponse = await api.get(`/api/education/candidate/${candidate_id}`);
-        setEducation(educationResponse.data.data);
-        console.log(education)
+        setEducation(educationResponse.data);
       } catch (err) {
         console.error("Failed to fetch data:", err);
         setError("There was an error loading your profile. Please try again later.");
@@ -81,18 +78,7 @@ export default function ProfileCandidate() {
     return (
       <>
         <NavbarCandidate />
-
-        <div className="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg shadow-md mx-auto max-w-2xl mt-8">
-          <p className="text-base font-medium text-gray-700 mb-2">
-            You don't have a profile yet.
-          </p>
-          <a
-            href="/CreateProfile"
-            className="text-indigo-600 hover:text-blue-800 font-medium text-sm transition-colors"
-          >
-            Create Your Profile
-          </a>
-        </div>
+        <NoProfilePrompt />
       </>
     );
   }
@@ -210,9 +196,6 @@ export default function ProfileCandidate() {
               </div>
               <p className="text-sm text-gray-500">Add your certifications to highlight your expertise.</p>
             </div>
-
-            {/* Recommendations */}
-        
           </div>
 
           {/* Main Content (Right) */}
