@@ -272,6 +272,7 @@ Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController:
 Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
+Route::get('/candidate/{candidate_id}/recent-activities', [DashboardController::class, 'getRecentActivities']);
 Route::get('/notifications/{candidate_id}' , [CandidateController::class , "getNotifications"]);
 Route::put('/notifications/{id}/read'  , [CandidateController::class , "markasRead"]);
 
@@ -326,6 +327,10 @@ Route::get('/leetcode/problems/{id}/submissions', [LeetcodeProblemController::cl
 
 // Add a test route for debugging
 Route::post('/leetcode/test-submit', [LeetcodeProblemController::class, 'testSubmission']);
+
+
+// Roadmap Skills Routes
+Route::get('/roadmap-skills', [skillsRoadmapController::class, 'index']);
 
 // Debug endpoint - accepts any method
 Route::any('/leetcode/debug/{id?}', [LeetcodeProblemController::class, 'debugRequest'])

@@ -115,12 +115,51 @@ class RoadmapController extends Controller
                     
                 ], 404);
             }
+            
+            // Get the skill associated with this roadmap
+            $skill = DB::table('skills')
+                ->where('id', $roadmap->skill_id)
+                ->first();
+                
+            // Get progress information
+            $progress = DB::table('roadmapsprogress')
+                ->where('roadmap_id', $id)
+                ->first();
+                
+            // Get company information
+            $company = null;
+            if ($roadmap->company_id) {
+                $company = DB::table('companies')
+                    ->where('id', $roadmap->company_id)
+                    ->select('id', 'name', 'sector')
+                    ->first();
+            }
+            
+            // Get candidate information
+            $candidate = DB::table('candidates')
+                ->where('id', $roadmap->candidate_id)
+                ->select('id', 'name', 'email')
+                ->first();
+                
+            // Get related badges
+            $badges = DB::table('badges')
+                ->join('qcm_for_roadmaps', 'badges.qcm_for_roadmap_id', '=', 'qcm_for_roadmaps.id')
+                ->where('qcm_for_roadmaps.roadmap_id', $id)
+                ->select('badges.*')
+                ->get();
     
-            // Return the roadmap details
+            // Return the enhanced roadmap details
             return response()->json([
                 'id' => $roadmap->id,
                 'name' => $roadmap->name,
-                'completed' => $roadmap->completed
+                'completed' => $roadmap->completed,
+                'created_at' => $roadmap->created_at,
+                'updated_at' => $roadmap->updated_at,
+                'skill' => $skill,
+                'progress' => $progress ? $progress->progress : 0,
+                'company' => $company,
+                'candidate' => $candidate,
+                'badges' => $badges
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
