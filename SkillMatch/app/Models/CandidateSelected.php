@@ -15,13 +15,13 @@ class CandidateSelected extends Model
         'company_id',
     ];
 
-    public function candidates(){
-        return $this->belongsToMany(Candidate::class);
+    public function candidate(){
+        return $this->belongsTo(Candidate::class);
     }
     public function companies(){
-        return $this->belongsToMany(Company::class);
+        return $this->belongsTo(Company::class);
     }
-        
-    
+
+
 
 }

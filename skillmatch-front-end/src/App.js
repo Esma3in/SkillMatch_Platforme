@@ -62,6 +62,7 @@ import EditLeetcodeProblem from './pages/manage/editLeetcodeProblem.jsx';
 
 import TestListShowCompany from './pages/TestListShowCompany.js';
 import DocumentsPage from './pages/manage/documentsPage.jsx';
+import CompanyDashboard from './pages/DashboardCompany.js';
 
 
 export default function App() {

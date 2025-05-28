@@ -34,6 +34,7 @@ use App\Http\Controllers\LeetcodeProblemController;
 use App\Http\Controllers\ProfileSettingsController;
 
 use App\Http\Controllers\candidateCoursesController;
+use App\Http\Controllers\CompanyDashboardController;
 use App\Http\Controllers\ProfileCandidateController;
 use App\Http\Controllers\CandidateSelectedController;
 use App\Http\Controllers\CompaniesSelectedController;
@@ -200,6 +201,13 @@ Route::post('/notifications', [CandidateController::class, 'storeNotificationFor
 
 // Create skills company
 Route::post('/skills/create/company', [CompanyController::class, 'storeSkills']);
+
+// Dashboard routes for company
+Route::get('/companies/tests-count', [CompanyDashboardController::class, 'getCompanyTestCount']);
+Route::get('/companies/selected-candidates', [CompanyDashboardController::class, 'getSelectedCandidatesByCompany']);
+Route::get('/companies/resolved-test-stats', [CompanyDashboardController::class, 'getResolvedTestStatsByCompany']);
+Route::get('/companies/accepted-candidates', [CompanyDashboardController::class, 'getAcceptedCandidatesByCompany']);
+Route::get('/companies/tests', [CompanyDashboardController::class, 'getCompanyTests']);
 
 
 
