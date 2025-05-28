@@ -86,7 +86,7 @@ export default function CompaniesMatching({ id }){
               <Briefcase size={18} /> Explore Companies
             </a>
             <a
-              href="/edit-profile"
+              href="/profile-settings"
               className="inline-flex items-center gap-2 bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
               <UserCircle size={18} /> Improve My Profile

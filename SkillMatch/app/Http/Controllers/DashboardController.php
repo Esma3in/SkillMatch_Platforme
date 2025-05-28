@@ -7,6 +7,7 @@ use App\Models\Roadmap;
 use Illuminate\Http\Request;
 use App\Models\CompaniesSelected;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -135,4 +136,116 @@ class DashboardController extends Controller
             return response()->json($data);
         }
 
+        /**
+         * Get recent activities for a candidate's dashboard
+         * Returns activities sorted in descending order (newest first)
+         */
+        public function getRecentActivities($candidate_id)
+        {
+            if (!is_numeric($candidate_id)) {
+                return response()->json(['message' => 'Invalid candidate_id'], 400);
+            }
+
+            // Get recent roadmap progress updates
+            $roadmapProgress = DB::table('roadmapsprogress')
+                ->join('roadmaps', 'roadmapsprogress.roadmap_id', '=', 'roadmaps.id')
+                ->where('roadmaps.candidate_id', $candidate_id)
+                ->orderBy('roadmapsprogress.updated_at', 'desc')
+                ->select(
+                    'roadmaps.id as roadmap_id',
+                    'roadmaps.name as roadmap_name',
+                    'roadmapsprogress.progress',
+                    'roadmapsprogress.updated_at as activity_date'
+                )
+                ->take(5)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'type' => 'roadmap_progress',
+                        'roadmap_id' => $item->roadmap_id,
+                        'roadmap_name' => $item->roadmap_name,
+                        'progress' => $item->progress,
+                        'time' => Carbon::parse($item->activity_date)->diffForHumans(),
+                        'date' => $item->activity_date
+                    ];
+                });
+
+            // Get recently completed roadmaps
+            $completedRoadmaps = DB::table('roadmaps')
+                ->where('candidate_id', $candidate_id)
+                ->where('roadmaps.completed', 'completed')
+                ->orderBy('updated_at', 'desc')
+                ->select(
+                    'id as roadmap_id',
+                    'name as roadmap_name',
+                    'updated_at as activity_date'
+                )
+                ->take(5)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'type' => 'roadmap_completed',
+                        'roadmap_id' => $item->roadmap_id,
+                        'roadmap_name' => $item->roadmap_name,
+                        'time' => Carbon::parse($item->activity_date)->diffForHumans(),
+                        'date' => $item->activity_date
+                    ];
+                });
+
+            // Get recently selected companies
+            $selectedCompanies = DB::table('companies_selecteds')
+                ->join('companies', 'companies_selecteds.company_id', '=', 'companies.id')
+                ->where('companies_selecteds.candidate_id', $candidate_id)
+                ->orderBy('companies_selecteds.created_at', 'desc')
+                ->select(
+                    'companies.id as company_id',
+                    'companies.name as company_name',
+                    'companies_selecteds.created_at as activity_date'
+                )
+                ->take(5)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'type' => 'company_selected',
+                        'company_id' => $item->company_id,
+                        'company_name' => $item->company_name,
+                        'time' => Carbon::parse($item->activity_date)->diffForHumans(),
+                        'date' => $item->activity_date
+                    ];
+                });
+
+            // Get recently earned badges
+            $earnedBadges = DB::table('badges')
+                ->where('candidate_id', $candidate_id)
+                ->orderBy('created_at', 'desc')
+                ->select(
+                    'id as badge_id',
+                    'name as badge_name',
+                    'created_at as activity_date'
+                )
+                ->take(5)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'type' => 'badge_earned',
+                        'badge_id' => $item->badge_id,
+                        'badge_name' => $item->badge_name,
+                        'time' => Carbon::parse($item->activity_date)->diffForHumans(),
+                        'date' => $item->activity_date
+                    ];
+                });
+
+            // Combine all activities and sort by date (most recent first)
+            $allActivities = $roadmapProgress->concat($completedRoadmaps)
+                ->concat($selectedCompanies)
+                ->concat($earnedBadges)
+                ->sortByDesc('date')
+                ->values()
+                ->take(10);
+
+            return response()->json([
+                'message' => 'Recent activities retrieved successfully',
+                'data' => $allActivities
+            ]);
+        }
 }
