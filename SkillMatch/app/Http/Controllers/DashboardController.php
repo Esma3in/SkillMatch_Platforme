@@ -23,7 +23,7 @@ class DashboardController extends Controller
             public function countSelectedCompanies($candidate_id)
             {
                 $count = CompaniesSelected::where('candidate_id', $candidate_id)->count();
-            
+
                 return response()->json(['selected_companies_count' => $count]);
             }
 
@@ -42,7 +42,7 @@ class DashboardController extends Controller
                 return response()->json(['matched_companies_count' => $count]);
             }
 
-        //count badges of this candidate 
+        //count badges of this candidate
         public function countBadges($candidate_id)
             {
                 $count = Badge::where('candidate_id', $candidate_id)->count();
@@ -56,7 +56,7 @@ class DashboardController extends Controller
 
                 return response()->json(['roadmap_count' => $count]);
             }
-        // getting the roadmapprogress of roadmaps of  this candidate 
+        // getting the roadmapprogress of roadmaps of  this candidate
         public function getRoadmapsProgressWithCandidates($candidate_id)
         {
             $data = DB::table('roadmapsprogress')
@@ -65,10 +65,10 @@ class DashboardController extends Controller
                 ->where('candidates.id', $candidate_id)  // Filter by candidate_id
                 ->select('roadmapsprogress.*', 'roadmaps.*', 'candidates.*')
                 ->get();
-        
+
             return response()->json($data);
         }
-        // getting the companies selected with company informtion by this candidate 
+        // getting the companies selected with company informtion by this candidate
         public function getSelectedCompanies($candidate_id)
         {
             $data = DB::table('companies_selecteds')
@@ -77,10 +77,10 @@ class DashboardController extends Controller
                 ->where('companies_selecteds.candidate_id', $candidate_id)  // Filter by candidate_id
                 ->select('companies_selecteds.*', 'candidates.*', 'companies.*')
                 ->get();
-        
+
             return response()->json($data);
         }
-    // get the roadmpa details list of an company including badge and company informations 
+    // get the roadmpa details list of an company including badge and company informations
     public function getFullCandidateCompanyData($candidate_id)
     {
         $data = DB::table('companies_selecteds')
@@ -99,10 +99,10 @@ class DashboardController extends Controller
                 'badges.*'
             )
             ->get();
-    
+
         return response()->json($data);
     }
-        // challenges info for this candidate 
+        // challenges info for this candidate
         public function getCandidateChallenges($candidate_id)
         {
             $data = DB::table('challenges')
@@ -113,7 +113,7 @@ class DashboardController extends Controller
 
             return response()->json($data);
         }
-        // tests of company selected by this candidate 
+        // tests of company selected by this candidate
         public function getTestsByCandidate($candidate_id)
         {
             $data = DB::table('tests')
@@ -132,7 +132,7 @@ class DashboardController extends Controller
                 ->where('companies_selecteds.candidate_id', $candidateId)
                 ->select('companies_selecteds.*', 'profile_companies.*', 'companies.*') // You can customize this
                 ->get();
-        
+
             return response()->json($data);
         }
 

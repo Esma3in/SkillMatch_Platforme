@@ -91,6 +91,34 @@ Route::get('/challenges/{challenge}', [ChallengeController::class, 'show']);
 Route::get('/challenges/{challenge}/problems', [ChallengeController::class, 'getProblems']);
 Route::get('/serie-challenges/{skill}', [ChallengeController::class, 'getSerieChallenges']);
 
+// Enhanced Challenge Routes
+Route::prefix('training')->group(function () {
+    // Public routes
+    Route::get('challenges', [ChallengeController::class, 'index']);
+    Route::get('challenges/{challenge}', [ChallengeController::class, 'show']);
+    Route::get('challenges/{challenge}/problems', [ChallengeController::class, 'getProblems']);
+
+    // Candidate routes
+    Route::post('challenges/{challenge}/start', [ChallengeController::class, 'startChallenge']);
+    Route::post('challenges/{challenge}/update-progress', [ChallengeController::class, 'updateProgress']);
+
+    // This route should only be called when a problem is successfully solved
+    // It's used by the problem workspace pages to automatically mark problems as completed
+    Route::post('problems/{problem}/mark-completed', [ChallengeController::class, 'markProblemCompleted']);
+
+    Route::get('certificates/{certificateId}', [ChallengeController::class, 'getCertificate']);
+    Route::get('candidates/{candidateId}/certificates', [ChallengeController::class, 'getCandidateCertificates']);
+    Route::get('challenges/{challenge}/enrollment/{candidateId}', [ChallengeController::class, 'getEnrollmentStatus']);
+
+    // Admin routes
+    Route::prefix('admin')->group(function () {
+        Route::get('challenges', [ChallengeController::class, 'getAdminChallenges']);
+        Route::post('challenges', [ChallengeController::class, 'store']);
+        Route::put('challenges/{challenge}', [ChallengeController::class, 'update']);
+        Route::delete('challenges/{challenge}', [ChallengeController::class, 'destroy']);
+    });
+});
+
 // Problem Routes (retained for backward compatibility, remove if not needed)
 Route::get('/problems', [ProblemController::class, 'index']);
 Route::get('/serie-problems/{skill}', [ProblemController::class, 'getSerieProblems']);
@@ -223,8 +251,8 @@ Route::get('/admin/recent-activity',[UserController::class,'getRecentActivity'])
 Route::get('/admin/candidates/{id}', [CandidateController::class, 'getDetailedCandidate']);
 Route::get('/admin/companies/{id}', [CompanyController::class, 'getDetailedCompany']);
 
-Route::get('api/admin/candidates/{id}', [CandidateController::class, 'show']);
-Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
+Route::get('/admin/candidates/{id}', [CandidateController::class, 'show']);
+Route::get('/admin/companies/{id}', [CompanyController::class, 'show']);
 
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
@@ -300,5 +328,26 @@ Route::get('/leetcode/problems/{id}/submissions', [LeetcodeProblemController::cl
 // Add a test route for debugging
 Route::post('/leetcode/test-submit', [LeetcodeProblemController::class, 'testSubmission']);
 
+
 // Roadmap Skills Routes
 Route::get('/roadmap-skills', [skillsRoadmapController::class, 'index']);
+
+// Debug endpoint - accepts any method
+Route::any('/leetcode/debug/{id?}', [LeetcodeProblemController::class, 'debugRequest'])
+    ->withoutMiddleware(['csrf']);
+
+// Admin routes for challenges (direct access)
+Route::prefix('admin')->group(function () {
+    Route::get('challenges', [ChallengeController::class, 'getAdminChallenges']);
+    Route::post('challenges', [ChallengeController::class, 'store']);
+    Route::put('challenges/{challenge}', [ChallengeController::class, 'update']);
+    Route::delete('challenges/{challenge}', [ChallengeController::class, 'destroy']);
+});
+
+// Add training admin challenge routes
+Route::prefix('training/admin')->group(function () {
+    Route::get('/challenges', [ChallengeController::class, 'getAdminChallenges']);
+    Route::post('/challenges', [ChallengeController::class, 'store']);
+    Route::put('/challenges/{challenge}', [ChallengeController::class, 'update']);
+    Route::delete('/challenges/{challenge}', [ChallengeController::class, 'destroy']);
+});

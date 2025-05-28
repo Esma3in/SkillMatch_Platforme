@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Candidate;
 use App\Models\SerieChallenge;
+use App\Models\CandidateProblem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -38,12 +39,20 @@ class Problem extends Model
     // get the candidates solve this problem
     public function candidates()
     {
-        return $this->belongsToMany(Candidate::class, 'candidate_problem');
+        return $this->belongsToMany(Candidate::class, 'candidate_problem')
+            ->using(CandidateProblem::class)
+            ->withPivot(['challenge_id', 'completed_at', 'time_spent', 'attempt_count'])
+            ->withTimestamps();
     }
 
-    public function challenge()
+    /**
+     * Get the challenges that include this problem.
+     */
+    public function challenges()
     {
-        return $this->belongsTo(Challenge::class);
+        return $this->belongsToMany(Challenge::class, 'challenge_problem')
+            ->withPivot('order')
+            ->withTimestamps();
     }
 
 }

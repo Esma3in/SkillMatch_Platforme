@@ -19,6 +19,8 @@
     "d3": "^7.8.5",
     "framer-motion": "^10.16.5",
     "heroicons": "^2.0.18",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "lucide-react": "^0.292.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
@@ -31,6 +33,7 @@
     "react-router": "^6.20.0",
     "react-router-dom": "^6.20.0",
     "react-scripts": "5.0.1",
+
 
     "react-select": "^5.10.1",
     "react-toastify": "^11.0.5",

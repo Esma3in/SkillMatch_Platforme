@@ -33,7 +33,7 @@ const navigate= useNavigate();
 
     const fetchData = async () => {
       try {
-        const response = await api.get(`/api/candidate/${candidate_id}`);
+        const response = await api.get(`api/candidate/${candidate_id}`);
         setCandidate(response.data);
       } catch (error) {
         console.error("Error fetching candidate data:", error);

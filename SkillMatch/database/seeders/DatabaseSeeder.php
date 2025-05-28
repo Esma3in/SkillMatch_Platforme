@@ -90,43 +90,26 @@ class DatabaseSeeder extends Seeder
         $this->call(CompanyDocumentSeeder::class);
 
         $candidates = Candidate::factory(10)->create();
-        // Création de 20 challenges avec chacun 20 problèmes
-        Challenge::factory(20)->create()->each(function ($challenge) use ($skillsCreated, $candidates) {
-            $randomSkill = $skillsCreated[array_rand($skillsCreated)];
-            $challenge->skill_id = $randomSkill->id;
-            $challenge->save();
-
-            // Lier candidats
-            $challenge->candidates()->attach(
-                $candidates->random(rand(1, 5))->pluck('id')->toArray()
-            );
-        });
-
-
-        foreach (range(1, 30) as $i) {
-            $randomSkill = $skillsCreated[array_rand($skillsCreated)];
-            Problem::factory()->create([
-                'skill_id' => $randomSkill->id,
-                'challenge_id' => null, // Pas lié à un challenge
-            ]);
-        }
 
         // Seed LeetCode problems
         $this->call(LeetcodeProblemSeeder::class);
+
+        // Seed challenges
+        $this->call(ChallengeSeeder::class);
 
         // Create Administrators
 
         User::create([
             'name' => 'Super Admin',
             'email' => 'admin@example.com',
-            'password' => Hash::make('Admin@12345'), 
+            'password' => Hash::make('Admin@12345'),
             'role'=>'admin',
         ])->each(function ($user){
             Administrator::create([
             'name' => $user->name,
             'email' => $user->email,
-            'password' => $user->password, 
-            'user_id'=>$user->id 
+            'password' => $user->password,
+            'user_id'=>$user->id
             ]);
         });
 

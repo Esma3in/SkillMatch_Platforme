@@ -7,8 +7,10 @@ import ProfileCandidat from './pages/ProfileCandidate.jsx';
 import CompaniesMatching from './pages/CompaniesMatching.jsx';
 import ProtectedRoute from './features/session/ProtectedRoute.jsx';
 import ProblemsList from './pages/problemsList.js';
-import Challenge from './pages/Challenge';
-
+import ChallengeList from './pages/Challenge';
+import ChallengeDetail from './pages/ChallengeDetail';
+import Certificate from './pages/certificate';
+import AdminChallenges from './pages/manage/challenges.jsx';
 
 import SeriesChallenge from './pages/SerieChallenges'
 
@@ -51,10 +53,10 @@ import { CompanyProfile } from './pages/ProfileCompany.jsx';
 import CreateProfileCompany  from './pages/createProfileCompany.jsx';
 import CreateSkill from './pages/createSkillsCompany.js';
 import TestCreationForm from './pages/CreateProgrammingTestForCompany.js';
-import Certificate from './pages/certificate.js';
 import CandidatesList from './pages/manage/candidatesList.jsx';
 import LeetcodeProblems from './pages/LeetcodeProblems.jsx';
 import LeetcodeProblemWorkspace from './pages/LeetcodeProblemWorkspace.jsx';
+import ProblemWorkspace from './pages/ProblemWorkspace.js';
 import AddLeetcodeProblem from './pages/manage/addLeetcodeProblem.jsx';
 import ManageLeetcodeProblems from './pages/manage/manageLeetcodeProblems.jsx';
 import EditLeetcodeProblem from './pages/manage/editLeetcodeProblem.jsx';
@@ -84,12 +86,21 @@ export default function App() {
         <Route path='/badges' element = {<BadgeList />}/>
         {/* <Route path='/companyProfile' element={<ProtectedRoute><CompanyProfile/></ProtectedRoute>}/>  */}
         <Route path="/qcmForRoadmap/:id" element={<QcmForRoadmap />} />
-         <Route path="/challenges" element={<ProtectedRoute ><Challenge /></ProtectedRoute>} />
+        
+        {/* Challenge Routes */}
+        <Route path="/challenges" element={<ProtectedRoute><ChallengeList /></ProtectedRoute>} />
+        <Route path="/challenges/:challengeId" element={<ProtectedRoute><ChallengeDetail /></ProtectedRoute>} />
+        <Route path="/certificates/:certificateId" element={<ProtectedRoute><Certificate /></ProtectedRoute>} />
+        <Route path="/admin/challenges" element={<ProtectedRoute><AdminChallenges /></ProtectedRoute>} />
+        
+        {/* Legacy challenge routes - kept for backward compatibility */}
+        <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
+        
         <Route path="/problems" element={<ProtectedRoute ><LeetcodeProblems /></ProtectedRoute>} />
+        <Route path="/problems/:id" element={<ProtectedRoute><ProblemWorkspace /></ProtectedRoute>} />
         <Route path="/leetcode/problem/:id" element={<ProtectedRoute><LeetcodeProblemWorkspace /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
         <Route path="/performance" element= {<ProtectedRoute><CandidateDashboard/></ProtectedRoute>}/>
-        <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
         <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
@@ -122,7 +133,6 @@ export default function App() {
 
         <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} />
         <Route path="/admin/banUsers" element={<ProtectedRoute><BanUsers /></ProtectedRoute>} />
-        <Route path = "/certificate"  element={<Certificate />}/>
         {/* <Route path="/admin/candidatesList" element={<ProtectedRoute><CandidatesList/></ProtectedRoute>} /> */}
         <Route path="/admin/addLeetcodeProblem" element={<ProtectedRoute><AddLeetcodeProblem /></ProtectedRoute>} />
         <Route path="/manage/addLeetcodeProblem" element={<ProtectedRoute><AddLeetcodeProblem /></ProtectedRoute>} />

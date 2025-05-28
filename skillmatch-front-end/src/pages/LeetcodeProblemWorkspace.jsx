@@ -4,6 +4,7 @@ import NavbarCandidate from "../components/common/navbarCandidate";
 import { FaChevronLeft, FaPlay, FaCheck, FaTimes, FaSpinner } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api/axios"; // Import our configured axios instance
+import { api as apiClient } from "../api/api"; // Import the api client used in other files
 
 // Define available programming languages
 const LANGUAGES = [
@@ -270,6 +271,20 @@ const LeetcodeProblemWorkspace = () => {
         if (data.submission.status === 'accepted') {
           showNotification('success', 'Great job! Your solution passed all test cases.');
           setShowCelebration(true);
+          
+          // Mark as completed in any active challenges
+          const candidateId = localStorage.getItem('candidate_id');
+          if (candidateId) {
+            try {
+              await apiClient.post(`api/training/problems/${id}/mark-completed`, {
+                candidate_id: candidateId,
+                problem_type: 'leetcode'
+              });
+              console.log("Problem marked as completed in challenges");
+            } catch (err) {
+              console.error("Error marking problem as completed:", err);
+            }
+          }
         } else {
           showNotification('error', `Your solution was not accepted: ${data.message}`);
         }
