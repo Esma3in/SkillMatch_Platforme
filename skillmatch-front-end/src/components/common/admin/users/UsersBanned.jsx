@@ -44,7 +44,7 @@ const UsersBanned = () => {
   const fetchBannedUsers = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/admin/UsersList');
+      const response = await api.get('/api/admin/UsersList');
       
       if (response.status !== 200) {
         throw new Error('Failed to fetch banned users');

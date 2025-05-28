@@ -23,3 +23,6 @@ yarn-error.log
 /.vscode
 /.zed
 /.storage/logs/log
+
+/.storage/logs/laravel.log
+/storage/logs/laravel.log

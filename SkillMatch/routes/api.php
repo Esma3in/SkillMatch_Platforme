@@ -53,16 +53,19 @@ Route::options('/{any}', function () {
     return response()->json([], 200);
 })->where('any', '.*');
 
+
+Route::post('/signUp', [UserController::class, 'SignUp']);
+Route::post('/signin', [UserController::class, 'SignIn']);
+
 // Candidate Routes
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);
-Route::post('/candidate/signUp', [UserController::class, 'SignUp']);
+
 Route::post('/profiles', [CandidateController::class, 'storeProfile']);
 Route::get('/candidate/suggestedcompanies/{id}', [CandidateController::class, 'CompaniesMatched']);
 Route::get('/candidate/companies/all', [CompanyController::class, 'index']);
 Route::get('/ProfileCandidate/{id}', [CandidateController::class, 'GetProfile']);
 Route::post('/candidate/NewLanguage', [LanguageController::class, 'store']);
 Route::put('/candidate/setdescription', [ProfileCandidateController::class, 'EditDescription']);
-Route::post('/candidate/signin', [UserController::class, 'SignIn']);
 Route::get('/logout', [CandidateController::class, 'Logout']);
 Route::get('/candidate/{id}',[CandidateController::class,'getCandidate']);
 Route::get('/candidate/companyInfo/{id}',[CompanyController::class,'GetCompany']);
@@ -87,6 +90,29 @@ Route::get('/challenges', [ChallengeController::class, 'index'])->name('challeng
 Route::get('/challenges/{challenge}', [ChallengeController::class, 'show']);
 Route::get('/challenges/{challenge}/problems', [ChallengeController::class, 'getProblems']);
 Route::get('/serie-challenges/{skill}', [ChallengeController::class, 'getSerieChallenges']);
+
+// Enhanced Challenge Routes
+Route::prefix('training')->group(function () {
+    // Public routes
+    Route::get('challenges', [ChallengeController::class, 'index']);
+    Route::get('challenges/{challenge}', [ChallengeController::class, 'show']);
+    Route::get('challenges/{challenge}/problems', [ChallengeController::class, 'getProblems']);
+
+    // Candidate routes
+    Route::post('challenges/{challenge}/start', [ChallengeController::class, 'startChallenge']);
+    Route::post('challenges/{challenge}/update-progress', [ChallengeController::class, 'updateProgress']);
+    Route::get('certificates/{certificateId}', [ChallengeController::class, 'getCertificate']);
+    Route::get('candidates/{candidateId}/certificates', [ChallengeController::class, 'getCandidateCertificates']);
+    Route::get('challenges/{challenge}/enrollment/{candidateId}', [ChallengeController::class, 'getEnrollmentStatus']);
+
+    // Admin routes
+    Route::prefix('admin')->group(function () {
+        Route::get('challenges', [ChallengeController::class, 'getAdminChallenges']);
+        Route::post('challenges', [ChallengeController::class, 'store']);
+        Route::put('challenges/{challenge}', [ChallengeController::class, 'update']);
+        Route::delete('challenges/{challenge}', [ChallengeController::class, 'destroy']);
+    });
+});
 
 // Problem Routes (retained for backward compatibility, remove if not needed)
 Route::get('/problems', [ProblemController::class, 'index']);
@@ -220,8 +246,8 @@ Route::get('/admin/recent-activity',[UserController::class,'getRecentActivity'])
 Route::get('/admin/candidates/{id}', [CandidateController::class, 'getDetailedCandidate']);
 Route::get('/admin/companies/{id}', [CompanyController::class, 'getDetailedCompany']);
 
-Route::get('api/admin/candidates/{id}', [CandidateController::class, 'show']);
-Route::get('api/admin/companies/{id}', [CompanyController::class, 'show']);
+Route::get('/admin/candidates/{id}', [CandidateController::class, 'show']);
+Route::get('/admin/companies/{id}', [CompanyController::class, 'show']);
 
 // Route::get('/admin/CompaniesList',[AdminConroller::class],'Companies')->name('admin.CompaniesList');
 
@@ -299,3 +325,19 @@ Route::post('/leetcode/test-submit', [LeetcodeProblemController::class, 'testSub
 // Debug endpoint - accepts any method
 Route::any('/leetcode/debug/{id?}', [LeetcodeProblemController::class, 'debugRequest'])
     ->withoutMiddleware(['csrf']);
+
+// Admin routes for challenges (direct access)
+Route::prefix('admin')->group(function () {
+    Route::get('challenges', [ChallengeController::class, 'getAdminChallenges']);
+    Route::post('challenges', [ChallengeController::class, 'store']);
+    Route::put('challenges/{challenge}', [ChallengeController::class, 'update']);
+    Route::delete('challenges/{challenge}', [ChallengeController::class, 'destroy']);
+});
+
+// Add training admin challenge routes
+Route::prefix('training/admin')->group(function () {
+    Route::get('/challenges', [ChallengeController::class, 'getAdminChallenges']);
+    Route::post('/challenges', [ChallengeController::class, 'store']);
+    Route::put('/challenges/{challenge}', [ChallengeController::class, 'update']);
+    Route::delete('/challenges/{challenge}', [ChallengeController::class, 'destroy']);
+});
