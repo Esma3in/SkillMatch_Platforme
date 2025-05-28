@@ -21,7 +21,7 @@ export default function ChallengeList() {
   const navigate = useNavigate();
 
   // Get candidate ID from localStorage
-  const candidateId = localStorage.getItem('candidateId');
+  const candidateId = localStorage.getItem('candidate_id');
 
   useEffect(() => {
     const fetchChallenges = async () => {

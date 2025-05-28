@@ -102,6 +102,11 @@ Route::prefix('training')->group(function () {
     // Candidate routes
     Route::post('challenges/{challenge}/start', [ChallengeController::class, 'startChallenge']);
     Route::post('challenges/{challenge}/update-progress', [ChallengeController::class, 'updateProgress']);
+
+    // This route should only be called when a problem is successfully solved
+    // It's used by the problem workspace pages to automatically mark problems as completed
+    Route::post('problems/{problem}/mark-completed', [ChallengeController::class, 'markProblemCompleted']);
+
     Route::get('certificates/{certificateId}', [ChallengeController::class, 'getCertificate']);
     Route::get('candidates/{candidateId}/certificates', [ChallengeController::class, 'getCandidateCertificates']);
     Route::get('challenges/{challenge}/enrollment/{candidateId}', [ChallengeController::class, 'getEnrollmentStatus']);
@@ -275,6 +280,7 @@ Route::get('/candidate/{candidate_id}/selected-companies', [DashboardController:
 Route::get('/candidate/{candidate_id}/company-data', [DashboardController::class, 'getFullCandidateCompanyData']);
 Route::get('/candidate/{candidate_id}/challenges-progress', [DashboardController::class, 'getCandidateChallenges']);
 Route::get('/candidate/{candidate_id}/test-progress', [DashboardController::class, 'getTestsByCandidate']);
+Route::get('/candidate/{candidate_id}/recent-activities', [DashboardController::class, 'getRecentActivities']);
 Route::get('/notifications/{candidate_id}' , [CandidateController::class , "getNotifications"]);
 Route::put('/notifications/{id}/read'  , [CandidateController::class , "markasRead"]);
 
@@ -329,6 +335,10 @@ Route::get('/leetcode/problems/{id}/submissions', [LeetcodeProblemController::cl
 
 // Add a test route for debugging
 Route::post('/leetcode/test-submit', [LeetcodeProblemController::class, 'testSubmission']);
+
+
+// Roadmap Skills Routes
+Route::get('/roadmap-skills', [skillsRoadmapController::class, 'index']);
 
 // Debug endpoint - accepts any method
 Route::any('/leetcode/debug/{id?}', [LeetcodeProblemController::class, 'debugRequest'])

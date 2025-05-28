@@ -143,7 +143,7 @@ const AllCompanies = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await api.get('/admin/CompaniesList');
+        const response = await api.get('/api/admin/CompaniesList');
         if (response.status !== 200) throw new Error('Failed to fetch companies');
 
         const rawData = response.data;
@@ -175,7 +175,7 @@ const AllCompanies = () => {
   async function updateState(id, newState) {
       try {
         // call your API
-        await api.post('/admin/CompaniesList/setstate', { id, state: newState });
+        await api.post('/api/admin/CompaniesList/setstate', { id, state: newState });
   
         // optimistically update the UI
         setCompany(prev =>

@@ -105,7 +105,7 @@ export default function DocumentsPage() {
   const handlePreviewDocument = (document) => {
     try {
       // Open document in new tab using the preview endpoint
-      const previewUrl = `${api.defaults.baseURL}/admin/documents/preview/${document.id}`;
+      const previewUrl = `${api.defaults.baseURL}/api/admin/documents/preview/${document.id}`;
       window.open(previewUrl, '_blank');
     } catch (error) {
       console.error('Error previewing document:', error);
@@ -115,7 +115,7 @@ export default function DocumentsPage() {
 
   const handleDownloadDocument = async (documentId) => {
     try {
-      window.open(`${api.defaults.baseURL}/admin/documents/download/${documentId}`, '_blank');
+      window.open(`${api.defaults.baseURL}/api/admin/documents/download/${documentId}`, '_blank');
     } catch (error) {
       console.error('Error downloading document:', error);
       toast.error('Failed to download document');
@@ -575,4 +575,4 @@ export default function DocumentsPage() {
       </div>
     </>
   );
-} 
+}

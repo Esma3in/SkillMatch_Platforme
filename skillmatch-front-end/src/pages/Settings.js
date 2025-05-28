@@ -221,7 +221,7 @@ export default function ProfileSettings() {
 
   // Cancel form submission
   const handleCancel = () => {
-    window.location.href = '/ProfileCandidate';
+    window.location.href = '/companies/list';
   };
 
   // Navigate to profile creation

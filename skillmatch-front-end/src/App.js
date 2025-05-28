@@ -56,6 +56,7 @@ import TestCreationForm from './pages/CreateProgrammingTestForCompany.js';
 import CandidatesList from './pages/manage/candidatesList.jsx';
 import LeetcodeProblems from './pages/LeetcodeProblems.jsx';
 import LeetcodeProblemWorkspace from './pages/LeetcodeProblemWorkspace.jsx';
+import ProblemWorkspace from './pages/ProblemWorkspace.js';
 import AddLeetcodeProblem from './pages/manage/addLeetcodeProblem.jsx';
 import ManageLeetcodeProblems from './pages/manage/manageLeetcodeProblems.jsx';
 import EditLeetcodeProblem from './pages/manage/editLeetcodeProblem.jsx';
@@ -97,6 +98,7 @@ export default function App() {
         <Route path="/serie-challenges/:challengeId" element={<ProtectedRoute><SeriesChallenge /></ProtectedRoute>} />
         
         <Route path="/problems" element={<ProtectedRoute ><LeetcodeProblems /></ProtectedRoute>} />
+        <Route path="/problems/:id" element={<ProtectedRoute><ProblemWorkspace /></ProtectedRoute>} />
         <Route path="/leetcode/problem/:id" element={<ProtectedRoute><LeetcodeProblemWorkspace /></ProtectedRoute>} />
         <Route path="/profile-settings" element={<ProfileSettings />} />
         <Route path="/performance" element= {<ProtectedRoute><CandidateDashboard/></ProtectedRoute>}/>
