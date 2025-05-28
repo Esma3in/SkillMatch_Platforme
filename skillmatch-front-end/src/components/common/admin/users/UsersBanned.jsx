@@ -7,7 +7,7 @@ import {
   XIcon,
   Trash2Icon,
 } from "lucide-react";
-import api from "../../../../api/axios";
+import { api } from "../../../../api/api";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -117,7 +117,7 @@ const UsersBanned = () => {
   async function deleteUser(userId) {
     try {
       if (window.confirm("Are you sure you want to delete this user permanently? This action cannot be undone.")) {
-        await api.post('/admin/Users/delete', { user_id: userId });
+        await api.post('/api/admin/Users/delete', { user_id: userId });
         
         // Remove the user from the state
         setUsers(prev => prev.filter(user => user.id !== userId));
@@ -131,7 +131,7 @@ const UsersBanned = () => {
 
   async function unbanUser(userId) {
     try {
-      await api.post('/admin/Users/unban', { user_id: userId });
+      await api.post('/api/admin/Users/unban', { user_id: userId });
       
       // Remove the user from the state since they're no longer banned
       setUsers(prev => prev.filter(user => user.id !== userId));

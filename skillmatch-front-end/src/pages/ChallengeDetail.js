@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FaTrophy, FaCode, FaCheck, FaExclamationCircle, FaArrowLeft, FaDownload } from 'react-icons/fa';
 import { api } from '../api/api';
@@ -23,60 +23,92 @@ export default function ChallengeDetail() {
   const [certificate, setCertificate] = useState(null);
   
   // Get candidate ID from localStorage
-  const candidateId = localStorage.getItem('candidateId');
+  const candidateId = localStorage.getItem('candidate_id');
   
-  useEffect(() => {
-    const fetchChallengeData = async () => {
-      setLoading(true);
-      try {
-        // Fetch challenge details
-        const challengeResponse = await api.get(`api/training/challenges/${challengeId}`);
-        setChallenge(challengeResponse.data);
-        
-        // Fetch problems
-        const problemsResponse = await api.get(`api/training/challenges/${challengeId}/problems`);
-        setProblems(problemsResponse.data);
-        
-        // Check enrollment status if candidateId exists
-        if (candidateId) {
-          try {
-            // This endpoint would check if the candidate is enrolled and return progress
-            const enrollmentResponse = await api.get(`api/training/challenges/${challengeId}/enrollment/${candidateId}`);
-            setIsEnrolled(true);
-            setProgress({
-              completed: enrollmentResponse.data.completed_problems || 0,
-              total: problemsResponse.data.length,
-              percentage: enrollmentResponse.data.percentage || 0,
-              completedProblems: enrollmentResponse.data.completed_problems_ids || []
-            });
-            
-            // If challenge is completed, fetch certificate
-            if (enrollmentResponse.data.is_completed && enrollmentResponse.data.certificate_id) {
-              const certificateResponse = await api.get(`api/training/certificates/${enrollmentResponse.data.certificate_id}`);
-              setCertificate(certificateResponse.data);
-            }
-          } catch (err) {
-            // Not enrolled or other error
-            setIsEnrolled(false);
-            setProgress({
-              completed: 0,
-              total: problemsResponse.data.length,
-              percentage: 0,
-              completedProblems: []
-            });
+  // Function to fetch challenge data - wrapped in useCallback to avoid dependency issues
+  const fetchChallengeData = useCallback(async () => {
+    setLoading(true);
+    try {
+      // Fetch challenge details
+      const challengeResponse = await api.get(`api/training/challenges/${challengeId}`);
+      setChallenge(challengeResponse.data);
+      
+      // Fetch problems
+      const problemsResponse = await api.get(`api/training/challenges/${challengeId}/problems`);
+      setProblems(problemsResponse.data);
+      
+      // Check enrollment status if candidateId exists
+      if (candidateId) {
+        try {
+          // This endpoint would check if the candidate is enrolled and return progress
+          const enrollmentResponse = await api.get(`api/training/challenges/${challengeId}/enrollment/${candidateId}`);
+          setIsEnrolled(true);
+          setProgress({
+            completed: enrollmentResponse.data.completed_problems || 0,
+            total: problemsResponse.data.length,
+            percentage: enrollmentResponse.data.percentage || 0,
+            completedProblems: enrollmentResponse.data.completed_problems_ids || []
+          });
+          
+          // If challenge is completed, fetch certificate
+          if (enrollmentResponse.data.is_completed && enrollmentResponse.data.certificate_id) {
+            const certificateResponse = await api.get(`api/training/certificates/${enrollmentResponse.data.certificate_id}`);
+            setCertificate(certificateResponse.data);
           }
+        } catch (err) {
+          // Not enrolled or other error
+          setIsEnrolled(false);
+          setProgress({
+            completed: 0,
+            total: problemsResponse.data.length,
+            percentage: 0,
+            completedProblems: []
+          });
         }
-        
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load challenge details');
-        setLoading(false);
-        console.error(err);
+      }
+      
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to load challenge details');
+      setLoading(false);
+      console.error(err);
+    }
+  }, [challengeId, candidateId]);
+  
+  // Initial data load
+  useEffect(() => {
+    fetchChallengeData();
+  }, [fetchChallengeData]);
+  
+  // Add an effect to refresh data when the component becomes visible again
+  useEffect(() => {
+    // This will refresh the data when the user returns to this page after completing a problem
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchChallengeData();
       }
     };
     
-    fetchChallengeData();
-  }, [challengeId, candidateId]);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Clean up
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [fetchChallengeData]);
+  
+  // Add an effect to refresh data when focus returns to the window
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchChallengeData();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [fetchChallengeData]);
   
   const handleStartChallenge = async () => {
     if (!candidateId) {
@@ -101,42 +133,20 @@ export default function ChallengeDetail() {
     }
   };
   
-  const handleCompleteProblem = async (problemId) => {
-    if (!isEnrolled || !candidateId) {
-      toast.error('You must be enrolled in this challenge first');
-      return;
+  const isProblemCompleted = (problemId, problemType) => {
+    if (!Array.isArray(progress.completedProblems)) {
+      return false;
     }
     
-    try {
-      const response = await api.post(`api/training/challenges/${challengeId}/update-progress`, {
-        candidate_id: candidateId,
-        problem_id: problemId,
-        completed: true
-      });
-      
-      // Update progress
-      setProgress({
-        completed: response.data.progress.completed,
-        total: response.data.progress.total,
-        percentage: response.data.progress.percentage,
-        completedProblems: [...progress.completedProblems, problemId]
-      });
-      
-      toast.success(response.data.message);
-      
-      // If challenge is completed and certificate is available
-      if (response.data.certificate_id) {
-        const certificateResponse = await api.get(`api/training/certificates/${response.data.certificate_id}`);
-        setCertificate(certificateResponse.data);
+    return progress.completedProblems.some(problem => {
+      if (typeof problem === 'object' && problem.id && problem.type) {
+        return problem.id === problemId && problem.type === problemType;
+      } else if (problemType === 'standard') {
+        // Handle legacy format (array of IDs for standard problems only)
+        return problem === problemId;
       }
-    } catch (error) {
-      toast.error('Failed to update progress');
-      console.error(error);
-    }
-  };
-  
-  const isProblemCompleted = (problemId) => {
-    return progress.completedProblems.includes(problemId);
+      return false;
+    });
   };
   
   const getLevelBadgeClass = (level) => {
@@ -273,66 +283,71 @@ export default function ChallengeDetail() {
           <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Challenge Problems</h2>
             
-            <div className="space-y-4">
-              {problems.length > 0 ? (
-                problems.map((problem, index) => (
+            {problems.length === 0 ? (
+              <div className="text-gray-500 text-center py-8">
+                No problems found for this challenge.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {problems.map((problem, index) => (
                   <div 
-                    key={problem.id}
-                    className={`border rounded-lg p-4 ${isProblemCompleted(problem.id) ? 'bg-green-50 border-green-200' : 'bg-white'}`}
+                    key={`${problem.source}-${problem.id}`}
+                    className={`border rounded-lg p-4 ${
+                      isProblemCompleted(problem.id, problem.source) 
+                        ? 'bg-green-50 border-green-200' 
+                        : 'bg-white border-gray-200 hover:border-indigo-300 transition-colors'
+                    }`}
                   >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-                          {isProblemCompleted(problem.id) && <FaCheck className="text-green-500 mr-2" />}
-                          Problem {index + 1}: {problem.name}
-                        </h3>
-                        <p className="text-gray-600 mt-1">
-                          {problem.description && problem.description.length > 100
-                            ? `${problem.description.substring(0, 100)}...`
-                            : problem.description}
-                        </p>
-                        <div className="flex gap-2 mt-2">
-                          <span className={`text-xs px-2 py-1 rounded-full ${getLevelBadgeClass(problem.level)}`}>
-                            {problem.level}
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center mb-2">
+                          <span className="text-gray-500 mr-2">#{index + 1}</span>
+                          <h3 className="text-lg font-semibold text-gray-800">{problem.name}</h3>
+                          <span className={`ml-3 text-xs px-2 py-1 rounded-full ${getLevelBadgeClass(problem.level)}`}>
+                            {problem.level.charAt(0).toUpperCase() + problem.level.slice(1)}
                           </span>
-                          <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">
-                            {problem.skill?.name || 'N/A'}
+                          {problem.source === 'leetcode' && (
+                            <span className="ml-2 text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                              LeetCode
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-gray-600 mb-3">{problem.description}</p>
+                        <div className="flex items-center text-sm">
+                          <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-md">
+                            {problem.skill?.name || 'General'}
                           </span>
                         </div>
                       </div>
-                      <div>
-                        {isProblemCompleted(problem.id) ? (
-                          <span className="text-green-600 font-medium flex items-center">
-                            <FaCheck className="mr-1" /> Completed
-                          </span>
+                      
+                      <div className="ml-4 flex items-center">
+                        {isProblemCompleted(problem.id, problem.source) ? (
+                          <div className="flex items-center text-green-600">
+                            <FaCheck className="mr-1" />
+                            <span>Completed</span>
+                          </div>
                         ) : (
-                          <button
-                            onClick={() => {
-                              // Navigate to problem page
-                              window.open(`/problems/${problem.id}`, '_blank');
-                              // Mark as completed (in a real app, this would happen after actual completion)
-                              handleCompleteProblem(problem.id);
-                            }}
-                            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center"
-                            disabled={!isEnrolled}
-                          >
-                            <FaCode className="mr-2" /> Solve
-                          </button>
+                          <div className="flex space-x-2">
+                            <Link 
+                              to={problem.source === 'leetcode' 
+                                ? `/leetcode/problem/${problem.id}` 
+                                : `/problems/${problem.id}`}
+                              className="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 transition-colors flex items-center"
+                            >
+                              <FaCode className="mr-1" /> Solve
+                            </Link>
+                          </div>
                         )}
                       </div>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="text-center py-8 text-gray-500">
-                  <p>No problems found for this challenge.</p>
-                </div>
-              )}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
       <Footer />
     </>
   );
-} 
+}

@@ -187,7 +187,7 @@ const AllCandidate = () => {
   async function updateState(id, newState) {
     try {
       // call your API
-      await api.post('/admin/CanidatesList/setstate', { id, state: newState });
+      await api.post('/api/admin/CanidatesList/setstate', { id, state: newState });
 
       // optimistically update the UI
       setCandidate(prev =>
@@ -206,7 +206,7 @@ const AllCandidate = () => {
   const handleViewDetails = async (candidateId) => {
     try {
       setLoading(true);
-      const response = await api.get(`/admin/candidates/${candidateId}`);
+      const response = await api.get(`/api/admin/candidates/${candidateId}`);
       
       if (response.status === 200) {
         // Merge the detailed data with the basic candidate data

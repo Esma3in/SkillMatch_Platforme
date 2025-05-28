@@ -101,6 +101,11 @@ Route::prefix('training')->group(function () {
     // Candidate routes
     Route::post('challenges/{challenge}/start', [ChallengeController::class, 'startChallenge']);
     Route::post('challenges/{challenge}/update-progress', [ChallengeController::class, 'updateProgress']);
+
+    // This route should only be called when a problem is successfully solved
+    // It's used by the problem workspace pages to automatically mark problems as completed
+    Route::post('problems/{problem}/mark-completed', [ChallengeController::class, 'markProblemCompleted']);
+
     Route::get('certificates/{certificateId}', [ChallengeController::class, 'getCertificate']);
     Route::get('candidates/{candidateId}/certificates', [ChallengeController::class, 'getCandidateCertificates']);
     Route::get('challenges/{challenge}/enrollment/{candidateId}', [ChallengeController::class, 'getEnrollmentStatus']);
