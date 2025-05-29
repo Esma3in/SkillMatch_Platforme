@@ -213,7 +213,7 @@ Route::get('/companies/selected-candidates', [CompanyDashboardController::class,
 Route::get('/companies/resolved-test-stats', [CompanyDashboardController::class, 'getResolvedTestStatsByCompany']);
 Route::get('/companies/accepted-candidates', [CompanyDashboardController::class, 'getAcceptedCandidatesByCompany']);
 Route::get('/companies/tests', [CompanyDashboardController::class, 'getCompanyTests']);
-Route::get('/companies/daily-stats', [CompanyDashboardController::class, 'getDailyStatsByCompany']);
+Route::get('/companies/skills-count/{companyId}', [CompanyDashboardController::class, 'getCompanySkills']);
 
 
 

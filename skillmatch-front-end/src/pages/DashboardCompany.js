@@ -1,18 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as d3 from 'd3';
+import * as d3 from 'd3'; // Import d3.js
 import { api } from '../api/api';
-import { BarChart3, Users, CheckCircle, FileText, TrendingUp, Eye, EyeOff, Mail, Phone, MapPin, Briefcase, Award } from 'lucide-react';
+import { BarChart3, Users, CheckCircle, FileText, TrendingUp, Eye, EyeOff, Mail, Phone, MapPin, Briefcase, Award, Code } from 'lucide-react';
 
 const CompanyDashboard = () => {
-  const chartRef = useRef();
+  const testsChartRef = useRef();
   const [stats, setStats] = useState(null);
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [acceptedCandidates, setAcceptedCandidates] = useState([]);
   const [tests, setTests] = useState([]);
+  const [resolvedTests, setResolvedTests] = useState([]);
   const [expandedCandidate, setExpandedCandidate] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState('30 Days');
-  const [chartData, setChartData] = useState([]);
+  const [timeRange, setTimeRange] = useState('Daily'); // Options: Daily, Weekly, Monthly
   const companyId = localStorage.getItem('company_id');
 
   useEffect(() => {
@@ -27,153 +27,189 @@ const CompanyDashboard = () => {
           resolvedTestsRes,
           acceptedCandidatesRes,
           testsRes,
-          dailyStatsRes
+          skillsCountRes
         ] = await Promise.all([
           api.get(`/api/companies/tests-count?company_id=${companyId}`),
           api.get(`/api/companies/selected-candidates?company_id=${companyId}`),
           api.get(`/api/companies/resolved-test-stats?company_id=${companyId}`),
           api.get(`/api/companies/accepted-candidates?company_id=${companyId}`),
           api.get(`/api/companies/tests?company_id=${companyId}`),
-          api.get(`/api/companies/daily-stats?company_id=${companyId}&range=${timeRange === '12 Months' ? 365 : timeRange === '6 Months' ? 180 : timeRange === '30 Days' ? 30 : 7}`)
+          api.get(`/api/companies/skills-count/${companyId}`)
         ]);
 
         const testCount = testCountRes.data?.tests_count || 0;
-        const selectedList = selectedCandidatesRes.data?.selected_candidates || [];
+        const selectedList = Array.isArray(selectedCandidatesRes.data?.selected_candidates)
+          ? selectedCandidatesRes.data.selected_candidates
+          : [];
         const selectedCount = selectedList.length;
-        const resolvedCount = resolvedTestsRes.data?.length || 0;
-        const acceptedList = acceptedCandidatesRes.data || [];
+        const resolvedList = Array.isArray(resolvedTestsRes.data) ? resolvedTestsRes.data : [];
+        const resolvedCount = resolvedList.length;
+        const acceptedList = Array.isArray(acceptedCandidatesRes.data) ? acceptedCandidatesRes.data : [];
         const acceptedCount = acceptedList?.[0]?.accepted_candidates_count || acceptedList.length;
+        const skillsCount = skillsCountRes.data?.skills_count || 0;
 
         setStats([
           { label: 'Total Tests', value: testCount, icon: FileText, color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-50' },
           { label: 'Resolved Tests', value: resolvedCount, icon: CheckCircle, color: 'from-green-500 to-green-600', bgColor: 'bg-green-50' },
           { label: 'Selected Candidates', value: selectedCount, icon: Users, color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-50' },
-          { label: 'Accepted Candidates', value: acceptedCount, icon: Award, color: 'from-orange-500 to-orange-600', bgColor: 'bg-orange-50' }
+          { label: 'Accepted Candidates', value: acceptedCount, icon: Award, color: 'from-orange-500 to-orange-600', bgColor: 'bg-orange-50' },
+          { label: 'Skills Required', value: skillsCount, icon: Code, color: 'from-teal-500 to-teal-600', bgColor: 'bg-teal-50' }
         ]);
 
         setSelectedCandidates(selectedList);
         setAcceptedCandidates(acceptedList);
-        setTests(testsRes.data || []);
-        setChartData(dailyStatsRes.data || []);
+        const testsData = Array.isArray(testsRes.data) ? testsRes.data : [];
+        setTests(testsData);
+        console.log('Tests Data:', testsData); // Debug log
+        setResolvedTests(resolvedList);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
+        setSelectedCandidates([]);
+        setAcceptedCandidates([]);
+        setTests([]);
+        setResolvedTests([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [companyId, timeRange]);
+  }, [companyId]);
 
+  // Chart: Tests Created Over Time (Daily, Weekly, Monthly) with d3.js
   useEffect(() => {
-    if (!chartData.length || !chartRef.current) return;
+    if (!tests.length || !testsChartRef.current) {
+      console.log('No tests to display or chart ref not available:', tests); // Debug log
+      return;
+    }
 
-    d3.select(chartRef.current).selectAll('*').remove();
+    const today = new Date('2025-05-29T13:49:00+01:00'); // Updated to current time
+    // Adjust date parsing to handle 'Z' as UTC
+    const parseDate = d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ');
 
-    const svg = d3.select(chartRef.current);
+    let groupFormat, startDate, ticks, labelFormat;
+    switch (timeRange) {
+      case 'Daily':
+        groupFormat = (date) => d3.timeFormat('%Y-%m-%d')(date);
+        startDate = new Date(today);
+        startDate.setDate(today.getDate() - 30); // Last 30 days
+        ticks = d3.timeDay.every(5);
+        labelFormat = (date) => d3.timeFormat('%d/%m')(date);
+        break;
+      case 'Weekly':
+        groupFormat = (date) => {
+          const week = d3.timeWeek.floor(date);
+          return d3.timeFormat('%Y-W%U')(week);
+        };
+        startDate = new Date(today);
+        startDate.setDate(today.getDate() - 180);
+        ticks = d3.timeMonth.every(1);
+        labelFormat = (date) => `Week ${d3.timeFormat('%U')(date)} (${d3.timeFormat('%b %d')(date)})`;
+        break;
+      case 'Monthly':
+        groupFormat = (date) => d3.timeFormat('%Y-%m')(date);
+        startDate = new Date(today);
+        startDate.setFullYear(today.getFullYear() - 1);
+        ticks = d3.timeMonth.every(2);
+        labelFormat = (date) => d3.timeFormat('%b %Y')(date);
+        break;
+      default:
+        return;
+    }
+
+    const testCountsByPeriod = {};
+    tests.forEach(test => {
+      const date = parseDate(test.created_at);
+      console.log('Parsed Date for test:', test.created_at, date); // Debug log
+      if (date && date >= startDate && date <= today) {
+        const period = groupFormat(date);
+        testCountsByPeriod[period] = (testCountsByPeriod[period] || 0) + 1;
+      }
+    });
+
+    const data = Object.entries(testCountsByPeriod)
+      .map(([period, count]) => ({
+        date: parseDate(`${period}T00:00:00.000Z`),
+        value: count
+      }))
+      .filter(d => d.date >= startDate && d.date <= today)
+      .sort((a, b) => a.date - b.date);
+
+    console.log('Chart Data:', data); // Debug log
+
+    d3.select(testsChartRef.current).selectAll('*').remove();
+
+    const svg = d3.select(testsChartRef.current);
     const width = 800;
     const height = 300;
     const margin = { top: 20, right: 20, bottom: 40, left: 40 };
 
     svg.attr('width', width).attr('height', height);
 
-    const parseDate = d3.timeParse('%Y-%m-%d');
-    const data = chartData.map(d => ({
-      date: parseDate(d.date),
-      value: d.total // Use the pre-calculated total from backend
-    }));
-
-    const x = d3.scaleTime()
-      .domain(d3.extent(data, d => d.date))
-      .range([margin.left, width - margin.right]);
+    const x = d3.scaleBand()
+      .domain(data.map(d => d.date))
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
 
     const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.value) + 5])
+      .domain([0, d3.max(data, d => d.value) || 1])
       .nice()
       .range([height - margin.bottom, margin.top]);
 
-    // Line generator
-    const line = d3.line()
-      .x(d => x(d.date))
-      .y(d => y(d.value))
-      .curve(d3.curveCatmullRom);
+    svg.selectAll('.bar')
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('class', 'bar')
+      .attr('x', d => x(d.date))
+      .attr('y', d => y(d.value))
+      .attr('width', x.bandwidth())
+      .attr('height', d => height - margin.bottom - y(d.value))
+      .attr('fill', '#3b82f6');
 
-    // Area generator
-    const area = d3.area()
-      .x(d => x(d.date))
-      .y0(height - margin.bottom)
-      .y1(d => y(d.value))
-      .curve(d3.curveCatmullRom);
-
-    // Draw area
-    svg.append('path')
-      .datum(data)
-      .attr('fill', '#e6f0fa')
-      .attr('d', area);
-
-    // Draw line
-    svg.append('path')
-      .datum(data)
-      .attr('fill', 'none')
-      .attr('stroke', '#3b82f6')
-      .attr('stroke-width', 2)
-      .attr('d', line);
-
-    // Highlighted point (e.g., May 15, 2025)
-    const highlightDate = parseDate('2025-05-15');
-    const highlightData = data.find(d => d.date.toDateString() === highlightDate.toDateString());
-    if (highlightData) {
-      svg.append('circle')
-        .attr('cx', x(highlightData.date))
-        .attr('cy', y(highlightData.value))
-        .attr('r', 4)
-        .attr('fill', '#3b82f6');
-
-      // Tooltip background
-      svg.append('rect')
-        .attr('x', x(highlightData.date) - 40)
-        .attr('y', y(highlightData.value) - 30)
-        .attr('width', 80)
-        .attr('height', 40)
-        .attr('fill', 'white')
-        .attr('opacity', 0.8)
-        .attr('rx', 8);
-
-      // Tooltip value
-      svg.append('text')
-        .attr('x', x(highlightData.date))
-        .attr('y', y(highlightData.value) - 10)
-        .attr('text-anchor', 'middle')
-        .attr('fill', '#1e293b')
-        .attr('font-size', '12px')
-        .text(highlightData.value);
-
-      // Tooltip date
-      svg.append('text')
-        .attr('x', x(highlightData.date))
-        .attr('y', y(highlightData.value) - 25)
-        .attr('text-anchor', 'middle')
-        .attr('fill', '#1e293b')
-        .attr('font-size', '12px')
-        .text(d3.timeFormat('%b %Y')(highlightData.date));
-    }
-
-    // X-axis
     svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(d3.timeDay.every(5)).tickFormat(d3.timeFormat('%b %d')))
+      .call(d3.axisBottom(x).tickValues(data.map(d => d.date)).tickFormat(labelFormat).tickSizeOuter(0))
       .selectAll('text')
       .attr('font-size', '12px')
-      .attr('fill', '#6b7280');
+      .attr('fill', '#6b7280')
+      .style('text-anchor', 'end')
+      .attr('dx', '-0.5em')
+      .attr('dy', '0.15em')
+      .attr('transform', 'rotate(-45)');
 
-    // Y-axis
     svg.append('g')
       .attr('transform', `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).ticks(5))
       .selectAll('text')
       .attr('font-size', '12px')
       .attr('fill', '#6b7280');
-  }, [chartData]);
+
+    svg.append('text')
+      .attr('x', width / 2)
+      .attr('y', margin.top / 2)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '14px')
+      .attr('fill', '#1e293b')
+      .text('Tests Created Over Time');
+
+    svg.append('text')
+      .attr('x', width / 2)
+      .attr('y', height - margin.bottom / 2)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '12px')
+      .attr('fill', '#1e293b')
+      .text(timeRange === 'Daily' ? 'Date' : timeRange === 'Weekly' ? 'Week' : 'Month');
+
+    svg.append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2)
+      .attr('y', margin.left / 4)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '12px')
+      .attr('fill', '#1e293b')
+      .text('Number of Tests');
+  }, [tests, timeRange]);
 
   const toggleCandidateDetails = (id) => {
     setExpandedCandidate(expandedCandidate === id ? null : id);
@@ -198,8 +234,10 @@ const CompanyDashboard = () => {
   };
 
   const CandidateCard = ({ candidate, type = 'selected' }) => {
-    const candidateId = type === 'selected' ? candidate.id : candidate.candidate_id;
-    const candidateName = type === 'selected' ? candidate.candidate?.name : candidate.candidate_name;
+    const candidateData = candidate.candidate || candidate;
+    const candidateId = candidate.candidate_id || candidateData.id;
+    const candidateName = candidateData.name || 'Unknown';
+    const profile = candidateData.profile || candidateData;
     const isExpanded = expandedCandidate === candidateId;
 
     return (
@@ -209,14 +247,12 @@ const CompanyDashboard = () => {
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-semibold text-sm">
-                  {candidateName?.charAt(0)?.toUpperCase() || 'U'}
+                  {candidateName.charAt(0).toUpperCase() || 'U'}
                 </span>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-800">{candidateName || 'Unknown'}</h4>
-                <p className="text-sm text-gray-500">
-                  {type === 'selected' ? candidate.candidate?.profile?.field : candidate.field}
-                </p>
+                <h4 className="font-semibold text-gray-800">{candidateName}</h4>
+                <p className="text-sm text-gray-500">{profile.field || 'N/A'}</p>
               </div>
             </div>
             <button
@@ -232,36 +268,47 @@ const CompanyDashboard = () => {
 
           {isExpanded && (
             <div className="mt-4 pt-4 border-t border-gray-100 space-y-3 animate-in slide-in-from-top duration-300">
-              {type === 'selected' && candidate.candidate?.profile ? (
-                <>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Briefcase className="w-4 h-4" />
-                    <span>Experience: {candidate.candidate.profile.experience || 'N/A'}</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <MapPin className="w-4 h-4" />
-                    <span>{candidate.candidate.profile.localisation}</span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Mail className="w-4 h-4" />
-                    <span>{candidate.email}</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Phone className="w-4 h-4" />
-                    <span>{candidate.phoneNumber}</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Briefcase className="w-4 h-4" />
-                    <span>Experience: {candidate.experience}</span>
-                  </div>
-                  <div className="flex items-start space-x-2 text-sm text-gray-600">
-                    <Award className="w-4 h-4 mt-0.5" />
-                    <span>Skills: {candidate.competenceList}</span>
-                  </div>
-                </>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Users className="w-4 h-4" />
+                <span>Last Name: {profile.last_name || 'N/A'}</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Mail className="w-4 h-4" />
+                <span>Email: {candidateData.email || 'N/A'}</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Phone className="w-4 h-4" />
+                <span>Phone: {profile.phoneNumber || 'N/A'}</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <MapPin className="w-4 h-4" />
+                <span>Location: {profile.localisation || 'N/A'}</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Briefcase className="w-4 h-4" />
+                <span>Experience: {JSON.stringify(profile.experience) || 'N/A'}</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Award className="w-4 h-4" />
+                <span>Formation: {JSON.stringify(profile.formation) || 'N/A'}</span>
+              </div>
+              <div className="flex items-start space-x-2 text-sm text-gray-600">
+                <Code className="w-4 h-4 mt-0.5" />
+                <span>Skills: {JSON.stringify(profile.competenceList) || 'N/A'}</span>
+              </div>
+              <div className="flex items-start space-x-2 text-sm text-gray-600">
+                <FileText className="w-4 h-4 mt-0.5" />
+                <span>Description: {profile.description || 'N/A'}</span>
+              </div>
+              <div className="flex items-start space-x-2 text-sm text-gray-600">
+                <Briefcase className="w-4 h-4 mt-0.5" />
+                <span>Projects: {profile.projects || 'N/A'}</span>
+              </div>
+              {profile.file && (
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <FileText className="w-4 h-4" />
+                  <span>File: <a href={profile.file} className="text-blue-600 hover:underline">Download</a></span>
+                </div>
               )}
             </div>
           )}
@@ -276,8 +323,8 @@ const CompanyDashboard = () => {
         <div className="max-w-7xl mx-auto">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-300 rounded-lg w-64 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {[...Array(4)].map((_, i) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+              {[...Array(5)].map((_, i) => (
                 <div key={i} className="bg-white rounded-2xl p-6 h-32">
                   <div className="h-4 bg-gray-300 rounded w-3/4 mb-4"></div>
                   <div className="h-8 bg-gray-300 rounded w-1/2"></div>
@@ -296,7 +343,6 @@ const CompanyDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
@@ -310,55 +356,47 @@ const CompanyDashboard = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {stats?.map((stat, index) => (
             <StatCard key={stat.label} stat={stat} index={index} />
           ))}
         </div>
 
-        {/* Chart */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-4">
-              <span className="text-lg font-semibold text-gray-800">Performance Overview</span>
-              <button
-                onClick={() => setTimeRange('12 Months')}
-                className={`px-3 py-1 rounded-md ${timeRange === '12 Months' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
-              >
-                12 Months
-              </button>
-              <button
-                onClick={() => setTimeRange('6 Months')}
-                className={`px-3 py-1 rounded-md ${timeRange === '6 Months' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
-              >
-                6 Months
-              </button>
-              <button
-                onClick={() => setTimeRange('30 Days')}
-                className={`px-3 py-1 rounded-md ${timeRange === '30 Days' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
-              >
-                30 Days
-              </button>
-              <button
-                onClick={() => setTimeRange('7 Days')}
-                className={`px-3 py-1 rounded-md ${timeRange === '7 Days' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
-              >
-                7 Days
+        <div className="space-y-8">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-4">
+                <span className="text-lg font-semibold text-gray-800">Tests Created Over Time</span>
+                <button
+                  onClick={() => setTimeRange('Daily')}
+                  className={`px-3 py-1 rounded-md ${timeRange === 'Daily' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
+                >
+                  Daily
+                </button>
+                <button
+                  onClick={() => setTimeRange('Weekly')}
+                  className={`px-3 py-1 rounded-md ${timeRange === 'Weekly' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
+                >
+                  Weekly
+                </button>
+                <button
+                  onClick={() => setTimeRange('Monthly')}
+                  className={`px-3 py-1 rounded-md ${timeRange === 'Monthly' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
+                >
+                  Monthly
+                </button>
+              </div>
+              <button className="px-3 py-1 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200">
+                Export PDF
               </button>
             </div>
-            <button className="px-3 py-1 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200">
-              Export PDF
-            </button>
-          </div>
-          <div className="overflow-x-auto">
-            <svg ref={chartRef} className="w-full"></svg>
+            <div className="overflow-x-auto">
+              <svg ref={testsChartRef} className="w-full"></svg>
+            </div>
           </div>
         </div>
 
-        {/* Candidates Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          {/* Selected Candidates */}
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-800 flex items-center">
@@ -376,14 +414,13 @@ const CompanyDashboard = () => {
                   <p>No selected candidates yet</p>
                 </div>
               ) : (
-                selectedCandidates.map((candidate) => (
-                  <CandidateCard key={candidate.id} candidate={candidate} type="selected" />
+                selectedCandidates.map((candidate, index) => (
+                  <CandidateCard key={index} candidate={candidate} type="selected" />
                 ))
               )}
             </div>
           </div>
 
-          {/* Accepted Candidates */}
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-800 flex items-center">
@@ -409,7 +446,6 @@ const CompanyDashboard = () => {
           </div>
         </div>
 
-        {/* Tests Section */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold text-gray-800 flex items-center">
@@ -435,9 +471,12 @@ const CompanyDashboard = () => {
                       <h4 className="font-semibold text-gray-800 mb-2">
                         {test.objective || `Test #${test.id}`}
                       </h4>
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        {test.prerequisites || 'No description available'}
-                      </p>
+                      <div className="text-sm text-gray-600 space-y-1">
+                        <p><strong>Prerequisites:</strong> {test.prerequisites || 'N/A'}</p>
+                        <p><strong>Tools Required:</strong> {test.tools_required || 'N/A'}</p>
+                        <p><strong>Before Answer:</strong> {test.before_answer || 'N/A'}</p>
+                        <p><strong>Created At:</strong> {new Date(test.created_at).toLocaleDateString()}</p>
+                      </div>
                     </div>
                     <div className="ml-4 flex-shrink-0">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">

@@ -22,6 +22,4 @@ class CandidateSelected extends Model
         return $this->belongsTo(Company::class);
     }
 
-
-
 }
