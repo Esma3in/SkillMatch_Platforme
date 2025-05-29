@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { api } from "../api/api";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { Footer } from "../components/common/footer";
+import { Link, useNavigate } from "react-router-dom";
 
 export const BadgeList = () => {
   const [badges, setBadges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchBadges = async () => {
@@ -29,17 +31,22 @@ export const BadgeList = () => {
           throw new Error("Invalid data format: Expected an array of badges");
         }
 
-        const uniqueBadges = Array.from(
-          new Map(data.map((badge) => [badge.id, badge])).values()
+        // Fetch company names for each badge based on qcm_for_roadmap_id
+  
+
+        // Deduplicate badges using filter based on id and company_name combination
+        const uniqueBadges = data.filter((badge, index, self) =>
+          index === self.findIndex((b) => b.id === badge.id && b.company_name === badge.company_name)
         );
+
         setBadges(uniqueBadges);
       } catch (err) {
         console.error("Error fetching badges:", err.response?.data || err.message);
         setError(
           err.response?.data?.error ||
-            err.response?.data?.message ||
-            err.message ||
-            "An unexpected error occurred"
+          err.response?.data?.message ||
+          err.message ||
+          "An unexpected error occurred"
         );
       } finally {
         setLoading(false);
@@ -58,10 +65,7 @@ export const BadgeList = () => {
           <h2 className="text-3xl font-bold text-gray-400 mb-8">Loading your badges...</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, index) => (
-              <div
-                key={index}
-                className="bg-gray-50 rounded-3xl shadow-md p-6"
-              >
+              <div key={index} className="bg-gray-50 rounded-3xl shadow-md p-6">
                 <div className="h-20 w-20 bg-gray-200 rounded-full mx-auto mb-4"></div>
                 <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-3"></div>
                 <div className="h-2 bg-gray-200 rounded w-full mb-4"></div>
@@ -97,13 +101,13 @@ export const BadgeList = () => {
               <span className="font-bold text-indigo-200">{badges.length}</span>{" "}
               badge{badges.length !== 1 ? "s" : ""}. Keep learning to unlock more!
             </p>
-            <a
-              href="#explore-courses"
+           <button
+           onClick={()=>navigate("/")}
               className="inline-block bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold text-sm uppercase tracking-wide hover:bg-indigo-50 transition focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
-              aria-label="Explore more courses to earn badges"
+            
             >
               Discover New Challenges
-            </a>
+            </button>
           </div>
           <div className="absolute inset-0 bg-indigo-900 opacity-10 rounded-3xl"></div>
         </section>
@@ -112,7 +116,7 @@ export const BadgeList = () => {
           <NoBadgesYet />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {badges.map((badge, index) => {
+            {badges.map((badge) => {
               const {
                 id = "unknown",
                 name = "Untitled Badge",
@@ -125,8 +129,6 @@ export const BadgeList = () => {
                 candidate_name = "Unknown Candidate",
               } = badge;
 
-              const companyName = company_name || "No company associated";
-              const additionalInfo = `Roadmap ID: ${qcm_for_roadmap_id}`;
               const score = Math.min(Math.max(result.score || 0, 0), 100); // Normalize score to 0-100
               const formattedDate = Date_obtained
                 ? new Date(Date_obtained).toLocaleDateString(undefined, {
@@ -138,21 +140,18 @@ export const BadgeList = () => {
 
               return (
                 <div
-                  key={id}
+                  key={id} // Using id as key, but deduplication ensures uniqueness
                   className="relative bg-white rounded-3xl shadow-md p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 focus-within:ring-2 focus-within:ring-indigo-500"
-                  style={{ animation: `popIn 0.4s ease-out ${index * 100}ms` }}
                   role="article"
                   aria-labelledby={`badge-${id}-title`}
                 >
-                  {/* Badge Card */}
                   <div className="flex flex-col items-center text-center">
-                    {/* Badge Icon with Animation */}
                     <div className="relative w-20 h-20 mb-4">
-                      <div className="absolute inset-0 bg-indigo-100 rounded-full opacity-20 transition-opacity duration-300 group-hover:opacity-30"></div>
+                      <div className="absolute inset-0 bg-indigo-100 rounded-full opacity-20 transition-opacity duration-300 hover:opacity-30"></div>
                       <img
                         src={icon}
                         alt={`${name} badge`}
-                        className="w-full h-full object-contain rounded-full border-2 border-indigo-200 transition-transform duration-300 group-hover:scale-110"
+                        className="w-full h-full object-contain rounded-full border-2 border-indigo-200 transition-transform duration-300 hover:scale-110"
                         onError={(e) => (e.target.src = "/default-badge-icon.png")}
                       />
                     </div>
@@ -173,7 +172,6 @@ export const BadgeList = () => {
                     </div>
                   </div>
 
-                  {/* Progress Bar */}
                   <div className="w-full bg-gray-100 rounded-full h-2 mb-4">
                     <div
                       className="bg-indigo-600 h-2 rounded-full transition-all duration-500"
@@ -193,48 +191,46 @@ export const BadgeList = () => {
                       {description}
                     </p>
                     <div className="flex justify-center gap-2 mb-4">
-                      <span className="inline-flex items-center bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full transition-colors duration-200 hover:bg-indigo-200">
+                      <span className="inline-flex items-center bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full hover:bg-indigo-200">
                         <svg
                           className="w-4 h-4 mr-1"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth="2"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          ></path>
+                          />
                         </svg>
                         {formattedDate}
                       </span>
-                      <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full transition-colors duration-200 hover:bg-green-200">
+                      <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full hover:bg-green-200">
                         <svg
                           className="w-4 h-4 mr-1"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth="2"
                             d="M5 13l4 4L19 7"
-                          ></path>
+                          />
                         </svg>
                         {score}% Complete
                       </span>
                     </div>
                     <div className="text-sm text-gray-700 font-medium mb-4">
                       <span className="text-gray-500">🏢 </span>
-                      {companyName}
+                      {company_name}
                     </div>
                     <div className="border-t border-gray-200 pt-3">
-                      <p className="text-gray-500 text-xs" title={additionalInfo}>
-                        {additionalInfo}
+                      <p className="text-gray-500 text-xs" title={`Roadmap ID: ${qcm_for_roadmap_id}`}>
+                        Roadmap ID: {qcm_for_roadmap_id}
                       </p>
                     </div>
                   </div>
@@ -266,14 +262,13 @@ const NoBadgesYet = () => {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
         >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
             d="M13 7l5 5m0 0l-5 5m5-5H6"
-          ></path>
+          />
         </svg>
         Get Started
       </a>

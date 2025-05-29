@@ -17,11 +17,11 @@ class RoadmapController extends Controller
         }
 
         // Prérequis liés à la roadmap via skill_id
-        $prerequisites = DB::table('prerequisites')
-            ->join('skills', 'prerequisites.skill_id', '=', 'skills.id')
+        $prerequisites = DB::table('prerequistes')
+            ->join('skills', 'prerequistes.skill_id', '=', 'skills.id')
             ->join('roadmaps', 'skills.id', '=', 'roadmaps.skill_id')
             ->where('roadmaps.id', $roadmap_id)
-            ->select('prerequisites.*')
+            ->select('prerequistes.*')
             ->get();
 
         // Outils liés à la roadmap via skill name
@@ -224,7 +224,9 @@ class RoadmapController extends Controller
         // Validate the request
         $validated = $request->validate([
             'roadmap_id' => 'required|integer|exists:roadmaps,id',
-            'progress' => 'required|integer|min:0|max:100'
+            'progress' => 'required|integer|min:0|max:100',
+            'steps' => 'nullable|string', // Added validation for steps JSON string
+            'candidate_id' => 'required|integer|exists:candidates,id' // Added validation for candidate_id
         ]);
 
         // Find or create roadmap progress record
@@ -236,30 +238,47 @@ class RoadmapController extends Controller
             // Update existing record
             DB::table('roadmapsprogress')
                 ->where('roadmap_id', $validated['roadmap_id'])
-                ->update(['progress' => $validated['progress']]);
+                ->update([
+                    'progress' => $validated['progress'],
+                    'steps' => $validated['steps'] ?? null, // Save steps data
+                    'updated_at' => now()
+                ]);
         } else {
             // Create new record
             DB::table('roadmapsprogress')->insert([
                 'roadmap_id' => $validated['roadmap_id'],
                 'progress' => $validated['progress'],
+                'steps' => $validated['steps'] ?? null, // Save steps data
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
+        }
+
+        // If progress is 100%, update the roadmap as completed
+        if ($validated['progress'] >= 100) {
+            DB::table('roadmaps')
+                ->where('id', $validated['roadmap_id'])
+                ->update(['completed' => 'completed']);
         }
 
         return response()->json([
             'message' => 'Roadmap progress saved successfully',
             'data' => [
                 'roadmap_id' => $validated['roadmap_id'],
-                'progress' => $validated['progress']
+                'progress' => $validated['progress'],
+                'steps' => $validated['steps'] ?? null
             ]
         ], 200);
     }
     
-    public function getRoadmapProgress($roadmap_id)
+    public function getRoadmapProgress($roadmap_id, $candidate_id = null)
     {
         if (!is_numeric($roadmap_id)) {
             return response()->json(['message' => 'Invalid roadmap_id'], 400);
+        }
+
+        if ($candidate_id && !is_numeric($candidate_id)) {
+            return response()->json(['message' => 'Invalid candidate_id'], 400);
         }
 
         // Fetch progress data
@@ -272,7 +291,8 @@ class RoadmapController extends Controller
                 'message' => 'No progress data found for this roadmap',
                 'data' => [
                     'roadmap_id' => (int)$roadmap_id,
-                    'progress' => 0
+                    'progress' => 0,
+                    'steps' => null
                 ]
             ], 200);
         }
@@ -281,8 +301,14 @@ class RoadmapController extends Controller
             'message' => 'Roadmap progress retrieved successfully',
             'data' => [
                 'roadmap_id' => (int)$roadmap_id,
-                'progress' => (int)$progress->progress
+                'progress' => (int)$progress->progress,
+                'steps' => $progress->steps
             ]
         ], 200);
+    }
+
+    public function getCompleted($roadmapId){
+        $completed= Roadmap::where('id' ,$roadmapId )->first();
+        return response()->json($completed);
     }
 }

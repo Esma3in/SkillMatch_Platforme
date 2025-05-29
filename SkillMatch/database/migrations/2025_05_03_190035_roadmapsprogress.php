@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('roadmapsprogress' , function(Blueprint $table){
             $table->id() ;
             $table->foreignId('roadmap_id')->constrained('roadmaps')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('candidate_id')->constrained('candidates')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('progress')->nullable();
+            $table->json('steps')->nullable(); // Added steps column to store step completion data
             $table->timestamps();
         });
     }
