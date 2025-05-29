@@ -28,7 +28,6 @@ class CompanyDocumentSeeder extends Seeder
         if (!File::exists($samplePdfPath)) {
             File::makeDirectory($samplePdfPath, 0755, true);
         }
-
         // Create documents for each company
         foreach ($companies as $company) {
             // Legal identification document types

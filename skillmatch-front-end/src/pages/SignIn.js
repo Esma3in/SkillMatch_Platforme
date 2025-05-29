@@ -13,6 +13,7 @@ export default function SignIn({ onToggle }) {
 
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState('');
+  const [loading, setLoading] = useState(false); // <--- NEW STATE FOR LOADING
   const navigate = useNavigate();
 
   // Handle changes in form inputs
@@ -61,6 +62,7 @@ export default function SignIn({ onToggle }) {
     } catch (err) {
       console.error(err);
       setFormError(err.response?.data?.message || 'Sign in failed.');
+      throw err; // Re-throw to be caught by handleSubmit's try/catch/finally
     }
   };
 
@@ -71,20 +73,29 @@ export default function SignIn({ onToggle }) {
 
     if (!validateForm()) return;
 
-    const response = await check(formData);
+    setLoading(true); // <--- SET LOADING TO TRUE
+    try {
+      const response = await check(formData);
 
-    if (response && response.status === 200) {
-      if(response.data.role==='candidate'){
-        console.log(response.data)
-        localStorage.setItem('candidate_id',response.data.candidate?.id)
-        navigate(`/candidate/Session/${response.data.candidate?.id}`)
-      }else if(response.data.role === 'company'){
-        localStorage.setItem('company_id',response.data.company?.id)
-        navigate(`/company/Session/${response.data.company?.id}`)
-      }else {
-        localStorage.setItem('admin_id',response.data.admin?.id)
-        navigate(`/admin/Session/${response.data.admin?.id}`)
+      if (response && response.status === 200) {
+        if(response.data.role==='candidate'){
+          console.log(response.data)
+          localStorage.setItem('candidate_id',response.data.candidate?.id)
+          navigate(`/candidate/Session/${response.data.candidate?.id}`)
+        }else if(response.data.role === 'company'){
+          localStorage.setItem('company_id',response.data.company?.id)
+          navigate(`/company/Session/${response.data.company?.id}`)
+        }else {
+          localStorage.setItem('admin_id',response.data.admin?.id)
+          navigate(`/admin/Session/${response.data.admin?.id}`)
+        }
       }
+    } catch (error) {
+      // The `check` function already handles setting `formError`,
+      // but this catch ensures `finally` always runs.
+      console.error("Login process error:", error);
+    } finally {
+      setLoading(false); // <--- SET LOADING TO FALSE REGARDLESS OF SUCCESS/FAILURE
     }
   };
 
@@ -143,7 +154,15 @@ export default function SignIn({ onToggle }) {
 
               <div className="action-part">
                 <div className="signin-btn">
-                  <button type="submit">Sign In</button>
+                  <button type="submit" disabled={loading}> {/* <--- DISABLE BUTTON */}
+                    {loading ? ( // <--- CONDITIONAL RENDERING FOR SPINNER
+                      <>
+                        <span className="spinner"></span>
+                      </>
+                    ) : (
+                      'Sign In'
+                    )}
+                  </button>
                 </div>
                 <div className="signUp-link">
                   <p>
