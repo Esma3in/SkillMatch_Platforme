@@ -107,15 +107,6 @@ class ListTestForCompanyController extends Controller
                 ], 404);
             }
 
-            // Optionnel: Vérifier que le test appartient à la bonne compagnie
-            // $companyId = request()->get('company_id');
-            // if ($companyId && $test->company_id != $companyId) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => 'Unauthorized to delete this test'
-            //     ], 403);
-            // }
-
             $test->delete();
 
             return response()->json([
@@ -140,12 +131,6 @@ class ListTestForCompanyController extends Controller
 
         try {
             $query = Test::whereIn('id', $request->ids);
-
-            // Optionnel: Vérifier que tous les tests appartiennent à la bonne compagnie
-            // $companyId = $request->get('company_id');
-            // if ($companyId) {
-            //     $query->where('company_id', $companyId);
-            // }
 
             $deletedCount = $query->delete();
 

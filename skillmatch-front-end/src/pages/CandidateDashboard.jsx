@@ -151,6 +151,18 @@ export default function CandidateDashboard() {
           setProfileCompleteness(0);
         }
 
+        // get recent activites 
+        let recentActivitiesResponse ; 
+        try{
+          recentActivitiesResponse = await api.get(`/api/candidate/${candidate_id}/recent-activities`);
+          console.log(recentActivitiesResponse.data.data)
+        }catch(err){
+
+          console.log('Error fetching' , err.message)
+          
+        }
+
+
         // Set stats cards
         setStatsCards([
           {
@@ -250,7 +262,62 @@ export default function CandidateDashboard() {
         );
 
         // Generate mock recent activities
-        generateRecentActivities();
+
+        setRecentActivities(
+          Array.isArray(recentActivitiesResponse.data?.data)
+            ? recentActivitiesResponse.data.data.map((recentActivity) => {
+                switch (recentActivity.type) {
+                  case 'roadmap_progress':
+                    return {
+                      type: 'roadmap_progress',
+                      id: recentActivity.roadmap_id,
+                      title: `Progress updated for roadmap: ${recentActivity.roadmap_name}`,
+                      details: `Progress: ${recentActivity.progress}%`,
+                      time: recentActivity.time,
+                      date: recentActivity.date,
+                    };
+                  case 'roadmap_completed':
+                    return {
+                      type: 'roadmap_completed',
+                      id: recentActivity.roadmap_id,
+                      title: `Completed roadmap: ${recentActivity.roadmap_name}`,
+                      details: 'Roadmap marked as completed',
+                      time: recentActivity.time,
+                      date: recentActivity.date,
+                    };
+                  case 'company_selected':
+                    return {
+                      type: 'company_selected',
+                      id: recentActivity.company_id,
+                      title: `Selected company: ${recentActivity.company_name}`,
+                      details: 'Added to selected companies',
+                      time: recentActivity.time,
+                      date: recentActivity.date,
+                    };
+                  case 'badge_earned':
+                    return {
+                      type: 'badge_earned',
+                      id: recentActivity.badge_id,
+                      title: `Earned badge: ${recentActivity.badge_name}`,
+                      details: 'New badge achieved',
+                      time: recentActivity.time,
+                      date: recentActivity.date,
+                    };
+                  default:
+                    return {
+                      type: recentActivity.type,
+                      id: recentActivity.roadmap_id || recentActivity.company_id || recentActivity.badge_id,
+                      title: 'Unknown activity',
+                      details: 'No details available',
+                      time: recentActivity.time,
+                      date: recentActivity.date,
+                    };
+                }
+              })
+              :recentActivities.message
+         
+        );
+
 
         setLoading(false);
       } catch (error) {
@@ -294,37 +361,7 @@ export default function CandidateDashboard() {
     setProfileCompleteness(percentage);
   };
 
-  // Generate mock recent activities
-  const generateRecentActivities = () => {
-    const activities = [
-      {
-        type: 'test',
-        title: 'Completed JavaScript Assessment',
-        time: '2 hours ago',
-        icon: <CheckCircle size={16} className="text-green-500" />
-      },
-      {
-        type: 'company',
-        title: 'Applied to TechCorp',
-        time: '1 day ago',
-        icon: <Briefcase size={16} className="text-blue-500" />
-      },
-      {
-        type: 'badge',
-        title: 'Earned React Developer Badge',
-        time: '3 days ago',
-        icon: <Award size={16} className="text-yellow-500" />
-      },
-      {
-        type: 'roadmap',
-        title: 'Started Frontend Development Roadmap',
-        time: '1 week ago',
-        icon: <BookOpen size={16} className="text-purple-500" />
-      }
-    ];
 
-    setRecentActivities(activities);
-  };
 
   // Chart rendering
   useEffect(() => {
@@ -519,6 +556,9 @@ export default function CandidateDashboard() {
       </div>
     );
   }
+  console.log("recent activites" , recentActivities
+
+  )
 
   return (
     <div className="w-full min-h-screen bg-gray-100">

@@ -11,6 +11,7 @@ use App\Models\Problem;
 use App\Models\Attestation;
 use App\Models\Notification;
 use App\Models\ProfileCandidate;
+use App\Models\CandidateProblem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -81,7 +82,10 @@ class Candidate extends Model
 
     public function problems(): BelongsToMany
     {
-        return $this->belongsToMany(Problem::class);
+        return $this->belongsToMany(Problem::class, 'candidate_problem')
+            ->using(CandidateProblem::class)
+            ->withPivot(['challenge_id', 'completed_at', 'time_spent', 'attempt_count'])
+            ->withTimestamps();
     }
 
     public function languages(){
@@ -89,7 +93,9 @@ class Candidate extends Model
     }
     public function challenges()
     {
-        return $this->belongsToMany(Challenge::class, 'candidate_challenge')->withTimestamps();
+        return $this->belongsToMany(Challenge::class, 'candidate_challenge')
+            ->withPivot('completed_problems', 'is_completed', 'completion_date', 'certificate_id')
+            ->withTimestamps();
     }
     public function companies_selcted(){
         return $this->belongsToMany(Company::class,'companies_selecteds')

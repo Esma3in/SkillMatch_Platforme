@@ -338,6 +338,9 @@ useEffect(() => {
 
   const handleFileChange = (e, field) => {
     const file = e.target.files[0];
+    console.log("Selected file:", file); // Log the file object
+    console.log("Field:", field); // Log the field name
+
     if (file) {
       if (field === 'logo' || field === 'ceoAvatar') {
         const reader = new FileReader();
@@ -349,32 +352,33 @@ useEffect(() => {
           }));
         };
         reader.readAsDataURL(file);
-      } else {
+        setTouched(prev => ({ ...prev, [`${field}File`]: true })); // Correctly set touched state for 'logoFile'/'ceoAvatarFile'
+      } else { // This branch is for field === 'file' (the company document)
         setFormData(prevState => ({
           ...prevState,
-          [field]: file,
+          [field]: file,       // This correctly sets formData.file
           fileName: file.name
         }));
+        setTouched(prev => ({ ...prev, [field]: true })); // CORRECTED: Set touched.file directly
       }
-      setTouched(prev => ({ ...prev, [`${field}File`]: true }));
-    } else {
+    } else { // If no file is selected (e.g., user cancels file picker)
       if (field === 'logo' || field === 'ceoAvatar') {
         setFormData(prevState => ({
           ...prevState,
           [`${field}File`]: null,
           [`${field}Preview`]: null
         }));
-         setTouched(prev => ({ ...prev, [`${field}File`]: true }));
-      } else {
-         setFormData(prevState => ({
-           ...prevState,
-           [field]: null,
-           fileName: ""
-         }));
-         setTouched(prev => ({ ...prev, [field]: true }));
+        setTouched(prev => ({ ...prev, [`${field}File`]: true }));
+      } else { // This branch is for field === 'file'
+        setFormData(prevState => ({
+          ...prevState,
+          [field]: null,
+          fileName: ""
+        }));
+        setTouched(prev => ({ ...prev, [field]: true })); // CORRECTED: Set touched.file directly
       }
     }
-    e.target.value = null;
+    e.target.value = null; // Clear the input field for subsequent selections
   };
 
   const handleRemoveFile = () => {
@@ -751,10 +755,11 @@ useEffect(() => {
       }
 
       // --- Create jsonData WITHOUT the File objects ---
+      // ... inside handleSubmit, before the final data.append('jsonData', JSON.stringify(jsonData));
+
       const jsonData = {
           companyData: {
               sector: formData.sector,
-              // DO NOT include logoFile or file here, they are sent separately
           },
           companyProfileData: {
               address: formData.address,
@@ -766,18 +771,24 @@ useEffect(() => {
           ceoData: {
               name: formData.ceoName,
               description: formData.ceoDescription,
-              // DO NOT include ceoAvatarFile here, it is sent separately
           },
            services: formData.services.map(service => ({
                title: service.name,
-               descriptions: service.descriptions.map(desc => ( desc.text ))
+               descriptions: service.descriptions.map(desc => {
+                   console.log(`Service ${service.id} Description text: '${desc.text}' (type: ${typeof desc.text})`);
+                   return desc.text;
+               })
            })),
            legalDocuments: formData.legalDocuments.map(doc => ({
                title: doc.documentName,
-               descriptions: doc.descriptions.map(desc => ( doc.text))
+               descriptions: doc.descriptions.map(desc => {
+                   console.log(`Legal Doc ${doc.id} Description text: '${desc.text}' (type: ${typeof desc.text})`);
+                   return desc.text;
+               })
            })),
       };
-      // Append the JSON string to FormData under the 'jsonData' key
+
+      console.log("Full jsonData object being stringified:", jsonData); // <-- Add this for overall view
       data.append('jsonData', JSON.stringify(jsonData));
 
       // --- START DEBUGGING BLOCK FOR REACT (updated to reflect changes) ---

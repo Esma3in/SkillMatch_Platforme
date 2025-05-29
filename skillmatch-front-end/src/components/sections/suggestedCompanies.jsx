@@ -95,7 +95,7 @@ export default function SuggestedCompanies() {
         )}
         {message && !loading && (
           <div className="col-span-full text-center py-4">
-            <p className="text-red-600 text-sm">{message}</p>
+            <p className="text-gray-700 text-sm">{message}</p>
           </div>
         )}
         {!loading &&

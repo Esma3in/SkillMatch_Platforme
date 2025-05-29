@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('challenge_problem', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('challenge_id')->constrained()->onDelete('cascade');
+            $table->foreignId('problem_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('order')->default(0); // Order of problems in the challenge
             $table->timestamps();
+
+            // Prevent duplicate problem assignments in a challenge
+            $table->unique(['challenge_id', 'problem_id']);
         });
     }
 

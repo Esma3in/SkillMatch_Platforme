@@ -7,6 +7,7 @@ use App\Models\Roadmap;
 use Illuminate\Http\Request;
 use App\Models\CompaniesSelected;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -22,7 +23,7 @@ class DashboardController extends Controller
             public function countSelectedCompanies($candidate_id)
             {
                 $count = CompaniesSelected::where('candidate_id', $candidate_id)->count();
-            
+
                 return response()->json(['selected_companies_count' => $count]);
             }
 
@@ -41,7 +42,7 @@ class DashboardController extends Controller
                 return response()->json(['matched_companies_count' => $count]);
             }
 
-        //count badges of this candidate 
+        //count badges of this candidate
         public function countBadges($candidate_id)
             {
                 $count = Badge::where('candidate_id', $candidate_id)->count();
@@ -55,7 +56,7 @@ class DashboardController extends Controller
 
                 return response()->json(['roadmap_count' => $count]);
             }
-        // getting the roadmapprogress of roadmaps of  this candidate 
+        // getting the roadmapprogress of roadmaps of  this candidate
         public function getRoadmapsProgressWithCandidates($candidate_id)
         {
             $data = DB::table('roadmapsprogress')
@@ -64,10 +65,10 @@ class DashboardController extends Controller
                 ->where('candidates.id', $candidate_id)  // Filter by candidate_id
                 ->select('roadmapsprogress.*', 'roadmaps.*', 'candidates.*')
                 ->get();
-        
+
             return response()->json($data);
         }
-        // getting the companies selected with company informtion by this candidate 
+        // getting the companies selected with company informtion by this candidate
         public function getSelectedCompanies($candidate_id)
         {
             $data = DB::table('companies_selecteds')
@@ -76,10 +77,10 @@ class DashboardController extends Controller
                 ->where('companies_selecteds.candidate_id', $candidate_id)  // Filter by candidate_id
                 ->select('companies_selecteds.*', 'candidates.*', 'companies.*')
                 ->get();
-        
+
             return response()->json($data);
         }
-    // get the roadmpa details list of an company including badge and company informations 
+    // get the roadmpa details list of an company including badge and company informations
     public function getFullCandidateCompanyData($candidate_id)
     {
         $data = DB::table('companies_selecteds')
@@ -98,10 +99,10 @@ class DashboardController extends Controller
                 'badges.*'
             )
             ->get();
-    
+
         return response()->json($data);
     }
-        // challenges info for this candidate 
+        // challenges info for this candidate
         public function getCandidateChallenges($candidate_id)
         {
             $data = DB::table('challenges')
@@ -112,7 +113,7 @@ class DashboardController extends Controller
 
             return response()->json($data);
         }
-        // tests of company selected by this candidate 
+        // tests of company selected by this candidate
         public function getTestsByCandidate($candidate_id)
         {
             $data = DB::table('tests')
@@ -131,8 +132,120 @@ class DashboardController extends Controller
                 ->where('companies_selecteds.candidate_id', $candidateId)
                 ->select('companies_selecteds.*', 'profile_companies.*', 'companies.*') // You can customize this
                 ->get();
-        
+
             return response()->json($data);
         }
 
+        /**
+         * Get recent activities for a candidate's dashboard
+         * Returns activities sorted in descending order (newest first)
+         */
+        public function getRecentActivities($candidate_id)
+        {
+            if (!is_numeric($candidate_id)) {
+                return response()->json(['message' => 'Invalid candidate_id'], 400);
+            }
+
+            // Get recent roadmap progress updates
+            $roadmapProgress = DB::table('roadmapsprogress')
+                ->join('roadmaps', 'roadmapsprogress.roadmap_id', '=', 'roadmaps.id')
+                ->where('roadmaps.candidate_id', $candidate_id)
+                ->orderBy('roadmapsprogress.updated_at', 'desc')
+                ->select(
+                    'roadmaps.id as roadmap_id',
+                    'roadmaps.name as roadmap_name',
+                    'roadmapsprogress.progress',
+                    'roadmapsprogress.updated_at as activity_date'
+                )
+                ->take(5)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'type' => 'roadmap_progress',
+                        'roadmap_id' => $item->roadmap_id,
+                        'roadmap_name' => $item->roadmap_name,
+                        'progress' => $item->progress,
+                        'time' => Carbon::parse($item->activity_date)->diffForHumans(),
+                        'date' => $item->activity_date
+                    ];
+                });
+
+            // Get recently completed roadmaps
+            $completedRoadmaps = DB::table('roadmaps')
+                ->where('candidate_id', $candidate_id)
+                ->where('roadmaps.completed', 'completed')
+                ->orderBy('updated_at', 'desc')
+                ->select(
+                    'id as roadmap_id',
+                    'name as roadmap_name',
+                    'updated_at as activity_date'
+                )
+                ->take(5)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'type' => 'roadmap_completed',
+                        'roadmap_id' => $item->roadmap_id,
+                        'roadmap_name' => $item->roadmap_name,
+                        'time' => Carbon::parse($item->activity_date)->diffForHumans(),
+                        'date' => $item->activity_date
+                    ];
+                });
+
+            // Get recently selected companies
+            $selectedCompanies = DB::table('companies_selecteds')
+                ->join('companies', 'companies_selecteds.company_id', '=', 'companies.id')
+                ->where('companies_selecteds.candidate_id', $candidate_id)
+                ->orderBy('companies_selecteds.created_at', 'desc')
+                ->select(
+                    'companies.id as company_id',
+                    'companies.name as company_name',
+                    'companies_selecteds.created_at as activity_date'
+                )
+                ->take(5)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'type' => 'company_selected',
+                        'company_id' => $item->company_id,
+                        'company_name' => $item->company_name,
+                        'time' => Carbon::parse($item->activity_date)->diffForHumans(),
+                        'date' => $item->activity_date
+                    ];
+                });
+
+            // Get recently earned badges
+            $earnedBadges = DB::table('badges')
+                ->where('candidate_id', $candidate_id)
+                ->orderBy('created_at', 'desc')
+                ->select(
+                    'id as badge_id',
+                    'name as badge_name',
+                    'created_at as activity_date'
+                )
+                ->take(5)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'type' => 'badge_earned',
+                        'badge_id' => $item->badge_id,
+                        'badge_name' => $item->badge_name,
+                        'time' => Carbon::parse($item->activity_date)->diffForHumans(),
+                        'date' => $item->activity_date
+                    ];
+                });
+
+            // Combine all activities and sort by date (most recent first)
+            $allActivities = $roadmapProgress->concat($completedRoadmaps)
+                ->concat($selectedCompanies)
+                ->concat($earnedBadges)
+                ->sortByDesc('date')
+                ->values()
+                ->take(10);
+
+            return response()->json([
+                'message' => 'Recent activities retrieved successfully',
+                'data' => $allActivities
+            ]);
+        }
 }

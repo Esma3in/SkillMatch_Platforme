@@ -4,6 +4,7 @@ import {
   CheckCircle, Clock, XCircle, X
 } from 'lucide-react';
 import { api } from '../api/api';
+import NavbarCompany from '../components/common/navbarCompany';
 
 export default function CandidateListForCompany() {
   const [candidates, setCandidates] = useState([]);
@@ -542,6 +543,8 @@ export default function CandidateListForCompany() {
   };
 
   return (
+    <>
+    <NavbarCompany />
     <div className="p-4">
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
@@ -654,5 +657,6 @@ export default function CandidateListForCompany() {
       {/* Modal pour les détails du candidat */}
       {renderCandidateDetailsModal()}
     </div>
+    </>
   );
 }

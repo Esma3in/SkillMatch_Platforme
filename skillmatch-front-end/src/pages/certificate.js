@@ -1,164 +1,179 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Footer } from '../components/common/footer';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { FaTrophy, FaDownload, FaExclamationCircle, FaArrowLeft } from 'react-icons/fa';
+import { api } from '../api/api';
 import NavbarCandidate from '../components/common/navbarCandidate';
+import { Footer } from '../components/common/footer';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
-const Certificate = ({
-  recipientName = 'Jane Doe',
-  courseTitle = 'Advanced React Development',
-  date = 'May 21, 2025',
-  issuer = 'xAI Academy'
-}) => {
+export default function Certificate() {
+  const { certificateId } = useParams();
+  const navigate = useNavigate();
+  const [certificate, setCertificate] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const certificateRef = useRef(null);
+  
+  useEffect(() => {
+    const fetchCertificate = async () => {
+      setLoading(true);
+      try {
+        const response = await api.get(`api/training/certificates/${certificateId}`);
+        setCertificate(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Certificate not found or could not be loaded');
+        setLoading(false);
+        console.error(err);
+      }
+    };
+    
+    if (certificateId) {
+      fetchCertificate();
+    }
+  }, [certificateId]);
+  
+  const handleDownloadPDF = async () => {
+    if (!certificateRef.current) return;
+    
+    try {
+      const canvas = await html2canvas(certificateRef.current, {
+        scale: 2,
+        logging: false,
+        useCORS: true
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+      });
+      
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Certificate-${certificateId}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
+  
+  if (loading) {
+    return (
+      <>
+        <NavbarCandidate />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-indigo-600 border-solid mb-4"></div>
+            <p className="text-gray-600">Loading certificate...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+  
+  if (error) {
+    return (
+      <>
+        <NavbarCandidate />
+        <div className="text-center py-16">
+          <FaExclamationCircle className="inline-block text-4xl text-red-500 mb-4" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Certificate Not Found</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button
+            onClick={() => navigate('/challenges')}
+            className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+          >
+            Go to Challenges
+          </button>
+        </div>
+      </>
+    );
+  }
+  
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <>
       <NavbarCandidate />
-
-      {/* Hero Section */}
-      <section className="bg-indigo-600 text-white py-12 sm:py-16 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight" style={{ fontFamily: "'Roboto', sans-serif" }}>
-            Your Certificate of Achievement
-          </h1>
-          <p className="mt-4 text-lg sm:text-xl max-w-2xl mx-auto">
-            Celebrate your accomplishment with a professionally designed certificate from {issuer}.
-          </p>
-        </div>
-      </section>
-
-      {/* Description Section */}
-      <section className="py-12 sm:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">About Your Certificate</h2>
-          <p className="text-base sm:text-lg text-gray-600 mb-4">
-            This certificate signifies your successful completion of {courseTitle}. It’s a testament to your dedication and skills, ready to be shared with employers, colleagues, or on social media. Each certificate is uniquely generated and verifiable through our platform.
-          </p>
-          <p className="text-base sm:text-lg text-gray-600">
-            Use the options below to download your certificate as a PDF or share it directly to your professional networks.
-          </p>
-        </div>
-      </section>
-
-      {/* Certificate Display */}
-      <section className="py-12 sm:py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative w-full bg-white border-8 border-indigo-600 shadow-2xl p-8 sm:p-12 rounded-lg bg-[url('data:image/svg+xml,%3Csvg width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0 0h1v1H0z%22 fill=%22%23e0e7ff%22/%3E%3C/svg%3E')]">
-            {/* Decorative Corner Elements */}
-            <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-indigo-600 rounded-tl-lg" />
-            <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-indigo-600 rounded-tr-lg" />
-            <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-indigo-600 rounded-bl-lg" />
-            <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-indigo-600 rounded-br-lg" />
-
-            {/* Certificate Content */}
-            <div className="flex flex-col items-center justify-center min-h-[500px] text-center">
-              <div className="mb-6">
-                <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-2xl">
-                  xAI
-                </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-6 flex justify-between items-center">
+            <button
+              onClick={() => navigate(-1)}
+              className="text-indigo-600 hover:text-indigo-800 flex items-center"
+            >
+              <FaArrowLeft className="mr-2" /> Back
+            </button>
+            
+            <button
+              onClick={handleDownloadPDF}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center"
+            >
+              <FaDownload className="mr-2" /> Download Certificate
+            </button>
+          </div>
+          
+          {/* Certificate */}
+          <div 
+            ref={certificateRef}
+            className="bg-white border-8 border-double border-yellow-500 p-8 rounded-lg shadow-lg mx-auto max-w-4xl"
+          >
+            <div className="text-center">
+              <div className="flex justify-center mb-6">
+                <FaTrophy className="text-6xl text-yellow-500" />
               </div>
-              <h2
-                className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight"
-                style={{ fontFamily: "'Great Vibes', cursive" }}
-                aria-label="Certificate of Achievement"
-              >
-                Certificate of Achievement
+              
+              <h1 className="text-4xl font-bold text-gray-800 mb-4 font-serif">Certificate of Completion</h1>
+              <p className="text-xl text-gray-600 mb-8 font-serif">This certifies that</p>
+              
+              <h2 className="text-3xl font-bold text-indigo-700 mb-8 font-serif border-b-2 border-indigo-200 pb-2 max-w-md mx-auto">
+                {certificate?.candidate_name || 'Candidate Name'}
               </h2>
-              <p className="text-base sm:text-lg text-gray-600 mb-4 font-medium">This is to certify that</p>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-indigo-800 mb-6">{recipientName}</h3>
-              <p className="text-base sm:text-lg text-gray-600 mb-4 font-medium">has successfully completed</p>
-              <h4 className="text-xl sm:text-2xl font-medium text-gray-800 mb-6">{courseTitle}</h4>
-              <p className="text-base sm:text-lg text-gray-600 mb-4 font-medium">on</p>
-              <p className="text-base sm:text-lg text-gray-600 mb-8">{date}</p>
-              <div className="flex flex-col sm:flex-row justify-between w-full max-w-md mt-8 gap-4">
-                <div>
-                  <p className="text-lg text-gray-600 border-t-2 border-indigo-600 pt-1">{issuer}</p>
-                  <p className="text-sm text-gray-500">Issuer</p>
+              
+              <p className="text-xl text-gray-600 mb-4 font-serif">
+                has successfully completed the challenge
+              </p>
+              
+              <h3 className="text-2xl font-bold text-gray-800 mb-8 font-serif">
+                "{certificate?.challenge_name || 'Challenge Name'}"
+              </h3>
+              
+              <div className="flex justify-center items-center mb-8">
+                <div className="border-t-2 border-gray-300 flex-grow max-w-xs"></div>
+                <div className="px-4">
+                  <span className="bg-yellow-100 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full">
+                    {certificate?.skill || 'Skill'}
+                  </span>
+                  <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full ml-2">
+                    {certificate?.level?.charAt(0).toUpperCase() + certificate?.level?.slice(1) || 'Level'}
+                  </span>
                 </div>
-                <div>
-                  <p className="text-lg text-gray-600 border-t-2 border-indigo-600 pt-1">Signature</p>
-                  <p className="text-sm text-gray-500">Authorized Signature</p>
+                <div className="border-t-2 border-gray-300 flex-grow max-w-xs"></div>
+              </div>
+              
+              <div className="mb-8">
+                <p className="text-gray-600 font-serif">Issued on</p>
+                <p className="text-xl font-semibold text-gray-800 font-serif">{certificate?.completion_date || 'Date'}</p>
+              </div>
+              
+              <div className="mb-4">
+                <p className="text-gray-500 text-sm">Certificate ID: {certificate?.certificate_id || 'ID'}</p>
+              </div>
+              
+              <div className="flex justify-center">
+                <div className="text-center px-8">
+                  <div className="border-t-2 border-gray-400 w-40 mb-2"></div>
+                  <p className="text-gray-600 font-serif">SkillMatch Platform</p>
                 </div>
               </div>
             </div>
           </div>
-          {/* CTA Buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-            <button
-              className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors"
-              aria-label="Download certificate as PDF"
-            >
-              Download PDF
-            </button>
-            <button
-              className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors"
-              aria-label="Share certificate on social media"
-            >
-              Share Certificate
-            </button>
-          </div>
         </div>
-      </section>
-
-      {/* FAQs Section */}
-      <section className="py-12 sm:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-800">How can I verify my certificate?</h3>
-              <p className="text-base sm:text-lg text-gray-600">
-                Each certificate comes with a unique verification code. Visit our verification page and enter the code to confirm authenticity.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Can I share my certificate?</h3>
-              <p className="text-base sm:text-lg text-gray-600">
-                Yes! Use the "Share Certificate" button to post your achievement on LinkedIn, Twitter, or other platforms.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Is the certificate downloadable?</h3>
-              <p className="text-base sm:text-lg text-gray-600">
-                Absolutely. Click the "Download PDF" button to save a high-quality PDF version of your certificate.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Related Courses Section */}
-      <section className="py-12 sm:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Explore More Courses</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-800">Machine Learning Fundamentals</h3>
-              <p className="text-gray-600 mt-2">Master the basics of machine learning with hands-on projects.</p>
-              <a href="#" className="text-indigo-600 hover:underline mt-4 inline-block">Learn More</a>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-800">Data Science with Python</h3>
-              <p className="text-gray-600 mt-2">Dive into data analysis and visualization using Python.</p>
-              <a href="#" className="text-indigo-600 hover:underline mt-4 inline-block">Learn More</a>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-800">Web Development Bootcamp</h3>
-              <p className="text-gray-600 mt-2">Build modern web applications with React and Node.js.</p>
-              <a href="#" className="text-indigo-600 hover:underline mt-4 inline-block">Learn More</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      </div>
       <Footer />
-    </div>
+    </>
   );
-};
-
-Certificate.propTypes = {
-  recipientName: PropTypes.string,
-  courseTitle: PropTypes.string,
-  date: PropTypes.string,
-  issuer: PropTypes.string
-};
-
-export default Certificate;
+}

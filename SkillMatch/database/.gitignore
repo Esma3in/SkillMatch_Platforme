@@ -1,1 +1,2 @@
 *.sqlite*
+/storage/logs/laravel.log

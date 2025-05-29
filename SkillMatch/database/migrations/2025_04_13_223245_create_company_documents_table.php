@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('company_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade')->onUpdate('cascade');
             $table->string('document_type');
             $table->string('file_path');
             $table->boolean('is_validated')->default(false);
-            $table->string('status')->default('pending');
             $table->timestamp('validated_at')->nullable();
-            $table->foreignId('validated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->unsignedBigInteger('validated_by')->nullable();
+            $table->foreign('validated_by')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();
         });
     }

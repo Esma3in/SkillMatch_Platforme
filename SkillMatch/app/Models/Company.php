@@ -38,9 +38,8 @@ class Company extends Model
         return $this->hasOne(Ceo::class);
     }
 
-    public function candidates_selected(){
-        return $this->belongsToMany(Candidate::class,'candidate_selecteds')
-        ->withTimestamps();
+    public function selectedCandidates(){
+        return $this->hasMany(CandidateSelected::class);
     }
 
     public function services(){

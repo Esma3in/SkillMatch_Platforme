@@ -363,8 +363,9 @@ class CandidateController extends Controller
                 }
             })
             ->when($skill, function ($query) use ($skill) {
-                $query->whereHas('skills', function ($q) use ($skill) {
-                    $q->where('name', 'like', "%$skill%");
+                $skillIds = explode(',', $skill);
+                $query->whereHas('skills', function ($q) use ($skillIds) {
+                $q->whereIn('skills.id', $skillIds);
                 });
             })
             ->paginate(5); // 5 candidats par page
@@ -378,6 +379,7 @@ class CandidateController extends Controller
             'message' => 'required|string',
             'company_id' => 'required|exists:companies,id',
             'candidate_id' => 'required|exists:candidates,id',
+
         ]);
 
         Notification::create([
@@ -386,6 +388,7 @@ class CandidateController extends Controller
             'destinataire' => 'company',
             'company_id' => $request->company_id,
             'candidate_id' => $request->candidate_id,
+            'read' => 0,
         ]);
 
         return response()->json(['message' => 'Notification envoyée avec succès.']);
@@ -414,6 +417,7 @@ class CandidateController extends Controller
                 'location' => optional($candidate->profile)->localisation,
                 'testScore' => round($avgScore),
                 'certified' => $certified,
+                'file' => optional($candidate->profile)->file,
                 'skills' => $candidate->skills->pluck('name')->toArray(),
                 'description' => optional($candidate->profile)->description,
                 'badges' => $candidate->badges->map(function ($badge) {

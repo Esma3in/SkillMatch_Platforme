@@ -127,14 +127,14 @@ export default function AdminHome() {
       color: "bg-amber-50 hover:bg-amber-100",
       iconBg: "bg-amber-100"
     },
-    { 
-      title: "User Statistics", 
-      icon: <FaChartBar className="text-cyan-500" />, 
-      description: "View user performance metrics",
-      action: () => navigate("/admin/usersPerformance"),
-      color: "bg-cyan-50 hover:bg-cyan-100",
-      iconBg: "bg-cyan-100"
-    },
+    // { 
+    //   title: "User Statistics", 
+    //   icon: <FaChartBar className="text-cyan-500" />, 
+    //   description: "View user performance metrics",
+    //   action: () => navigate("/admin/usersPerformance"),
+    //   color: "bg-cyan-50 hover:bg-cyan-100",
+    //   iconBg: "bg-cyan-100"
+    // },
     { 
       title: "Documents", 
       icon: <FaClipboardList className="text-gray-500" />, 

@@ -4,6 +4,8 @@ import userAvatar from '../../assets/userAvatar.jpg';
 import useLogout from '../../hooks/useLogout';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import logo from "../../assets/Logoo.png"
+
 
 const NavbarCompany = () => {
   const logout = useLogout();
@@ -79,9 +81,13 @@ const NavbarCompany = () => {
     <div className="navbar-container">
       <div className="navbar">
         <div className="navbar-left">
-          <div className="navbar-logo">SkillMatch</div>
           <nav className="navbar-nav">
-            <Link to="/" className="nav-item">Home</Link>
+            <a href="/company/Session/:id" className="nav-item">
+              <img src={logo} alt="Logo" className="h-11 w-auto" />
+              <h2 className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
+                SkillMatch  
+              </h2>
+            </a>
             
             <div
               className="nav-item dropdown"
@@ -132,18 +138,10 @@ const NavbarCompany = () => {
         </div>
         
         <div className="navbar-right">
-          <div className="search-container">
-            <input type="text" placeholder="Search" className="search-input" />
-            <i className="search-icon"></i>
-          </div>
+          
           
           <div className="navbar-icons">
-            <button className="icon-button notification-button">
-              <i className="notification-icon"></i>
-            </button>
-            <button className="icon-button settings-button">
-              <i className="settings-icon"></i>
-            </button>
+            
             
             <div className="profile-dropdown" ref={profileRef}>
               <button
@@ -167,10 +165,10 @@ const NavbarCompany = () => {
                       <i className="option-icon profile-icon"></i>
                       View profile
                     </Link>
-                    <Link to="/settings" className="profile-option">
+                    {/* <Link to="/settings" className="profile-option">
                       <i className="option-icon settings-icon"></i>
                       Settings
-                    </Link>
+                    </Link> */}
                     <Link to="/dashboard" className="profile-option">
                       <i className="option-icon performance-icon"></i>
                       Dashboard
