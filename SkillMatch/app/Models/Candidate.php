@@ -12,6 +12,8 @@ use App\Models\Attestation;
 use App\Models\Notification;
 use App\Models\ProfileCandidate;
 use App\Models\CandidateProblem;
+use App\Models\ChallengeResult;
+use App\Models\ProblemResult;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -108,4 +110,19 @@ class Candidate extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get all problem results for this candidate
+     */
+    public function problemResults()
+    {
+        return $this->hasMany(ProblemResult::class);
+    }
+
+    /**
+     * Get all challenge results for this candidate
+     */
+    public function challengeResults()
+    {
+        return $this->hasMany(ChallengeResult::class);
+    }
 }

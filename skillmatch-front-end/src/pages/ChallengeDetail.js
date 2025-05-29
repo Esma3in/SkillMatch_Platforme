@@ -18,7 +18,8 @@ export default function ChallengeDetail() {
     completed: 0,
     total: 0,
     percentage: 0,
-    completedProblems: []
+    completedProblems: [],
+    status: 'in_progress'
   });
   const [certificate, setCertificate] = useState(null);
   
@@ -40,14 +41,15 @@ export default function ChallengeDetail() {
       // Check enrollment status if candidateId exists
       if (candidateId) {
         try {
-          // This endpoint would check if the candidate is enrolled and return progress
+          // This endpoint now returns data from ChallengeResult model
           const enrollmentResponse = await api.get(`api/training/challenges/${challengeId}/enrollment/${candidateId}`);
           setIsEnrolled(true);
           setProgress({
             completed: enrollmentResponse.data.completed_problems || 0,
-            total: problemsResponse.data.length,
+            total: enrollmentResponse.data.total_problems,
             percentage: enrollmentResponse.data.percentage || 0,
-            completedProblems: enrollmentResponse.data.completed_problems_ids || []
+            completedProblems: enrollmentResponse.data.completed_problems_ids || [],
+            status: enrollmentResponse.data.status || 'in_progress'
           });
           
           // If challenge is completed, fetch certificate
@@ -62,7 +64,8 @@ export default function ChallengeDetail() {
             completed: 0,
             total: problemsResponse.data.length,
             percentage: 0,
-            completedProblems: []
+            completedProblems: [],
+            status: 'not_started'
           });
         }
       }
