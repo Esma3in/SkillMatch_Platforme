@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../api/api';
+import NavbarCompany from '../components/common/navbarCompany';
 
 import { 
   Code, 
@@ -161,6 +162,8 @@ const CreateSkill = () => {
   };
 
   return (
+    <>
+    <NavbarCompany />
     <div className="bg-white rounded-xl shadow-lg max-w-3xl mx-auto mt-8 overflow-hidden">
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-4">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -394,6 +397,7 @@ const CreateSkill = () => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 

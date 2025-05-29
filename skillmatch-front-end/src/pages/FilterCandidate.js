@@ -214,6 +214,44 @@ const CandidateFilter = () => {
       </div>
     );
   };
+  const handleViewResume = (resumeUrl) => {
+  if (!resumeUrl) {
+    alert('Resume not available for this candidate');
+    return;
+  }
+
+  // If the resumeUrl is a relative path, you might need to prepend your base URL
+  const fullUrl = resumeUrl.startsWith('http') 
+    ? resumeUrl 
+    : `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/storage/${resumeUrl}`;
+
+  // Open the resume in a new window/tab
+  window.open(fullUrl, '_blank', 'noopener,noreferrer');
+};
+
+// Alternative method if you want to handle file display differently
+const handleViewResumeWithFetch = async (resumeUrl) => {
+    if (!resumeUrl) {
+      alert('Resume not available for this candidate');
+      return;
+    }
+
+    try {
+      const response = await api.get(`/api/candidates/${selectedCandidate.id}/resume`, {
+        responseType: 'blob'
+      });
+      
+      // Create a blob URL and open it
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      console.error('Error fetching resume:', error);
+      alert('Error loading resume. Please try again.');
+    }
+};            
 
   // Available domains
   const domains = [
@@ -538,7 +576,10 @@ const CandidateFilter = () => {
                       </p>
                     </div>
                     <div className="flex gap-4 mt-8">
-                      <button className="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 flex items-center gap-2 transition-colors">
+                      <button 
+                        className="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 flex items-center gap-2 transition-colors"
+                        onClick={() => handleViewResume(selectedCandidate.resumeUrl || selectedCandidate.profile?.file)}
+                      >
                         <FileText size={18} />
                         <span>View Resume</span>
                       </button>

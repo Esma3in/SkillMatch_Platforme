@@ -4,54 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Ceo;
 use App\Models\Company;
-use App\Models\Service; // Import Service model
-use App\Models\LegalDocument; // Import LegalDocument model
+use App\Models\CompanyDocument;
+use App\Models\Service;
+use App\Models\LegalDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
-use App\Models\Profile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator; // Import Validator facade
+use Illuminate\Support\Facades\Validator;
 
 class ProfileCompanyController extends Controller
 {
-    // --- Store/Update Method ---
     public function store(Request $request)
     {
-        // Log the request *before* validation for debugging if needed, but don't return
-        // Log::info($request);
-        // return ;
+        Log::info('--- Incoming Request Start ---');
+        Log::info('Full Request Data (all fields):', $request->all());
+        Log::info('Files Array (request->files):', $request->files->all());
 
-        // --- Step 1: Validate top-level FormData and the presence of valid JSON ---
-        // Use Validator facade for more control over validation errors and merging
+        $jsonData = [];
+        if ($request->has('jsonData')) {
+            try {
+                $jsonData = json_decode($request->input('jsonData'), true);
+                Log::info('Decoded jsonData (from request input):', $jsonData);
+            } catch (\Exception $e) {
+                Log::error('JSON Decoding Error in ProfileCompanyController:', ['message' => $e->getMessage(), 'jsonData_raw' => $request->input('jsonData')]);
+                return response()->json(['errors' => ['jsonData' => ['Invalid JSON data provided.']]], 400);
+            }
+        } else {
+            Log::warning('jsonData field is missing from the request in ProfileCompanyController. This might cause validation issues if it\'s required.');
+        }
+        Log::info('--- Incoming Request End ---');
+
+
         $validator = Validator::make($request->all(), [
             'company_id' => 'required|exists:companies,id',
-
-            // File uploads validated directly from the request
             'companyData.logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'companyData.file' => 'required|mimes:pdf,doc,docx,txt|max:10240',
+            'companyData.file' => 'required|mimes:pdf,doc,docx,txt,xls,xlsx,ppt,pptx|max:10240',
             'ceoData.avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-            // Validate the JSON string content
             'jsonData' => 'required|json',
         ]);
 
-        // If basic validation fails (including 'jsonData' being valid JSON)
         if ($validator->fails()) {
-            Log::error("Basic validation failed", ['errors' => $validator->errors()->toArray()]);
+            Log::error("Basic FormData validation failed in ProfileCompanyController", ['errors' => $validator->errors()->toArray(), 'request_data' => $request->all()]);
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Decode the JSON string *after* primary validation confirms it's valid JSON
-        // Use input() to get data from FormData, ensuring it's treated as a string
-        $jsonData = json_decode($request->input('jsonData'), true);
-
-        // --- Step 2: Validate the *content* and structure of the JSON data ---
         $jsonValidator = Validator::make($jsonData, [
-            // Company & CEO data from JSON
             'companyData.sector' => 'required|string|max:255',
-            'companyProfileData.websiteUrl' => 'required|max:255', // Changed from 'max:255' to 'url|max:255' to match frontend
+            'companyProfileData.websiteUrl' => 'required|string|max:255',
             'companyProfileData.address' => 'required|string|max:255|min:5',
             'companyProfileData.phone' => 'required|string|max:50|min:7',
             'companyProfileData.Bio' => 'required|string|min:50',
@@ -59,149 +59,133 @@ class ProfileCompanyController extends Controller
             'ceoData.name' => 'required|string|max:255|min:3',
             'ceoData.description' => 'required|string|min:50',
 
-            // Services validation (using the new structure with 'title' and 'description' array)
-            'services' => 'required|array|min:1', // Require at least one service (the array itself)
-            'services.*.title' => 'required|string|max:255|min:3', // Validate each service item's 'title' field
-            'services.*.descriptions' => 'required|array|min:1', // Validate each service item's 'description' field is an array with min 1 item
+            // Services validation
+            'services' => 'required|array|min:1',
+            'services.*.title' => 'required|string|max:255|min:3',
+            'services.*.descriptions' => 'required|array|min:1',
+            'services.*.descriptions.*' => 'string|min:3', // <-- ENSURE 'required' IS REMOVED HERE
 
-            // Legal Documents validation (using the new structure with 'title' and 'description' array)
-            'legalDocuments' => 'required|array|min:1', // Require at least one legal doc (the array itself)
-            'legalDocuments.*.title' => 'required|string|max:255|min:3', // Validate each legal doc item's 'title' field
-            'legalDocuments.*.descriptions' => 'required|array|min:1', // Validate each legal doc item's 'description' field is an array with min 1 item
+            // Legal Documents validation
+            'legalDocuments' => 'required|array|min:1',
+            'legalDocuments.*.title' => 'required|string|max:255|min:3',
+            'legalDocuments.*.descriptions' => 'required|array|min:1',
+            'legalDocuments.*.descriptions.*' => 'string|min:3', // <-- ENSURE 'required' IS REMOVED HERE
         ]);
 
-         // If JSON content validation fails
         if ($jsonValidator->fails()) {
-             Log::error("JSON content validation failed", ['errors' => $jsonValidator->errors()->toArray()]);
-             // Merge errors from both validators for a complete response
+             Log::error("JSON content validation failed in ProfileCompanyController", ['errors' => $jsonValidator->errors()->toArray(), 'json_data' => $jsonData]);
              $errors = array_merge($validator->errors()->toArray(), $jsonValidator->errors()->toArray());
              return response()->json(['errors' => $errors], 422);
         }
 
-         // --- Data is now fully validated and parsed ---
-         // Combine validated data from initial request and parsed JSON for easier access
-         $validatedData = array_merge($validator->validated(), ['jsonData' => $jsonData]);
+        $validatedData = array_merge($validator->validated(), ['jsonData' => $jsonData]);
 
-
-        // Find the company (guaranteed to exist by validation)
         $company = Company::find($validatedData['company_id']);
 
-        // --- Start Database Transaction ---
         DB::beginTransaction();
 
         try {
-            // --- Update Company, Profile, CEO (as before, using data from $validatedData['jsonData']) ---
-
             $updateDataCompany = [
                 'sector' => $validatedData['jsonData']['companyData']['sector'],
             ];
 
-            // Handle file uploads and old file cleanup for Company
             if ($request->hasFile('companyData.logo')) {
-                // Delete old logo if it exists
+                $file = $request->file('companyData.logo');
+                Log::info('Storing company logo:', ['name' => $file->getClientOriginalName()]);
                 if ($company->logo) {
                     Storage::disk('public')->delete($company->logo);
                 }
-                $updateDataCompany['logo'] = $request->file('companyData.logo')->store('images/companies', 'public'); // Use request->file() and store
+                $updateDataCompany['logo'] = $file->store('images/companies', 'public');
+            } else {
+                 Log::info('No new companyData.logo provided or detected by hasFile().');
             }
 
             if ($request->hasFile('companyData.file')) {
-                 // Delete old file if it exists
+                $file = $request->file('companyData.file');
+                Log::info('Storing company document:', ['name' => $file->getClientOriginalName()]);
                 if ($company->file) {
                     Storage::disk('public')->delete($company->file);
                 }
-                $updateDataCompany['file'] = $request->file('companyData.file')->store('files/companies', 'public'); // Use request->file() and store
+                $filepath = $file->store('company_documents', 'public');
+                $updateDataCompany['file'] = $filepath;
+
+                CompanyDocument::create([
+                    'company_id' => $company->id,
+                    'document_type' => $file->getMimeType(),
+                    'file_path' => $filepath,
+                    'is_validated' => 0,
+                    'status' => 'pending',
+                    'validated_at' => null,
+                ]);
+            } else {
+                Log::info('No new companyData.file provided or detected by hasFile().');
             }
 
-            // Update the company
             $company->update($updateDataCompany);
 
-            // Handle Profile - Use updateOrCreate, get data from $validatedData['jsonData']
             $company->profile()->updateOrCreate(
-                ['company_id' => $company->id], // Condition to find the related profile
-                [ // Data to update/create
+                ['company_id' => $company->id],
+                [
                     'websiteUrl' => $validatedData['jsonData']['companyProfileData']['websiteUrl'],
                     'address' => $validatedData['jsonData']['companyProfileData']['address'],
                     'phone' => $validatedData['jsonData']['companyProfileData']['phone'],
                     'Bio' => $validatedData['jsonData']['companyProfileData']['Bio'],
-                    'DateCreation' => $validatedData['jsonData']['companyProfileData']['Datecreation'], // Ensure field name matches DB
+                    'DateCreation' => $validatedData['jsonData']['companyProfileData']['Datecreation'],
                 ]
             );
 
-            // Handle CEO - Use updateOrCreate, get data from $validatedData['jsonData']
             $ceoUpdateOrCreateData = [
                 'name' => $validatedData['jsonData']['ceoData']['name'],
                 'description' => $validatedData['jsonData']['ceoData']['description'],
             ];
 
-            // Handle file uploads and old file cleanup for CEO
             if ($request->hasFile('ceoData.avatar')) {
-                // Find the existing CEO first if it exists, to get the old avatar path
-                // Or eager load CEO with the company
-                 $ceo = $company->ceo; // Assumes CEO exists or relationship is nullable
+                $file = $request->file('ceoData.avatar');
+                Log::info('Storing CEO avatar:', ['name' => $file->getClientOriginalName()]);
+                $ceo = $company->ceo;
                 if ($ceo && $ceo->avatar) {
                      Storage::disk('public')->delete($ceo->avatar);
                 }
-                $ceoUpdateOrCreateData['avatar'] = $request->file('ceoData.avatar')->store('images/ceos', 'public'); // Store
+                $ceoUpdateOrCreateData['avatar'] = $file->store('images/ceos', 'public');
+            } else {
+                Log::info('No new ceoData.avatar provided or detected by hasFile().');
             }
 
-             // Assuming a one-to-one relationship where the CEO record has a company_id
-             Ceo::updateOrCreate(
-                ['company_id' => $company->id], // Condition
-                $ceoUpdateOrCreateData // Data
+            Ceo::updateOrCreate(
+                ['company_id' => $company->id],
+                $ceoUpdateOrCreateData
             );
 
-
-            // --- Step 3: Process Services ---
-            // Strategy: Delete all existing services for this company, then re-create them from the payload.
-            // Ensure your Service model has $fillable = ['company_id', 'title', 'description']; and $casts = ['description' => 'array'];
-            $company->services()->delete(); // Delete existing services
-
+            $company->services()->delete();
             foreach ($validatedData['jsonData']['services'] as $serviceData) {
-                // Create the Service record linked to the company
-                // Laravel automatically casts the 'description' array to JSON because of the model cast
-                Log::info($serviceData);
                 $company->services()->create([
                     'title' => $serviceData['title'],
-                    'descriptions' => $serviceData['descriptions'], // Save the array directly
+                    'descriptions' => $serviceData['descriptions'],
                 ]);
-                 // No need to loop through descriptions separately anymore as they are part of the JSON column
             }
 
-            // --- Step 4: Process Legal Documents ---
-            // Strategy: Delete all existing legal documents for this company, then re-create them from the payload.
-            // Ensure your LegalDocument model has $fillable = ['company_id', 'title', 'description']; and $casts = ['description' => 'array'];
-            $company->legaldocuments()->delete(); // Delete existing legal documents
-
+            $company->legaldocuments()->delete();
             foreach ($validatedData['jsonData']['legalDocuments'] as $docData) {
-                 // Create the LegalDocument record linked to the company
-                 // Laravel automatically casts the 'description' array to JSON because of the model cast
                  $company->legaldocuments()->create([
                     'title' => $docData['title'],
-                    'descriptions' => $docData['descriptions'], // Save the array directly
+                    'descriptions' => $docData['descriptions'],
                  ]);
-                 // No need to loop through descriptions separately anymore
             }
 
-
-            // --- Step 5: Commit Transaction ---
             DB::commit();
 
             return response()->json('Data updated successfully', 200);
 
         } catch (\Exception $e) {
-            // --- Step 6: Rollback Transaction and Handle Error ---
             DB::rollBack();
 
-            // Log the detailed error
-            Log::error("Error processing company profile update: " . $e->getMessage(), [
-                'company_id' => $company->id ?? 'N/A', // Handle case where $company might not be set
+            Log::error("Error processing company profile update in ProfileCompanyController: " . $e->getMessage(), [
+                'company_id' => $company->id ?? 'N/A',
                 'error_trace' => $e->getTraceAsString(),
                 'request_data' => $request->all(),
-                'json_data' => $jsonData ?? 'N/A', // Handle case where jsonData might not be set/decoded
+                'json_data' => $jsonData ?? 'N/A',
             ]);
 
-            // Return a generic error response (avoid exposing detailed error in production)
             return response()->json(['message' => 'Error processing data update.'], 500);
         }
     }

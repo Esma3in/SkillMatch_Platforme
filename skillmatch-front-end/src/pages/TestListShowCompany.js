@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api/api';
 import { useNavigate } from 'react-router-dom';
+import NavbarCompany from '../components/common/navbarCompany';
 
 // Icons pour le composant
 import { List, Plus, Trash2, Eye } from 'lucide-react';
@@ -262,6 +263,8 @@ export default function TestListShowCompany() {
   };
 
   return (
+    <>
+      <NavbarCompany />
     <div className="bg-white p-6 rounded-lg shadow">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">My Company Tests</h1>
@@ -418,5 +421,6 @@ export default function TestListShowCompany() {
       {/* Modal pour afficher les candidats */}
       {showModal && <CandidatesModal />}
     </div>
+    </>
   );
 }

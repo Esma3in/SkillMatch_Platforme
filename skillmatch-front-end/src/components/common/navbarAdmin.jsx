@@ -183,7 +183,7 @@ const NavbarAdmin = () => {
                 </div>
               )}
             </div>
-            <div
+            {/* <div
               className="nav-item dropdown"
               ref={StatisticRef}
               onMouseEnter={handleStatisticEnter}
@@ -204,7 +204,7 @@ const NavbarAdmin = () => {
                   </a>
                 </div>
               )}
-            </div>
+            </div> */}
           </nav>
         </div>
 
