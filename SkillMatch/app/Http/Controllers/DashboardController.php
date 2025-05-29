@@ -16,7 +16,6 @@ class DashboardController extends Controller
             {
                 $count = Roadmap::where('candidate_id', $candidate_id)->where("completed" , "completed")
                                 ->count();
-
                 return response()->json(['completed_count' => $count]);
             }
     //counting companies selected
@@ -63,7 +62,7 @@ class DashboardController extends Controller
                 ->join('roadmaps', 'roadmapsprogress.roadmap_id', '=', 'roadmaps.id')
                 ->join('candidates', 'candidates.id', '=', 'roadmaps.candidate_id')
                 ->where('candidates.id', $candidate_id)  // Filter by candidate_id
-                ->select('roadmapsprogress.*', 'roadmaps.*', 'candidates.*')
+                ->select('roadmapsprogress.*', 'roadmaps.*')
                 ->get();
 
             return response()->json($data);
@@ -130,7 +129,7 @@ class DashboardController extends Controller
                 ->join('profile_companies', 'companies_selecteds.company_id', '=', 'profile_companies.company_id')
                 ->join('companies', 'companies.id', '=', 'companies_selecteds.company_id')
                 ->where('companies_selecteds.candidate_id', $candidateId)
-                ->select('companies_selecteds.*', 'profile_companies.*', 'companies.*') // You can customize this
+                ->select('companies_selecteds.*', 'profile_companies.*', 'companies.*')
                 ->get();
 
             return response()->json($data);

@@ -21,14 +21,19 @@ class BadgeController extends Controller
                 ->select(
                     'companies.name as company_name',
                     'badges.*',
+                    'qcm_for_roadmaps.*',
+                    'results.score',
                     'candidates.name as candidate_name'
                 )
                 ->join('candidates', 'badges.candidate_id', '=', 'candidates.id')
                 ->join('companies_selecteds', 'companies_selecteds.candidate_id', '=', 'badges.candidate_id')
                 ->join('companies', 'companies.id', '=', 'companies_selecteds.company_id')
-                ->where('badges.candidate_id' , $candidate_id)
+                ->join('qcm_for_roadmaps', 'badges.qcm_for_roadmap_id', '=', 'qcm_for_roadmaps.id')
+                ->join('results', 'qcm_for_roadmaps.id', '=', 'results.qcm_for_roadmapId')
+                ->where('badges.candidate_id', $candidate_id)
+                ->limit(3)
                 ->get();
-
+    
             return response()->json([
                 'success' => true,
                 'data' => $badges
@@ -37,13 +42,14 @@ class BadgeController extends Controller
             Log::error('Failed to retrieve badges', [
                 'error' => $e->getMessage()
             ]);
-
+    
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while retrieving badges'
             ], 500);
         }
     }
+    
     
    // get result for an qcmrodamap id
    public function QcmResult($qcmForRoadmapId){
@@ -53,14 +59,13 @@ class BadgeController extends Controller
    public function createBadge(Request $request)
    {
        try {
-           // Validate incoming request data
            $validator = Validator::make($request->all(), [
                'candidate_id' => 'required|exists:candidates,id',
                'qcm_for_roadmap_id' => 'required|exists:qcm_for_roadmaps,id',
                'name' => 'required|string|max:255',
                'icon' => 'required|url',
                'description' => 'required|string',
-               'Date_obtained' => 'required|date_format:Y-m-d',
+               'Date_obtained' => 'required|date_format:Y-m-d', // consider renaming to date_obtained
            ]);
    
            if ($validator->fails()) {
@@ -71,15 +76,17 @@ class BadgeController extends Controller
                ], 422);
            }
    
-           // Check if badge already exists for this candidate and roadmap
-           $existingBadge = Badge::where('candidate_id', $request->candidate_id)
-               ->where('qcm_for_roadmap_id', $request->qcm_for_roadmap_id)
+           $candidateId = $request->candidate_id;
+           $qcmId = $request->qcm_for_roadmap_id;
+   
+           $existingBadge = Badge::where('candidate_id', $candidateId)
+               ->where('qcm_for_roadmap_id', $qcmId)
                ->first();
    
            if ($existingBadge) {
                Log::warning('Duplicate badge attempt:', [
-                   'candidate_id' => $request->candidate_id,
-                   'qcm_for_roadmap_id' => $request->qcm_for_roadmap_id,
+                   'candidate_id' => $candidateId,
+                   'qcm_for_roadmap_id' => $qcmId,
                ]);
                return response()->json([
                    'message' => 'Badge already exists for this candidate and roadmap',
@@ -87,24 +94,19 @@ class BadgeController extends Controller
                ], 409);
            }
    
-           // Verify candidate and qcm_for_roadmap exist
-           $candidate = Candidate::findOrFail($request->candidate_id);
-           $qcmRoadmap = QcmForRoadmap::with('roadmap')->findOrFail($request->qcm_for_roadmap_id);
+           $qcmRoadmap = QcmForRoadmap::with('roadmap')->findOrFail($qcmId);
    
-           // Verify the roadmap exists and belongs to the candidate
            if (!$qcmRoadmap->roadmap) {
-               Log::warning('Roadmap not found for QcmForRoadmap:', [
-                   'qcm_for_roadmap_id' => $request->qcm_for_roadmap_id,
-               ]);
+               Log::warning('Roadmap not found for QcmForRoadmap:', ['qcm_for_roadmap_id' => $qcmId]);
                return response()->json([
                    'message' => 'Associated roadmap not found',
                    'error' => 'Roadmap not found',
                ], 404);
            }
    
-           if ($qcmRoadmap->roadmap->candidate_id !== $request->candidate_id) {
+           if ($qcmRoadmap->roadmap->candidate_id !== $candidateId) {
                Log::warning('Unauthorized roadmap access:', [
-                   'candidate_id' => $request->candidate_id,
+                   'candidate_id' => $candidateId,
                    'roadmap_id' => $qcmRoadmap->roadmap->id,
                ]);
                return response()->json([
@@ -113,20 +115,18 @@ class BadgeController extends Controller
                ], 403);
            }
    
-           // Create badge and update roadmap within a transaction
            DB::beginTransaction();
    
            $badge = Badge::create([
-               'candidate_id' => $request->candidate_id,
-               'qcm_for_roadmap_id' => $request->qcm_for_roadmap_id,
+               'candidate_id' => $candidateId,
+               'qcm_for_roadmap_id' => $qcmId,
                'name' => $request->name,
                'icon' => $request->icon,
                'description' => $request->description,
                'Date_obtained' => $request->Date_obtained,
            ]);
    
-           // Update roadmap completed status directly
-           $roadmap = Roadmap::findOrFail($qcmRoadmap->roadmap->id);
+           $roadmap = $qcmRoadmap->roadmap;
            $roadmap->completed = 'completed';
            $roadmap->save();
    
@@ -134,7 +134,7 @@ class BadgeController extends Controller
    
            Log::info('Badge created and roadmap marked as completed:', [
                'badge_id' => $badge->id,
-               'roadmap_id' => $qcmRoadmap->roadmap->id,
+               'roadmap_id' => $roadmap->id,
            ]);
    
            return response()->json([
@@ -161,5 +161,5 @@ class BadgeController extends Controller
            ], 500);
        }
    }
-
+   
 }

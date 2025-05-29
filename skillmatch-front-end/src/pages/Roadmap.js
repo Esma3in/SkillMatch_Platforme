@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import NavbarCandidate from "../components/common/navbarCandidate.jsx";
 import { api } from "../api/api";
+import confetti from 'canvas-confetti';
 
 // Define roadmap steps as a constant
 const ROADMAP_STEPS = [
@@ -58,8 +59,9 @@ const Roadmap = () => {
       [course.id]: JSON.parse(localStorage.getItem(`course_progress_${course.id}`)) || false
     }), {});
   });
+  const [skillCheckboxes, setSkillCheckboxes] = useState({});
 
-  // Initialize or load roadmap progress
+  // Initialize or load roadmap progress with sync check
   useEffect(() => {
     const initializeProgress = async () => {
       if (!roadmapId || !candidateId) {
@@ -69,34 +71,51 @@ const Roadmap = () => {
 
       setLoading(true);
       try {
-        // Fetch progress from backend
         const response = await api.get(`/api/roadmap/progress/${roadmapId}/${candidateId}`);
         const progressData = response.data.data;
 
-        // Parse the steps column (JSON string) into an object, using database data as primary source
         const steps = progressData.steps ? JSON.parse(progressData.steps) : {};
-
-        // Initialize all steps if no data is returned
         const newStepCompletion = {};
         ROADMAP_STEPS.forEach(step => {
           newStepCompletion[step.id] = steps[step.id] !== undefined ? steps[step.id] : false;
         });
 
-        // Calculate progress percentage
+        const savedData = localStorage.getItem(`roadmapProgress_${roadmapId}`);
+        let localProgress = {};
+        if (savedData) {
+          try {
+            localProgress = JSON.parse(savedData);
+            if (
+              localProgress.stepCompletion &&
+              Object.keys(localProgress.stepCompletion).length === ROADMAP_STEPS.length &&
+              ROADMAP_STEPS.every(step => typeof localProgress.stepCompletion[step.id] === "boolean")
+            ) {
+              Object.keys(newStepCompletion).forEach(stepId => {
+                newStepCompletion[stepId] = newStepCompletion[stepId] || localProgress.stepCompletion[stepId];
+              });
+            }
+          } catch (e) {
+            console.warn("Failed to parse localStorage data:", e);
+          }
+        }
+
+        setStepCompletion(newStepCompletion);
         const completedSteps = Object.values(newStepCompletion).filter(Boolean).length;
         const totalSteps = ROADMAP_STEPS.length;
         const calculatedProgress = Math.round((completedSteps / totalSteps) * 100);
-
-        setStepCompletion(newStepCompletion);
         setPathProgress(calculatedProgress);
-        setCompleted(calculatedProgress >= 100 ? "completed" : "pending");
 
-        // Set active tab to the first incomplete step or last step if all complete
         const firstIncompleteStep = ROADMAP_STEPS.find(step => !newStepCompletion[step.id]);
         setActiveTab(firstIncompleteStep ? firstIncompleteStep.id.toString() : "4");
+
+        localStorage.setItem(`roadmapProgress_${roadmapId}`, JSON.stringify({
+          stepCompletion: newStepCompletion,
+          activeTab: firstIncompleteStep ? firstIncompleteStep.id.toString() : "4",
+          completed: progressData.completed || (calculatedProgress >= 100 ? "completed" : "pending"),
+          pathProgress: calculatedProgress
+        }));
       } catch (error) {
         console.error('Failed to fetch roadmap progress:', error);
-        // Use localStorage as a fallback only if database fetch fails
         const savedData = localStorage.getItem(`roadmapProgress_${roadmapId}`);
         if (savedData) {
           try {
@@ -108,13 +127,11 @@ const Roadmap = () => {
             ) {
               setStepCompletion(parsedData.stepCompletion);
               setActiveTab(parsedData.activeTab || "1");
-              setCompleted(parsedData.completed || "pending");
               setPathProgress(parsedData.pathProgress || 0);
             } else {
               const initialState = ROADMAP_STEPS.reduce((acc, step) => ({ ...acc, [step.id]: false }), {});
               setStepCompletion(initialState);
               setActiveTab("1");
-              setCompleted("pending");
               setPathProgress(0);
             }
           } catch (e) {
@@ -122,14 +139,12 @@ const Roadmap = () => {
             const initialState = ROADMAP_STEPS.reduce((acc, step) => ({ ...acc, [step.id]: false }), {});
             setStepCompletion(initialState);
             setActiveTab("1");
-            setCompleted("pending");
             setPathProgress(0);
           }
         } else {
           const initialState = ROADMAP_STEPS.reduce((acc, step) => ({ ...acc, [step.id]: false }), {});
           setStepCompletion(initialState);
           setActiveTab("1");
-          setCompleted("pending");
           setPathProgress(0);
         }
       } finally {
@@ -140,6 +155,17 @@ const Roadmap = () => {
     initializeProgress();
   }, [roadmapId, candidateId]);
 
+  // Initialize skill checkboxes
+  useEffect(() => {
+    setSkillCheckboxes(prev => {
+      const newCheckboxes = {};
+      data.roadmapSkills.forEach(skill => {
+        newCheckboxes[skill.id] = stepCompletion["3"] || completed === "completed";
+      });
+      return newCheckboxes;
+    });
+  }, [data.roadmapSkills, stepCompletion, completed]);
+
   // Save progress to localStorage and backend
   useEffect(() => {
     const saveProgress = async () => {
@@ -147,13 +173,10 @@ const Roadmap = () => {
 
       const completedSteps = Object.values(stepCompletion).filter(Boolean).length;
       const totalSteps = ROADMAP_STEPS.length;
-      const calculatedProgress = Math.round((completedSteps / totalSteps) * 100);
+      const calculatedProgress = completed === "completed" ? 100 : Math.round((completedSteps / totalSteps) * 100);
 
-      // Update state
       setPathProgress(calculatedProgress);
-      setCompleted(calculatedProgress >= 100 ? "completed" : "pending");
 
-      // Save to localStorage
       try {
         localStorage.setItem(`roadmapProgress_${roadmapId}`, JSON.stringify({
           stepCompletion,
@@ -165,30 +188,30 @@ const Roadmap = () => {
         console.warn("Failed to save progress to localStorage:", e);
       }
 
-      // Save to backend
       try {
         await api.post('/api/roadmap/progress', {
           roadmap_id: roadmapId,
           candidate_id: candidateId,
           steps: JSON.stringify(stepCompletion),
-          progress: calculatedProgress
+          progress: calculatedProgress,
+          completed
         });
       } catch (error) {
         console.error('Failed to save roadmap progress to backend:', error);
-        // Attempt to retry saving if it fails
         setTimeout(() => {
           api.post('/api/roadmap/progress', {
             roadmap_id: roadmapId,
             candidate_id: candidateId,
             steps: JSON.stringify(stepCompletion),
-            progress: calculatedProgress
+            progress: calculatedProgress,
+            completed
           }).catch(err => console.error('Retry failed:', err));
         }, 2000);
       }
     };
 
     saveProgress();
-  }, [stepCompletion, activeTab, roadmapId, candidateId]);
+  }, [stepCompletion, activeTab, completed, roadmapId, candidateId]);
 
   // Fetch company and roadmap data
   useEffect(() => {
@@ -222,13 +245,13 @@ const Roadmap = () => {
     const fetchRoadmapData = async () => {
       if (!companySelected.id) return;
       try {
-        const response = await api.get(`/api/roadmap/${companySelected.id}`);
+        const response = await api.get(`/api/roadmaps/${roadmapId}`);
         const uniqueData = {
           skills: removeDuplicates(response.data.skills || [], "id"),
           prerequisites: removeDuplicates(response.data.prerequisites || [], "id"),
           tools: removeDuplicates(response.data.tools || [], "name"),
-          candidateCourses: removeDuplicates(response.data.candidateCourses || [], "id"),
-          roadmapSkills: removeDuplicates(response.data.roadmapSkills || [], "text"),
+          candidateCourses: removeDuplicates(response.data.candidate_courses || [], "id"),
+          roadmapSkills: removeDuplicates(response.data.roadmap_skills || [], "text"),
           userTools: removeDuplicates(response.data.userTools || [], "name"),
         };
         setData(uniqueData);
@@ -240,7 +263,40 @@ const Roadmap = () => {
     };
 
     fetchRoadmapData();
-  }, [companySelected.id]);
+  }, [companySelected.id, roadmapId]);
+
+  // Fetch completed roadmap status and sync quiz step
+  useEffect(() => {
+    const fetchCompletedRoadmap = async () => {
+      try {
+        const response = await api.get(`/api/roadmap/completed/${roadmapId}`);
+        const isCompleted = response.data.completed === "completed";
+        setCompleted(response.data.completed);
+        
+        if (isCompleted) {
+          setStepCompletion(prev => ({
+            ...prev,
+            "4": true // Ensure quiz step is marked complete
+          }));
+          setPathProgress(100); // Force progress to 100% when completed
+        }
+      } catch (error) {
+        console.error('Failed to fetch completed roadmap status:', error);
+      }
+    };
+    fetchCompletedRoadmap();
+  }, [roadmapId]);
+
+  useEffect(() => {
+    if (completed === "completed") {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#10B981', '#34D399', '#6EE7B7'],
+      });
+    }
+  }, [completed]);
 
   // Handle course completion
   const handleMarkCourseComplete = useCallback((courseId) => {
@@ -289,6 +345,14 @@ const Roadmap = () => {
     }
   }, [isCreatingQcm, roadmapId, navigate, data.roadmapSkills]);
 
+  // Handle skill checkbox change
+  const handleCheckboxChange = useCallback((skillId) => {
+    setSkillCheckboxes(prev => ({
+      ...prev,
+      [skillId]: !prev[skillId]
+    }));
+  }, []);
+
   // Handle next step logic
   const handleNextStep = useCallback((currentTab) => {
     const currentIndex = ROADMAP_STEPS.findIndex(step => step.id.toString() === currentTab);
@@ -298,27 +362,30 @@ const Roadmap = () => {
       const updated = { ...prev, [currentTab]: true };
       return updated;
     });
-    setActiveTab(nextTab);
-    if(currentTab === "1"){
-      setPathProgress(25);
-    }
-    if(currentTab ==="2"){
-      setPathProgress(50)
-    }
-    if(currentTab === "3"){
-      setPathProgress(75)
-    }
-    if (currentTab === "4") {
-      setCompleted("completed");
-      setPathProgress(100);
-    }
-  }, []);
 
-  // Calculate progress
+    if (currentTab === "3") {
+      setSkillCheckboxes(prev => {
+        const updated = {};
+        data.roadmapSkills.forEach(skill => {
+          updated[skill.id] = true;
+        });
+        return updated;
+      });
+    }
+
+    setActiveTab(nextTab);
+
+    const completedSteps = Object.values({ ...stepCompletion, [currentTab]: true }).filter(Boolean).length;
+    const totalSteps = ROADMAP_STEPS.length;
+    const calculatedProgress = Math.round((completedSteps / totalSteps) * 100);
+    setPathProgress(calculatedProgress);
+  }, [stepCompletion, data.roadmapSkills]);
+
+  // Calculate progress for display
   const calculateProgress = useMemo(() => {
     const completedSteps = Object.values(stepCompletion).filter(Boolean).length;
-    return Math.round((completedSteps / ROADMAP_STEPS.length) * 100);
-  }, [stepCompletion]);
+    return completed === "completed" ? 100 : Math.round((completedSteps / ROADMAP_STEPS.length) * 100);
+  }, [stepCompletion, completed]);
 
   // Memoized data filters
   const filteredTools = useMemo(() => data.tools, [data.tools]);
@@ -328,11 +395,18 @@ const Roadmap = () => {
   const filteredSkillsCompanySelected = useMemo(() => skillsCompanySelected, [skillsCompanySelected]);
   const filteredUserTools = useMemo(() => data.userTools, [data.userTools]);
 
+  console.log("Roadmap Data : ",
+    "tools : ", filteredTools,
+    "prerequisites :", filteredPrerequisites,
+    "Courses :", filteredCourses,
+    "Roadmap Skills", filteredRoadmapSkills
+  );
+
   return (
     <>
       <NavbarCandidate />
-      <div className={`min-h-screen bg-gray-100 ${completed === "completed" ? "bg-green-50" : "bg-gradient-to-b from-gray-50 to-gray-100"} font-sans`}>
-        <div className={`bg-gradient-to-r ${completed === "completed" ? "from-green-700 to-emerald-600" : "from-indigo-700 to-purple-600"} py-8 shadow-xl`}>
+      <div className={`min-h-screen transition-all duration-500 ${completed === "completed" ? "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100" : "bg-gradient-to-b from-gray-50 to-gray-100"} font-sans`}>
+        <div className={`bg-gradient-to-r ${completed === "completed" ? "from-emerald-700 via-green-600 to-teal-600 animate-pulse" : "from-indigo-700 to-purple-600"} py-8 shadow-xl`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-extrabold text-white tracking-tight">{roadmapName}</h1>
             <div className="mt-3 flex items-center space-x-2">
@@ -340,7 +414,7 @@ const Roadmap = () => {
                 Tailored for: <span className="font-semibold">{companySelected.name}</span>
               </p>
               {completed === "completed" && (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-200 text-green-900">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-200 text-green-900 animate-bounce">
                   <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
@@ -353,7 +427,7 @@ const Roadmap = () => {
 
         {/* Learning Path Progress Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="bg-white rounded-2xl shadow-md p-6 mb-6">
+          <div className={`bg-white rounded-2xl shadow-md p-6 mb-6 ${completed === "completed" ? "ring-2 ring-green-300" : ""}`}>
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Your Learning Path</h3>
             <div className="mb-4">
               <div className="flex justify-between mb-2">
@@ -362,7 +436,7 @@ const Roadmap = () => {
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div
-                  className={`h-2.5 rounded-full ${completed === "completed" ? "bg-green-600" : "bg-indigo-600"}`}
+                  className={`h-2.5 rounded-full transition-all duration-500 ${completed === "completed" ? "bg-green-600" : "bg-indigo-600"}`}
                   style={{ width: `${pathProgress}%` }}
                 ></div>
               </div>
@@ -374,7 +448,7 @@ const Roadmap = () => {
               <div className="flex justify-between relative z-10">
                 {ROADMAP_STEPS.map((step, index) => {
                   const isActive = activeTab === step.id.toString();
-                  const isCompleted = stepCompletion[step.id];
+                  const isCompleted = stepCompletion[step.id] || (step.id === 4 && completed === "completed");
                   const isLast = index === ROADMAP_STEPS.length - 1;
 
                   return (
@@ -386,9 +460,9 @@ const Roadmap = () => {
                           }
                         }}
                         className={`w-8 h-8 rounded-full flex items-center justify-center ${isCompleted
-                          ? "bg-green-500 text-white"
+                          ? "bg-green-500 text-white ring-2 ring-green-300"
                           : isActive
-                            ? "bg-indigo-600 text-white"
+                            ? "bg-indigo-600 text-white ring-2 ring-indigo-300"
                             : "bg-white border-2 border-gray-300 text-gray-400"}
                           transition-all duration-300 ${(isCompleted || isActive) ? "cursor-pointer hover:scale-110" : "cursor-not-allowed"}`}
                       >
@@ -465,7 +539,7 @@ const Roadmap = () => {
                     </ul>
                   </div>
 
-                  <div className="bg-white rounded-2xl shadow-md p-6">
+                  <div className={`bg-white rounded-2xl shadow-md p-6 ${completed === "completed" ? "ring-4 ring-green-200 animate-pulse" : ""}`}>
                     <h3 className="text-xl font-semibold text-gray-900 mb-4">Badge Overview</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       {[
@@ -495,10 +569,20 @@ const Roadmap = () => {
                       ))}
                     </div>
                     {completed === "completed" && (
-                      <div className="mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg">
-                        <p className="text-sm text-green-700 font-medium">
+                      <div className="mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg shadow-lg">
+                        <p className="text-sm text-green-700 font-medium animate-bounce">
                           Congratulations! You've earned your badge for {companySelected.name}.
                         </p>
+                        <div className="mt-4 flex justify-center">
+                          <div className="relative">
+                            <img
+                              src="https://img.icons8.com/pulsar-gradient/96/trophy.png"
+                              alt="Badge"
+                              className="w-16 h-16 animate-pulse"
+                            />
+                            <div className="absolute inset-0 rounded-full bg-green-300 opacity-50 blur-md animate-ping"></div>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -596,7 +680,7 @@ const Roadmap = () => {
                     )}
                     {activeTab === "2" && (
                       <div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Courses</h3>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Recommended Courses</h3>
                         {filteredCourses.length > 0 ? (
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredCourses.map((course, index) => (
@@ -604,16 +688,11 @@ const Roadmap = () => {
                                 key={course.id ? `${course.id}-${index}` : index}
                                 className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                               >
-                                <img
-                                  className="w-full h-40 object-cover"
-                                  src={course.image || `https://ui-avatars.com/api/?name=${course.name}&background=6366f1&color=fff&size=150`}
-                                  alt={course.name}
-                                />
+                                <div className="w-full h-40 object-cover bg-indigo-600"></div>
                                 <div className="p-4 flex flex-col">
                                   <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2">{course.name || "Unknown Course"}</h4>
                                   <p className="text-xs text-gray-600 mb-1">{course.provider || "N/A"}</p>
                                   <p className="text-xs text-gray-600 mb-1">{course.duration || "N/A"}</p>
-                                  <p className="text-xs text-indigo-600 font-medium mb-3">{course.level || "N/A"}</p>
                                   <div className="flex items-center justify-between mt-auto">
                                     <a
                                       href={course.link || "#"}
@@ -671,10 +750,10 @@ const Roadmap = () => {
                                   <div className="flex items-center">
                                     <div
                                       className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 ${
-                                        skill.completed || completed === "completed" ? "bg-green-500" : "bg-gray-200 border border-gray-300"
+                                        skillCheckboxes[skill.id] || completed === "completed" ? "bg-green-500" : "bg-gray-200 border border-gray-300"
                                       }`}
                                     >
-                                      {(skill.completed || completed === "completed") && (
+                                      {(skillCheckboxes[skill.id] || completed === "completed") && (
                                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                         </svg>
@@ -686,10 +765,16 @@ const Roadmap = () => {
                                     <div className="w-32 bg-gray-200 rounded-full h-2">
                                       <div
                                         className="bg-indigo-600 h-2 rounded-full transition-all duration-500"
-                                        style={{ width: skill.completed || completed === "completed" ? "100%" : "50%" }}
+                                        style={{ width: skillCheckboxes[skill.id] || completed === "completed" ? "100%" : "50%" }}
                                       />
                                     </div>
-                                    <button className="text-xs text-indigo-600 hover:underline font-medium">Practice</button>
+                                    <input
+                                      type="checkbox"
+                                      checked={skillCheckboxes[skill.id] || completed === "completed"}
+                                      onChange={() => handleCheckboxChange(skill.id)}
+                                      disabled={completed === "completed"}
+                                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                    />
                                   </div>
                                 </div>
                               </div>

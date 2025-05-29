@@ -8,10 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class roadmapprogress extends Model
 {
     use HasFactory;
+    protected $table = 'roadmapsprogress';
     protected $fillable = [
         'roadmap_id',
-        'progress'
+        'progress',
+        'candidate_id',
+        'steps'
     ] ;
+    
+    protected $casts = [
+        'steps' => 'json'
+    ];
+    
     public function roadmap(){
         return $this->belongsTo(Roadmap::class);
     }

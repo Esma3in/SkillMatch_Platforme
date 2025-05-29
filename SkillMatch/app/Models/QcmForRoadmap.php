@@ -14,7 +14,7 @@ class QcmForRoadmap extends Model
         'roadmap_id'
     ];
     public function result (){
-        return $this->belongsTo(Result::class);
+        return $this->hasOne(Result::class);
     }
     public function roadmap(){
         return $this->belongsTo(Roadmap::class);

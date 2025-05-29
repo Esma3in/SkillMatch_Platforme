@@ -211,7 +211,7 @@ export const Box = () => {
               {/* Last Name */}
               <div className="formGroupBox">
                 <label htmlFor="lastName" className="formLabelBox block text-sm font-medium text-gray-700 mb-2">
-                  Last Name
+                Name complet
                 </label>
                 <input
                   type="text"
