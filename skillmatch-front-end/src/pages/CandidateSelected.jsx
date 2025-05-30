@@ -2,19 +2,13 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
-import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    MoreHorizontalIcon,
-} from "lucide-react";
 import { api } from "../api/api";
 import NavbarCompany from "../components/common/navbarCompany";
+
 function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
-
 
 const Avatar = React.forwardRef(({ className, ...props }, ref) => (
     <AvatarPrimitive.Root
@@ -79,7 +73,6 @@ const buttonVariants = cva(
     },
 );
 
-
 const Card = React.forwardRef(({ className, ...props }, ref) => (
     <div
         ref={ref}
@@ -92,122 +85,6 @@ const Card = React.forwardRef(({ className, ...props }, ref) => (
 ));
 Card.displayName = "Card";
 
-const CardHeader = React.forwardRef(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn("flex flex-col space-y-1.5 p-6", className)}
-        {...props}
-    />
-));
-CardHeader.displayName = "CardHeader";
-
-const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn("font-semibold leading-none tracking-tight", className)}
-        {...props}
-    />
-));
-CardTitle.displayName = "CardTitle";
-
-const CardDescription = React.forwardRef(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn("text-sm text-muted-foreground", className)}
-        {...props}
-    />
-));
-CardDescription.displayName = "CardDescription";
-
-const CardContent = React.forwardRef(({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
-));
-CardContent.displayName = "CardContent";
-
-const CardFooter = React.forwardRef(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn("flex items-center p-6 pt-0", className)}
-        {...props}
-    />
-));
-CardFooter.displayName = "CardFooter";
-const Pagination = ({ className, ...props }) => (
-    <nav
-        role="navigation"
-        aria-label="pagination"
-        className={cn("mx-auto flex w-full justify-center", className)}
-        {...props}
-    />
-);
-Pagination.displayName = "Pagination";
-
-const PaginationContent = React.forwardRef(({ className, ...props }, ref) => (
-    <ul
-        ref={ref}
-        className={cn("flex flex-row items-center gap-1", className)}
-        {...props}
-    />
-));
-PaginationContent.displayName = "PaginationContent";
-
-const PaginationItem = React.forwardRef(({ className, ...props }, ref) => (
-    <li ref={ref} className={cn("", className)} {...props} />
-));
-PaginationItem.displayName = "PaginationItem";
-
-const PaginationLink = ({ className, isActive, size = "icon", ...props }) => (
-    <a
-        aria-current={isActive ? "page" : undefined}
-        className={cn(
-            buttonVariants({
-                variant: isActive ? "outline" : "ghost",
-                size,
-            }),
-            className,
-        )}
-        {...props}
-    />
-);
-PaginationLink.displayName = "PaginationLink";
-
-const PaginationPrevious = ({ className, ...props }) => (
-    <PaginationLink
-        aria-label="Go to previous page"
-        size="default"
-        className={cn("gap-1 pl-2.5", className)}
-        {...props}
-    >
-        <ChevronLeftIcon className="h-4 w-4" />
-        <span>Previous</span>
-    </PaginationLink>
-);
-PaginationPrevious.displayName = "PaginationPrevious";
-
-const PaginationNext = ({ className, ...props }) => (
-    <PaginationLink
-        aria-label="Go to next page"
-        size="default"
-        className={cn("gap-1 pr-2.5", className)}
-        {...props}
-    >
-        <span>Next</span>
-        <ChevronRightIcon className="h-4 w-4" />
-    </PaginationLink>
-);
-PaginationNext.displayName = "PaginationNext";
-
-const PaginationEllipsis = ({ className, ...props }) => (
-    <span
-        aria-hidden
-        className={cn("flex h-9 w-9 items-center justify-center", className)}
-        {...props}
-    >
-        <MoreHorizontalIcon className="h-4 w-4" />
-        <span className="sr-only">More pages</span>
-    </span>
-);
-PaginationEllipsis.displayName = "PaginationEllipsis";
 const Table = React.forwardRef(({ className, ...props }, ref) => (
     <div className="relative w-full overflow-auto">
         <table
@@ -232,18 +109,6 @@ const TableBody = React.forwardRef(({ className, ...props }, ref) => (
     />
 ));
 TableBody.displayName = "TableBody";
-
-const TableFooter = React.forwardRef(({ className, ...props }, ref) => (
-    <tfoot
-        ref={ref}
-        className={cn(
-            "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
-            className,
-        )}
-        {...props}
-    />
-));
-TableFooter.displayName = "TableFooter";
 
 const TableRow = React.forwardRef(({ className, ...props }, ref) => (
     <tr
@@ -281,23 +146,14 @@ const TableCell = React.forwardRef(({ className, ...props }, ref) => (
 ));
 TableCell.displayName = "TableCell";
 
-const TableCaption = React.forwardRef(({ className, ...props }, ref) => (
-    <caption
-        ref={ref}
-        className={cn("mt-4 text-sm text-muted-foreground", className)}
-        {...props}
-    />
-));
-TableCaption.displayName = "TableCaption";
-
 const ContentByAnima = () => {
-
     const [candidates, setCandidates] = React.useState([]);
-    const [Loading, setLoading] = React.useState(true)
-    const [message, setMessage] = React.useState('')
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
     const [lastPage, setLastPage] = React.useState(1);
-    const CompanyId = JSON.parse(localStorage.getItem("company_id"));
+    const companyId = JSON.parse(localStorage.getItem("company_id"));
+
     const goToPage = (page) => {
         if (page >= 1 && page <= lastPage) {
             setCurrentPage(page);
@@ -305,221 +161,284 @@ const ContentByAnima = () => {
     };
 
     const renderPagination = () => {
+        const maxPagesToShow = 5;
         const pages = [];
-        for (let i = 1; i <= lastPage; i++) {
+        let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+        let endPage = Math.min(lastPage, startPage + maxPagesToShow - 1);
+
+        if (endPage - startPage + 1 < maxPagesToShow) {
+            startPage = Math.max(1, endPage - maxPagesToShow + 1);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
             pages.push(i);
         }
 
         return (
-            <div className="flex flex-wrap items-center mt-4 gap-1">
+            <div className="flex items-center justify-center mt-4 gap-2">
                 <button
                     onClick={() => goToPage(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="px-3 py-1 rounded border text-gray-600 hover:bg-gray-100"
+                    className={cn(
+                        buttonVariants({ variant: "outline", size: "sm" }),
+                        "disabled:opacity-50 disabled:cursor-not-allowed"
+                    )}
+                    aria-label="Previous page"
                 >
                     Previous
                 </button>
+
+                {startPage > 1 && (
+                    <>
+                        <button
+                            onClick={() => goToPage(1)}
+                            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+                        >
+                            1
+                        </button>
+                        {startPage > 2 && <span className="px-2">...</span>}
+                    </>
+                )}
 
                 {pages.map(page => (
                     <button
                         key={page}
                         onClick={() => goToPage(page)}
-                        className={`px-3 py-1 rounded ${currentPage === page ? 'bg-indigo-600 text-white' : 'border text-gray-600 hover:bg-gray-100'}`}
+                        className={cn(
+                            buttonVariants({ variant: currentPage === page ? "default" : "ghost", size: "sm" })
+                        )}
                     >
                         {page}
                     </button>
                 ))}
 
+                {endPage < lastPage && (
+                    <>
+                        {endPage < lastPage - 1 && <span className="px-2">...</span>}
+                        <button
+                            onClick={() => goToPage(lastPage)}
+                            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+                        >
+                            {lastPage}
+                        </button>
+                    </>
+                )}
+
                 <button
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage === lastPage}
-                    className="px-3 py-1 rounded border text-gray-600 hover:bg-gray-100"
+                    className={cn(
+                        buttonVariants({ variant: "outline", size: "sm" }),
+                        "disabled:opacity-50 disabled:cursor-not-allowed"
+                    )}
+                    aria-label="Next page"
                 >
                     Next
                 </button>
             </div>
         );
     };
-    const Fire = async (candidateId) => {
-        try {
-            console.log("Firing candidate with ID:", candidateId);
-            console.log("Company ID:", CompanyId);
 
+    const removeCandidate = async (candidateId) => {
+        try {
+            await api.get('/sanctum/csrf-cookie');
             const response = await api.delete('api/company/delete/candidate/selected', {
                 data: {
                     candidate_id: candidateId,
-                    company_id: CompanyId
+                    company_id: companyId
                 }
             });
-
-            console.log(response.data.message);
-            // Optional: Use toast or UI message instead of reload
-            window.location.reload();
+            setCandidates(prev => prev.filter(candidate => candidate.id !== candidateId));
         } catch (error) {
-            console.error("Error deleting candidate selection:", error.response?.data?.message || error.message);
+            setError(error.response?.data?.message || "Error during deletion");
         }
     };
 
     React.useEffect(() => {
         const fetchCandidates = async () => {
             try {
-                const companyId = JSON.parse(localStorage.getItem("company_id")); // dynamic ID
+                setLoading(true);
                 await api.get('/sanctum/csrf-cookie');
-                const response = await api.get(`api/company/${CompanyId}/candidates/selected?page=${currentPage}`);
+                const response = await api.get(`api/company/candidates/selected?company_id=${companyId}`);
 
-                const formattedCandidates = response.data.data.map((candidate) => {
-                    const hasImage = !!candidate.profile?.photoProfil;
-                    const avatar = hasImage
-                        ? `${import.meta.env.VITE_API_BASE_URL}/storage/${candidate.profile.photoProfil}`
-                        : "";
-                    const initials = !hasImage && candidate.name
-                        ? candidate.name.charAt(0).toUpperCase()
-                        : "";
+                if (response.data && response.data.selected_candidates) {
+                    const formattedCandidates = response.data.selected_candidates.map((selectedCandidate) => {
+                        const candidate = selectedCandidate.candidate;
+                        const hasImage = !!candidate.profile?.photoProfil;
+                        const avatar = hasImage
+                            ? `${import.meta.env.VITE_API_BASE_URL}/storage/${candidate.profile.photoProfil}`
+                            : "";
+                        const initials = !hasImage && candidate.name
+                            ? candidate.name.charAt(0).toUpperCase()
+                            : "";
 
-                    return {
-                        id: candidate.id,
-                        name: candidate.name,
-                        email: candidate.email,
-                        avatar,
-                        hasImage,
-                        initials,
-                        date: new Date(candidate?.pivot?.created_at).toLocaleDateString(),
-                        badges: candidate?.badges?.length ?? 0,
-                        badgeImage: "https://c.animaapp.com/macl8400TWBRsn/img/image-9-9.png",
-                    };
-                });
+                        return {
+                            id: candidate.id,
+                            name: candidate.name,
+                            email: candidate.email,
+                            avatar,
+                            hasImage,
+                            initials,
+                            date: new Date(selectedCandidate.created_at).toLocaleDateString(),
+                            badges: candidate.tests?.length ?? 0,
+                            badgeImage: "https://c.animaapp.com/macl8400TWBRsn/img/image-9-9.png",
+                        };
+                    });
 
-                setCandidates(formattedCandidates);
-                setLastPage(response.data.last_page);
+                    setCandidates(formattedCandidates);
+                    setLastPage(1); // Pagination needs server-side support
+                } else {
+                    setCandidates([]);
+                    setError("No selected candidates found");
+                }
             } catch (err) {
-                const errorMessage = err.response?.data?.message || "Something went wrong.";
-                setMessage(errorMessage);
+                setError(err.response?.data?.message || "An error occurred while loading data.");
+                setCandidates([]);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchCandidates();
-    }, [CompanyId, currentPage]);
-    if (Loading && !message) {
+        if (companyId) {
+            fetchCandidates();
+        } else {
+            setError("Company ID missing");
+            setLoading(false);
+        }
+    }, [companyId, currentPage]);
+
+    if (loading && !error) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gray-50">
                 <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-indigo-700"></div>
             </div>
         );
     }
-    if (message) {
+
+    if (error && candidates.length === 0) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-50">
-                <p className="text-red-500">{message}</p>
-                <button onClick={() => { window.location.href = `/company/Session/${CompanyId}` }}>
-                    Home
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 gap-4">
+                <p className="text-red-500 text-center">{error}</p>
+                <button
+                    onClick={() => { window.location.href = `/company/dashboard/${companyId}` }}
+                    className={cn(buttonVariants({ variant: "default", size: "default" }))}
+                >
+                    Back to Home
                 </button>
             </div>
         );
     }
 
-
     return (
-        <>
-
-
-
-            <div className="w-full bg-white">
-                <Table>
-                    <TableHeader className="bg-gray-50">
-                        <TableRow>
-                            <TableHead className="w-[421px] h-11 px-6 py-3 text-xs font-medium text-gray-500">
-                                Candidat
-                            </TableHead>
-                            <TableHead className="w-44 h-11 px-6 py-3 text-xs font-medium text-gray-500">
-                                Date selection
-                            </TableHead>
-                            <TableHead className="w-44 h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
-                                Total Badges
-                            </TableHead>
-                            <TableHead className="w-[220px] h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
-                                Details
-                            </TableHead>
-                            <TableHead className="w-[223px] h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
-                                Fire
-                            </TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {candidates.map((candidate) => (
-                            <TableRow key={candidate.id} className="border-b border-[#eaecf0]">
-                                <TableCell className="h-[72px] px-6 py-4 flex items-center gap-3">
-                                    {candidate.hasImage ? (
-                                        <div
-                                            className="w-8 h-8 rounded-[200px] bg-cover bg-center"
-                                            style={{ backgroundImage: `url(${candidate.avatar})` }}
-                                        />
-                                    ) : (
-                                        <div className="w-8 h-8 bg-primary-50 rounded-[200px] flex items-center justify-center">
-                                            <span className="text-sm font-medium text-primary-600">
-                                                {candidate.initials}
-                                            </span>
-                                        </div>
-                                    )}
-                                    <div className="flex flex-col items-start">
-                                        <div className="text-sm font-normal text-gray-900">
-                                            {candidate.name}
-                                        </div>
-                                        <div className="text-sm font-normal text-gray-500">
-                                            {candidate.email}
-                                        </div>
+        <div className="w-full bg-white">
+            {error && (
+                <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {error}
+                </div>
+            )}
+            <Table>
+                <TableHeader className="bg-gray-50">
+                    <TableRow>
+                        <TableHead className="w-[421px] h-11 px-6 py-3 text-xs font-medium text-gray-500">
+                            Candidate
+                        </TableHead>
+                        <TableHead className="w-44 h-11 px-6 py-3 text-xs font-medium text-gray-500">
+                            Selection Date
+                        </TableHead>
+                        <TableHead className="w-44 h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
+                            Total Badges
+                        </TableHead>
+                        <TableHead className="w-[220px] h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
+                            Details
+                        </TableHead>
+                        <TableHead className="w-[223px] h-11 px-6 py-3 text-xs font-medium text-gray-500 text-center">
+                            Remove
+                        </TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {candidates.map((candidate) => (
+                        <TableRow key={candidate.id} className="border-b border-[#eaecf0]">
+                            <TableCell className="h-[72px] px-6 py-4 flex items-center gap-3">
+                                {candidate.hasImage ? (
+                                    <Avatar className="w-8 h-8">
+                                        <AvatarImage src={candidate.avatar} alt={candidate.name} />
+                                        <AvatarFallback>{candidate.initials}</AvatarFallback>
+                                    </Avatar>
+                                ) : (
+                                    <Avatar className="w-8 h-8">
+                                        <AvatarFallback className="bg-primary-50 text-primary-600">
+                                            {candidate.initials}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                )}
+                                <div className="flex flex-col items-start">
+                                    <div className="text-sm font-normal text-gray-900">
+                                        {candidate.name}
                                     </div>
-                                </TableCell>
-                                <TableCell className="h-[72px] px-6 py-4">
                                     <div className="text-sm font-normal text-gray-500">
-                                        {candidate.date}
+                                        {candidate.email}
                                     </div>
-                                </TableCell>
-                                <TableCell className="h-[72px] px-6 py-4 flex items-center justify-center">
-                                    <div className="text-base font-medium text-[#667085] mr-2">
-                                        {candidate.badges}
-                                    </div>
-                                    <img
-                                        className="w-[31px] h-[31px] object-cover"
-                                        alt="Badge"
-                                        src={candidate.badgeImage}
-                                    />
-                                </TableCell>
-                                <TableCell className="h-[72px] px-6 py-4 text-center">
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            window.location.href = `/company/candidate/profile/${candidate.id}`;
-                                        }}
-                                        className="w-[103px] h-10 bg-[#0a84ff26] hover:bg-[#0a84ff40] text-[#0a84ff] font-semibold rounded-md transition duration-200 ease-in-out hover:shadow-md"
-                                    >
-                                        Details
-                                    </button>
-
-                                </TableCell>
-                                <TableCell className="h-[72px] px-6 py-4 text-center">
-                                    <button onClick={(e) => { e.preventDefault(); Fire(candidate.id) }} className="w-[103px] h-10 bg-[#ff000033] hover:bg-[#ff000050] text-[#ff0a0a] font-semibold rounded-md transition duration-200 ease-in-out hover:shadow-md">
-                                        Fire
-                                    </button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-
-                </Table>
-                {renderPagination()}
-            </div>
-        </>
+                                </div>
+                            </TableCell>
+                            <TableCell className="h-[72px] px-6 py-4">
+                                <div className="text-sm font-normal text-gray-500">
+                                    {candidate.date}
+                                </div>
+                            </TableCell>
+                            <TableCell className="h-[72px] px-6 py-4 flex items-center justify-center">
+                                <div className="text-base font-medium text-[#667085] mr-2">
+                                    {candidate.badges}
+                                </div>
+                                <img
+                                    className="w-[31px] h-[31px] object-cover"
+                                    alt="Badge"
+                                    src={candidate.badgeImage}
+                                />
+                            </TableCell>
+                            <TableCell className="h-[72px] px-6 py-4 text-center">
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        window.location.href = `/company/candidate/profile/${candidate.id}`;
+                                    }}
+                                    className={cn(
+                                        buttonVariants({ variant: "outline", size: "sm" }),
+                                        "bg-[#0a84ff26] hover:bg-[#0a84ff40] text-[#0a84ff]"
+                                    )}
+                                    aria-label={`View details for ${candidate.name}`}
+                                >
+                                    Details
+                                </button>
+                            </TableCell>
+                            <TableCell className="h-[72px] px-6 py-4 text-center">
+                                <button
+                                    onClick={(e) => { e.preventDefault(); removeCandidate(candidate.id); }}
+                                    className={cn(
+                                        buttonVariants({ variant: "destructive", size: "sm" }),
+                                        "bg-[#ff000033] hover:bg-[#ff000050] text-[#ff0a0a]"
+                                    )}
+                                    aria-label={`Remove ${candidate.name}`}
+                                >
+                                    Remove
+                                </button>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            {candidates.length > 0 && renderPagination()}
+        </div>
     );
 };
+
 export const ListCandidateSelected = () => {
     return (
         <>
             <NavbarCompany />
             <div className="w-full min-h-screen bg-white flex justify-center items-start pt-[70px] px-4">
                 <div className="w-full max-w-[1216px]">
-                    <Card className="w-full border border-gray-200 rounded-lg shadow-shadow-md overflow-hidden">
+                    <Card className="w-full border border-gray-200 rounded-lg shadow-md overflow-hidden">
                         <ContentByAnima />
                     </Card>
                 </div>

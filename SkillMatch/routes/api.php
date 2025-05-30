@@ -154,7 +154,7 @@ Route::get('/candidate/{candidate_id}/result/test/{TestId}',[TestController::cla
 
 //selected candidates for companby :
 Route::delete('/company/delete/candidate/selected',[CandidateSelectedController::class,'delete']);
-Route::get('/company/{id}/candidates/selected',[CandidateSelectedController::class,'getSelectedcandidates']);
+Route::get('/company/candidates/selected',[CandidateSelectedController::class,'getSelectedcandidates']);
 
 
 //profile company:
@@ -210,6 +210,7 @@ Route::post('/notifications', [CandidateController::class, 'storeNotificationFor
 Route::post('/skills/create/company', [CompanyController::class, 'storeSkills']);
 
 // Dashboard routes for company
+Route::get('/companies/dash/profile', [CompanyDashboardController::class, 'getCompanyWithProfile']);
 Route::get('/companies/tests-count', [CompanyDashboardController::class, 'getCompanyTestCount']);
 Route::get('/companies/selected-candidates', [CompanyDashboardController::class, 'getSelectedCandidatesByCompany']);
 Route::get('/companies/resolved-test-stats', [CompanyDashboardController::class, 'getResolvedTestStatsByCompany']);

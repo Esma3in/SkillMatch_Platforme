@@ -6,9 +6,62 @@ use App\Models\Test;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyDashboardController extends Controller
 {
+    public function getCompanyWithProfile(Request $request)
+    {
+        // Validate the company_id query parameter
+        $validator = Validator::make($request->all(), [
+            'company_id' => 'required|integer|exists:companies,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Invalid or missing company ID',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $companyId = $request->query('company_id');
+
+        try {
+            $company = Company::with('profile')->where('id', $companyId)->first();
+
+            if (!$company) {
+                return response()->json(['message' => 'Company not found'], 404);
+            }
+
+            // Ensure profile is included, even if null
+            $companyData = [
+                'id' => $company->id,
+                'name' => $company->name ?? 'Unknown',
+                'sector' => $company->sector ?? 'Unknown',
+                'logo' => $company->logo ?? null,
+                'state' => $company->state ?? 'unknown',
+                'docstate' => $company->docstate ?? 'unknown',
+                'created_at' => $company->created_at,
+                'updated_at' => $company->updated_at,
+                'profile' => $company->profile ? [
+                    'websiteUrl' => $company->profile->websiteUrl ?? 'N/A',
+                    'address' => $company->profile->address ?? 'N/A',
+                    'phone' => $company->profile->phone ?? 'N/A',
+                    'DateCreation' => $company->profile->DateCreation ?? null,
+                    'Bio' => $company->profile->Bio ?? 'N/A',
+                    'company_id' => $company->profile->company_id,
+                    'created_at' => $company->profile->created_at,
+                    'updated_at' => $company->profile->updated_at,
+                ] : null,
+            ];
+
+            return response()->json($companyData);
+        } catch (\Exception $e) {
+            Log::error('Error fetching company profile: ' . $e->getMessage());
+            return response()->json(['message' => 'An error occurred while fetching company data'], 500);
+        }
+    }
     public function getCompanyTestCount(Request $request)
     {
         $companyId = $request->query('company_id');
@@ -27,12 +80,12 @@ class CompanyDashboardController extends Controller
         $company = Company::withCount('selectedCandidates')
             ->with([
                 'selectedCandidates.candidate' => function ($query) {
-                    $query->select('id', 'name', 'email'); // candidate fields
+                    $query->select('id', 'name', 'email');
                 },
                 'selectedCandidates.candidate.profile' => function ($query) {
                     $query->select(
                         'id',
-                        'candidate_id', // always needed for hasOne relation
+                        'candidate_id',
                         'last_name',
                         'field',
                         'localisation',
