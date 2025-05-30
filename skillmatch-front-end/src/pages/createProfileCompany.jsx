@@ -810,11 +810,11 @@ useEffect(() => {
                 'Content-Type': 'multipart/form-data', // Crucial for FormData
             },
         });
-        console.log("Submission successful:", response.data);
-        alert("Form data successfully submitted!");
+       
+        window.location.href='/company/profile'
         // Optional: Redirect or show success message
       } catch (err) {
-        console.error("Submission error:", err);
+       
         if (err.response) {
           console.error("Error details:", err.response.data);
           if (err.response.data && err.response.data.errors) {

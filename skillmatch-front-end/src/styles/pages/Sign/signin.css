@@ -7,17 +7,17 @@
   padding: 0;
 }
 
-body {
+html, body {
   width: 100vw;
-  min-height: 100vh; /* ✅ ensure full height support */
+  min-height: 100vh; /* ✅ Allow natural height */
   font-family: 'Poppins', sans-serif;
   background-color: #162534;
-  overflow-x: hidden; /* ✅ prevent horizontal scroll */
+  overflow-x: hidden; /* ✅ Only prevent horizontal scrolling */
 }
-
 
 .auth-wrapper {
   width: 100vw;
+  min-height: 100vh; /* ✅ Allow natural height */
 }
 
 .switch-link {
@@ -27,77 +27,129 @@ body {
 }
 
 /* ========================
-   Container and Layout
+   Container and Layout - Professional Platform Style
 =========================== */
 .containersignIn {
   display: flex;
-  width: 100%;
-  min-height: 100vh; /* ✅ change from height to min-height */
+  width: 100vw;
+  height: 100vh; /* ✅ Fixed viewport height for signin only */
   background-color: #64748b;
   flex-direction: row;
-  flex-wrap: wrap;
+  overflow: hidden; /* ✅ No scrolling only for signin container */
 }
 
-
 @media (max-width: 768px) {
-  .container {
+  .containersignIn {
     flex-direction: column;
-    height: auto;
+    height: 100vh; /* ✅ Maintain full height on mobile */
   }
 
   .form-section,
   .visual-section {
     width: 100%;
-    height: auto;
+    height: 50vh; /* ✅ Split screen evenly on mobile */
+    overflow: hidden;
+  }
+  
+  .form-section {
+    padding: 20px 30px; /* ✅ Reduced padding for mobile */
+  }
+  
+  .visual-section {
+    padding: 20px;
   }
 }
 
 .error-message {
-  color: red;
+  color: #ef4444;
   font-size: 0.85rem;
-  margin-top: 10px;
+  margin-top: 8px;
+  font-weight: 500;
 }
 
 .success-message {
-  color: green;
+  color: #10b981;
   font-size: 0.85rem;
-  margin-top: 10px;
+  margin-top: 8px;
+  font-weight: 500;
 }
 
 /* ========================
-   Visual Section (Left Side)
+   Visual Section (Left Side) - Professional Enhancement
 =========================== */
 .visual-section {
   width: 45%;
-  background-color: #2563eb;
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ✅ Add professional overlay pattern */
+.visual-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><rect width="2" height="2"/></g></g></svg>');
+  pointer-events: none;
 }
 
 .visual-section img {
   width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 12px;
+  height: 100%;
+  object-fit: cover; /* ✅ Fill entire space */
+  border-radius: 16px; /* ✅ Add border radius back */
+  z-index: 1;
+  position: relative;
 }
 
 /* ========================
-   Form Section Styling
+   Form Section Styling - Professional Platform Design
 =========================== */
 .form-section {
   width: 55%;
-  padding: 100px 80px;
-  background-color: #f8fafc;
+  height: 100vh; /* ✅ Full height */
+  padding: 60px 80px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); /* ✅ Subtle gradient */
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto; /* ✅ Allow vertical scrolling within form section */
+  overflow-x: hidden; /* ✅ Prevent horizontal scrolling */
+}
+
+/* ✅ Custom scrollbar for professional look */
+.form-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-section::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.form-section::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.form-section::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .signin-form {
   width: 100%;
-  max-width: 500px;
+  max-width: 450px; /* ✅ Slightly reduced for better proportions */
+  background: rgba(255, 255, 255, 0.8); /* ✅ Subtle background */
+  padding: 40px;
+  border-radius: 24px; /* ✅ Modern rounded corners */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); /* ✅ Professional shadow */
+  backdrop-filter: blur(10px); /* ✅ Modern glass effect */
 }
 
 fieldset {
@@ -105,22 +157,27 @@ fieldset {
 }
 
 legend {
-  font-weight: 500;
-  font-size: 52px;
-  line-height: 62px;
-  letter-spacing: 2px;
-  color: #090914;
-  margin-bottom: 40px;
+  font-weight: 700; /* ✅ Bolder for professional look */
+  font-size: 42px; /* ✅ Slightly smaller for better fit */
+  line-height: 1.2;
+  letter-spacing: -0.5px; /* ✅ Modern tight spacing */
+  color: #0f172a;
+  margin-bottom: 32px;
+  text-align: center; /* ✅ Centered for professional layout */
+  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px; /* ✅ Consistent spacing */
 }
 
 /* ========================
-   Form Fields
+   Form Fields - Professional Enhancement
 =========================== */
 .form-field {
   display: flex;
@@ -128,31 +185,45 @@ form {
 }
 
 .form-field label {
-  font-weight: 500;
-  font-size: 16px;
-  color: #090914;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
   margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .form-field input[type="email"],
 .form-field input[type="password"],
 .form-field input[type="text"] {
-  padding: 16px;
+  padding: 16px 20px;
   font-size: 16px;
-  border: 1px solid #cbd5e1;
+  border: 2px solid #e2e8f0;
   border-radius: 12px;
-  background: #f8fafc;
+  background: #ffffff;
+  transition: all 0.3s ease; /* ✅ Smooth transitions */
+  font-weight: 400;
+}
+
+.form-field input[type="email"]:focus,
+.form-field input[type="password"]:focus,
+.form-field input[type="text"]:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px); /* ✅ Subtle lift effect */
 }
 
 /* ========================
-   Remember & Forgot Section
+   Remember & Forgot Section - Professional Style
 =========================== */
 .remForg-part {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  color: #18181b;
+  color: #64748b;
+  margin: 16px 0;
 }
 
 .remForg-part .form-field {
@@ -161,91 +232,148 @@ form {
 }
 
 #remember-meCheck {
-  width: 19px;
-  height: 19px;
-  border: 1px solid #94a3b8;
-  border-radius: 5px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
   margin-right: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#remember-meCheck:checked {
+  background-color: #2563eb;
+  border-color: #2563eb;
 }
 
 .forgetPassword a {
   color: #2563eb;
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.forgetPassword a:hover {
+  color: #1d4ed8;
 }
 
 /* ========================
-   Buttons & Links
+   Buttons & Links - Professional Platform Style
 =========================== */
 .signin-btn {
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .signin-btn button {
-  width: 160px;
-  height: 55px;
-  background: #2563eb;
-  border-radius: 9px;
+  width: 100%; /* ✅ Full width for professional look */
+  height: 56px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-radius: 12px;
   border: none;
-  color: #fff;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+.signin-btn button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+}
+
+.signin-btn button:active {
+  transform: translateY(0);
+}
+
+.signin-btn button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .signUp-link {
-  margin-top: 20px;
+  margin-top: 24px;
   font-size: 14px;
   color: #64748b;
+  text-align: center;
 }
 
 .signUp-link a {
   margin-left: 5px;
   color: #2563eb;
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
 
+.signUp-link a:hover {
+  color: #1d4ed8;
+}
+
+/* ========================
+   File Inputs & Select - Professional Style
+=========================== */
 #FileInput,
 #LogoInput {
-  border: none;
-  padding: 0.5rem;
-  background-color: #f7f7f7;
+  border: 2px dashed #cbd5e1;
+  padding: 16px;
+  background-color: #f8fafc;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: #64748b;
+}
+
+#FileInput:hover,
+#LogoInput:hover {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+  color: #2563eb;
 }
 
 #FileInput:focus,
 #LogoInput:focus {
-  background-color: #f0f0f0;
   outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-/* Styling for select role dropdown */
 #role {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 16px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   font-size: 16px;
   width: 100%;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 #role:focus {
-  border-color: #2563eb;
   outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-
-
-/* Basic spinner animation */
+/* ========================
+   Loading Spinner - Professional Style
+=========================== */
 .spinner {
-  border: 4px solid rgba(255, 255, 255, 0.1); /* Light gray border */
-  border-left-color: #ffffff; /* Blue spinner, adjust to your theme */
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-left-color: #ffffff;
   border-radius: 50%;
   width: 20px;
   height: 20px;
   animation: spin 1s linear infinite;
   display: inline-block;
-  vertical-align: middle; /* Align with text */
-  margin-right: 8px; /* Space between spinner and text */
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
 @keyframes spin {
@@ -253,10 +381,29 @@ form {
   100% { transform: rotate(360deg); }
 }
 
-/* Optional: To center the spinner and text in the button */
+/* ✅ Professional loading state */
 .signin-btn button {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Add any other button styles */
+  position: relative;
+}
+
+/* ========================
+   Responsive Professional Design
+=========================== */
+@media (max-width: 768px) {
+  .signin-form {
+    padding: 30px 20px;
+    margin: 0 10px;
+  }
+  
+  legend {
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+  
+  .form-section {
+    padding: 20px;
+  }
 }
