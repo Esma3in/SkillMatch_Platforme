@@ -16,74 +16,57 @@ class QcmForRoadmapController extends Controller
     // Get QCM for roadmap
     public function index($id)
     {
-        // Step 1: Get skills for the roadmap
-        $roadmap_skills = DB::table('roadmap_skill')
-            ->join('skills', 'skills.id', '=', 'roadmap_skill.skill_id')
-            ->where('roadmap_skill.roadmap_id', $id)
-            ->select('skills.id as skill_id', 'skills.name as skill_name')
-            ->distinct()
-            ->get();
-
-        $skill_names = $roadmap_skills->pluck('skill_name')->toArray();
+        // Step 1: Get the skill name for the given roadmap ID
+        $skill_name = DB::table('roadmaps')
+            ->join('skills', 'skills.id', '=', 'roadmaps.skill_id')
+            ->where('roadmaps.id', $id)
+            ->value('skills.name');
+    
+        if (!$skill_name) {
+            return response()->json(['message' => 'No skill found for this roadmap'], 404);
+        }
+    
         $results = [];
-
+    
         // Step 2: Load QCM questions from JSON file
         $jsonPath = base_path('database/data/json/QcmForRoadmap.json');
     
         if (!file_exists($jsonPath)) {
             return response()->json(['message' => 'QCM JSON file not found at ' . $jsonPath], 500);
         }
+    
         $jsonContent = file_get_contents($jsonPath);
         $qcmData = json_decode($jsonContent, true);
+    
         if (!$qcmData) {
             return response()->json(['message' => 'Invalid QCM JSON file'], 500);
         }
-
-        // Step 3: Get random questions per skill in the roadmap
-        foreach ($skill_names as $skill_name) {
-            if (isset($qcmData[$skill_name])) {
-                $questions = $qcmData[$skill_name];
-                shuffle($questions);
-                $selected = array_slice($questions, 0, 10);
-                foreach ($selected as $q) {
-                    $results[] = [
-                        'question' => $q['question'],
-                        'options' => $q['options'],
-                        'correct_answer' => $q['correctAnswer'],
-                        'skill_name' => $skill_name,
-                        'type' => 'core'
-                    ];
-                }
+    
+        // Step 3: Select questions related to the skill
+        if (isset($qcmData[$skill_name])) {
+            $questions = $qcmData[$skill_name];
+            shuffle($questions);
+            $selected = array_slice($questions, 0, 10);
+    
+            foreach ($selected as $q) {
+                $results[] = [
+                    'question' => $q['question'],
+                    'options' => $q['options'],
+                    'correct_answer' => $q['correctAnswer'],
+                    'skill_name' => $skill_name,
+                    'type' => 'core'
+                ];
             }
         }
-
-        // Step 4: Add advanced questions as challenges (from other skills)
-        $other_skills = array_diff(array_keys($qcmData), $skill_names);
-        $advanced_questions = [];
-        foreach ($other_skills as $other_skill) {
-            $questions = $qcmData[$other_skill];
-            shuffle($questions);
-            $advanced_questions = array_merge($advanced_questions, array_slice($questions, 0, 2));
-        }
-        shuffle($advanced_questions);
-        $advanced_questions = array_slice($advanced_questions, 0, 5);
-        foreach ($advanced_questions as $q) {
-            $results[] = [
-                'question' => $q['question'],
-                'options' => $q['options'],
-                'correct_answer' => $q['correctAnswer'],
-                'skill_name' => 'advanced',
-                'type' => 'advanced'
-            ];
-        }
-
+    
         // Final check
         if (empty($results)) {
             return response()->json(['message' => 'No questions found for this roadmap'], 200);
         }
-
+    
         return response()->json($results);
     }
+    
     // create Badge for QcmRoadmap
     public function storeBadge(Request $request)
     {

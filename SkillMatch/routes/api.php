@@ -180,7 +180,7 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
-Route::post('/createQcm', [QcmForRoadmapController::class, 'ccreateQcm']);
+Route::post('/createQcm', [QcmForRoadmapController::class, 'createQcm']);
 
 //All candidate for company
 Route::get('/Allcandidates', [AllCandidateController::class, 'index']);

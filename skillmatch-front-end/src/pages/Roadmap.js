@@ -334,7 +334,7 @@ const Roadmap = () => {
         };
       });
 
-      const response = await api.post("/api/createQcm/", { roadmap_id: roadmapId, questions });
+      const response = await api.post("/api/createQcm", { roadmap_id: roadmapId, questions });
       const qcmId = response?.data?.id;
       if (!qcmId) throw new Error("QCM ID not found in response");
       navigate(`/qcmForRoadmap/${qcmId}`);
