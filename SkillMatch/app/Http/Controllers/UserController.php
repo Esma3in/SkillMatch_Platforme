@@ -43,15 +43,6 @@ class UserController extends Controller
                 return response()->json($candidate, 201);
 
             case 'company':
-                // Validate document file for company role
-                if (!$request->hasFile('document')) {
-                    return response()->json(['error' => 'Document file is required for company registration'], 422);
-                }
-                
-                $request->validate([
-                    'document' => 'required|file|mimes:pdf,doc,docx|max:10240', // 10MB max
-                ]);
-                
                 // Create company record
                 $user = User::create($validatedImportentfields);
                 $company = Company::create([
@@ -59,18 +50,6 @@ class UserController extends Controller
                     'name' => $validatedImportentfields['name'],
                 ]);
 
-                // Store the document file
-                $file = $request->file('document');
-                $path = $file->store('company_documents', 'public');
-                
-                // Create a CompanyDocument record for the legal document
-                CompanyDocument::create([
-                    'company_id' => $company->id,
-                    'document_type' => 'Legal Document',
-                    'file_path' => $path,
-                    'is_validated' => false,
-                    'status' => 'pending'
-                ]);
 
                 return response()->json($company, 201);
 
@@ -82,6 +61,7 @@ class UserController extends Controller
 
     public function SignIn(Request $request)
     {
+
         // Validate input
 
         $validated = $request->validate([

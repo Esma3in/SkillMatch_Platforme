@@ -11,26 +11,18 @@ export default function SignUp({ onToggle }) {
     email: '',
     password: '',
     role: 'candidate',
-    document: null,
   });
   const [Loading, setLoading] = useState(false); // State to control loading spinner
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
-    const { id, value, name, type, files } = e.target;
+    const { id, value, name } = e.target;
     
-    if (type === 'file') {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: files[0],
-      }));
-    } else {
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
-    }
   };
 
   const storeData = async () => {
@@ -48,11 +40,7 @@ export default function SignUp({ onToggle }) {
         formDataToSend.append('document', formData.document);
       }
 
-      const response = await api.post('/api/signUp', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data', // Indicating that this is a form with files
-        },
-      });
+      const response = await api.post('/api/signUp', formDataToSend);
 
       return response.data;
     } catch (err) {
@@ -81,7 +69,6 @@ export default function SignUp({ onToggle }) {
           email: '',
           password: '',
           role: 'candidate', // Keep the default role, or reset based on UX
-          document: null,
         });
         // You mentioned `window.location.href='/signIn'`,
         // but `useNavigate` from `react-router-dom` is generally preferred for SPA navigation.
@@ -161,23 +148,6 @@ export default function SignUp({ onToggle }) {
                 />
                 {errors.password && <p className="error-message">{errors.password[0]}</p>}
               </div>
-
-              {/* Document Upload Field - Only shown for company role */}
-              {formData.role === 'company' && (
-                <div className="form-field">
-                  <label htmlFor="documentInput">Legal Document</label>
-                  <input
-                    type="file"
-                    id="documentInput"
-                    name="document"
-                    onChange={handleChange}
-                    accept=".pdf,.doc,.docx"
-                    required={formData.role === 'company'}
-                  />
-                  <small>Upload your company's legal document (PDF, DOC, DOCX)</small>
-                  {errors.document && <p className="error-message">{errors.document[0]}</p>}
-                </div>
-              )}
 
               {errors.general && <p className="error-message">{errors.general}</p>}
               {success && <p className="success-message">Account created successfully!</p>}
