@@ -129,6 +129,10 @@ const NavbarCandidate = ({searchedItems}) => {
                 </div>
               )}
             </div>
+            
+            <a href="/study-with-ai" className="nav-item m-5">
+              <span>Study with AI</span>
+            </a>
           </nav>
         </div>
         

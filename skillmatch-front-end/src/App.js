@@ -11,6 +11,7 @@ import ChallengeList from './pages/Challenge';
 import ChallengeDetail from './pages/ChallengeDetail';
 import Certificate from './pages/certificate';
 import AdminChallenges from './pages/manage/challenges.jsx';
+import StudyWithAI from './pages/StudyWithAI.jsx';
 
 import SeriesChallenge from './pages/SerieChallenges'
 
@@ -105,6 +106,7 @@ export default function App() {
         <Route path="/candidate/roadmap/:id" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
         <Route path = '/companies/related' element={<ProtectedRoute><CompaniesRelated/></ProtectedRoute>}/>
         <Route path = '/roadmap' element={<ProtectedRoute><Roadmap/></ProtectedRoute>}/>
+        <Route path = '/study-with-ai' element={<ProtectedRoute><StudyWithAI/></ProtectedRoute>}/>
 
         {/*test*/}
         <Route path = '/candidates/list' element={<ProtectedRoute><CandidateListForCompany/></ProtectedRoute>}/>

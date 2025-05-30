@@ -27,3 +27,18 @@ Route::get('/candidates/{id}', [AllCandidateController::class, 'show']);
 Route::put('/candidates/{id}/accept', [AllCandidateController::class, 'accept']);
 Route::put('/candidates/{id}/reject', [AllCandidateController::class, 'reject']);
 
+Route::get('/ai-diagnostic', function () {
+    $apiKey = env('GEMINI_API_KEY', '');
+    $mockMode = env('AI_USE_MOCK_RESPONSES', false);
+    $appEnv = env('APP_ENV', 'unknown');
+
+    $apiKeyStatus = !empty($apiKey) ? 'Configured (starting with: ' . substr($apiKey, 0, 5) . '...)' : 'Not configured';
+    $mockModeStatus = $mockMode ? 'Enabled' : 'Disabled';
+
+    return view('ai-diagnostic', [
+        'apiKeyStatus' => $apiKeyStatus,
+        'mockModeStatus' => $mockModeStatus,
+        'appEnv' => $appEnv
+    ]);
+});
+
