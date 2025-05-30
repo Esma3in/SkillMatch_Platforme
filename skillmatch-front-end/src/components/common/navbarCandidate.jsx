@@ -183,7 +183,7 @@ const NavbarCandidate = ({searchedItems}) => {
                       Performance
                     </a>
                 
-                    <a href="/support" className="profile-option">
+                    <a href="/support" target='_blank' className="profile-option">
                       <i className="option-icon support-icon"></i>
                       Support
                     </a>

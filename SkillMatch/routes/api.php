@@ -272,6 +272,7 @@ Route::get('/admin/companies/{id}', [CompanyController::class, 'show']);
 Route::get('/roadmap/{companyId}' , [CompaniesSelectedController::class  , 'getSkillsData']);
 
 Route::get('/dashboard/companies/selected/{candidate_id}', [DashboardController::class, 'countSelectedCompanies']);
+Route::get("/problems-solved/{candidate_id}" , [DashboardController::class , "getProblemsSovled"]);
 
 Route::get('/dashboard/companies/selected-data/{candidateId}', [DashboardController::class, 'getSelectedCompaniesForCandidate']);
 Route::get('/dashboard/roadmap/completed/{candidate_id}', [DashboardController::class, 'countCompletedRoadmaps']);

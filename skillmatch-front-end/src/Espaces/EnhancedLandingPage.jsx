@@ -254,6 +254,7 @@ export const EnhancedLandingPage = () => {
                 </Link>
                 <Link
                   to="/support"
+                  target="_blank"
                   className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:text-lg"
                 >
                   Learn more

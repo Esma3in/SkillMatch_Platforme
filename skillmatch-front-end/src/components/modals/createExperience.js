@@ -2,6 +2,7 @@ import { CalendarIcon, XIcon } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/api";
+import { FaPlus } from "react-icons/fa";
 
 export default function CreateExperienceModal({ user }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -244,9 +245,9 @@ export default function CreateExperienceModal({ user }) {
       <button
         type="button"
         onClick={openModal}
-        className="flex items-center px-4 py-2 bg-transparent text-white rounded-full focus:outline-none"
-      >
-        <img src="assets/edit.png" alt="Edit icon" className="w-5 h-5 mr-2" />
+       className="flex text-indigo-600 hover:text-blue-700 text-sm font-medium flex items-center">
+               <FaPlus />
+                    Add
       </button>
 
       {isOpen && (

@@ -1,3 +1,4 @@
+import Logo from "../../assets/Logoo.png" 
  export const Footer = ()=>{ 
     const footerSections = [
         {
@@ -37,7 +38,7 @@
                    // Slightly smaller logo for footer CTA
                   className="w-24 h-24 md:w-32 md:h-32 lg:w-[150px] lg:h-[150px] object-cover flex-shrink-0"
                   alt="SkillMatch Logo"
-                  src="https://c.animaapp.com/ma5cixatPLPI5h/img/whatsapp-image-2025-04-11-at-15-17-07-f1938157-removebg-preview--1.png"
+                  src={Logo}
               />
                {/* Adjusted text size and line height */}
               <h2 className="[font-family:'Plus_Jakarta_Sans',Helvetica] font-bold text-gray-900 text-xl md:text-2xl leading-snug max-w-xl">

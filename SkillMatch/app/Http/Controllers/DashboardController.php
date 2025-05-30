@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Badge;
+use App\Models\ProblemResult;
 use App\Models\Roadmap;
 use Illuminate\Http\Request;
 use App\Models\CompaniesSelected;
@@ -246,5 +247,11 @@ class DashboardController extends Controller
                 'message' => 'Recent activities retrieved successfully',
                 'data' => $allActivities
             ]);
+        }
+
+        // get count problem solved by candidate
+        public function getProblemsSovled($candidate_id){
+            $countProblemSolved = ProblemResult::where("candidate_id" , $candidate_id)->count();
+            return response()->json($countProblemSolved);
         }
 }
