@@ -180,7 +180,7 @@ Route::post('/create-roadmap' , [RoadmapController::class , 'generateRoadmap']);
 
 //qcm for roadmap
 Route::get('/qcm/roadmap/{id}', [QcmForRoadmapController::class, 'index']);
-Route::post('/createQcm', [QcmForRoadmapController::class, 'ccreateQcm']);
+Route::post('/createQcm', [QcmForRoadmapController::class, 'createQcm']);
 
 //All candidate for company
 Route::get('/Allcandidates', [AllCandidateController::class, 'index']);
@@ -188,12 +188,6 @@ Route::get('/Allcandidates/{id}', [AllCandidateController::class, 'show']);
 Route::put('/Allcandidates/{id}/accept', [AllCandidateController::class, 'accept']);
 Route::put('/Allcandidates/{id}/reject', [AllCandidateController::class, 'reject']);
 
-//Tests Routes for company
-// Test routes
-//Route::get('/tests/company/index', [ListTestForCompanyController::class, 'index']);
-//Route::get('/tests/{id}/candidates/company/solved', [ListTestForCompanyController::class, 'getSolvedCandidates']);
-//Route::delete('/tests/company/delete', [ListTestForCompanyController::class, 'deleteAll']);
-//Route::delete('/tests/{id}/company/destroy', [ListTestForCompanyController::class, 'destroy']);
 
 Route::get('/tests/ch', [ListTestForCompanyController::class, 'index']);
 Route::get('/tests/{id}/ch', [ListTestForCompanyController::class, 'show']);
