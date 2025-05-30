@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRightIcon, CheckIcon, MenuIcon, XIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from '../assets/Logoo.png';
 
 export const EnhancedLandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -141,14 +142,12 @@ export const EnhancedLandingPage = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <Link to="/" className="flex items-center">
-                <img
-                  src="https://c.animaapp.com/ma5cixatPLPI5h/img/whatsapp-image-2025-04-11-at-15-17-07-f1938157-removebg-preview--1.png"
-                  alt="SkillMatch Logo"
-                  className="h-8 w-auto"
-                />
-                <span className="ml-2 text-xl font-semibold text-gray-900">SkillMatch</span>
-              </Link>
+              <a href="/" className="nav-item">
+                <img src={logo} alt="Logo" className="h-11 w-auto" />
+                <h2 className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
+                  SkillMatch  
+                </h2>
+              </a>
             </div>
 
             {/* Desktop Navigation */}
