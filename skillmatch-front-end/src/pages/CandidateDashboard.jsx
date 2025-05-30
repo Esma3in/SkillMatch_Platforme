@@ -15,13 +15,13 @@ export default function CandidateDashboard() {
   const [testsProgress, setTestsProgress] = useState([]);
   const [challengeProgress, setChallengeProgress] = useState([]);
   const [companiesData, setCompaniesData] = useState([]);
-  const [roadmapDetails, setRoadmapDetails] = useState([]);
   const [suggestedCompanies, setSuggestedCompanies] = useState([]);
   const [profileCompleteness, setProfileCompleteness] = useState(0);
   const [recentActivities, setRecentActivities] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedCompaniesData , setSelectedCompaniesData] = useState([])
+  const [problemsSolved , setProblemSolved] = useState(3)
 
   // Get the candidate_id from localStorage
   const candidate_id = JSON.parse(localStorage.getItem('candidate_id'));
@@ -162,6 +162,16 @@ export default function CandidateDashboard() {
           
         }
 
+        // Problem solved 
+        let problemSolvedResponse ;
+        try {
+          problemSolvedResponse =await api.get(`/api/problems-solved/${candidate_id}`)
+          
+        } catch (error) {
+          console.log("erreur fetching problems solved " , error.message)
+          
+        }
+
 
         // Set stats cards
         setStatsCards([
@@ -233,6 +243,11 @@ export default function CandidateDashboard() {
             : []
         );
 
+        // set problems solved 
+        setProblemSolved(
+        parseInt(problemSolvedResponse.data)
+        )
+        console.log(problemsSolved)
         // Set companies data
         setCompaniesData(
           Array.isArray(companiesResponse.data)
@@ -320,12 +335,15 @@ export default function CandidateDashboard() {
         );
 
 
+
         setLoading(false);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
         setError(`Failed to fetch data: ${error.response?.status || error.message}`);
         setLoading(false);
       }
+      
+
     };
 
     fetchDashboardData();
@@ -389,17 +407,9 @@ export default function CandidateDashboard() {
       .style('box-shadow', '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)');
 
     // Add a subtle pattern background
-    svg.append('defs')
-      .append('pattern')
-      .attr('id', 'grid')
-      .attr('width', 10)
-      .attr('height', 10)
-      .attr('patternUnits', 'userSpaceOnUse')
-      .append('path')
-      .attr('d', 'M 10 0 L 0 0 0 10')
-      .attr('fill', 'none')
-      .attr('stroke', '#e2e8f0')
-      .attr('stroke-width', 0.5);
+
+ 
+  
 
     svg.append('rect')
       .attr('width', width)
@@ -420,7 +430,10 @@ export default function CandidateDashboard() {
     if (timeRange === '7d') {
       labels = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
       // Generate activity data (skill progress)
-      data1 = labels.map((_, i) => 10 + i * 2 + Math.random() * 5);
+      data1 = labels.map((_, i) => {
+        const baseValue = problemsSolved> 0 ? problemsSolved- Math.min(i,problemsSolved): 0
+        return baseValue +Math.random()* 0.5;
+      })
       // Generate selected companies data with a slight upward trend
       data2 = labels.map((_, i) => {
         const baseValue = selectedCompaniesCount > 0 ? selectedCompaniesCount - Math.min(i, selectedCompaniesCount) : 0;
@@ -433,7 +446,10 @@ export default function CandidateDashboard() {
       });
     } else if (timeRange === '30d') {
       labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-      data1 = labels.map((_, i) => 20 + i * 5 + Math.random() * 10);
+      data1 = labels.map((_, i) => {
+        const baseValue = Math.max(0 , problemsSolved - (3-i));
+        return baseValue + Math.random()* 0.5;
+      });
       data2 = labels.map((_, i) => {
         const baseValue = Math.max(0, selectedCompaniesCount - (3 - i));
         return baseValue + Math.random() * 0.5;
@@ -444,7 +460,10 @@ export default function CandidateDashboard() {
       });
     } else if (timeRange === '6m') {
       labels = ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      data1 = labels.map((_, i) => 25 + i * 5 + Math.random() * 15);
+      data1 = labels.map((_, i) => {
+        const baseValue  = Math.max(0 , problemsSolved -(3 - i));
+        return baseValue + Math.random() * 0.5 ;
+      });
       data2 = labels.map((_, i) => {
         const baseValue = Math.max(0, selectedCompaniesCount - (5 - i));
         return baseValue + Math.random() * 0.5;
@@ -455,7 +474,10 @@ export default function CandidateDashboard() {
       });
     } else {
       labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      data1 = labels.map((_, i) => 30 + i * 4 + Math.random() * 20);
+      data1 = labels.map((_, i) => {
+        const baseValue = Math.max(0 , problemsSolved - (11- i));
+        return baseValue +Math.random() * 0.5;
+      });
       data2 = labels.map((_, i) => {
         const baseValue = Math.max(0, selectedCompaniesCount - (11 - i));
         return baseValue + Math.random() * 0.5;
@@ -468,7 +490,7 @@ export default function CandidateDashboard() {
 
     const data = labels.map((label, i) => ({
       label,
-      value1: data1[i],                // Skill progress
+      value1: data1[i],                // problem solved
       value2: data2[i],                // Selected companies
       value3: data3[i],                // Badges earned
     }));
@@ -484,7 +506,7 @@ export default function CandidateDashboard() {
 
     // Color scheme
     const colors = {
-      skillProgress: {
+      ProblemSolved: {
         line: '#4f46e5',
         area: '#e0e7ff',
         dot: '#4338ca'
@@ -542,14 +564,14 @@ export default function CandidateDashboard() {
       .curve(d3.curveCatmullRom.alpha(0.5));
 
     // Add grid lines
-    g.append('g')
-      .attr('class', 'grid')
-      .call(d3.axisLeft(y).tickSize(-innerWidth).tickFormat(() => ''))
-      .style('stroke', '#e5e7eb')
-      .style('stroke-dasharray', '3,3')
-      .style('stroke-opacity', 0.5)
-      .selectAll('line')
-      .style('transition', 'stroke-opacity 0.3s ease');
+    // g.append('g')
+    //   .attr('class', 'grid')
+    //   .call(d3.axisLeft(y).tickSize(-innerWidth).tickFormat(() => ''))
+    //   .style('stroke', '#e5e7eb')
+    //   .style('stroke-dasharray', '3,3')
+    //   .style('stroke-opacity', 0.5)
+    //   .selectAll('line')
+    //   .style('transition', 'stroke-opacity 0.3s ease');
 
     // Draw areas with gradients
     // Create gradient for area1
@@ -563,12 +585,12 @@ export default function CandidateDashboard() {
 
     gradient1.append('stop')
       .attr('offset', '0%')
-      .attr('stop-color', colors.skillProgress.area)
+      .attr('stop-color', colors.ProblemSolved.area)
       .attr('stop-opacity', 0.7);
 
     gradient1.append('stop')
       .attr('offset', '100%')
-      .attr('stop-color', colors.skillProgress.area)
+      .attr('stop-color', colors.ProblemSolved.area)
       .attr('stop-opacity', 0.1);
 
     // Create gradient for area2
@@ -643,7 +665,7 @@ export default function CandidateDashboard() {
     const path1 = g.append('path')
       .datum(data)
       .attr('fill', 'none')
-      .attr('stroke', colors.skillProgress.line)
+      .attr('stroke', colors.ProblemSolved.line)
       .attr('stroke-width', 3)
       .attr('stroke-linecap', 'round')
       .attr('stroke-linejoin', 'round')
@@ -705,7 +727,7 @@ export default function CandidateDashboard() {
       .attr('cx', (d) => (x(d.label) || 0) + x.bandwidth() / 2)
       .attr('cy', (d) => y(d.value1))
       .attr('r', 0) // Start with radius 0 for animation
-      .attr('fill', colors.skillProgress.dot)
+      .attr('fill', colors.ProblemSolved.dot)
       .attr('stroke', '#ffffff')
       .attr('stroke-width', 1.5)
       .style('cursor', 'pointer')
@@ -740,9 +762,9 @@ export default function CandidateDashboard() {
             tooltip.transition().duration(200).style('opacity', 0.95);
             tooltip
               .html(`
-                <div style="color: ${colors.skillProgress.dot}">
+                <div style="color: ${colors.ProblemSolved.dot}">
                   <strong>${d.label}</strong><br/>
-                  Skill Progress: ${d.value1.toFixed(1)}
+                  Problem solved: ${d.value1.toFixed(1)}
                 </div>
               `)
               .style('left', `${event.pageX + 10}px`)
@@ -941,7 +963,7 @@ export default function CandidateDashboard() {
 
     // Legend entries
     const legendData = [
-      { name: 'Skill Progress', color: colors.skillProgress.line },
+      { name: 'Problem solved', color: colors.ProblemSolved.line },
       { name: 'Selected Companies', color: colors.selectedCompanies.line },
       { name: 'Badges Earned', color: colors.badgesEarned.line }
     ];
@@ -1004,6 +1026,7 @@ export default function CandidateDashboard() {
   console.log("recent activites" , recentActivities)
 
   return (
+    <>
 <div className="w-full min-h-screen bg-gray-100">
       <NavbarCandidate />
       <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -1237,6 +1260,8 @@ export default function CandidateDashboard() {
             </div>
           </div>
         </div>
+        <Footer />
+        </>
 
   );
 }   

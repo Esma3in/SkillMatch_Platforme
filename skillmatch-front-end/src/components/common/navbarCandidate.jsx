@@ -131,7 +131,22 @@ const NavbarCandidate = ({searchedItems}) => {
             </div>
             
             <a href="/study-with-ai" className="nav-item m-5">
-              <span>Study with AI</span>
+            <span className="flex justify-between px-3 items-center">
+                Study with AI
+                <div className="px-3">
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://img.icons8.com/ios-filled/50/gemini-ai.png"
+                    alt="gemini-ai"
+                    style={{
+                      filter:
+                        "invert(20%) sepia(100%) saturate(1800%) hue-rotate(235deg) brightness(90%) contrast(90%)"
+                    }}
+                  />
+                </div>
+              </span>
+
             </a>
           </nav>
         </div>
@@ -210,7 +225,7 @@ const NavbarCandidate = ({searchedItems}) => {
                       Performance
                     </a>
                 
-                    <a href="/support" className="profile-option">
+                    <a href="/support" target='_blank' className="profile-option">
                       <i className="option-icon support-icon"></i>
                       Support
                     </a>

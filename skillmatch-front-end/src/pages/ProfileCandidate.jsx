@@ -7,7 +7,8 @@ import ModalSkill from "../components/modals/createSkillsCandidate";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { Footer } from "../components/common/footer";
 import CreateFormationModal from "../components/modals/createEducation";
-import NoProfilePrompt from "../layouts/noProfileCandidate"; // Import the new component
+import NoProfilePrompt from "../layouts/noProfileCandidate"; 
+import {FaPlus} from "react-icons/fa"
 
 export default function ProfileCandidate() {
   const [candidateInfo, setCandidateInfo] = useState(null);
@@ -182,20 +183,6 @@ export default function ProfileCandidate() {
                 )}
               </div>
             </div>
-
-            {/* Certifications */}
-            <div className="bg-white shadow-md rounded-lg p-4">
-              <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg font-semibold text-gray-900">Certifications</h2>
-                <button
-                  onClick={() => alert("Certification modal not implemented yet")}
-                  className="text-indigo-600 hover:text-blue-700 text-sm font-medium"
-                >
-                  Add
-                </button>
-              </div>
-              <p className="text-sm text-gray-500">Add your certifications to highlight your expertise.</p>
-            </div>
           </div>
 
           {/* Main Content (Right) */}
@@ -235,10 +222,10 @@ export default function ProfileCandidate() {
                 <button
                   type="button"
                   onClick={() => setShowSkillModal(true)}
-                  className="text-indigo-600 hover:text-blue-700 text-sm font-medium flex items-center"
+                  className="flex text-indigo-600 hover:text-blue-700 text-sm font-medium flex items-center"
                 >
-                  <img src="/assets/edit.png" alt="Edit icon" className="w-4 h-4 mr-1" />
-                  Edit
+             <FaPlus />
+                  Add
                 </button>
               </div>
               <div className="space-y-4">
@@ -265,9 +252,9 @@ export default function ProfileCandidate() {
                 <h2 className="text-lg font-semibold text-gray-900">Education</h2>
                 <button
                   onClick={() => setEducationModal(true)}
-                  className="text-indigo-600 hover:text-blue-700 text-sm font-medium"
+                  className= "flex align-middle text-indigo-600 hover:text-blue-700 text-sm font-medium"
                 >
-                  Add
+                 <FaPlus />Add
                 </button>
               </div>
               <div className="space-y-4">
