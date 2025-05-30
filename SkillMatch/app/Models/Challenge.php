@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ChallengeResult;
+use App\Models\ProblemResult;
 
 class Challenge extends Model
 {
@@ -82,5 +84,21 @@ class Challenge extends Model
             ->wherePivot('candidate_id', $candidateId)
             ->wherePivot('is_completed', true)
             ->exists();
+    }
+
+    /**
+     * Get all problem results for this challenge
+     */
+    public function problemResults()
+    {
+        return $this->hasMany(ProblemResult::class);
+    }
+
+    /**
+     * Get all challenge results for this challenge
+     */
+    public function challengeResults()
+    {
+        return $this->hasMany(ChallengeResult::class);
     }
 }

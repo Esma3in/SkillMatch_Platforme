@@ -5,6 +5,7 @@ import { FaChevronLeft, FaPlay, FaCheck, FaTimes, FaSpinner } from "react-icons/
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api/axios"; // Import our configured axios instance
 import { api as apiClient } from "../api/api"; // Import the api client used in other files
+import { toast } from "react-toastify";
 
 // Define available programming languages
 const LANGUAGES = [
@@ -124,6 +125,18 @@ const LeetcodeProblemWorkspace = () => {
   const [activeTab, setActiveTab] = useState("description");
   const [notification, setNotification] = useState(null);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  
+  // Get candidate ID from localStorage
+  const candidateId = localStorage.getItem('candidate_id') || '1'; // Fallback to ID 1 if not found
+  
+  useEffect(() => {
+    // If candidate ID is not in localStorage, show a warning
+    if (!localStorage.getItem('candidate_id')) {
+      console.warn("No candidate_id found in localStorage, using default ID");
+      toast.warning("You are not logged in. Progress may not be saved correctly.");
+    }
+  }, []);
   
   // Function to show notification
   const showNotification = (type, message) => {
@@ -174,140 +187,68 @@ const LeetcodeProblemWorkspace = () => {
     setCode(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    console.log("Submit button clicked - starting submission process");
+  const handleSubmit = async () => {
     setIsSubmitting(true);
-    setSubmissionResult(null);
-    
-    // Ensure we have a valid code submission
-    if (!code || code.trim().length === 0) {
-      setSubmissionResult({
-        submission: {
-          status: "compilation_error",
-          test_results: {
-            passed: false,
-            passed_tests: 0,
-            total_tests: 0
-          }
-        },
-        message: "Empty code submission. Please write some code before submitting."
-      });
-      showNotification('error', 'Empty code submission. Please write some code before submitting.');
-      setIsSubmitting(false);
-      return;
-    }
-    
-    console.log(`Preparing to submit code for problem ${id} using language: ${selectedLanguage.id}`);
     
     try {
-      // Create a FormData object to ensure proper POST submission
-      const formData = new FormData();
-      formData.append('code', code);
-      formData.append('language', selectedLanguage.id);
-      
-      // For debugging - log all form data
-      for (let pair of formData.entries()) {
-        console.log(`FormData contains: ${pair[0]}: ${pair[1]}`);
-      }
-      
-      // Using explicit fetch with POST method and proper headers
-      const submitUrl = `http://localhost:8000/api/leetcode/problems/${id}/submit`;
-      console.log(`Sending POST request to ${submitUrl}`);
-      
-      // Try both FormData and JSON approaches
-      let response;
-      
-      // First try with FormData 
-      response = await fetch(submitUrl, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-          // Note: Content-Type is automatically set with FormData
-        },
-        credentials: 'include',
-        body: formData
+      // First step: validate the code
+      const response = await api.post(`/leetcode/problems/${id}/submit`, {
+        code: code,
+        language: selectedLanguage.id
       });
       
-      if (!response.ok) {
-        console.log("FormData approach failed, trying JSON...");
-        
-        // If FormData fails, try with JSON
-        response = await fetch(submitUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          credentials: 'include',
-          body: JSON.stringify({
-            code: code,
+      if (response.data.success || response.data.submission?.status === 'accepted') {
+        // Mark the problem as completed
+        try {
+          const markCompletedResponse = await api.post(`/training/problems/${id}/mark-completed`, {
+            candidate_id: candidateId,
+            problem_type: 'leetcode',
+            code_submitted: code,
             language: selectedLanguage.id
-          })
-        });
-      }
-      
-      console.log("Response status:", response.status);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      console.log("Response data:", data);
-      
-      if (data && data.submission) {
-        setSubmissionResult(data);
-        
-        // Add to local submissions list for display
-        if (problem && Array.isArray(problem.submissions)) {
-          setProblem({
-            ...problem,
-            submissions: [data.submission, ...problem.submissions]
           });
-        }
-        
-        // Show success or error notification
-        if (data.submission.status === 'accepted') {
-          showNotification('success', 'Great job! Your solution passed all test cases.');
+          
+          setSubmissionResult({
+            status: 'success',
+            message: 'Solution accepted! Great job.',
+            details: response.data.details || response.data.submission?.test_results
+          });
+          
+          // Show success celebration
           setShowCelebration(true);
           
-          // Mark as completed in any active challenges
-          const candidateId = localStorage.getItem('candidate_id');
-          if (candidateId) {
-            try {
-              await apiClient.post(`api/training/problems/${id}/mark-completed`, {
-                candidate_id: candidateId,
-                problem_type: 'leetcode'
+          // Check if any challenges were completed
+          if (markCompletedResponse.data.updated_challenges) {
+            const completedChallenges = markCompletedResponse.data.updated_challenges.filter(
+              challenge => challenge.completed
+            );
+            
+            if (completedChallenges.length > 0) {
+              // Show a notification about completed challenges
+              toast.success(`You've completed a challenge and earned a certificate!`, {
+                position: "top-right",
+                autoClose: 5000
               });
-              console.log("Problem marked as completed in challenges");
-            } catch (err) {
-              console.error("Error marking problem as completed:", err);
             }
           }
-        } else {
-          showNotification('error', `Your solution was not accepted: ${data.message}`);
+        } catch (error) {
+          console.error("Error marking problem as completed:", error);
+          toast.error("Your solution was correct, but we couldn't update your progress.");
         }
       } else {
-        throw new Error("Invalid response format");
+        // Failed test cases
+        setSubmissionResult({
+          status: 'error',
+          message: response.data.message || 'Your solution failed some test cases.',
+          details: response.data.details || response.data.submission?.test_results
+        });
       }
-    } catch (err) {
-      console.error("Error submitting solution:", err);
-      
-      // Provide a clear error message
+    } catch (error) {
+      console.error("Submission error:", error);
       setSubmissionResult({
-        submission: {
-          status: "error",
-          test_results: {
-            passed: false,
-            passed_tests: 0,
-            total_tests: 0
-          }
-        },
-        message: `Submission error: ${err.message}`
+        status: 'error',
+        message: 'An error occurred while testing your code.',
+        details: null
       });
-      
-      showNotification('error', `Submission error: ${err.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -316,12 +257,13 @@ const LeetcodeProblemWorkspace = () => {
   const getSubmissionStatusUI = () => {
     if (!submissionResult) return null;
 
-    const status = submissionResult.submission.status;
+    const status = submissionResult.status;
     
     let icon, text, bgColor, textColor;
     
     switch(status) {
       case "accepted":
+      case "success":
         icon = <FaCheck className="text-green-500" size={20} />;
         text = "Accepted";
         bgColor = "bg-green-100";
@@ -357,6 +299,12 @@ const LeetcodeProblemWorkspace = () => {
         bgColor = "bg-red-100";
         textColor = "text-red-800";
         break;
+      case "debug":
+        icon = <FaPlay className="text-blue-500" size={20} />;
+        text = "Debug Results";
+        bgColor = "bg-blue-100";
+        textColor = "text-blue-800";
+        break;
       case "error":
         icon = <FaTimes className="text-red-500" size={20} />;
         text = "Error";
@@ -371,8 +319,9 @@ const LeetcodeProblemWorkspace = () => {
     }
     
     const hasFailedTests = 
-      submissionResult.submission.failed_test_details && 
-      submissionResult.submission.failed_test_details.length > 0;
+      submissionResult.details && 
+      submissionResult.details.failed_test_details && 
+      submissionResult.details.failed_test_details.length > 0;
     
     return (
       <div className={`mt-4 p-4 rounded-md ${bgColor}`}>
@@ -383,7 +332,7 @@ const LeetcodeProblemWorkspace = () => {
         <div className="mt-4 p-3 bg-white bg-opacity-50 rounded-md">
           <p className="font-semibold mb-2">{submissionResult.message}</p>
           
-          {submissionResult.submission.test_results && (
+          {submissionResult.details && (
             <div className="mt-2">
               <div className="flex flex-wrap gap-2 items-center mb-2">
                 <span className="font-medium">Test Results:</span>
@@ -392,27 +341,27 @@ const LeetcodeProblemWorkspace = () => {
                     ? 'bg-green-200 text-green-800' 
                     : 'bg-red-200 text-red-800'
                 }`}>
-                  {submissionResult.submission.test_results.passed_tests || 0} / {submissionResult.submission.test_results.total_tests || 0} passed
+                  {submissionResult.details.passed_tests || 0} / {submissionResult.details.total_tests || 0} passed
                 </span>
               </div>
               
-              {submissionResult.submission.execution_time !== undefined && (
+              {submissionResult.details.execution_time !== undefined && (
                 <p className="text-sm text-gray-700">
-                  <span className="font-medium">Execution Time:</span> {submissionResult.submission.execution_time} ms
+                  <span className="font-medium">Execution Time:</span> {submissionResult.details.execution_time} ms
                 </p>
               )}
               
-              {submissionResult.submission.memory_used !== undefined && (
+              {submissionResult.details.memory_used !== undefined && (
                 <p className="text-sm text-gray-700">
-                  <span className="font-medium">Memory Used:</span> {submissionResult.submission.memory_used} KB
+                  <span className="font-medium">Memory Used:</span> {submissionResult.details.memory_used} KB
                 </p>
               )}
               
-              {submissionResult.submission.test_results.error_message && (
+              {submissionResult.details.error_message && (
                 <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
                   <p className="font-medium">Error Message:</p>
                   <pre className="whitespace-pre-wrap mt-1 text-xs bg-gray-50 p-2 rounded">
-                    {submissionResult.submission.test_results.error_message}
+                    {submissionResult.details.error_message}
                   </pre>
                 </div>
               )}
@@ -424,7 +373,7 @@ const LeetcodeProblemWorkspace = () => {
             <div className="mt-4">
               <h4 className="font-medium mb-2">Failed Test Cases:</h4>
               <div className="space-y-3">
-                {submissionResult.submission.failed_test_details.map((test, index) => (
+                {submissionResult.details.failed_test_details.map((test, index) => (
                   <div key={index} className="bg-red-50 p-3 rounded-md border border-red-200">
                     <p className="font-medium text-red-800">Test Case {test.testCase}</p>
                     <div className="mt-1 grid grid-cols-1 gap-2 text-sm">
@@ -684,19 +633,14 @@ const LeetcodeProblemWorkspace = () => {
                     </select>
                   </div>
                   
-                  {/* Use a form to ensure a proper POST request */}
+                  {/* Code submission form */}
                   <form 
                     onSubmit={(e) => {
                       e.preventDefault();
                       handleSubmit();
                     }}
                     id="code-submission-form"
-                    method="post" 
-                    action={`http://localhost:8000/api/leetcode/problems/${id}/submit`}
                   >
-                    <input type="hidden" name="language" value={selectedLanguage.id} />
-                    <input type="hidden" name="code" value={code} />
-                    
                     <div className="flex space-x-2">
                       <button
                         type="submit"
@@ -718,33 +662,34 @@ const LeetcodeProblemWorkspace = () => {
                         )}
                       </button>
                       
-                      {/* Debug button - direct form POST */}
+                      {/* Debug button */}
                       <button
                         type="button"
-                        onClick={() => {
-                          // Create a temporary form and submit it
-                          const debugForm = document.createElement('form');
-                          debugForm.method = 'POST';
-                          debugForm.action = `http://localhost:8000/api/leetcode/debug/${id}`;
-                          
-                          const codeInput = document.createElement('input');
-                          codeInput.type = 'hidden';
-                          codeInput.name = 'code';
-                          codeInput.value = code;
-                          debugForm.appendChild(codeInput);
-                          
-                          const langInput = document.createElement('input');
-                          langInput.type = 'hidden';
-                          langInput.name = 'language';
-                          langInput.value = selectedLanguage.id;
-                          debugForm.appendChild(langInput);
-                          
-                          document.body.appendChild(debugForm);
-                          debugForm.submit();
+                        onClick={async () => {
+                          try {
+                            setIsSubmitting(true);
+                            const response = await api.post(`/leetcode/debug/${id}`, {
+                              code: code,
+                              language: selectedLanguage.id
+                            });
+                            
+                            // Show debug results
+                            setSubmissionResult({
+                              status: 'debug',
+                              message: 'Debug results:',
+                              details: response.data
+                            });
+                          } catch (error) {
+                            console.error("Debug error:", error);
+                            toast.error("Failed to debug code");
+                          } finally {
+                            setIsSubmitting(false);
+                          }
                         }}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center gap-2"
+                        disabled={isSubmitting}
                       >
-                        Debug
+                        {isSubmitting ? <FaSpinner className="animate-spin" /> : null} Debug
                       </button>
                     </div>
                   </form>
@@ -753,8 +698,6 @@ const LeetcodeProblemWorkspace = () => {
               
               <div className="p-0">
                 <textarea
-                  form="code-submission-form"
-                  name="code"
                   value={code}
                   onChange={handleCodeChange}
                   className="w-full h-96 p-4 font-mono text-sm border-0 focus:ring-0 focus:border-0"

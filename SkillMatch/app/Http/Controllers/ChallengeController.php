@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Models\ChallengeResult;
+use App\Models\ProblemResult;
 
 class ChallengeController extends Controller
 {
@@ -21,9 +23,16 @@ class ChallengeController extends Controller
     public function index()
     {
         $challenges = Challenge::with('skill')
-            ->withCount(['problems', 'candidates'])
+            ->withCount(['problems', 'leetcodeProblems', 'candidates'])
             ->orderBy('created_at', 'desc')
-        ->paginate(10);
+            ->paginate(10);
+
+        // Add combined problem count to each challenge
+        $challenges->getCollection()->transform(function ($challenge) {
+            // Add a combined count of all problems
+            $challenge->problems_count = $challenge->problems_count + $challenge->leetcode_problems_count;
+            return $challenge;
+        });
 
         return response()->json($challenges);
     }
@@ -35,9 +44,15 @@ class ChallengeController extends Controller
     {
         $challenge->load(['skill', 'problems' => function($query) {
             $query->with('skill');
+        }, 'leetcodeProblems' => function($query) {
+            $query->with('skill');
         }]);
 
-            return response()->json($challenge);
+        // Combine all problems into one collection
+        $allProblems = $challenge->problems->concat($challenge->leetcodeProblems);
+        $challenge->problems_count = $allProblems->count();
+
+        return response()->json($challenge);
     }
 
     /**
@@ -357,26 +372,57 @@ class ChallengeController extends Controller
      */
     public function startChallenge(Request $request, Challenge $challenge)
     {
-        $candidateId = $request->input('candidate_id');
-        $candidate = Candidate::findOrFail($candidateId);
+        $validator = Validator::make($request->all(), [
+            'candidate_id' => 'required|exists:candidates,id',
+        ]);
 
-        // Check if already enrolled
-        if ($challenge->candidates()->where('candidate_id', $candidateId)->exists()) {
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $candidateId = $request->input('candidate_id');
+
+        // Check if the candidate is already enrolled
+        $existingResult = ChallengeResult::where([
+            'candidate_id' => $candidateId,
+            'challenge_id' => $challenge->id
+        ])->first();
+
+        if ($existingResult) {
             return response()->json([
-                'message' => 'You are already enrolled in this challenge',
-                'challenge' => $challenge->load('skill', 'problems')
+                'message' => 'Candidate is already enrolled in this challenge',
+                'challenge_result' => $existingResult
             ]);
         }
 
-        // Enroll the candidate
-        $challenge->candidates()->attach($candidateId, [
+        // Calculate total problems
+        $totalStandardProblems = $challenge->problems()->count();
+        $totalLeetcodeProblems = $challenge->leetcodeProblems()->count();
+        $totalProblems = $totalStandardProblems + $totalLeetcodeProblems;
+
+        // Create new challenge result
+        $challengeResult = ChallengeResult::create([
+            'candidate_id' => $candidateId,
+            'challenge_id' => $challenge->id,
+            'status' => 'in_progress',
+            'problems_completed' => 0,
+            'total_problems' => $totalProblems,
+            'completion_percentage' => 0,
+            'started_at' => now()
+            ]);
+
+        // For backward compatibility, keep the old enrollment logic too
+        // but in the future, we should phase this out
+        $challenge->candidates()->syncWithoutDetaching([
+            $candidateId => [
             'completed_problems' => 0,
             'is_completed' => false
+            ]
         ]);
 
         return response()->json([
             'message' => 'Challenge started successfully',
-            'challenge' => $challenge->load('skill', 'problems')
+            'challenge_result' => $challengeResult
         ]);
     }
 
@@ -518,6 +564,24 @@ class ChallengeController extends Controller
      */
     public function getCertificate(Request $request, $certificateId)
     {
+        // First try to find in the new table
+        $challengeResult = ChallengeResult::where('certificate_id', $certificateId)->first();
+
+        if ($challengeResult) {
+            $challenge = Challenge::findOrFail($challengeResult->challenge_id);
+            $candidate = Candidate::findOrFail($challengeResult->candidate_id);
+
+            return response()->json([
+                'certificate_id' => $certificateId,
+                'candidate_name' => $candidate->name,
+                'challenge_name' => $challenge->name,
+                'skill' => $challenge->skill->name,
+                'completion_date' => Carbon::parse($challengeResult->completed_at)->format('F d, Y'),
+                'level' => $challenge->level
+            ]);
+        }
+
+        // Fallback to the old table
         $enrollment = DB::table('candidate_challenge')
             ->where('certificate_id', $certificateId)
             ->first();
@@ -546,7 +610,24 @@ class ChallengeController extends Controller
     {
         $candidate = Candidate::findOrFail($candidateId);
 
-        $certificates = $candidate->challenges()
+        // Get certificates from the new table
+        $newCertificates = $candidate->challengeResults()
+            ->where('status', 'completed')
+            ->whereNotNull('certificate_id')
+            ->with('challenge.skill')
+            ->get()
+            ->map(function($result) {
+                return [
+                    'certificate_id' => $result->certificate_id,
+                    'challenge_name' => $result->challenge->name,
+                    'skill' => $result->challenge->skill->name,
+                    'completion_date' => Carbon::parse($result->completed_at)->format('F d, Y'),
+                    'level' => $result->challenge->level
+                ];
+            })->toArray();
+
+        // Get certificates from the old table
+        $oldCertificates = $candidate->challenges()
             ->wherePivot('is_completed', true)
             ->wherePivot('certificate_id', '!=', null)
             ->with('skill')
@@ -559,9 +640,15 @@ class ChallengeController extends Controller
                     'completion_date' => Carbon::parse($challenge->pivot->completion_date)->format('F d, Y'),
                     'level' => $challenge->level
                 ];
-            });
+            })->toArray();
 
-        return response()->json($certificates);
+        // Merge and remove duplicates (based on certificate_id)
+        $allCertificates = collect(array_merge($newCertificates, $oldCertificates))
+            ->unique('certificate_id')
+            ->values()
+            ->all();
+
+        return response()->json($allCertificates);
     }
 
     /**
@@ -570,9 +657,16 @@ class ChallengeController extends Controller
     public function getAdminChallenges()
     {
         $challenges = Challenge::with('skill')
-            ->withCount(['problems', 'candidates'])
+            ->withCount(['problems', 'leetcodeProblems', 'candidates'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
+        // Add combined problem count to each challenge
+        $challenges->getCollection()->transform(function ($challenge) {
+            // Add a combined count of all problems
+            $challenge->problems_count = $challenge->problems_count + $challenge->leetcode_problems_count;
+            return $challenge;
+        });
 
         return response()->json($challenges);
     }
@@ -596,23 +690,81 @@ class ChallengeController extends Controller
     {
         $candidate = Candidate::findOrFail($candidateId);
 
-        // Check if the candidate is enrolled in this challenge
+        // Check if the candidate has a result for this challenge
+        $challengeResult = ChallengeResult::where([
+            'candidate_id' => $candidateId,
+            'challenge_id' => $challenge->id
+        ])->first();
+
+        if (!$challengeResult) {
+            // Check the legacy data
         $enrollment = $challenge->candidates()
             ->where('candidate_id', $candidateId)
             ->first();
 
-        if (!$enrollment) {
+            if ($enrollment) {
+                // Migrate the old data to the new format
+                $totalProblems = $challenge->problems()->count() + $challenge->leetcodeProblems()->count();
+                $completedProblems = $enrollment->pivot->completed_problems;
+                $percentage = ($totalProblems > 0) ? ($completedProblems / $totalProblems) * 100 : 0;
+
+                $challengeResult = ChallengeResult::create([
+                    'candidate_id' => $candidateId,
+                    'challenge_id' => $challenge->id,
+                    'status' => $enrollment->pivot->is_completed ? 'completed' : 'in_progress',
+                    'problems_completed' => $completedProblems,
+                    'total_problems' => $totalProblems,
+                    'completion_percentage' => $percentage,
+                    'started_at' => $enrollment->pivot->created_at,
+                    'completed_at' => $enrollment->pivot->is_completed ? $enrollment->pivot->completion_date : null,
+                    'certificate_id' => $enrollment->pivot->certificate_id
+                ]);
+            } else {
             return response()->json([
                 'is_enrolled' => false,
                 'message' => 'Candidate is not enrolled in this challenge'
             ], 404);
         }
+        }
 
-        // Get completed problems
-        $completedProblems = DB::table('candidate_problem')
+        // Get completed problems from the problem_results table
+        $completedProblems = ProblemResult::where([
+            'candidate_id' => $candidateId,
+            'challenge_id' => $challenge->id,
+            'status' => 'solved'
+        ])->get();
+
+        // If we migrated from old data but don't have problem results, populate them
+        if ($completedProblems->isEmpty() && $challengeResult->problems_completed > 0) {
+            // We need to query the old candidate_problem table
+            $oldCompletedProblems = DB::table('candidate_problem')
             ->where('candidate_id', $candidateId)
             ->where('challenge_id', $challenge->id)
-            ->get(['problem_id', 'problem_type']);
+                ->get();
+
+            foreach ($oldCompletedProblems as $oldProblem) {
+                ProblemResult::firstOrCreate(
+                    [
+                        'candidate_id' => $candidateId,
+                        'problem_id' => $oldProblem->problem_id,
+                        'problem_type' => $oldProblem->problem_type ?? 'standard',
+                        'challenge_id' => $challenge->id,
+                    ],
+                    [
+                        'status' => 'solved',
+                        'attempts' => 1,
+                        'completed_at' => $oldProblem->completed_at ?? now()
+                    ]
+                );
+            }
+
+            // Refresh the query
+            $completedProblems = ProblemResult::where([
+                'candidate_id' => $candidateId,
+                'challenge_id' => $challenge->id,
+                'status' => 'solved'
+            ])->get();
+        }
 
         // Separate completed problems by type
         $completedStandardIds = $completedProblems
@@ -633,42 +785,35 @@ class ChallengeController extends Controller
             ];
         })->toArray();
 
-        // Calculate total problems in challenge (both standard and leetcode)
-        $totalStandardProblems = $challenge->problems()->count();
-        $totalLeetcodeProblems = $challenge->leetcodeProblems()->count();
-        $totalProblems = $totalStandardProblems + $totalLeetcodeProblems;
-
-        // Calculate completion percentage
-        $completedCount = count($completedProblems);
-        $percentage = ($totalProblems > 0) ? ($completedCount / $totalProblems) * 100 : 0;
-
         return response()->json([
             'is_enrolled' => true,
-            'completed_problems' => $completedCount,
-            'total_problems' => $totalProblems,
-            'total_standard_problems' => $totalStandardProblems,
-            'total_leetcode_problems' => $totalLeetcodeProblems,
-            'percentage' => $percentage,
+            'completed_problems' => $challengeResult->problems_completed,
+            'total_problems' => $challengeResult->total_problems,
+            'total_standard_problems' => $challenge->problems()->count(),
+            'total_leetcode_problems' => $challenge->leetcodeProblems()->count(),
+            'percentage' => $challengeResult->completion_percentage,
             'completed_standard_problems' => $completedStandardIds,
             'completed_leetcode_problems' => $completedLeetcodeIds,
             'completed_problems_ids' => $allCompletedIds,
-            'is_completed' => $enrollment->pivot->is_completed,
-            'completion_date' => $enrollment->pivot->completion_date,
-            'certificate_id' => $enrollment->pivot->certificate_id
+            'status' => $challengeResult->status,
+            'is_completed' => $challengeResult->status === 'completed',
+            'started_at' => $challengeResult->started_at,
+            'completion_date' => $challengeResult->completed_at,
+            'certificate_id' => $challengeResult->certificate_id
         ]);
     }
 
     /**
      * Mark a problem as completed for a candidate.
      * This method should ONLY be called when a candidate has successfully solved a problem.
-     * The frontend code in ProblemWorkspace.js and LeetcodeProblemWorkspace.jsx ensures this
-     * by only calling this endpoint when a solution passes all test cases.
      */
     public function markProblemCompleted(Request $request, $problemId)
     {
         $validator = Validator::make($request->all(), [
             'candidate_id' => 'required|exists:candidates,id',
             'problem_type' => 'required|in:standard,leetcode',
+            'code_submitted' => 'nullable|string',
+            'language' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -677,6 +822,8 @@ class ChallengeController extends Controller
 
         $candidateId = $request->input('candidate_id');
         $problemType = $request->input('problem_type');
+        $codeSubmitted = $request->input('code_submitted');
+        $language = $request->input('language');
 
         // Find all challenges that contain this problem
         $challenges = [];
@@ -700,81 +847,91 @@ class ChallengeController extends Controller
         $updatedChallenges = [];
 
         foreach ($challenges as $challenge) {
-            // Check if the candidate is enrolled in this challenge
-            $enrollment = $challenge->candidates()->where('candidate_id', $candidateId)->first();
+            // Check if the candidate has a result for this challenge
+            $challengeResult = ChallengeResult::firstOrCreate(
+                [
+                    'candidate_id' => $candidateId,
+                    'challenge_id' => $challenge->id
+                ],
+                [
+                    'status' => 'in_progress',
+                    'problems_completed' => 0,
+                    'total_problems' => $challenge->problems()->count() + $challenge->leetcodeProblems()->count(),
+                    'completion_percentage' => 0,
+                    'started_at' => now()
+                ]
+            );
 
-            if (!$enrollment) {
-                // If candidate is not enrolled, enroll them automatically
-                $challenge->candidates()->attach($candidateId, [
-                    'completed_problems' => 0,
-                    'is_completed' => false
-                ]);
-            }
+            // Check if this problem is already marked as solved
+            $existingResult = ProblemResult::where([
+                'candidate_id' => $candidateId,
+                'problem_id' => $problemId,
+                'problem_type' => $problemType,
+                'challenge_id' => $challenge->id,
+                'status' => 'solved'
+            ])->first();
 
-            // Check if this problem is already marked as completed
-            $existingRecord = DB::table('candidate_problem')
-                ->where('candidate_id', $candidateId)
-                ->where('challenge_id', $challenge->id)
-                ->where('problem_id', $problemId)
-                ->where('problem_type', $problemType)
-                ->exists();
-
-            if (!$existingRecord) {
-                // Insert the completed problem record
-                DB::table('candidate_problem')->insert([
+            if (!$existingResult) {
+                // Find if there's an existing attempt
+                $problemResult = ProblemResult::where([
                     'candidate_id' => $candidateId,
                     'problem_id' => $problemId,
-                    'challenge_id' => $challenge->id,
                     'problem_type' => $problemType,
-                    'completed_at' => now(),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+                    'challenge_id' => $challenge->id
+                ])->first();
 
-                // Calculate completed problems
-                $completedProblemsCount = DB::table('candidate_problem')
-                    ->where('candidate_id', $candidateId)
-                    ->where('challenge_id', $challenge->id)
-                    ->count();
-
-                // Calculate total problems in challenge (both standard and leetcode)
-                $totalStandardProblems = $challenge->problems()->count();
-                $totalLeetcodeProblems = $challenge->leetcodeProblems()->count();
-                $totalProblems = $totalStandardProblems + $totalLeetcodeProblems;
-
-                // Update the pivot table
-                $challenge->candidates()->updateExistingPivot($candidateId, [
-                    'completed_problems' => $completedProblemsCount
-                ]);
-
-                // Check if all problems are completed
-                if ($completedProblemsCount >= $totalProblems) {
-                    $certificateId = $this->generateCertificateId($candidateId, $challenge->id);
-
-                    $challenge->candidates()->updateExistingPivot($candidateId, [
-                        'is_completed' => true,
-                        'completion_date' => now(),
-                        'certificate_id' => $certificateId
+                if ($problemResult) {
+                    // Update existing attempt
+                    $problemResult->update([
+                        'status' => 'solved',
+                        'code_submitted' => $codeSubmitted,
+                        'language' => $language,
+                        'attempts' => $problemResult->attempts + 1,
+                        'completed_at' => now()
                     ]);
+                } else {
+                    // Create new problem result
+                    $problemResult = ProblemResult::create([
+                    'candidate_id' => $candidateId,
+                    'problem_id' => $problemId,
+                    'problem_type' => $problemType,
+                        'challenge_id' => $challenge->id,
+                        'status' => 'solved',
+                        'code_submitted' => $codeSubmitted,
+                        'language' => $language,
+                        'attempts' => 1,
+                        'completed_at' => now()
+                    ]);
+                }
+
+                // Update challenge result stats
+                $challengeResult->updateCompletionStats();
+
+                // For backward compatibility, update the old candidate_challenge pivot too
+                if ($challengeResult->status === 'completed') {
+                $challenge->candidates()->updateExistingPivot($candidateId, [
+                        'completed_problems' => $challengeResult->problems_completed,
+                        'is_completed' => true,
+                        'completion_date' => $challengeResult->completed_at,
+                        'certificate_id' => $challengeResult->certificate_id
+                    ]);
+                } else {
+                    $challenge->candidates()->updateExistingPivot($candidateId, [
+                        'completed_problems' => $challengeResult->problems_completed
+                    ]);
+                }
 
                     $updatedChallenges[] = [
                         'id' => $challenge->id,
                         'name' => $challenge->name,
-                        'completed' => true,
-                        'certificate_id' => $certificateId
-                    ];
-                } else {
-                    $updatedChallenges[] = [
-                        'id' => $challenge->id,
-                        'name' => $challenge->name,
-                        'completed' => false,
+                    'completed' => $challengeResult->status === 'completed',
+                    'certificate_id' => $challengeResult->certificate_id,
                         'progress' => [
-                            'completed' => $completedProblemsCount,
-                            'total' => $totalProblems,
-                            'percentage' => ($totalProblems > 0) ? ($completedProblemsCount / $totalProblems) * 100 : 0,
+                        'completed' => $challengeResult->problems_completed,
+                        'total' => $challengeResult->total_problems,
+                        'percentage' => $challengeResult->completion_percentage,
                         ]
                     ];
-                }
             } else {
                 $updatedChallenges[] = [
                     'id' => $challenge->id,

@@ -124,6 +124,10 @@ const ProblemWorkspace = () => {
   const [activeTab, setActiveTab] = useState("description");
   const [notification, setNotification] = useState(null);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState(null);
+  
+  // Get candidate ID from localStorage
+  const candidateId = localStorage.getItem('candidate_id');
   
   // Function to show notification
   const showNotification = (type, message) => {
@@ -186,46 +190,63 @@ const ProblemWorkspace = () => {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    setSubmissionResult(null);
-    
-    // Ensure we have a valid code submission
-    if (!code || code.trim().length === 0) {
-      showNotification('error', 'Empty code submission. Please write some code before submitting.');
-      setIsSubmitting(false);
-      return;
-    }
+    hideNotification();
     
     try {
+      // Validate the submission first
       const response = await api.post(`api/training/problems/${id}/submit`, {
         code: code,
-        language: selectedLanguage.id
+        language: selectedLanguage.id,
+        candidate_id: candidateId
       });
       
-      setSubmissionResult(response.data);
-      
-      if (response.data?.success) {
-        showNotification('success', 'Your solution passed all test cases!');
-        setShowCelebration(true);
-        
-        // Mark as completed in any active challenges
-        const candidateId = localStorage.getItem('candidate_id');
-        if (candidateId) {
-          try {
-            await api.post(`api/training/problems/${id}/mark-completed`, {
-              candidate_id: candidateId,
-              problem_type: 'standard'
-            });
-            console.log("Problem marked as completed in challenges");
-          } catch (err) {
-            console.error("Error marking problem as completed:", err);
+      if (response.data.success) {
+        // If validation successful, mark the problem as completed
+        try {
+          await api.post(`api/training/problems/${id}/mark-completed`, {
+            candidate_id: candidateId,
+            problem_type: 'standard',
+            code_submitted: code,
+            language: selectedLanguage.id
+          });
+          
+          setSubmissionStatus({
+            status: 'success',
+            message: 'Great job! Solution accepted.'
+          });
+          
+          // Show success celebration
+          setShowCelebration(true);
+          
+          // Check if we need to update any related challenges
+          if (response.data.updated_challenges && response.data.updated_challenges.length > 0) {
+            const completedChallenges = response.data.updated_challenges.filter(
+              challenge => challenge.completed
+            );
+            
+            if (completedChallenges.length > 0) {
+              showNotification('success', `Congratulations! You've completed a challenge and earned a certificate!`);
+            }
           }
+        } catch (error) {
+          console.error('Error marking problem as completed:', error);
+          setSubmissionStatus({
+            status: 'error',
+            message: 'Your solution was correct, but we could not update your progress.'
+          });
         }
       } else {
-        showNotification('error', response.data?.message || 'Your solution failed some test cases.');
+        setSubmissionStatus({
+          status: 'error',
+          message: response.data.message || 'Your solution failed to pass all test cases.'
+        });
       }
-    } catch (err) {
-      console.error("Error submitting solution:", err);
-      showNotification('error', 'Failed to submit your solution. Please try again.');
+    } catch (error) {
+      console.error('Submission error:', error);
+      setSubmissionStatus({
+        status: 'error',
+        message: 'An error occurred while processing your submission.'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -240,14 +261,28 @@ const ProblemWorkspace = () => {
         language: selectedLanguage.id
       });
       
-      setSubmissionResult(response.data);
-      if (response.data?.success) {
+      if (response.data.success) {
+        setSubmissionStatus({
+          status: 'success',
+          message: 'Code ran successfully!',
+          details: response.data.details
+        });
         showNotification('success', 'Code ran successfully!');
       } else {
-        showNotification('error', response.data?.message || 'Error running your code.');
+        setSubmissionStatus({
+          status: 'error',
+          message: response.data.message || 'Error running your code.',
+          details: response.data.details
+        });
+        showNotification('error', response.data.message || 'Error running your code.');
       }
     } catch (err) {
       console.error("Error running code:", err);
+      setSubmissionStatus({
+        status: 'error',
+        message: 'Failed to run your code. Please try again.',
+        details: null
+      });
       showNotification('error', 'Failed to run your code. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -259,19 +294,21 @@ const ProblemWorkspace = () => {
   };
 
   const getSubmissionStatusUI = () => {
-    if (!submissionResult) return null;
+    if (!submissionStatus) return null;
     
-    if (submissionResult.success) {
+    if (submissionStatus.status === 'success') {
       return (
         <div className="bg-green-50 border border-green-200 rounded-md p-4 mt-4">
           <h3 className="text-green-800 font-semibold flex items-center">
             <FaCheck className="mr-2" /> Success
           </h3>
-          <p className="text-green-700 mt-2">All test cases passed!</p>
-          <div className="mt-3 bg-white rounded p-3 text-sm">
-            <p className="font-medium">Execution Time: {submissionResult.execution_time || 'N/A'}</p>
-            <p className="font-medium">Memory Used: {submissionResult.memory_used || 'N/A'}</p>
-          </div>
+          <p className="text-green-700 mt-2">{submissionStatus.message || 'All test cases passed!'}</p>
+          {submissionStatus.details && (
+            <div className="mt-3 bg-white rounded p-3 text-sm">
+              <p className="font-medium">Execution Time: {submissionStatus.details.execution_time || 'N/A'}</p>
+              <p className="font-medium">Memory Used: {submissionStatus.details.memory_used || 'N/A'}</p>
+            </div>
+          )}
         </div>
       );
     } else {
@@ -280,10 +317,10 @@ const ProblemWorkspace = () => {
           <h3 className="text-red-800 font-semibold flex items-center">
             <FaTimes className="mr-2" /> Failed
           </h3>
-          <p className="text-red-700 mt-2">{submissionResult.message || 'Some test cases failed.'}</p>
-          {submissionResult.error && (
+          <p className="text-red-700 mt-2">{submissionStatus.message || 'Some test cases failed.'}</p>
+          {submissionStatus.details && submissionStatus.details.error && (
             <div className="mt-3 bg-white rounded p-3 text-sm font-mono overflow-x-auto">
-              <pre className="whitespace-pre-wrap">{submissionResult.error}</pre>
+              <pre className="whitespace-pre-wrap">{submissionStatus.details.error}</pre>
             </div>
           )}
         </div>

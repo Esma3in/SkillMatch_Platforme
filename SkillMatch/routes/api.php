@@ -46,8 +46,10 @@ Route::get('/sanctum/csrf-cookie', function () {
 });
 
 // Roadmap Progress Routes
-Route::post('/roadmap/progress', [RoadmapController::class, 'saveRoadmapProgress']);
-Route::get('/roadmap/progress/{roadmap_id}/{candidate_id}', [RoadmapController::class, 'getRoadmapProgress']);
+use App\Http\Controllers\RoadmapProgressController;
+Route::post('/roadmap/progress', [RoadmapProgressController::class, 'saveProgress']);
+Route::get('/roadmap/progress/{roadmap_id}/{candidate_id}', [RoadmapProgressController::class, 'getProgress']);
+Route::get('/roadmap/completed/{roadmapId}' , [RoadmapController::class , 'getCompleted']);
 
 // Handle OPTIONS requests for CORS preflight
 Route::options('/{any}', function () {
@@ -215,11 +217,9 @@ Route::get('/companies/accepted-candidates', [CompanyDashboardController::class,
 Route::get('/companies/tests', [CompanyDashboardController::class, 'getCompanyTests']);
 Route::get('/companies/skills-count/{companyId}', [CompanyDashboardController::class, 'getCompanySkills']);
 
-
-
-
-
-
+// AI Study Assistant routes
+use App\Http\Controllers\GeminiAIController;
+Route::post('/ai/chat', [GeminiAIController::class, 'generateResponse']);
 
 // candidate Roadmap Routes
 Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'getPrerequisites']);
@@ -271,7 +271,7 @@ Route::get('/roadmap/{companyId}' , [CompaniesSelectedController::class  , 'getS
 
 Route::get('/dashboard/companies/selected/{candidate_id}', [DashboardController::class, 'countSelectedCompanies']);
 
-Route::get('/dashboard/companies/selected-data/{candidate_id}', [DashboardController::class, 'getSelectedCompaniesForCandidate']);
+Route::get('/dashboard/companies/selected-data/{candidateId}', [DashboardController::class, 'getSelectedCompaniesForCandidate']);
 Route::get('/dashboard/roadmap/completed/{candidate_id}', [DashboardController::class, 'countCompletedRoadmaps']);
 Route::get('/dashboard/companies/matched/{candidate_id}', [DashboardController::class, 'countMatchedCompaniesBySkill']);
 Route::get('/dashboard/badges/{candidate_id}', [DashboardController::class, 'countBadges']);

@@ -101,6 +101,8 @@ export default function SuggestedCompanies() {
         {!loading &&
           filteredCompanies.map((company, i) => (
             <CompnayCard
+            
+            id={company.id}
               key={i}
               name={company.name}
               sector={company.sector}

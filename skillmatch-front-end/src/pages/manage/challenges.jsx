@@ -75,8 +75,7 @@ export default function AdminChallenges() {
     // Array of possible endpoints to try
     const endpoints = [
       'api/leetcode/problems',
-      'api/problems',
-      'api/training/problems'
+      'api/problems'
     ];
     
     let allProblems = [];
@@ -292,6 +291,25 @@ export default function AdminChallenges() {
       }
       
       const challengeData = response.data;
+      console.log('Loaded challenge data:', challengeData);
+      
+      // Extract problem IDs from both standard and leetcode problems
+      const standardProblemIds = challengeData.problems && Array.isArray(challengeData.problems)
+        ? challengeData.problems.map(p => Number(p.id))
+        : [];
+        
+      const leetcodeProblemIds = challengeData.leetcode_problems && Array.isArray(challengeData.leetcode_problems)
+        ? challengeData.leetcode_problems.map(p => Number(p.id))
+        : [];
+      
+      // Combine both types of problem IDs
+      const allProblemIds = [...standardProblemIds, ...leetcodeProblemIds];
+      
+      console.log('Extracted problem IDs:', {
+        standard: standardProblemIds,
+        leetcode: leetcodeProblemIds,
+        all: allProblemIds
+      });
       
       setSelectedChallenge(challengeData);
       setForm({
@@ -299,10 +317,10 @@ export default function AdminChallenges() {
         description: challengeData.description,
         level: challengeData.level,
         skill_id: parseInt(challengeData.skill_id),
-        problem_ids: challengeData.problems.map(p => p.id)
+        problem_ids: allProblemIds
       });
       
-      setSelectedProblems(challengeData.problems.map(p => p.id));
+      setSelectedProblems(allProblemIds);
       setIsModalOpen(true);
     } catch (error) {
       console.error('Failed to load challenge details:', error);
@@ -631,18 +649,18 @@ export default function AdminChallenges() {
       
       {/* Create/Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center z-[9999]">
-          <div className="relative bg-white rounded-lg shadow-xl mx-auto max-w-4xl w-full">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-start pt-20 z-[9999]">
+          <div className="relative bg-white rounded-lg shadow-xl mx-auto max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white p-4 border-b border-gray-200 flex justify-between items-center z-10">
+              <h2 className="text-xl font-bold text-gray-800">
+                {selectedChallenge ? 'Edit Challenge' : 'Create New Challenge'}
+              </h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+                <FaTimes size={24} />
+              </button>
+            </div>
+            
             <div className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-800">
-                  {selectedChallenge ? 'Edit Challenge' : 'Create New Challenge'}
-                </h2>
-                <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
-                  <FaTimes size={24} />
-                </button>
-              </div>
-              
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
                   <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -717,7 +735,7 @@ export default function AdminChallenges() {
                   <label className="block text-gray-700 text-sm font-bold mb-2">
                     Selected Problems ({selectedProblems.length})
                   </label>
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-4 max-h-40 overflow-y-auto p-2 border rounded bg-gray-50">
                     {selectedProblems.length > 0 ? (
                       selectedProblems.map(problemId => {
                         // Ensure we have a proper numeric ID

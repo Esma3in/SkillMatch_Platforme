@@ -757,7 +757,7 @@ const QcmForRoadmap = () => {
             })}
           </div>
         </div>
-        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score={score} />
+        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score={100} />
       </div>
     );
   };
