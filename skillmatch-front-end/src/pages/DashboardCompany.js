@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as d3 from 'd3'; // Import d3.js
+import React, { useEffect, useState } from 'react';
+import { 
+  BarChart3, Users, CheckCircle, FileText, Eye, EyeOff, 
+  Mail, Award, Code, Filter, Search, Download, Star, Building2,
+  Target, Activity, ArrowUpRight, MoreHorizontal, Calendar
+} from 'lucide-react';
+import * as XLSX from 'xlsx';
 import { api } from '../api/api';
-import { BarChart3, Users, CheckCircle, FileText, TrendingUp, Eye, EyeOff, Mail, Phone, MapPin, Briefcase, Award, Code } from 'lucide-react';
 
 const CompanyDashboard = () => {
-  const testsChartRef = useRef();
   const [stats, setStats] = useState(null);
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [acceptedCandidates, setAcceptedCandidates] = useState([]);
@@ -12,7 +15,10 @@ const CompanyDashboard = () => {
   const [resolvedTests, setResolvedTests] = useState([]);
   const [expandedCandidate, setExpandedCandidate] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState('Daily'); // Options: Daily, Weekly, Monthly
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [activeTab, setActiveTab] = useState('overview');
+  
   const companyId = localStorage.getItem('company_id');
 
   useEffect(() => {
@@ -49,18 +55,57 @@ const CompanyDashboard = () => {
         const skillsCount = skillsCountRes.data?.skills_count || 0;
 
         setStats([
-          { label: 'Total Tests', value: testCount, icon: FileText, color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-50' },
-          { label: 'Resolved Tests', value: resolvedCount, icon: CheckCircle, color: 'from-green-500 to-green-600', bgColor: 'bg-green-50' },
-          { label: 'Selected Candidates', value: selectedCount, icon: Users, color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-50' },
-          { label: 'Accepted Candidates', value: acceptedCount, icon: Award, color: 'from-orange-500 to-orange-600', bgColor: 'bg-orange-50' },
-          { label: 'Skills Required', value: skillsCount, icon: Code, color: 'from-teal-500 to-teal-600', bgColor: 'bg-teal-50' }
+          { 
+            label: 'Total Tests', 
+            value: testCount, 
+            icon: FileText, 
+            gradient: 'from-blue-600 via-blue-700 to-indigo-800',
+            bgGradient: 'from-blue-50 to-indigo-50',
+            change: '+12%',
+            changeType: 'positive'
+          },
+          { 
+            label: 'Resolved Tests', 
+            value: resolvedCount, 
+            icon: CheckCircle, 
+            gradient: 'from-emerald-600 via-green-700 to-teal-800',
+            bgGradient: 'from-emerald-50 to-teal-50',
+            change: '+8%',
+            changeType: 'positive'
+          },
+          { 
+            label: 'Selected Candidates', 
+            value: selectedCount, 
+            icon: Users, 
+            gradient: 'from-purple-600 via-violet-700 to-indigo-800',
+            bgGradient: 'from-purple-50 to-indigo-50',
+            change: '+24%',
+            changeType: 'positive'
+          },
+          { 
+            label: 'Accepted Candidates', 
+            value: acceptedCount, 
+            icon: Award, 
+            gradient: 'from-orange-600 via-amber-700 to-yellow-800',
+            bgGradient: 'from-orange-50 to-yellow-50',
+            change: '+18%',
+            changeType: 'positive'
+          },
+          { 
+            label: 'Skills Required', 
+            value: skillsCount, 
+            icon: Code, 
+            gradient: 'from-teal-600 via-cyan-700 to-blue-800',
+            bgGradient: 'from-teal-50 to-cyan-50',
+            change: '+5%',
+            changeType: 'positive'
+          }
         ]);
 
         setSelectedCandidates(selectedList);
         setAcceptedCandidates(acceptedList);
         const testsData = Array.isArray(testsRes.data) ? testsRes.data : [];
         setTests(testsData);
-        console.log('Tests Data:', testsData); // Debug log
         setResolvedTests(resolvedList);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -76,240 +121,122 @@ const CompanyDashboard = () => {
     fetchData();
   }, [companyId]);
 
-  // Chart: Tests Created Over Time (Daily, Weekly, Monthly) with d3.js
-  useEffect(() => {
-    if (!tests.length || !testsChartRef.current) {
-      console.log('No tests to display or chart ref not available:', tests); // Debug log
-      return;
-    }
+  const toggleCandidateDetails = (id, type) => {
+    setExpandedCandidate(expandedCandidate === `${id}-${type}` ? null : `${id}-${type}`);
+  };
 
-    const today = new Date('2025-05-29T13:49:00+01:00'); // Updated to current time
-    // Adjust date parsing to handle 'Z' as UTC
-    const parseDate = d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ');
+  const exportToExcel = () => {
+    const selectedData = selectedCandidates.map(c => ({
+      Status: 'Selected',
+      Name: c.candidate?.name || 'Unknown',
+      Email: c.candidate?.email || 'N/A'
+    }));
+    const acceptedData = acceptedCandidates.map(c => ({
+      Status: 'Accepted',
+      Name: c.candidate_name || 'Unknown',
+      Email: c.email || 'N/A'
+    }));
+    const combinedData = [...selectedData, ...acceptedData];
 
-    let groupFormat, startDate, ticks, labelFormat;
-    switch (timeRange) {
-      case 'Daily':
-        groupFormat = (date) => d3.timeFormat('%Y-%m-%d')(date);
-        startDate = new Date(today);
-        startDate.setDate(today.getDate() - 30); // Last 30 days
-        ticks = d3.timeDay.every(5);
-        labelFormat = (date) => d3.timeFormat('%d/%m')(date);
-        break;
-      case 'Weekly':
-        groupFormat = (date) => {
-          const week = d3.timeWeek.floor(date);
-          return d3.timeFormat('%Y-W%U')(week);
-        };
-        startDate = new Date(today);
-        startDate.setDate(today.getDate() - 180);
-        ticks = d3.timeMonth.every(1);
-        labelFormat = (date) => `Week ${d3.timeFormat('%U')(date)} (${d3.timeFormat('%b %d')(date)})`;
-        break;
-      case 'Monthly':
-        groupFormat = (date) => d3.timeFormat('%Y-%m')(date);
-        startDate = new Date(today);
-        startDate.setFullYear(today.getFullYear() - 1);
-        ticks = d3.timeMonth.every(2);
-        labelFormat = (date) => d3.timeFormat('%b %Y')(date);
-        break;
-      default:
-        return;
-    }
-
-    const testCountsByPeriod = {};
-    tests.forEach(test => {
-      const date = parseDate(test.created_at);
-      console.log('Parsed Date for test:', test.created_at, date); // Debug log
-      if (date && date >= startDate && date <= today) {
-        const period = groupFormat(date);
-        testCountsByPeriod[period] = (testCountsByPeriod[period] || 0) + 1;
-      }
-    });
-
-    const data = Object.entries(testCountsByPeriod)
-      .map(([period, count]) => ({
-        date: parseDate(`${period}T00:00:00.000Z`),
-        value: count
-      }))
-      .filter(d => d.date >= startDate && d.date <= today)
-      .sort((a, b) => a.date - b.date);
-
-    console.log('Chart Data:', data); // Debug log
-
-    d3.select(testsChartRef.current).selectAll('*').remove();
-
-    const svg = d3.select(testsChartRef.current);
-    const width = 800;
-    const height = 300;
-    const margin = { top: 20, right: 20, bottom: 40, left: 40 };
-
-    svg.attr('width', width).attr('height', height);
-
-    const x = d3.scaleBand()
-      .domain(data.map(d => d.date))
-      .range([margin.left, width - margin.right])
-      .padding(0.1);
-
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.value) || 1])
-      .nice()
-      .range([height - margin.bottom, margin.top]);
-
-    svg.selectAll('.bar')
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', d => x(d.date))
-      .attr('y', d => y(d.value))
-      .attr('width', x.bandwidth())
-      .attr('height', d => height - margin.bottom - y(d.value))
-      .attr('fill', '#3b82f6');
-
-    svg.append('g')
-      .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).tickValues(data.map(d => d.date)).tickFormat(labelFormat).tickSizeOuter(0))
-      .selectAll('text')
-      .attr('font-size', '12px')
-      .attr('fill', '#6b7280')
-      .style('text-anchor', 'end')
-      .attr('dx', '-0.5em')
-      .attr('dy', '0.15em')
-      .attr('transform', 'rotate(-45)');
-
-    svg.append('g')
-      .attr('transform', `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).ticks(5))
-      .selectAll('text')
-      .attr('font-size', '12px')
-      .attr('fill', '#6b7280');
-
-    svg.append('text')
-      .attr('x', width / 2)
-      .attr('y', margin.top / 2)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '14px')
-      .attr('fill', '#1e293b')
-      .text('Tests Created Over Time');
-
-    svg.append('text')
-      .attr('x', width / 2)
-      .attr('y', height - margin.bottom / 2)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '12px')
-      .attr('fill', '#1e293b')
-      .text(timeRange === 'Daily' ? 'Date' : timeRange === 'Weekly' ? 'Week' : 'Month');
-
-    svg.append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 2)
-      .attr('y', margin.left / 4)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '12px')
-      .attr('fill', '#1e293b')
-      .text('Number of Tests');
-  }, [tests, timeRange]);
-
-  const toggleCandidateDetails = (id) => {
-    setExpandedCandidate(expandedCandidate === id ? null : id);
+    const ws = XLSX.utils.json_to_sheet(combinedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Candidates');
+    XLSX.writeFile(wb, 'Candidates_Report.xlsx');
   };
 
   const StatCard = ({ stat, index }) => {
     const Icon = stat.icon;
     return (
-      <div className={`${stat.bgColor} rounded-2xl p-6 border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1`}>
-        <div className="flex items-center justify-between mb-4">
-          <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.color} shadow-lg`}>
-            <Icon className="w-6 h-6 text-white" />
+      <div className="group relative">
+        <div className={`bg-gradient-to-br ${stat.bgGradient} backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105`}>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-6">
+              <div className={`p-4 rounded-2xl bg-gradient-to-r ${stat.gradient} shadow-xl group-hover:shadow-2xl transition-all duration-300`}>
+                <Icon className="w-8 h-8 text-white" />
+              </div>
+              <div className="flex items-center space-x-1">
+                <ArrowUpRight className={`w-4 h-4 ${stat.changeType === 'positive' ? 'text-emerald-600' : 'text-red-500'}`} />
+                <span className={`text-sm font-bold ${stat.changeType === 'positive' ? 'text-emerald-600' : 'text-red-500'}`}>
+                  {stat.change}
+                </span>
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <div className="flex items-baseline space-x-2">
+                <p className="text-4xl font-black text-gray-900 group-hover:text-gray-800 transition-colors duration-300">
+                  {loading ? (
+                    <div className="animate-pulse bg-gray-300 h-12 w-16 rounded-lg"></div>
+                  ) : (
+                    stat.value
+                  )}
+                </p>
+                <div className="flex items-center space-x-1">
+                  <div className="animate-pulse">
+                    <Activity className="w-4 h-4 text-gray-500" />
+                  </div>
+                </div>
+              </div>
+              <p className="text-sm font-semibold text-gray-700 tracking-wide uppercase">
+                {stat.label}
+              </p>
+            </div>
           </div>
-          <TrendingUp className="w-5 h-5 text-gray-400" />
-        </div>
-        <div className="space-y-2">
-          <p className="text-3xl font-bold text-gray-800">{loading ? '...' : stat.value}</p>
-          <p className="text-sm font-medium text-gray-600">{stat.label}</p>
         </div>
       </div>
     );
   };
 
-  const CandidateCard = ({ candidate, type = 'selected' }) => {
+  const CandidateCard = ({ candidate, type }) => {
     const candidateData = candidate.candidate || candidate;
     const candidateId = candidate.candidate_id || candidateData.id;
-    const candidateName = candidateData.name || 'Unknown';
-    const profile = candidateData.profile || candidateData;
-    const isExpanded = expandedCandidate === candidateId;
+    const candidateName = candidateData.name || candidateData.candidate_name || 'Unknown';
+    const candidateEmail = candidateData.email || 'N/A';
+    const isExpanded = expandedCandidate === `${candidateId}-${type}`;
 
     return (
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-        <div className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-semibold text-sm">
-                  {candidateName.charAt(0).toUpperCase() || 'U'}
-                </span>
+      <div className="group bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden hover:-translate-y-1">
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-xl">
+                  <span className="text-white font-bold text-lg">
+                    {candidateName.charAt(0).toUpperCase() || 'U'}
+                  </span>
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                </div>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-800">{candidateName}</h4>
-                <p className="text-sm text-gray-500">{profile.field || 'N/A'}</p>
+                <h4 className="font-bold text-gray-900 text-lg">{candidateName}</h4>
+                <p className="text-sm text-gray-600 font-medium">{candidateEmail}</p>
               </div>
             </div>
             <button
-              onClick={() => toggleCandidateDetails(candidateId)}
-              className="flex items-center space-x-1 px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+              onClick={() => toggleCandidateDetails(candidateId, type)}
+              className="group/btn flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-100 hover:to-indigo-200 transition-all duration-300 border border-gray-300/50 hover:border-blue-300/50 shadow-sm hover:shadow-md"
             >
-              {isExpanded ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              <span className="text-sm font-medium">
-                {isExpanded ? 'Hide' : 'Show'}
+              {isExpanded ? (
+                <EyeOff className="w-4 h-4 text-gray-600 group-hover/btn:text-blue-600 transition-colors duration-300" />
+              ) : (
+                <Eye className="w-4 h-4 text-gray-600 group-hover/btn:text-blue-600 transition-colors duration-300" />
+              )}
+              <span className="text-sm font-semibold text-gray-700 group-hover/btn:text-blue-700 transition-colors duration-300">
+                {isExpanded ? 'Hide' : 'View'}
               </span>
             </button>
           </div>
 
           {isExpanded && (
-            <div className="mt-4 pt-4 border-t border-gray-100 space-y-3 animate-in slide-in-from-top duration-300">
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Users className="w-4 h-4" />
-                <span>Last Name: {profile.last_name || 'N/A'}</span>
+            <div className="mt-6 pt-6 border-t border-gray-200/80 space-y-4 animate-in slide-in-from-top duration-500">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InfoItem icon={Users} label="Name" value={candidateName} />
+                <InfoItem icon={Mail} label="Email" value={candidateEmail} />
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Mail className="w-4 h-4" />
-                <span>Email: {candidateData.email || 'N/A'}</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Phone className="w-4 h-4" />
-                <span>Phone: {profile.phoneNumber || 'N/A'}</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <MapPin className="w-4 h-4" />
-                <span>Location: {profile.localisation || 'N/A'}</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Briefcase className="w-4 h-4" />
-                <span>Experience: {JSON.stringify(profile.experience) || 'N/A'}</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Award className="w-4 h-4" />
-                <span>Formation: {JSON.stringify(profile.formation) || 'N/A'}</span>
-              </div>
-              <div className="flex items-start space-x-2 text-sm text-gray-600">
-                <Code className="w-4 h-4 mt-0.5" />
-                <span>Skills: {JSON.stringify(profile.competenceList) || 'N/A'}</span>
-              </div>
-              <div className="flex items-start space-x-2 text-sm text-gray-600">
-                <FileText className="w-4 h-4 mt-0.5" />
-                <span>Description: {profile.description || 'N/A'}</span>
-              </div>
-              <div className="flex items-start space-x-2 text-sm text-gray-600">
-                <Briefcase className="w-4 h-4 mt-0.5" />
-                <span>Projects: {profile.projects || 'N/A'}</span>
-              </div>
-              {profile.file && (
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <FileText className="w-4 h-4" />
-                  <span>File: <a href={profile.file} className="text-blue-600 hover:underline">Download</a></span>
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -317,22 +244,46 @@ const CompanyDashboard = () => {
     );
   };
 
+  const InfoItem = ({ icon: Icon, label, value, fullWidth = false }) => (
+    <div className={`flex items-start space-x-3 p-3 rounded-xl bg-gray-50/80 border border-gray-200/50 ${fullWidth ? 'col-span-full' : ''}`}>
+      <Icon className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+      <div className="min-w-0 flex-1">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{label}</p>
+        <p className="text-sm text-gray-900 break-words">{value}</p>
+      </div>
+    </div>
+  );
+
+  const TabButton = ({ id, label, icon: Icon, isActive, onClick }) => (
+    <button
+      onClick={() => onClick(id)}
+      className={`flex items-center space-x-3 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+        isActive
+          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
+          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+      }`}
+    >
+      <Icon className="w-5 h-5" />
+      <span>{label}</span>
+    </button>
+  );
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-300 rounded-lg w-64 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="animate-pulse space-y-8">
+            <div className="h-12 bg-gray-300/50 rounded-2xl w-96"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="bg-white rounded-2xl p-6 h-32">
-                  <div className="h-4 bg-gray-300 rounded w-3/4 mb-4"></div>
-                  <div className="h-8 bg-gray-300 rounded w-1/2"></div>
+                <div key={i} className="bg-white/50 rounded-3xl p-8 h-48">
+                  <div className="space-y-4">
+                    <div className="h-6 bg-gray-300/50 rounded-xl w-3/4"></div>
+                    <div className="h-12 bg-gray-300/50 rounded-xl w-1/2"></div>
+                    <div className="h-4 bg-gray-300/50 rounded-lg w-2/3"></div>
+                  </div>
                 </div>
               ))}
-            </div>
-            <div className="bg-white rounded-2xl p-6 h-96 mb-8">
-              <div className="h-full bg-gray-300 rounded"></div>
             </div>
           </div>
         </div>
@@ -340,158 +291,259 @@ const CompanyDashboard = () => {
     );
   }
 
+  const filteredCandidates = [...selectedCandidates, ...acceptedCandidates].filter(candidate => {
+    const candidateData = candidate.candidate || candidate;
+    const name = candidateData.name || candidateData.candidate_name || '';
+    const email = candidateData.email || '';
+    const isSelected = selectedCandidates.some(c => c.candidate_id === candidateData.id || c.candidate?.id === candidateData.id);
+    const isAccepted = acceptedCandidates.some(c => c.candidate_id === candidateData.id || c.id === candidateData.id);
+
+    const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterStatus === 'all' || 
+                         (filterStatus === 'selected' && isSelected) || 
+                         (filterStatus === 'accepted' && isAccepted);
+
+    return matchesSearch && matchesFilter;
+  });
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-              Company Dashboard
-            </h1>
-            <p className="text-gray-600 mt-2">Monitor your recruitment performance and candidate pipeline</p>
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-6 lg:space-y-0">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-3">
+              <div className="p-3 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl">
+                <Building2 className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-5xl font-black bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent">
+                  Company Dashboard
+                </h1>
+                <p className="text-gray-600 font-medium text-lg">Advanced recruitment analytics and insights</p>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-xl shadow-sm">
-            <BarChart3 className="w-5 h-5 text-blue-600" />
-            <span className="font-medium text-gray-700">Analytics Overview</span>
+          
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={exportToExcel}
+              className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 font-semibold"
+            >
+              <Download className="w-5 h-5" />
+              <span>Export Report</span>
+            </button>
           </div>
         </div>
 
+        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {stats?.map((stat, index) => (
             <StatCard key={stat.label} stat={stat} index={index} />
           ))}
         </div>
 
-        <div className="space-y-8">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-4">
-                <span className="text-lg font-semibold text-gray-800">Tests Created Over Time</span>
-                <button
-                  onClick={() => setTimeRange('Daily')}
-                  className={`px-3 py-1 rounded-md ${timeRange === 'Daily' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
-                >
-                  Daily
-                </button>
-                <button
-                  onClick={() => setTimeRange('Weekly')}
-                  className={`px-3 py-1 rounded-md ${timeRange === 'Weekly' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
-                >
-                  Weekly
-                </button>
-                <button
-                  onClick={() => setTimeRange('Monthly')}
-                  className={`px-3 py-1 rounded-md ${timeRange === 'Monthly' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'} hover:bg-gray-200`}
-                >
-                  Monthly
-                </button>
+        {/* Navigation Tabs */}
+        <div className="flex flex-wrap items-center space-x-2 p-2 bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 shadow-lg">
+          <TabButton
+            id="overview"
+            label="Overview"
+            icon={BarChart3}
+            isActive={activeTab === 'overview'}
+            onClick={setActiveTab}
+          />
+          <TabButton
+            id="candidates"
+            label="Candidates"
+            icon={Users}
+            isActive={activeTab === 'candidates'}
+            onClick={setActiveTab}
+          />
+          <TabButton
+            id="tests"
+            label="Tests"
+            icon={FileText}
+            isActive={activeTab === 'tests'}
+            onClick={setActiveTab}
+          />
+        </div>
+
+        {/* Content based on active tab */}
+        {activeTab === 'overview' && (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <CandidatesSection 
+              title="Selected Candidates" 
+              candidates={selectedCandidates}
+              icon={Users}
+              gradient="from-purple-600 to-indigo-700"
+              bgGradient="from-purple-50 to-indigo-50"
+              type="selected"
+            />
+            <CandidatesSection 
+              title="Accepted Candidates" 
+              candidates={acceptedCandidates}
+              icon={Award}
+              gradient="from-orange-600 to-amber-700"
+              bgGradient="from-orange-50 to-amber-50"
+              type="accepted"
+            />
+          </div>
+        )}
+
+        {activeTab === 'candidates' && (
+          <div className="space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search candidates..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-12 pr-4 py-3 bg-white/80 backdrop-blur-xl border border-gray-200/50 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 w-full sm:w-80 font-medium"
+                />
               </div>
-              <button className="px-3 py-1 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200">
-                Export PDF
-              </button>
+              <div className="flex items-center space-x-3">
+                <Filter className="w-5 h-5 text-gray-500" />
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="px-4 py-3 bg-white/80 backdrop-blur-xl border border-gray-200/50 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 font-medium"
+                >
+                  <option value="all">All Status</option>
+                  <option value="selected">Selected</option>
+                  <option value="accepted">Accepted</option>
+                </select>
+              </div>
             </div>
-            <div className="overflow-x-auto">
-              <svg ref={testsChartRef} className="w-full"></svg>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {filteredCandidates.map((candidate, index) => {
+                const isSelected = selectedCandidates.some(c => c.candidate_id === candidate.id || c.candidate?.id === candidate.id);
+                const type = isSelected ? 'selected' : 'accepted';
+                return <CandidateCard key={`${candidate.id || candidate.candidate_id}-${type}`} candidate={candidate} type={type} />;
+              })}
             </div>
           </div>
-        </div>
+        )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-800 flex items-center">
-                <Users className="w-6 h-6 text-purple-600 mr-2" />
-                Selected Candidates
-              </h3>
-              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
-                {selectedCandidates.length} total
-              </span>
-            </div>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {selectedCandidates.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  <Users className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>No selected candidates yet</p>
-                </div>
-              ) : (
-                selectedCandidates.map((candidate, index) => (
-                  <CandidateCard key={index} candidate={candidate} type="selected" />
-                ))
-              )}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-800 flex items-center">
-                <Award className="w-6 h-6 text-orange-600 mr-2" />
-                Accepted Candidates
-              </h3>
-              <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
-                {acceptedCandidates.length} total
-              </span>
-            </div>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {acceptedCandidates.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  <Award className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>No accepted candidates yet</p>
-                </div>
-              ) : (
-                acceptedCandidates.map((candidate) => (
-                  <CandidateCard key={candidate.candidate_id} candidate={candidate} type="accepted" />
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-800 flex items-center">
-              <FileText className="w-6 h-6 text-blue-600 mr-2" />
-              Created Tests
-            </h3>
-            <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
-              {tests.length} tests
-            </span>
-          </div>
-          {tests.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
-              <FileText className="w-16 h-16 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-medium mb-2">No tests created yet</p>
-              <p className="text-sm">Start by creating your first assessment test</p>
-            </div>
-          ) : (
-            <div className="grid gap-4">
-              {tests.map((test, index) => (
-                <div key={test.id} className="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow duration-200">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-2">
-                        {test.objective || `Test #${test.id}`}
-                      </h4>
-                      <div className="text-sm text-gray-600 space-y-1">
-                        <p><strong>Prerequisites:</strong> {test.prerequisites || 'N/A'}</p>
-                        <p><strong>Tools Required:</strong> {test.tools_required || 'N/A'}</p>
-                        <p><strong>Before Answer:</strong> {test.before_answer || 'N/A'}</p>
-                        <p><strong>Created At:</strong> {new Date(test.created_at).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <div className="ml-4 flex-shrink-0">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        Test #{index + 1}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        {activeTab === 'tests' && (
+          <TestsSection tests={tests} />
+        )}
       </div>
     </div>
   );
+
+  function CandidatesSection({ title, candidates, icon: Icon, gradient, bgGradient, type }) {
+    return (
+      <div className={`bg-gradient-to-br ${bgGradient} backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl p-8`}>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center space-x-4">
+            <div className={`p-4 rounded-2xl bg-gradient-to-r ${gradient} shadow-xl`}>
+              <Icon className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
+          </div>
+          <div className="flex items-center space-x-3">
+            <span className={`px-4 py-2 bg-gradient-to-r ${gradient} text-white rounded-xl text-sm font-bold shadow-lg`}>
+              {candidates.length} total
+            </span>
+            <button className="p-2 hover:bg-white/50 rounded-xl transition-colors duration-200">
+              <MoreHorizontal className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+        </div>
+        
+        <div className="space-y-6 max-h-96 overflow-y-auto custom-scrollbar">
+          {candidates.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="p-6 bg-white/50 rounded-2xl inline-block mb-4">
+                <Icon className="w-16 h-16 text-gray-400 mx-auto" />
+              </div>
+              <p className="text-xl font-semibold text-gray-600 mb-2">No {title.toLowerCase()} yet</p>
+              <p className="text-gray-500">Candidates will appear here once available</p>
+            </div>
+          ) : (
+            candidates.map((candidate, index) => (
+              <CandidateCard key={`${candidate.candidate_id || candidate.id}-${type}`} candidate={candidate} type={type} />
+            ))
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  function TestsSection({ tests }) {
+    return (
+      <div className="bg-white/80 backdrop-blur-xl rounded-3xl border border-gray-200/50 shadow-2xl p-8">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center space-x-4">
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 shadow-xl">
+              <FileText className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">Created Tests</h3>
+          </div>
+          <span className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl text-sm font-bold shadow-lg">
+            {tests.length} tests
+          </span>
+        </div>
+        
+        {tests.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="p-8 bg-gray-50 rounded-3xl inline-block mb-6">
+              <FileText className="w-20 h-20 text-gray-400 mx-auto" />
+            </div>
+            <p className="text-2xl font-bold text-gray-700 mb-3">No tests created yet</p>
+            <p className="text-gray-500 text-lg mb-6">Start by creating your first assessment test</p>
+            <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              Create Test
+            </button>
+          </div>
+        ) : (
+          <div className="grid gap-6">
+            {tests.map((test, index) => (
+              <div key={test.id} className="group bg-gradient-to-r from-white to-gray-50/80 border border-gray-200/50 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 space-y-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg">
+                        <FileText className="w-6 h-6 text-white" />
+                      </div>
+                      <h4 className="font-bold text-gray-900 text-xl group-hover:text-blue-700 transition-colors duration-300">
+                        {test.objective || `Test #${test.id}`}
+                      </h4>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                      <InfoItem icon={Target} label="Prerequisites" value={test.prerequisites || 'N/A'} />
+                      <InfoItem icon={Code} label="Tools Required" value={test.tools_required || 'N/A'} />
+                      <InfoItem icon={FileText} label="Before Answer" value={test.before_answer || 'N/A'} />
+                      <InfoItem icon={Calendar} label="Created" value={new Date(test.created_at).toLocaleDateString()} />
+                    </div>
+                  </div>
+                  
+                  <div className="ml-6 flex-shrink-0 space-y-3">
+                    <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 border border-blue-200/50">
+                      Test #{index + 1}
+                    </span>
+                    <div className="flex space-x-2">
+                      <button className="p-2 hover:bg-blue-100 rounded-lg transition-colors duration-200">
+                        <Eye className="w-4 h-4 text-blue-600" />
+                      </button>
+                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                        <MoreHorizontal className="w-4 h-4 text-gray-600" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 };
 
 export default CompanyDashboard;
