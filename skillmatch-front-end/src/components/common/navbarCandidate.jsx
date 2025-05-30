@@ -129,13 +129,40 @@ const NavbarCandidate = ({searchedItems}) => {
                 </div>
               )}
             </div>
+            
+            <a href="/study-with-ai" className="nav-item m-5">
+              <span>Study with AI</span>
+            </a>
           </nav>
         </div>
         
         <div className="navbar-right">
         
+         {/* <div className="search-container">
+            <input
+              type="text"
+              placeholder="Search"
+              className="search-input"
+              value={searchedValue}
+              onChange={(e) => {
+                const value = e.target.value;
+                setsearchedValue(value);
+                handleSearch(value); // call search with input value
+              }}
+            />
+            <i className="search-icon"></i>
+          </div> */}
+        
+
+          <div className="navbar-icons">
+            <button className="icon-button notification-button"
+            onClick={()=>navigate('/notification')}>
+              <i className="notification-icon"></i>
+            </button>
+            <button className="icon-button settings-button" onClick={()=>{navigate("/badges")}}>
+            <MdBadge style={{"color" : "gray" , "fontSize" : "22px"}} />
+            </button>
           
-          <div className="navbar-icons">            
             <div className="profile-dropdown" ref={profileRef}>
               <button 
                 className="profile-button"

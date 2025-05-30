@@ -217,11 +217,9 @@ Route::get('/companies/accepted-candidates', [CompanyDashboardController::class,
 Route::get('/companies/tests', [CompanyDashboardController::class, 'getCompanyTests']);
 Route::get('/companies/skills-count/{companyId}', [CompanyDashboardController::class, 'getCompanySkills']);
 
-
-
-
-
-
+// AI Study Assistant routes
+use App\Http\Controllers\GeminiAIController;
+Route::post('/ai/chat', [GeminiAIController::class, 'generateResponse']);
 
 // candidate Roadmap Routes
 Route::get('/roadmap/{roadmap_id}/prerequisites', [RoadmapController::class, 'getPrerequisites']);
