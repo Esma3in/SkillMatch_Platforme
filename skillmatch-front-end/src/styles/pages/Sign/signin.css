@@ -9,15 +9,15 @@
 
 html, body {
   width: 100vw;
-  min-height: 100vh; /* ✅ Allow natural height */
+  min-height: 100vh;
   font-family: 'Poppins', sans-serif;
   background-color: #162534;
-  overflow-x: hidden; /* ✅ Only prevent horizontal scrolling */
+  overflow-x: hidden;
 }
 
 .auth-wrapper {
   width: 100vw;
-  min-height: 100vh; /* ✅ Allow natural height */
+  min-height: 100vh;
 }
 
 .switch-link {
@@ -32,32 +32,10 @@ html, body {
 .containersignIn {
   display: flex;
   width: 100vw;
-  height: 100vh; /* ✅ Fixed viewport height for signin only */
+  height: 100vh;
   background-color: #64748b;
   flex-direction: row;
-  overflow: hidden; /* ✅ No scrolling only for signin container */
-}
-
-@media (max-width: 768px) {
-  .containersignIn {
-    flex-direction: column;
-    height: 100vh; /* ✅ Maintain full height on mobile */
-  }
-
-  .form-section,
-  .visual-section {
-    width: 100%;
-    height: 50vh; /* ✅ Split screen evenly on mobile */
-    overflow: hidden;
-  }
-  
-  .form-section {
-    padding: 20px 30px; /* ✅ Reduced padding for mobile */
-  }
-  
-  .visual-section {
-    padding: 20px;
-  }
+  overflow: hidden;
 }
 
 .error-message {
@@ -88,7 +66,6 @@ html, body {
   overflow: hidden;
 }
 
-/* ✅ Add professional overlay pattern */
 .visual-section::before {
   content: '';
   position: absolute;
@@ -103,8 +80,8 @@ html, body {
 .visual-section img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* ✅ Fill entire space */
-  border-radius: 16px; /* ✅ Add border radius back */
+  object-fit: cover;
+  border-radius: 16px;
   z-index: 1;
   position: relative;
 }
@@ -114,17 +91,16 @@ html, body {
 =========================== */
 .form-section {
   width: 55%;
-  height: 100vh; /* ✅ Full height */
+  height: 100vh;
   padding: 60px 80px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); /* ✅ Subtle gradient */
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-y: auto; /* ✅ Allow vertical scrolling within form section */
-  overflow-x: hidden; /* ✅ Prevent horizontal scrolling */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-/* ✅ Custom scrollbar for professional look */
 .form-section::-webkit-scrollbar {
   width: 6px;
 }
@@ -144,12 +120,12 @@ html, body {
 
 .signin-form {
   width: 100%;
-  max-width: 450px; /* ✅ Slightly reduced for better proportions */
-  background: rgba(255, 255, 255, 0.8); /* ✅ Subtle background */
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.8);
   padding: 40px;
-  border-radius: 24px; /* ✅ Modern rounded corners */
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); /* ✅ Professional shadow */
-  backdrop-filter: blur(10px); /* ✅ Modern glass effect */
+  border-radius: 24px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 fieldset {
@@ -157,13 +133,13 @@ fieldset {
 }
 
 legend {
-  font-weight: 700; /* ✅ Bolder for professional look */
-  font-size: 42px; /* ✅ Slightly smaller for better fit */
+  font-weight: 700;
+  font-size: 42px;
   line-height: 1.2;
-  letter-spacing: -0.5px; /* ✅ Modern tight spacing */
+  letter-spacing: -0.5px;
   color: #0f172a;
   margin-bottom: 32px;
-  text-align: center; /* ✅ Centered for professional layout */
+  text-align: center;
   background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -173,7 +149,7 @@ legend {
 form {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* ✅ Consistent spacing */
+  gap: 20px;
 }
 
 /* ========================
@@ -201,7 +177,7 @@ form {
   border: 2px solid #e2e8f0;
   border-radius: 12px;
   background: #ffffff;
-  transition: all 0.3s ease; /* ✅ Smooth transitions */
+  transition: all 0.3s ease;
   font-weight: 400;
 }
 
@@ -211,7 +187,7 @@ form {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-  transform: translateY(-1px); /* ✅ Subtle lift effect */
+  transform: translateY(-1px);
 }
 
 /* ========================
@@ -265,7 +241,7 @@ form {
 }
 
 .signin-btn button {
-  width: 100%; /* ✅ Full width for professional look */
+  width: 100%;
   height: 56px;
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   border-radius: 12px;
@@ -278,6 +254,10 @@ form {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .signin-btn button:hover {
@@ -381,21 +361,147 @@ form {
   100% { transform: rotate(360deg); }
 }
 
-/* ✅ Professional loading state */
-.signin-btn button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+/* ========================
+   RESPONSIVE DESIGN - ALL SCREEN SIZES
+=========================== */
+
+/* Extra Large Desktops (1400px and up) */
+@media (min-width: 1400px) {
+  .form-section {
+    padding: 80px 120px;
+  }
+  
+  .signin-form {
+    max-width: 520px;
+    padding: 50px;
+  }
+  
+  legend {
+    font-size: 48px;
+    margin-bottom: 40px;
+  }
+  
+  .form-field input[type="email"],
+  .form-field input[type="password"],
+  .form-field input[type="text"] {
+    padding: 18px 24px;
+    font-size: 18px;
+  }
+  
+  .signin-btn button {
+    height: 60px;
+    font-size: 18px;
+  }
 }
 
-/* ========================
-   Responsive Professional Design
-=========================== */
-@media (max-width: 768px) {
+/* Large Desktops (1200px to 1399px) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .form-section {
+    padding: 60px 100px;
+  }
+  
   .signin-form {
-    padding: 30px 20px;
-    margin: 0 10px;
+    max-width: 480px;
+    padding: 45px;
+  }
+  
+  legend {
+    font-size: 44px;
+  }
+}
+
+/* Standard Desktops (992px to 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .form-section {
+    padding: 50px 60px;
+  }
+  
+  .signin-form {
+    max-width: 420px;
+    padding: 35px;
+  }
+  
+  legend {
+    font-size: 38px;
+    margin-bottom: 28px;
+  }
+}
+
+/* Tablets (768px to 991px) */
+@media (min-width: 769px) and (max-width: 991px) {
+  .containersignIn {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .visual-section {
+    width: 100%;
+    height: 300px;
+    padding: 20px;
+    order: 1;
+  }
+  
+  .visual-section img {
+    border-radius: 12px;
+  }
+
+  .form-section {
+    width: 100%;
+    height: auto;
+    min-height: calc(100vh - 300px);
+    padding: 40px 60px;
+    order: 2;
+  }
+  
+  .signin-form {
+    max-width: 500px;
+    padding: 35px;
+  }
+  
+  legend {
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+  
+  .remForg-part {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* Mobile Landscape (568px to 768px) */
+@media (min-width: 569px) and (max-width: 768px) {
+  .containersignIn {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .visual-section {
+    width: 100%;
+    height: 250px;
+    padding: 15px;
+    order: 1;
+  }
+  
+  .visual-section img {
+    border-radius: 10px;
+  }
+
+  .form-section {
+    width: 100%;
+    height: auto;
+    min-height: calc(100vh - 250px);
+    padding: 30px 40px;
+    order: 2;
+  }
+  
+  .signin-form {
+    max-width: 100%;
+    padding: 30px 25px;
+    margin: 0;
   }
   
   legend {
@@ -403,7 +509,223 @@ form {
     margin-bottom: 24px;
   }
   
+  .form-field input[type="email"],
+  .form-field input[type="password"],
+  .form-field input[type="text"] {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+  
+  .signin-btn button {
+    height: 52px;
+    font-size: 15px;
+  }
+  
+  .remForg-part {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+  }
+  
+  .signUp-link {
+    font-size: 13px;
+  }
+}
+
+/* Mobile Portrait (320px to 568px) */
+@media (max-width: 568px) {
+  .containersignIn {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .visual-section {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    order: 1;
+  }
+  
+  .visual-section img {
+    border-radius: 8px;
+  }
+
   .form-section {
+    width: 100%;
+    height: auto;
+    min-height: calc(100vh - 200px);
+    padding: 20px 15px;
+    order: 2;
+  }
+  
+  .signin-form {
+    max-width: 100%;
+    padding: 25px 20px;
+    margin: 0;
+    border-radius: 16px;
+  }
+  
+  legend {
+    font-size: 28px;
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+  
+  form {
+    gap: 16px;
+  }
+  
+  .form-field label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  
+  .form-field input[type="email"],
+  .form-field input[type="password"],
+  .form-field input[type="text"],
+  #role {
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+  
+  .signin-btn {
+    margin-top: 20px;
+  }
+  
+  .signin-btn button {
+    height: 48px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  
+  .remForg-part {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    margin: 12px 0;
+  }
+  
+  #remember-meCheck {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+  
+  .signUp-link {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+  
+  #FileInput,
+  #LogoInput {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* Very Small Mobile (280px to 319px) */
+@media (max-width: 319px) {
+  .form-section {
+    padding: 15px 10px;
+  }
+  
+  .signin-form {
+    padding: 20px 15px;
+  }
+  
+  legend {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .form-field input[type="email"],
+  .form-field input[type="password"],
+  .form-field input[type="text"],
+  #role {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .signin-btn button {
+    height: 44px;
+    font-size: 13px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .form-field input[type="email"],
+  .form-field input[type="password"],
+  .form-field input[type="text"],
+  #role {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .signin-btn button:hover {
+    transform: none; /* Disable hover effects on touch */
+  }
+  
+  .forgetPassword a:hover,
+  .signUp-link a:hover {
+    color: inherit; /* Disable hover effects on touch */
+  }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .visual-section::before {
+    background-size: 30px 30px; /* Sharper pattern on retina */
+  }
+}
+
+/* Landscape Orientation for Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .containersignIn {
+    flex-direction: row;
+    height: 100vh;
+  }
+  
+  .visual-section {
+    width: 40%;
+    height: 100vh;
+    order: 1;
+  }
+  
+  .form-section {
+    width: 60%;
+    height: 100vh;
+    min-height: auto;
+    order: 2;
+    overflow-y: auto;
+  }
+  
+  .signin-form {
     padding: 20px;
+  }
+  
+  legend {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .visual-section {
+    display: none;
+  }
+  
+  .form-section {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .signin-form {
+    box-shadow: none;
+    border: 1px solid #ccc;
   }
 }
