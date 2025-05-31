@@ -28,7 +28,7 @@ export default function CandidateListForCompany() {
     console.log(`DEBUG: ${message}`, data);
   };
 
-  // Fonction pour récupérer les candidats depuis l'API
+  // Fonction pour récupérer les candidats depuis l'API et merger avec localStorage
   const fetchCandidates = async () => {
     try {
       setLoading(true);
@@ -36,12 +36,24 @@ export default function CandidateListForCompany() {
       console.log('Fetching candidates from /api/Allcandidates');
       const response = await api.get('/api/Allcandidates');
       console.log('API Response:', response.data);
-  
+
+      // Retrieve statuses from localStorage
+      const storedStatuses = JSON.parse(localStorage.getItem('candidateStatuses') || '{}');
+
       if (response.data && (response.data.candidates || Array.isArray(response.data))) {
         const candidatesData = response.data.candidates || response.data;
+        // Merge API data with localStorage statuses
+        const candidatesWithStatus = candidatesData.map(candidate => ({
+          ...candidate,
+          status: storedStatuses[candidate.id] || candidate.status || null, // Prioritize localStorage, then API, then null
+        }));
         const topRanked = response.data.topRankedCandidates || candidatesData;
-        setCandidates(candidatesData);
-        setTopRankedCandidates(topRanked);
+        const topRankedWithStatus = topRanked.map(candidate => ({
+          ...candidate,
+          status: storedStatuses[candidate.id] || candidate.status || null,
+        }));
+        setCandidates(candidatesWithStatus);
+        setTopRankedCandidates(topRankedWithStatus);
       } else {
         setError('Unexpected API response format');
       }
@@ -65,9 +77,13 @@ export default function CandidateListForCompany() {
       console.log('Fetching details for candidate ID:', candidateId);
       const response = await api.get(`/api/Allcandidates/${candidateId}`);
       console.log('API Response:', response.data);
-  
+
       if (response.data && response.data.candidate) {
-        setCandidateDetails(response.data.candidate);
+        // Merge status from selectedCandidate (which includes localStorage data)
+        setCandidateDetails({
+          ...response.data.candidate,
+          status: selectedCandidate?.status || response.data.candidate.status || null,
+        });
       } else {
         throw new Error('Unexpected response format');
       }
@@ -84,15 +100,13 @@ export default function CandidateListForCompany() {
       setLoadingDetails(false);
     }
   };
-  
 
   // Ouvrir le modal avec les détails du candidat
   const openDetailsModal = (candidate) => {
     setSelectedCandidate(candidate);
     setShowModal(true);
-    fetchCandidateDetails(candidate.id); // ← correct
+    fetchCandidateDetails(candidate.id);
   };
-  
 
   // Fermer le modal
   const closeModal = () => {
@@ -104,13 +118,11 @@ export default function CandidateListForCompany() {
   // Fonction pour afficher une notification
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
-    // Masquer la notification après 3 secondes
     setTimeout(() => {
       setNotification(null);
     }, 3000);
   };
 
-  
   // Charger les candidats au chargement du composant
   useEffect(() => {
     fetchCandidates();
@@ -133,15 +145,12 @@ export default function CandidateListForCompany() {
   // Tri des candidats
   const sortedCandidates = [...candidates].sort((a, b) => {
     if (sortField === 'rank') {
-      // Enlever le '#' pour trier numériquement
       const rankA = parseInt(a.rank?.replace('#', '') || '0', 10);
       const rankB = parseInt(b.rank?.replace('#', '') || '0', 10);
       return sortDirection === 'asc' ? rankA - rankB : rankB - rankA;
     } else {
-      // Pour les autres champs (comme le nom)
       const fieldA = a[sortField] || '';
       const fieldB = b[sortField] || '';
-
       return sortDirection === 'asc'
         ? fieldA > fieldB
           ? 1
@@ -208,7 +217,6 @@ export default function CandidateListForCompany() {
   // Accepter un candidat
   const acceptCandidate = async (candidateId) => {
     try {
-      // Get company ID from localStorage
       const companyId = localStorage.getItem('company_id') || localStorage.getItem('companyId');
       
       if (!companyId) {
@@ -216,13 +224,28 @@ export default function CandidateListForCompany() {
         return false;
       }
 
-      // Send both candidate ID and company ID to the backend
       await api.put(`/api/Allcandidates/${candidateId}/accept`, {
         company_id: companyId
       });
 
+      // Update the candidate's status in the state
+      setCandidates(prevCandidates =>
+        prevCandidates.map(c =>
+          c.id === candidateId ? { ...c, status: 'Accepted' } : c
+        )
+      );
+      setTopRankedCandidates(prevTopRanked =>
+        prevTopRanked.map(c =>
+          c.id === candidateId ? { ...c, status: 'Accepted' } : c
+        )
+      );
+
+      // Save status to localStorage
+      const storedStatuses = JSON.parse(localStorage.getItem('candidateStatuses') || '{}');
+      storedStatuses[candidateId] = 'Accepted';
+      localStorage.setItem('candidateStatuses', JSON.stringify(storedStatuses));
+
       showNotification('Candidate accepted successfully');
-      fetchCandidates();
       return true;
     } catch (error) {
       console.error('Error accepting candidate:', {
@@ -239,14 +262,25 @@ export default function CandidateListForCompany() {
   const rejectCandidate = async (candidateId) => {
     try {
       await api.put(`/api/Allcandidates/${candidateId}/reject`);
+
+      // Update the candidate's status in the state
+      setCandidates(prevCandidates =>
+        prevCandidates.map(c =>
+          c.id === candidateId ? { ...c, status: 'Rejected' } : c
+        )
+      );
+      setTopRankedCandidates(prevTopRanked =>
+        prevTopRanked.map(c =>
+          c.id === candidateId ? { ...c, status: 'Rejected' } : c
+        )
+      );
+
+      // Save status to localStorage
+      const storedStatuses = JSON.parse(localStorage.getItem('candidateStatuses') || '{}');
+      storedStatuses[candidateId] = 'Rejected';
+      localStorage.setItem('candidateStatuses', JSON.stringify(storedStatuses));
+
       showNotification('Candidate rejected successfully');
-      
-      // Update the candidates list in the state by filtering out the rejected candidate
-      setCandidates(prevCandidates => prevCandidates.filter(c => c.id !== candidateId));
-      
-      // Also update the top ranked candidates list if applicable
-      setTopRankedCandidates(prevTopRanked => prevTopRanked.filter(c => c.id !== candidateId));
-      
       return true;
     } catch (error) {
       console.error('Error rejecting candidate:', {
@@ -258,7 +292,6 @@ export default function CandidateListForCompany() {
       return false;
     }
   };
-  
 
   // Rendu des deux tabs
   const renderAllCandidates = () => (
@@ -279,7 +312,7 @@ export default function CandidateListForCompany() {
               </div>
             </th>
             <th className="py-3 px-4">Details</th>
-            <th className="py-3 px-4">Actions</th>
+            <th className="py-3 px-4">Actions/Status</th>
           </tr>
         </thead>
         <tbody>
@@ -308,23 +341,32 @@ export default function CandidateListForCompany() {
                 >
                   Details
                 </button>
-
               </td>
               <td className="py-3 px-4">
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => rejectCandidate(candidate.id)}
-                    className="text-red-600 hover:text-red-800"
+                {candidate.status ? (
+                  <span
+                    className={`${
+                      candidate.status === 'Accepted' ? 'text-green-600' : 'text-red-600'
+                    } font-medium`}
                   >
-                    Reject
-                  </button>
-                  <button
-                    onClick={() => acceptCandidate(candidate.id)}
-                    className="text-green-600 hover:text-green-800"
-                  >
-                    Accept
-                  </button>
-                </div>
+                    {candidate.status}
+                  </span>
+                ) : (
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => rejectCandidate(candidate.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      onClick={() => acceptCandidate(candidate.id)}
+                      className="text-green-600 hover:text-green-800"
+                    >
+                      Accept
+                    </button>
+                  </div>
+                )}
               </td>
             </tr>
           ))}
@@ -401,7 +443,6 @@ export default function CandidateListForCompany() {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-          {/* Header du modal */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Candidate Details</h2>
             <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">
@@ -409,7 +450,6 @@ export default function CandidateListForCompany() {
             </button>
           </div>
 
-          {/* Contenu du modal */}
           {loadingDetails ? (
             <div className="text-center py-8">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
@@ -417,7 +457,6 @@ export default function CandidateListForCompany() {
             </div>
           ) : candidateDetails ? (
             <div>
-              {/* Informations principales */}
               <div className="mb-6">
                 <div className="flex items-center mb-4">
                   <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-medium mr-4">
@@ -425,23 +464,22 @@ export default function CandidateListForCompany() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold">
-                      {candidateDetails.candidate?.name || selectedCandidate?.name || 'Unknown'}
+                      {candidateDetails.name || selectedCandidate?.name || 'Unknown'}
                     </h3>
                     <p className="text-gray-500">
-                      {candidateDetails.candidate?.email || selectedCandidate?.email || 'No email'}
+                      {candidateDetails.email || selectedCandidate?.email || 'No email'}
                     </p>
                   </div>
                 </div>
 
-                {candidateDetails.candidate?.profile && (
+                {candidateDetails.profile && (
                   <div className="mb-4">
                     <div className="text-sm text-gray-500 mb-1">Profile</div>
-                    <p>{candidateDetails.candidate.profile.bio || 'No bio available'}</p>
+                    <p>{candidateDetails.profile.bio || 'No bio available'}</p>
                   </div>
                 )}
               </div>
 
-              {/* Badges */}
               <div className="mb-6">
                 <h4 className="font-medium mb-2">Badges ({candidateDetails.badges?.length || 0})</h4>
                 {candidateDetails.badges?.length > 0 ? (
@@ -457,7 +495,6 @@ export default function CandidateListForCompany() {
                 )}
               </div>
 
-              {/* Tests */}
               <div className="mb-6">
                 <h4 className="font-medium mb-2">Test Results</h4>
                 {candidateDetails.testResults?.length > 0 ? (
@@ -498,12 +535,11 @@ export default function CandidateListForCompany() {
                 )}
               </div>
 
-              {/* Skills */}
-              {candidateDetails.candidate?.skills && candidateDetails.candidate.skills.length > 0 && (
+              {candidateDetails.skills && candidateDetails.skills.length > 0 && (
                 <div className="mb-6">
                   <h4 className="font-medium mb-2">Skills</h4>
                   <div className="flex flex-wrap gap-2">
-                    {candidateDetails.candidate.skills.map((skill) => (
+                    {candidateDetails.skills.map((skill) => (
                       <div key={skill.id} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
                         {skill.name}
                       </div>
@@ -512,26 +548,37 @@ export default function CandidateListForCompany() {
                 </div>
               )}
 
-              {/* Actions */}
               <div className="mt-6 flex justify-end space-x-3">
-                <button
-                  onClick={() => {
-                    rejectCandidate(selectedCandidate.id);
-                    closeModal();
-                  }}
-                  className="px-4 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200"
-                >
-                  Reject
-                </button>
-                <button
-                  onClick={() => {
-                    acceptCandidate(selectedCandidate.id);
-                    closeModal();
-                  }}
-                  className="px-4 py-2 bg-green-100 text-green-700 rounded hover:bg-green-200"
-                >
-                  Accept
-                </button>
+                {selectedCandidate?.status ? (
+                  <span
+                    className={`${
+                      selectedCandidate.status === 'Accepted' ? 'text-green-600' : 'text-red-600'
+                    } font-medium`}
+                  >
+                    {selectedCandidate.status}
+                  </span>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        rejectCandidate(selectedCandidate.id);
+                        closeModal();
+                      }}
+                      className="px-4 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      onClick={() => {
+                        acceptCandidate(selectedCandidate.id);
+                        closeModal();
+                      }}
+                      className="px-4 py-2 bg-green-100 text-green-700 rounded hover:bg-green-200"
+                    >
+                      Accept
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           ) : (
@@ -544,119 +591,112 @@ export default function CandidateListForCompany() {
 
   return (
     <>
-    <NavbarCompany />
-    <div className="p-4">
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-semibold">Candidates</h1>
-          
+      <NavbarCompany />
+      <div className="p-4">
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-semibold">Candidates</h1>
+          </div>
         </div>
-      </div>
 
-      {/* Notification */}
-      {notification && (
-        <div
-          className={`p-4 mb-4 rounded ${
-            notification.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
-          }`}
-        >
-          {notification.message}
+        {notification && (
+          <div
+            className={`p-4 mb-4 rounded ${
+              notification.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+            }`}
+          >
+            {notification.message}
+          </div>
+        )}
+
+        <div className="flex mb-4 border-b">
+          <button
+            className={`px-4 py-2 ${
+              activeTab === 'all' ? 'border-b-2 border-blue-600 text-blue-600 font-medium' : 'text-gray-500'
+            }`}
+            onClick={() => setActiveTab('all')}
+          >
+            All candidates
+          </button>
+          <button
+            className={`px-4 py-2 ${
+              activeTab === 'topRanked' ? 'border-b-2 border-blue-600 text-blue-600 font-medium' : 'text-gray-500'
+            }`}
+            onClick={() => setActiveTab('topRanked')}
+          >
+            Top ranked
+          </button>
         </div>
-      )}
 
-      {/* Onglets */}
-      <div className="flex mb-4 border-b">
-        <button
-          className={`px-4 py-2 ${
-            activeTab === 'all' ? 'border-b-2 border-blue-600 text-blue-600 font-medium' : 'text-gray-500'
-          }`}
-          onClick={() => setActiveTab('all')}
-        >
-          All candidates
-        </button>
-        <button
-          className={`px-4 py-2 ${
-            activeTab === 'topRanked' ? 'border-b-2 border-blue-600 text-blue-600 font-medium' : 'text-gray-500'
-          }`}
-          onClick={() => setActiveTab('topRanked')}
-        >
-          Top ranked
-        </button>
-      </div>
+        {error && (
+          <div className="p-4 mb-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <h3 className="font-bold">Error:</h3>
+            <p>{error}</p>
+          </div>
+        )}
 
-      {/* Debugging info */}
-      {error && (
-        <div className="p-4 mb-4 bg-red-100 border border-red-400 text-red-700 rounded">
-          <h3 className="font-bold">Error:</h3>
-          <p>{error}</p>
-        </div>
-      )}
+        {loading ? (
+          <div className="p-4 text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+            <p className="mt-2">Loading...</p>
+          </div>
+        ) : (
+          <>
+            {activeTab === 'all' &&
+              (sortedCandidates.length ? (
+                renderAllCandidates()
+              ) : (
+                <p className="text-center py-4">No candidates found</p>
+              ))}
+            {activeTab === 'topRanked' &&
+              (topRankedCandidates.length ? (
+                renderTopRanked()
+              ) : (
+                <p className="text-center py-4">No ranked candidates found</p>
+              ))}
 
-      {/* Affichage des données */}
-      {loading ? (
-        <div className="p-4 text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-          <p className="mt-2">Loading...</p>
-        </div>
-      ) : (
-        <>
-          {activeTab === 'all' &&
-            (sortedCandidates.length ? (
-              renderAllCandidates()
-            ) : (
-              <p className="text-center py-4">No candidates found</p>
-            ))}
-          {activeTab === 'topRanked' &&
-            (topRankedCandidates.length ? (
-              renderTopRanked()
-            ) : (
-              <p className="text-center py-4">No ranked candidates found</p>
-            ))}
-
-          {/* Pagination */}
-          {(activeTab === 'all' && sortedCandidates.length > itemsPerPage) ||
-          (activeTab === 'topRanked' && topRankedCandidates.length > itemsPerPage) ? (
-            <div className="flex justify-between items-center mt-4">
-              <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50 hover:bg-gray-400 transition-colors"
-              >
-                <ArrowLeft size={16} />
-              </button>
-              <span>
-                Page {currentPage} of{' '}
-                {Math.ceil(
-                  (activeTab === 'all' ? sortedCandidates.length : topRankedCandidates.length) / itemsPerPage
-                )}
-              </span>
-              <button
-                onClick={() =>
-                  setCurrentPage((prev) => {
-                    const maxPage = Math.ceil(
-                      (activeTab === 'all' ? sortedCandidates.length : topRankedCandidates.length) / itemsPerPage
-                    );
-                    return prev < maxPage ? prev + 1 : prev;
-                  })
-                }
-                disabled={
-                  currentPage >=
-                  Math.ceil(
+            {(activeTab === 'all' && sortedCandidates.length > itemsPerPage) ||
+            (activeTab === 'topRanked' && topRankedCandidates.length > itemsPerPage) ? (
+              <div className="flex justify-between items-center mt-4">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50 hover:bg-gray-400 transition-colors"
+                >
+                  <ArrowLeft size={16} />
+                </button>
+                <span>
+                  Page {currentPage} of{' '}
+                  {Math.ceil(
                     (activeTab === 'all' ? sortedCandidates.length : topRankedCandidates.length) / itemsPerPage
-                  )
-                }
-                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50 hover:bg-gray-400 transition-colors"
-              >
-                <ArrowRight size={16} />
-              </button>
-            </div>
-          ) : null}
-        </>
-      )}
+                  )}
+                </span>
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => {
+                      const maxPage = Math.ceil(
+                        (activeTab === 'all' ? sortedCandidates.length : topRankedCandidates.length) / itemsPerPage
+                      );
+                      return prev < maxPage ? prev + 1 : prev;
+                    })
+                  }
+                  disabled={
+                    currentPage >=
+                    Math.ceil(
+                      (activeTab === 'all' ? sortedCandidates.length : topRankedCandidates.length) / itemsPerPage
+                    )
+                  }
+                  className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50 hover:bg-gray-400 transition-colors"
+                >
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            ) : null}
+          </>
+        )}
 
-      {/* Modal pour les détails du candidat */}
-      {renderCandidateDetailsModal()}
-    </div>
+        {renderCandidateDetailsModal()}
+      </div>
     </>
   );
 }

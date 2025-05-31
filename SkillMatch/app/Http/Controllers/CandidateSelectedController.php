@@ -10,23 +10,40 @@ use Illuminate\Support\Facades\Log;
 
 class CandidateSelectedController extends Controller
 {
-    public function getSelectedCandidates($id)
-{
-    $company = Company::find($id);
+    public function getSelectedCandidates(Request $request)
+    {
+        $companyId = $request->query('company_id');
 
-    if (!$company) {
-        return response()->json(['message' => 'Company not found'],404);
+        $company = Company::withCount('selectedCandidates')
+            ->with([
+                'selectedCandidates.candidate' => function ($query) {
+                    $query->select('id', 'name', 'email');
+                },
+                'selectedCandidates.candidate.profile' => function ($query) {
+                    $query->select(
+                        'id',
+                        'candidate_id',
+                        'last_name',
+                        'field',
+                        'localisation',
+                        'phoneNumber',
+                        'photoProfil',
+                        'experience',
+                        'formation',
+                        'competenceList',
+                        'description',
+                        'projects',
+                        'file'
+                    );
+                },
+                'selectedCandidates.candidate.tests'
+            ])
+            ->where('id', $companyId)
+            ->first();
+
+        return response()->json($company);
     }
 
-    // Eager load candidate profile
-    $candidates = $company->candidates_selected()->with(['profile','badges'])->paginate(10);
-
-    if ($candidates->isEmpty()) {
-        return response()->json(['message' => 'You don\'t select any candidates'],404);
-    }
-
-    return response()->json($candidates);
-}
 
 public function delete(Request $request)
 {
