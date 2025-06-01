@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import NavbarCandidate from "../components/common/navbarCandidate";
 import { Footer } from "../components/common/footer";
 
-export const Box = () => {
+ const Box = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
@@ -363,3 +363,5 @@ export const Box = () => {
     </>
   );
 };
+
+export default Box;

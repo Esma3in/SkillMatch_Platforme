@@ -99,9 +99,14 @@ export default function SignIn({ onToggle }) {
 
       if (response && response.status === 200) {
         if(response.data.role==='candidate'){
-          console.log(response.data)
-          localStorage.setItem('candidate_id',response.data.candidate?.id)
+          if(response.data.candidate?.state==='banned'){
+              navigate('/bannedPage');
+          }else if(response.data.candidate?.state==='waiting' || response.data.candidate?.state==='unactive'){
+            navigate('/account-desactive')
+          }else{
+            localStorage.setItem('candidate_id',response.data.candidate?.id)
           navigate(`/candidate/Session/${response.data.candidate?.id}`)
+          }
         }else if(response.data.role === 'company'){
           localStorage.setItem('company_id',response.data.company?.id)
           navigate(`/company/Session/${response.data.company?.id}`)
