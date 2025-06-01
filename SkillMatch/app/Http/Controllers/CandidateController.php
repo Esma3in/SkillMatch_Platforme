@@ -190,11 +190,10 @@ class CandidateController extends Controller
 
 
         $candidate = Candidate::with(['profile', 'languages'])->find($id);
-
-
         if (!$candidate) {
             return response()->json(['error' => 'Candidate not found'], 404);
         }
+
 
         $mpdf = new \Mpdf\Mpdf();
 
@@ -302,6 +301,7 @@ class CandidateController extends Controller
             ->header('Content-Disposition', 'attachment; filename="candidate_cv.pdf"');
 
     }
+    
     public function AllCandidates(){
         $candidates = Candidate::with('profile')
             ->whereIn('state', ['active', 'unactive','waiting'])
@@ -368,7 +368,7 @@ class CandidateController extends Controller
                 $q->whereIn('skills.id', $skillIds);
                 });
             })
-            ->paginate(5); // 5 candidats par page
+            ->paginate(5);
 
         return response()->json($candidates);
     }

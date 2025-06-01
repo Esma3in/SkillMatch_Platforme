@@ -27,6 +27,7 @@ const CompanyDashboard = () => {
   const [company, setCompany] = useState(null);
   const [companyError, setCompanyError] = useState('');
 
+
   const companyId = localStorage.getItem('company_id');
 
   useEffect(() => {
@@ -73,7 +74,6 @@ const CompanyDashboard = () => {
         const skillsCount = skillsCountRes.data?.skills_count || 0;
         const companyData = companyRes.data || null;
 
-        // Calculate changes dynamically (example: compare with previous data if available)
         setStats([
           {
             label: 'Total Tests',
@@ -204,61 +204,78 @@ const CompanyDashboard = () => {
       );
     }
 
-
     return (
-      <div className="bg-gradient-to-br from-white to-blue-50 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl p-8 mb-8">
-        <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-6">
-          <div className="relative">
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
-              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-            </div>
-          </div>
-          <div className="flex-1 text-center md:text-left">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent mb-2">
-              Hello, {company.name || 'Company'}
-            </h1>
-            <p className="text-gray-600 font-medium capitalize">
-              {company.sector || 'Unknown'} Industry
+      <div className="bg-white/80 backdrop-blur-xl rounded-3xl border border-gray-200/50 shadow-2xl p-8 mb-8">
+        {!company.profile ? (
+          <div className="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg animate-fade-in max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Build Your Company Profile</h2>
+            <p className="text-gray-600 text-center mb-6">
+              Unlock the full potential of your dashboard! Create your company profile to showcase your brand and access advanced features.
             </p>
+            <button className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            onClick={()=>window.location.href ="/company/profile"}>
+              Create Profile Now
+            </button>
           </div>
-        </div>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <InfoItem
-            icon={Globe}
-            label="Website"
-            value={company.profile?.websiteUrl || 'N/A'}
-            isLink={company.profile?.websiteUrl}
-          />
-          <InfoItem
-            icon={MapPin}
-            label="Address"
-            value={company.profile?.address || 'N/A'}
-          />
-          <InfoItem
-            icon={Phone}
-            label="Phone"
-            value={company.profile?.phone || 'N/A'}
-          />
-          <InfoItem
-            icon={Clock}
-            label="Founded"
-            value={
-              company.profile?.DateCreation
-                ? new Date(company.profile.DateCreation).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })
-                : 'N/A'
-            }
-          />
-          <InfoItem
-            icon={BioIcon}
-            label="Bio"
-            value={company.profile?.Bio || 'N/A'}
-            fullWidth
-          />
-        </div>
+        ) : (
+          <>
+            <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-6">
+              <div className="relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-xl">
+                  <Building2 className="w-8 h-8 text-white" aria-hidden="true" />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent mb-2">
+                  Hello, {company.name || 'Company'}
+                </h1>
+                <p className="text-gray-600 font-medium capitalize">
+                  {company.sector || 'Unknown'} Industry
+                </p>
+              </div>
+            </div>
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <InfoItem
+                icon={Globe}
+                label="Website"
+                value={company.profile?.websiteUrl || 'N/A'}
+                isLink={company.profile?.websiteUrl}
+              />
+              <InfoItem
+                icon={MapPin}
+                label="Address"
+                value={company.profile?.address || 'N/A'}
+              />
+              <InfoItem
+                icon={Phone}
+                label="Phone"
+                value={company.profile?.phone || 'N/A'}
+              />
+              <InfoItem
+                icon={Clock}
+                label="Founded"
+                value={
+                  company.profile?.DateCreation
+                    ? new Date(company.profile.DateCreation).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })
+                    : 'N/A'
+                }
+              />
+              <InfoItem
+                icon={BioIcon}
+                label="Bio"
+                value={company.profile?.Bio || 'N/A'}
+                fullWidth
+              />
+            </div>
+          </>
+        )}
       </div>
     );
   };
@@ -269,7 +286,6 @@ const CompanyDashboard = () => {
       <div className="group relative">
         <div className={`bg-gradient-to-br ${stat.bgGradient} backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105`} role="region" aria-labelledby={`stat-${index}`}>
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-6">
               <div className={`p-4 rounded-2xl bg-gradient-to-r ${stat.gradient} shadow-xl group-hover:shadow-2xl transition-all duration-300`}>
@@ -282,7 +298,6 @@ const CompanyDashboard = () => {
                 </span>
               </div>
             </div>
-            
             <div className="space-y-3">
               <div className="flex items-baseline space-x-2">
                 <p className="text-4xl font-black text-gray-900 group-hover:text-gray-800 transition-colors duration-300" id={`stat-${index}`}>
@@ -314,7 +329,7 @@ const CompanyDashboard = () => {
     const candidateName = candidateData.name || candidateData.candidate_name || 'Unknown';
     const candidateEmail = candidateData.email || 'N/A';
     const isExpanded = expandedCandidate === `${candidateId}-${type}`;
-
+  
     return (
       <div className="group bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden hover:-translate-y-1" role="region" aria-labelledby={`candidate-${candidateId}`}>
         <div className="p-6">
@@ -351,7 +366,6 @@ const CompanyDashboard = () => {
               </span>
             </button>
           </div>
-
           {isExpanded && (
             <div className="mt-6 pt-6 border-t border-gray-200/80 space-y-4 animate-in slide-in-from-top duration-500" id={`candidate-details-${candidateId}`}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -367,7 +381,7 @@ const CompanyDashboard = () => {
 
   const InfoItem = ({ icon: Icon, label, value, fullWidth = false, isLink = false }) => (
     <div className={`flex items-start space-x-3 p-3 rounded-xl bg-gray-50/80 border border-gray-200/50 ${fullWidth ? 'col-span-full' : ''}`}>
-      <Icon className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" aria-hidden="true" />
+      <Icon className="w-4二叉 h-4 text-gray-500 mt-0.5 flex-shrink-0" aria-hidden="true" />
       <div className="min-w-0 flex-1">
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{label}</p>
         {isLink ? (
@@ -405,6 +419,42 @@ const CompanyDashboard = () => {
     </button>
   );
 
+  const normalizeCandidate = (candidate, type) => {
+    const candidateData = candidate.candidate || candidate;
+    return {
+      id: candidate.candidate_id || candidateData.id || `temp-${Math.random()}`,
+      name: candidateData.name || candidateData.candidate_name || 'Unknown',
+      email: candidateData.email || 'N/A',
+      type,
+      original: candidate
+    };
+  };
+
+  const allCandidates = [
+    ...selectedCandidates.map(c => normalizeCandidate(c, 'selected')),
+    ...acceptedCandidates.map(c => normalizeCandidate(c, 'accepted'))
+  ].reduce((acc, curr) => {
+    if (!acc.some(c => c.id === curr.id)) {
+      acc.push(curr);
+    } else {
+      const existing = acc.find(c => c.id === curr.id);
+      existing.type = Array.isArray(existing.type) ? existing.type : [existing.type];
+      if (!existing.type.includes(curr.type)) existing.type.push(curr.type);
+    }
+    return acc;
+  }, []);
+
+  const filteredCandidates = allCandidates.filter(candidate => {
+    const matchesSearch =
+      candidate.name.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+      candidate.email.toLowerCase().includes(searchTerm.trim().toLowerCase());
+    const matchesFilter =
+      filterStatus === 'all' ||
+      (filterStatus === 'selected' && candidate.type.includes('selected')) ||
+      (filterStatus === 'accepted' && candidate.type.includes('accepted'));
+    return matchesSearch && matchesFilter;
+  });
+
   if (loading.company && loading.stats && loading.candidates && loading.tests && !companyError) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
@@ -428,52 +478,11 @@ const CompanyDashboard = () => {
       </div>
     );
   }
-  const normalizeCandidate = (candidate, type) => {
-      const candidateData = candidate.candidate || candidate;
-      return {
-        id: candidate.candidate_id || candidateData.id || `temp-${Math.random()}`,
-        name: candidateData.name || candidateData.candidate_name || 'Unknown',
-        email: candidateData.email || 'N/A',
-        type: type, // 'selected' or 'accepted'
-      };
-  };
-  const allCandidates = [
-    ...selectedCandidates.map((c) => ({ ...normalizeCandidate(c, 'selected'), original: c })),
-    ...acceptedCandidates.map((c) => ({ ...normalizeCandidate(c, 'accepted'), original: c })),
-  ].reduce((acc, curr) => {
-    // Deduplicate by id
-    if (!acc.some((c) => c.id === curr.id)) {
-      acc.push(curr);
-    } else {
-      // If candidate exists in both lists, mark it as both selected and accepted
-      const existing = acc.find((c) => c.id === curr.id);
-      if (existing) {
-        existing.type = Array.isArray(existing.type) ? existing.type : [existing.type];
-        if (!existing.type.includes(curr.type)) {
-          existing.type.push(curr.type);
-        }
-      }
-    }
-    return acc;
-  }, []);
-  const filteredCandidates = allCandidates.filter((candidate) => {
-    const matchesSearch =
-      candidate.name.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
-      candidate.email.toLowerCase().includes(searchTerm.trim().toLowerCase());
-
-    const matchesFilter =
-      filterStatus === 'all' ||
-      (filterStatus === 'selected' && candidate.type.includes('selected')) ||
-      (filterStatus === 'accepted' && candidate.type.includes('accepted'));
-
-    return matchesSearch && matchesFilter;
-  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         <CompanyHeader />
-        {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-6 lg:space-y-0">
           <div className="space-y-2">
             <div className="flex items-center space-x-3">
@@ -488,7 +497,6 @@ const CompanyDashboard = () => {
               </div>
             </div>
           </div>
-          
           <div className="flex items-center space-x-4">
             <button
               onClick={exportToExcel}
@@ -500,15 +508,11 @@ const CompanyDashboard = () => {
             </button>
           </div>
         </div>
-
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {stats?.map((stat, index) => (
             <StatCard key={stat.label} stat={stat} index={index} />
           ))}
         </div>
-
-        {/* Navigation Tabs */}
         <div className="flex flex-wrap items-center space-x-2 p-2 bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 shadow-lg" role="tablist">
           <TabButton
             id="overview"
@@ -532,8 +536,6 @@ const CompanyDashboard = () => {
             onClick={setActiveTab}
           />
         </div>
-
-        {/* Content based on active tab */}
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
             <CandidatesSection
@@ -556,7 +558,6 @@ const CompanyDashboard = () => {
             />
           </div>
         )}
-
         {activeTab === 'candidates' && (
           <div className="space-y-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
@@ -566,7 +567,7 @@ const CompanyDashboard = () => {
                   type="text"
                   placeholder="Search candidates by name or email..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="pl-12 pr-4 py-3 bg-white/80 backdrop-blur-xl border border-gray-200/50 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 w-full sm:w-80 font-medium"
                   aria-label="Search candidates by name or email"
                 />
@@ -575,7 +576,7 @@ const CompanyDashboard = () => {
                 <Filter className="w-5 h-5 text-gray-500" aria-hidden="true" />
                 <select
                   value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
+                  onChange={e => setFilterStatus(e.target.value)}
                   className="px-4 py-3 bg-white/80 backdrop-blur-xl border border-gray-200/50 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 font-medium"
                   aria-label="Filter candidates by status"
                 >
@@ -597,7 +598,6 @@ const CompanyDashboard = () => {
                 )}
               </div>
             </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {loading.candidates ? (
                 [...Array(4)].map((_, i) => (
@@ -617,7 +617,7 @@ const CompanyDashboard = () => {
                   <p className="text-gray-500">Try adjusting your search or filter criteria</p>
                 </div>
               ) : (
-                filteredCandidates.map((candidate) => (
+                filteredCandidates.map(candidate => (
                   <CandidateCard
                     key={`${candidate.id}-${candidate.type}`}
                     candidate={candidate.original}
@@ -628,7 +628,6 @@ const CompanyDashboard = () => {
             </div>
           </div>
         )}
-
         {activeTab === 'tests' && (
           <TestsSection tests={tests} loading={loading.tests} />
         )}
@@ -655,7 +654,6 @@ const CompanyDashboard = () => {
             </button>
           </div>
         </div>
-        
         <div className="space-y-6 max-h-96 overflow-y-auto custom-scrollbar">
           {loading ? (
             [...Array(3)].map((_, i) => (
@@ -701,7 +699,6 @@ const CompanyDashboard = () => {
             {tests.length} tests
           </span>
         </div>
-        
         {loading ? (
           <div className="grid gap-6">
             {[...Array(3)].map((_, i) => (
@@ -741,7 +738,6 @@ const CompanyDashboard = () => {
                         {test.objective || `Test #${test.id || index + 1}`}
                       </h4>
                     </div>
-                    
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <InfoItem icon={Target} label="Prerequisites" value={test.prerequisites || 'N/A'} />
                       <InfoItem icon={Code} label="Tools Required" value={test.tools_required || 'N/A'} />
@@ -749,7 +745,6 @@ const CompanyDashboard = () => {
                       <InfoItem icon={Calendar} label="Created" value={test.created_at ? new Date(test.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A'} />
                     </div>
                   </div>
-                  
                   <div className="ml-6 flex-shrink-0 space-y-3">
                     <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 border border-blue-200/50">
                       Test #{index + 1}
