@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../api/api";
 import BadgeGenerator from "./BadgeGenerator";
 import QcmForRoadmapData from "../api/QcmForRoadmap.json";
+import NavbarCandidate from "../components/common/navbarCandidate";
 
 const QcmForRoadmap = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const QcmForRoadmap = () => {
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [progressAnimationWidth, setProgressAnimationWidth] = useState("0%");
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
-  const [roadmapId , setRoadmapId] = useState(undefined);
+  const [roadmapId , setRoadmapId] = useState(null);
 
   const candidateId = localStorage.getItem("candidate_id")
     ? JSON.parse(localStorage.getItem("candidate_id"))
@@ -26,10 +27,33 @@ const QcmForRoadmap = () => {
 
   // Fetch and process quiz data
   useEffect(() => {
+    const getRoadmapId = async () => {
+      try {
+        const response = await api.get(`/api/roadmap/qcm/${id}`);
+        if (response.data.success) {
+          setRoadmapId(response.data.data.roadmap_id);
+        } else {
+          console.error('Failed to fetch roadmap ID:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching roadmap ID:', error.response?.data?.message || error.message);
+      }
+    };
+  
+    getRoadmapId();
+  }, [id]);
+  
+  // Example: Call getRoadmapId on component mount
+
+  console.log(roadmapId)
+
+  useEffect(() => {
+    if(!roadmapId) return
     const fetchQcmData = async () => {
+   
       try {
         // Fetch roadmap QCM info to get associated skills
-        const roadmapQcmResponse = await api.get(`/api/qcm/roadmap/${id}`);
+        const roadmapQcmResponse = await api.get(`/api/qcm/roadmap/${roadmapId}`);
         // Try to extract skills from the response (assuming backend returns them)
         let skills = [];
         if (roadmapQcmResponse.data && Array.isArray(roadmapQcmResponse.data)) {
@@ -45,13 +69,13 @@ const QcmForRoadmap = () => {
           const questionsForSkill = QcmForRoadmapData[skill] || [];
           // Pick up to 3 random questions per skill
           const shuffled = [...questionsForSkill].sort(() => Math.random() - 0.5);
-          selectedQuestions = selectedQuestions.concat(shuffled.slice(0, 3));
+          selectedQuestions = selectedQuestions.concat(shuffled);
         });
         // If no skills found, fallback to random questions from all skills
         if (selectedQuestions.length === 0) {
           Object.values(QcmForRoadmapData).forEach(questionsArr => {
             const shuffled = [...questionsArr].sort(() => Math.random() - 0.5);
-            selectedQuestions = selectedQuestions.concat(shuffled.slice(0, 2));
+            selectedQuestions = selectedQuestions.concat(shuffled);
           });
         }
         // Cap at 20 questions
@@ -86,7 +110,7 @@ const QcmForRoadmap = () => {
       }
     };
     fetchQcmData();
-  }, [id]);
+  }, [id , roadmapId]);
 
   // Timer logic
   useEffect(() => {
@@ -222,25 +246,7 @@ const QcmForRoadmap = () => {
     setShowConfirmSubmit(false);
     saveQuizResults();
   };
-  const getRoadmapId = async () => {
-    try {
-      const response = await api.get(`/api/roadmap/qcm/${id}`);
-      if (response.data.success) {
-        setRoadmapId(response.data.data.roadmap_id);
-      } else {
-        console.error('Failed to fetch roadmap ID:', response.data.message);
-      }
-    } catch (error) {
-      console.error('Error fetching roadmap ID:', error.response?.data?.message || error.message);
-    }
-  };
 
-  // Example: Call getRoadmapId on component mount
-  useEffect(() => {
-    getRoadmapId();
-  }, [id]);
-  getRoadmapId()
-  console.log(roadmapId)
   // Return to roadmap
   const handleReturnToRoadmap = () => {
     navigate(`/candidate/roadmap/${roadmapId}`);
@@ -617,6 +623,7 @@ const QcmForRoadmap = () => {
     const metrics = calculatePerformanceMetrics();
 
     return (
+      <>
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div className="text-center mb-8">
@@ -757,8 +764,9 @@ const QcmForRoadmap = () => {
             })}
           </div>
         </div>
-        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score={100} />
+        <BadgeGenerator candidateId={candidateId} qcmForRoadmapId={id} score={score} />
       </div>
+      </>
     );
   };
 

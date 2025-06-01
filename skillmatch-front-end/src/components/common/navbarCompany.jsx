@@ -88,13 +88,14 @@ const NavbarCompany = () => {
                 SkillMatch  
               </h2>
             </a>
-            
+            <a className='nav-item' href='/../company/Session/:id'>Home </a>
             <div
               className="nav-item dropdown"
               ref={testRef}
               onMouseEnter={handleTestEnter}
               onMouseLeave={handleTestLeave}
             >
+              
               <span>Tests <i className="dropdown-icon">▼</i></span>
               {isTestOpen && (
                 <div className="dropdown-menu">
