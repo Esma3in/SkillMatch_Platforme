@@ -27,29 +27,37 @@ html, body {
 }
 
 /* ========================
-   Container and Layout - Professional Platform Style
+   Container and Layout - Professional Platform Style (FIXED GRAY LINE ISSUE)
 =========================== */
 .containersignIn {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: #64748b;
+  background-color: #ffffff; /* Changed from #64748b to white to eliminate gray line */
   flex-direction: row;
   overflow: hidden;
 }
 
 .error-message {
   color: #ef4444;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   margin-top: 8px;
   font-weight: 500;
+  padding: 8px 12px;
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid #ef4444;
 }
 
 .success-message {
   color: #10b981;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   margin-top: 8px;
   font-weight: 500;
+  padding: 8px 12px;
+  background-color: rgba(16, 185, 129, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid #10b981;
 }
 
 /* ========================
@@ -57,13 +65,14 @@ html, body {
 =========================== */
 .visual-section {
   width: 45%;
-  background: white;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
   position: relative;
   overflow: hidden;
+  border-right: 1px solid rgba(226, 232, 240, 0.5); /* Subtle professional border */
 }
 
 .visual-section::before {
@@ -73,8 +82,21 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><rect width="2" height="2"/></g></g></svg>');
+  background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23f1f5f9" fill-opacity="0.3"><rect width="1" height="1"/></g></g></svg>');
   pointer-events: none;
+}
+
+.visual-section::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.3);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .visual-section img {
@@ -84,6 +106,17 @@ html, body {
   border-radius: 16px;
   z-index: 1;
   position: relative;
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.visual-section img:hover {
+  transform: scale(1.02);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 25px 25px -5px rgba(0, 0, 0, 0.04);
 }
 
 /* ========================
@@ -92,64 +125,97 @@ html, body {
 .form-section {
   width: 55%;
   height: 100vh;
-  padding: 60px 80px;
+  padding: 40px 60px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
+  position: relative;
+}
+
+.form-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23e2e8f0" fill-opacity="0.1"><circle cx="20" cy="20" r="1"/></g></g></svg>');
+  pointer-events: none;
+  z-index: 0;
 }
 
 .form-section::-webkit-scrollbar {
-  width: 6px;
-}
-
-.form-section::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-.form-section::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
-}
-
-.form-section::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  display: none;
 }
 
 .signin-form {
   width: 100%;
-  max-width: 450px;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 40px;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 32px 36px;
   border-radius: 24px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.signin-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-radius: 24px;
+  pointer-events: none;
 }
 
 fieldset {
   border: none;
+  position: relative;
+  z-index: 1;
 }
 
 legend {
   font-weight: 700;
-  font-size: 42px;
+  font-size: 36px;
   line-height: 1.2;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
   color: #0f172a;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   text-align: center;
   background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+}
+
+legend::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-radius: 2px;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
 }
 
 /* ========================
@@ -158,27 +224,42 @@ form {
 .form-field {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .form-field label {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   color: #374151;
   margin-bottom: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.form-field label::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: #2563eb;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 .form-field input[type="email"],
 .form-field input[type="password"],
 .form-field input[type="text"] {
-  padding: 16px 20px;
+  padding: 14px 18px;
   font-size: 16px;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
   background: #ffffff;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 400;
+  position: relative;
+  z-index: 1;
 }
 
 .form-field input[type="email"]:focus,
@@ -186,8 +267,18 @@ form {
 .form-field input[type="text"]:focus {
   outline: none;
   border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  box-shadow: 
+    0 0 0 4px rgba(37, 99, 235, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
+  background: #ffffff;
+}
+
+.form-field input[type="email"]:hover:not(:focus),
+.form-field input[type="password"]:hover:not(:focus),
+.form-field input[type="text"]:hover:not(:focus) {
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* ========================
@@ -200,11 +291,27 @@ form {
   font-size: 14px;
   color: #64748b;
   margin: 16px 0;
+  padding: 12px 0;
+  border-top: 1px solid rgba(226, 232, 240, 0.5);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
 }
 
 .remForg-part .form-field {
   flex-direction: row;
   align-items: center;
+  margin: 0;
+}
+
+.remForg-part .form-field label {
+  margin: 0;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.remForg-part .form-field label::before {
+  display: none;
 }
 
 #remember-meCheck {
@@ -212,9 +319,11 @@ form {
   height: 18px;
   border: 2px solid #cbd5e1;
   border-radius: 6px;
-  margin-right: 8px;
+  margin-right: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
+  background: #ffffff;
 }
 
 #remember-meCheck:checked {
@@ -222,47 +331,94 @@ form {
   border-color: #2563eb;
 }
 
+#remember-meCheck:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
 .forgetPassword a {
   color: #2563eb;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .forgetPassword a:hover {
   color: #1d4ed8;
 }
 
+.forgetPassword a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #2563eb;
+  transition: width 0.3s ease;
+}
+
+.forgetPassword a:hover::after {
+  width: 100%;
+}
+
 /* ========================
    Buttons & Links - Professional Platform Style
 =========================== */
 .signin-btn {
-  margin-top: 24px;
+  margin-top: 20px;
 }
 
 .signin-btn button {
   width: 100%;
-  height: 56px;
+  height: 50px;
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   border-radius: 12px;
   border: none;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  letter-spacing: 0.05em;
+  box-shadow: 
+    0 4px 15px rgba(37, 99, 235, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+}
+
+.signin-btn button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.signin-btn button:hover::before {
+  left: 100%;
 }
 
 .signin-btn button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+  box-shadow: 
+    0 8px 25px rgba(37, 99, 235, 0.4),
+    0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .signin-btn button:active {
@@ -273,13 +429,16 @@ form {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .signUp-link {
-  margin-top: 24px;
+  margin-top: 20px;
   font-size: 14px;
   color: #64748b;
   text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(226, 232, 240, 0.5);
 }
 
 .signUp-link a {
@@ -287,11 +446,27 @@ form {
   color: #2563eb;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .signUp-link a:hover {
   color: #1d4ed8;
+}
+
+.signUp-link a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #2563eb;
+  transition: width 0.3s ease;
+}
+
+.signUp-link a:hover::after {
+  width: 100%;
 }
 
 /* ========================
@@ -300,7 +475,7 @@ form {
 #FileInput,
 #LogoInput {
   border: 2px dashed #cbd5e1;
-  padding: 16px;
+  padding: 20px 16px;
   background-color: #f8fafc;
   cursor: pointer;
   border-radius: 12px;
@@ -308,6 +483,16 @@ form {
   transition: all 0.3s ease;
   font-weight: 500;
   color: #64748b;
+  position: relative;
+  overflow: hidden;
+}
+
+#FileInput::before,
+#LogoInput::before {
+  content: '📁';
+  display: block;
+  font-size: 24px;
+  margin-bottom: 8px;
 }
 
 #FileInput:hover,
@@ -315,6 +500,7 @@ form {
   border-color: #2563eb;
   background-color: #eff6ff;
   color: #2563eb;
+  transform: translateY(-1px);
 }
 
 #FileInput:focus,
@@ -325,7 +511,7 @@ form {
 }
 
 #role {
-  padding: 16px 20px;
+  padding: 14px 18px;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
   font-size: 16px;
@@ -333,12 +519,19 @@ form {
   background: #ffffff;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 #role:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+#role:hover:not(:focus) {
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* ========================
@@ -373,7 +566,7 @@ form {
   
   .signin-form {
     max-width: 520px;
-    padding: 50px;
+    padding: 60px 50px;
   }
   
   legend {
@@ -402,7 +595,7 @@ form {
   
   .signin-form {
     max-width: 480px;
-    padding: 45px;
+    padding: 50px 45px;
   }
   
   legend {
@@ -418,7 +611,7 @@ form {
   
   .signin-form {
     max-width: 420px;
-    padding: 35px;
+    padding: 40px 35px;
   }
   
   legend {
@@ -440,6 +633,8 @@ form {
     height: 300px;
     padding: 20px;
     order: 1;
+    border-right: none;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
   }
   
   .visual-section img {
@@ -456,7 +651,7 @@ form {
   
   .signin-form {
     max-width: 500px;
-    padding: 35px;
+    padding: 40px 35px;
   }
   
   legend {
@@ -484,6 +679,8 @@ form {
     height: 250px;
     padding: 15px;
     order: 1;
+    border-right: none;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
   }
   
   .visual-section img {
@@ -500,7 +697,7 @@ form {
   
   .signin-form {
     max-width: 100%;
-    padding: 30px 25px;
+    padding: 35px 25px;
     margin: 0;
   }
   
@@ -546,6 +743,8 @@ form {
     height: 200px;
     padding: 10px;
     order: 1;
+    border-right: none;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
   }
   
   .visual-section img {
@@ -562,7 +761,7 @@ form {
   
   .signin-form {
     max-width: 100%;
-    padding: 25px 20px;
+    padding: 30px 20px;
     margin: 0;
     border-radius: 16px;
   }
@@ -574,7 +773,7 @@ form {
   }
   
   form {
-    gap: 16px;
+    gap: 20px;
   }
   
   .form-field label {
@@ -592,7 +791,7 @@ form {
   }
   
   .signin-btn {
-    margin-top: 20px;
+    margin-top: 24px;
   }
   
   .signin-btn button {
@@ -606,23 +805,23 @@ form {
     align-items: flex-start;
     gap: 8px;
     font-size: 12px;
-    margin: 12px 0;
+    margin: 16px 0;
   }
   
   #remember-meCheck {
     width: 16px;
     height: 16px;
-    margin-right: 6px;
+    margin-right: 8px;
   }
   
   .signUp-link {
     font-size: 12px;
-    margin-top: 20px;
+    margin-top: 24px;
   }
   
   #FileInput,
   #LogoInput {
-    padding: 12px;
+    padding: 16px 12px;
     font-size: 14px;
   }
 }
@@ -634,7 +833,7 @@ form {
   }
   
   .signin-form {
-    padding: 20px 15px;
+    padding: 25px 15px;
   }
   
   legend {
@@ -673,12 +872,20 @@ form {
   .signUp-link a:hover {
     color: inherit; /* Disable hover effects on touch */
   }
+  
+  .visual-section img:hover {
+    transform: none;
+  }
 }
 
 /* High DPI Displays */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .visual-section::before {
     background-size: 30px 30px; /* Sharper pattern on retina */
+  }
+  
+  .form-section::before {
+    background-size: 20px 20px;
   }
 }
 
@@ -693,6 +900,8 @@ form {
     width: 40%;
     height: 100vh;
     order: 1;
+    border-right: 1px solid rgba(226, 232, 240, 0.5);
+    border-bottom: none;
   }
   
   .form-section {
@@ -722,10 +931,12 @@ form {
   .form-section {
     width: 100%;
     padding: 20px;
+    background: #ffffff;
   }
   
   .signin-form {
     box-shadow: none;
     border: 1px solid #ccc;
+    background: #ffffff;
   }
 }
