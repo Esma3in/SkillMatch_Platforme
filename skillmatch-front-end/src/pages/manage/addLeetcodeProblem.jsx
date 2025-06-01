@@ -220,7 +220,7 @@ const AddLeetcodeProblem = () => {
       <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Add New LeetCode Problem</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Add New  Problem</h1>
           </div>
           
           {/* Success message */}
