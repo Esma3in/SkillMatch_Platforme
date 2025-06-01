@@ -41,9 +41,11 @@ use App\Http\Controllers\CompaniesSelectedController;
 use App\Http\Controllers\ListTestForCompanyController;
 
 // CSRF Token Route
+
 Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['csrf' => csrf_token()]);
 });
+
 
 // Roadmap Progress Routes
 use App\Http\Controllers\RoadmapProgressController;
@@ -56,9 +58,19 @@ Route::options('/{any}', function () {
     return response()->json([], 200);
 })->where('any', '.*');
 
-
+Route::middleware(['web', 'api'])->group(function () {
+    
+});
+//
 Route::post('/signUp', [UserController::class, 'SignUp']);
 Route::post('/signin', [UserController::class, 'SignIn']);
+Route::get('/getCookie',[UserController::class,'getCookie']);
+//reset password
+use App\Http\Controllers\ResetPasswordController;
+
+Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLinkEmail']);
+Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
+
 
 // Candidate Routes
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);

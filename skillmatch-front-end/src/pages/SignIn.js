@@ -1,6 +1,6 @@
 import image from '../assets/BG (1).png';
 import '../styles/pages/Sign/signin.css';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { api } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,6 +15,24 @@ export default function SignIn({ onToggle }) {
   const [formError, setFormError] = useState('');
   const [loading, setLoading] = useState(false); // <--- NEW STATE FOR LOADING
   const navigate = useNavigate();
+
+  useEffect(() => {
+  const getCookie = async () => {
+    try {
+      const response = await api.get('api/getCookie', { withCredentials: true });
+      setFormData({
+        remember_me: true,
+        email: response.data.email,
+        password: response.data.password,
+      });
+    } catch (err) {
+      console.log(err); // Fixed typo here
+    }
+  };
+
+  getCookie();
+}, []);
+
 
   // Handle changes in form inputs
   const handleChange = (e) => {
@@ -56,8 +74,9 @@ export default function SignIn({ onToggle }) {
   // Make the API call to check credentials
   const check = async (data) => {
     try {
-      await api.get('/sanctum/csrf-cookie');
-      const response = await api.post('/api/signin', data);
+      await api.get('/sanctum/csrf-cookie',{withCredentials:true});
+    
+      const response = await api.post('api/signin', data);
       return response;
     } catch (err) {
       console.error(err);
@@ -76,6 +95,7 @@ export default function SignIn({ onToggle }) {
     setLoading(true); // <--- SET LOADING TO TRUE
     try {
       const response = await check(formData);
+   
 
       if (response && response.status === 200) {
         if(response.data.role==='candidate'){
@@ -145,7 +165,7 @@ export default function SignIn({ onToggle }) {
                   <label htmlFor="remember-meCheck">Remember me</label>
                 </div>
                 <div className="forgetPassword">
-                  <a href="/forgetPassword">Forgot your password?</a>
+                  <a href="/foregt-password">Forgot your password?</a>
                 </div>
               </div>
 
