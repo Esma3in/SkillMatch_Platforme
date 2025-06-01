@@ -3,6 +3,7 @@
 use App\Models\Problem;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\AllCandidateController;
@@ -17,8 +18,6 @@ Route::get('/problems', [ProblemController::class, 'index'])->name('problems.ind
 //listOfChallenges
 Route::get('/listofchallenges', [ChallengeController::class, 'index'])->name('listofchallenges.index');
 Route::get('/challenges/{challenge}', [ChallengeController::class, 'show'])->name('challenges.show');
-
-
 
 
 // All candidate for company

@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\Administrator;
 use App\Models\CompanyDocument;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 
 class UserController extends Controller
 {
@@ -59,48 +61,58 @@ class UserController extends Controller
         }
     }
 
-    public function SignIn(Request $request)
-    {
 
-        // Validate input
 
-        $validated = $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|min:8',
-        ]);
-        // Retrieve the user by email
-        $user = User::where('email', $validated['email'])->first();
+public function SignIn(Request $request)
+{
+    $validated = $request->validate([
+        'email' => 'required|email|exists:users,email',
+        'password' => 'required|min:8',
+    ]);
 
-        // Check if user exists and if the password is correct
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
-            return response()->json(['message' => 'Email or password incorrect'], 401);
-        }
-        Log::info($user);
+    $user = User::where('email', $validated['email'])->first();
 
-        // Check user role and return corresponding data
-        switch ($user->role) {
-            case 'admin':
-                $admin = Administrator::where('user_id', $user->id)->first(); // Use first() to get a single record
-                if (!$admin) {
-                    return response()->json(['message' => 'admin not found'], 404);
-                }
-                return response()->json(['admin' => $admin, 'role' => $user->role], 200); // Return candidate data
-            case 'candidate':
-                $candidate = Candidate::where('user_id', $user->id)->first(); // Use first() to get a single record
-                if (!$candidate) {
-                    return response()->json(['message' => 'Candidate not found'], 404);
-                }
-                return response()->json(['candidate' => $candidate, 'role' => $user->role], 200); // Return candidate data
-
-            case 'company':
-                $company = Company::where('user_id', $user->id)->first(); // Use first() to get a single record
-                if (!$company) {
-                    return response()->json(['message' => 'Company not found'], 404);
-                }
-                return response()->json(['company' => $company, 'role' => $user->role], 200);
-        }
-        return response()->json(['user' => $user->id], 400);
+    if (!$user || !Hash::check($validated['password'], $user->password)) {
+        return response()->json(['message' => 'Email or password incorrect'], 401);
     }
+
+    session()->put('user', $user);
+
+    // Create role-specific payload
+    $payload = [];
+    switch ($user->role) {
+        case 'admin':
+            $admin = Administrator::where('user_id', $user->id)->first();
+            if (!$admin) return response()->json(['message' => 'Admin not found'], 404);
+            $payload = ['admin' => $admin, 'role' => 'admin'];
+            break;
+
+        case 'candidate':
+            $candidate = Candidate::where('user_id', $user->id)->first();
+            if (!$candidate) return response()->json(['message' => 'Candidate not found'], 404);
+            $payload = ['candidate' => $candidate, 'role' => 'candidate'];
+            break;
+
+        case 'company':
+            $company = Company::where('user_id', $user->id)->first();
+            if (!$company) return response()->json(['message' => 'Company not found'], 404);
+            $payload = ['company' => $company, 'role' => 'company'];
+            break;
+
+        default:
+            return response()->json(['message' => 'Invalid role'], 400);
+    }
+
+    $response = response()->json($payload);
+
+    if ($request->remember_me) {
+        $response->cookie('email', $user->email, 60)
+                 ->cookie('password', $validated['password'], 60);
+    }
+
+    return $response;
+}
+
 
 
     public function getBannedUsers()
@@ -335,7 +347,28 @@ class UserController extends Controller
             })
             ->values()
             ->take(10);
-
         return response()->json($activities);
     }
+
+   public function getCookie(Request $request)
+{
+    $email = $request->cookie('email');
+    $password = $request->cookie('password');
+
+    if ($email && $password) {
+        return response()->json([
+            'email' => $email,
+            'password' => $password
+        ]);
+    }
+
+    return response()->json(['message' => 'Cookies not found'], 404);
+}
+public function getSession(Request $request)
+{
+    $user = session('user');
+    return response()->json($user);
+}
+
+
 }

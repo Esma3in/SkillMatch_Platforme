@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Auth\Passwords\CanResetPassword;
+
 
 // class User extends Model
 // {
@@ -17,9 +20,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 //     public function isEntreprise() { return $this instanceof Entreprise; }
 //     public function isAdministrateur() { return $this instanceof Administrateur; }
 // }
-class User extends Model
+class User extends Authenticatable implements CanResetPasswordContract
 {
+    use CanResetPassword;
     use HasFactory;
+      use Notifiable;
 
     protected $fillable = ['name','email', 'password', 'role'];
 
