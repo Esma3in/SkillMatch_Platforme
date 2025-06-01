@@ -170,10 +170,10 @@ const NavbarCompany = () => {
                       <i className="option-icon settings-icon"></i>
                       Settings
                     </Link> */}
-                    <Link to="/dashboard" className="profile-option">
+                    {/* <Link to="/dashboard" className="profile-option">
                       <i className="option-icon performance-icon"></i>
                       Dashboard
-                    </Link>
+                    </Link> */}
                     <Link to="/support" className="profile-option">
                       <i className="option-icon support-icon"></i>
                       Support

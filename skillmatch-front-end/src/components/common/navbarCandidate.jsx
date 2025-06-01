@@ -220,10 +220,10 @@ const NavbarCandidate = ({searchedItems}) => {
                       <i className="option-icon settings-icon"></i>
                       Settings
                     </a>
-                    <a href="/performance" className="profile-option">
+                    {/* <a href="/performance" className="profile-option">
                       <i className="option-icon performance-icon"></i>
                       Performance
-                    </a>
+                    </a> */}
                 
                     <a href="/support" target='_blank' className="profile-option">
                       <i className="option-icon support-icon"></i>
