@@ -68,8 +68,8 @@ export default function App() {
         <Route path='/foregt-password' element={<ForgotPassword/>}/>
         <Route path='/signIn' element={<SignPages isSignin={true}/>}/>
         <Route path='/signUp' element={<SignPages isSignin={false}/>}/>
-        <Route path='/account-desactive' element={<AccountDeactivatedPage/>}/>
-        <Route path='/bannedPage' element={<AccountBannedPage/>}/>
+        <Route path='/account-desactive/:Email' element={<AccountDeactivatedPage/>}/>
+        <Route path='/bannedPage/:Email' element={<AccountBannedPage/>}/>
 
         <Route path='/candidate/company/:id/profile' element={<ProtectedCandidateRoute><CompanyProfileForCandidate/></ProtectedCandidateRoute>}/>
         <Route path="/candidate/Session/:id" element={<ProtectedCandidateRoute><Candidates/></ProtectedCandidateRoute>} />

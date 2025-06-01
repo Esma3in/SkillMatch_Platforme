@@ -2,16 +2,25 @@ import React, { useState } from 'react';
 import { Clock, Shield, Mail, Phone, LogOut, RefreshCw, AlertCircle, CheckCircle } from 'lucide-react';
 import UseLogout from '../hooks/useLogout';
 import { api } from '../api/api';
+import { useParams } from 'react-router';
 
 export default function AccountDeactivatedPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
     const logout = UseLogout();
-  
+    const {Email} = useParams()
+    console.log(Email)
 
-  const handleContactAdmin = () => {
-    setEmailSent(true);
-    //code send notification admin
+  const handleContactAdmin = async() => {
+    try{
+   const response = await api.post('/api/send-email/desactiveAccount',{
+    email:Email
+   })
+     setEmailSent(true);
+    }catch(err){
+      console.log(err)
+    }
+
   };
 
   const handleLogout = () => {

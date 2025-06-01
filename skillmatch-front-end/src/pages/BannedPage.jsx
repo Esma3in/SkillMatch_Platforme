@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
 import { Shield, AlertTriangle, Mail, Phone, FileText, ExternalLink, Clock, Ban } from 'lucide-react';
+import { useParams } from 'react-router';
+import { api } from '../api/api';
 
 export default function AccountBannedPage() {
   const [appealSubmitted, setAppealSubmitted] = useState(false);
   const [appealText, setAppealText] = useState('');
-
-  const handleSubmitAppeal = (e) => {
+const {Email} = useParams();
+  const handleSubmitAppeal = async(e) => {
     e.preventDefault();
     if (appealText.trim()) {
-      setAppealSubmitted(true);
+      try{
+
+        const response  = await api.post('api/sendAppeal',{
+          email:Email,
+          appeal:appealText
+        })
+setAppealSubmitted(true);
       setAppealText('');
+      }catch(err){
+        console.log(err)
+      }
+      
       // In a real app, you'd submit the appeal to your backend
     }
   };

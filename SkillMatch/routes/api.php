@@ -70,8 +70,8 @@ use App\Http\Controllers\ResetPasswordController;
 
 Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
-
-
+Route::post('/send-email/desactiveAccount',[UserController::class,'sendEmailDesactiveAccount']);
+Route::post('/sendAppeal',[UserController::class,'sendAppeal']);
 // Candidate Routes
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);
 

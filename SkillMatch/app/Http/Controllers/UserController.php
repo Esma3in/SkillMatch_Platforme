@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Candidate;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Administrator;
 use App\Models\CompanyDocument;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cookie;
 
 class UserController extends Controller
@@ -369,6 +371,155 @@ public function getSession(Request $request)
     $user = session('user');
     return response()->json($user);
 }
+public function sendEmailDesactiveAccount(Request $request)
+{
+    try {
+        // Validate the incoming request
+        $validated = $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
 
+        $userEmail = $validated['email'];
+        
+        // Find the user by email
+        $user = User::where('email', $userEmail)->first();
+        
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Admin email - you can set this in your .env file
+        $adminEmail = env('ADMIN_EMAIL');
+        
+        // Email data
+        $emailData = [
+            'user_name' => $user->name ?? 'User',
+            'user_email' => $user->email,
+            'request_date' => now()->format('Y-m-d H:i:s'),
+            'user_id' => $user->id
+        ];
+
+        // Send email to admin
+        Mail::send('emails.deactivate-account-request', $emailData, function ($message) use ($adminEmail, $userEmail) {
+            $message->to($adminEmail)
+                    ->subject('Account Deactivation Request')
+                    ->replyTo($userEmail);
+        });
+
+        // Optional: Log the request
+        Log::info('Account deactivation request', [
+            'user_id' => $user->id,
+            'user_email' => $userEmail,
+            'timestamp' => now()
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Deactivation request sent to administrator successfully'
+        ], 200);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $e->errors()
+        ], 422);
+        
+    } catch (\Exception $e) {
+        Log::error('Error sending deactivation email: ' . $e->getMessage());
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to send deactivation request. Please try again later.'
+        ], 500);
+    }
+}
+
+public function sendAppeal(Request $request)
+{
+    try {
+        // Validate the incoming request
+        $validated = $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'appeal' => 'required|string|min:10|max:2000'
+        ]);
+
+        $userEmail = $validated['email'];
+        $appealMessage = $validated['appeal'];
+        
+        // Find the user by email
+        $user = User::where('email', $userEmail)->first();
+        
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Admin email - you can set this in your .env file
+        $adminEmail = env('ADMIN_EMAIL');
+        
+        // Email data
+        $emailData = [
+            'user_name' => $user->name ?? 'User',
+            'user_email' => $user->email,
+            'user_id' => $user->id,
+            'appeal_message' => $appealMessage,
+            'request_date' => now()->format('Y-m-d H:i:s'),
+            'appeal_preview' => Str::limit($appealMessage, 100)
+        ];
+
+        // Send email to admin
+        Mail::send('emails.user-appeal', $emailData, function ($message) use ($adminEmail, $userEmail, $user) {
+            $message->to($adminEmail)
+                    ->subject('User Appeal - ' . ($user->name ?? 'User Account'))
+                    ->replyTo($userEmail, $user->name ?? 'User');
+        });
+
+        // Optional: Store the appeal in database for tracking
+        // You might want to create an appeals table for this
+        /*
+        Appeal::create([
+            'user_id' => $user->id,
+            'user_email' => $userEmail,
+            'message' => $appealMessage,
+            'status' => 'pending',
+            'submitted_at' => now()
+        ]);
+        */
+
+        // Log the appeal request
+        Log::info('User appeal submitted', [
+            'user_id' => $user->id,
+            'user_email' => $userEmail,
+            'appeal_length' => strlen($appealMessage),
+            'timestamp' => now()
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Your appeal has been sent to the administrator successfully. You will receive a response soon.'
+        ], 200);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $e->errors()
+        ], 422);
+        
+    } catch (\Exception $e) {
+        Log::error('Error sending appeal email: ' . $e->getMessage());
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to send appeal. Please try again later.'
+        ], 500);
+    }
+}
 
 }

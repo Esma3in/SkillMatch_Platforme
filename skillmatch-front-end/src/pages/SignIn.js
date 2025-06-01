@@ -100,9 +100,9 @@ export default function SignIn({ onToggle }) {
       if (response && response.status === 200) {
         if(response.data.role==='candidate'){
           if(response.data.candidate?.state==='banned'){
-              navigate('/bannedPage');
+              navigate(`/bannedPage/${formData.email}`);
           }else if(response.data.candidate?.state==='waiting' || response.data.candidate?.state==='unactive'){
-            navigate('/account-desactive')
+            navigate(`/account-desactive/${formData.email}`)
           }else{
             localStorage.setItem('candidate_id',response.data.candidate?.id)
           navigate(`/candidate/Session/${response.data.candidate?.id}`)
