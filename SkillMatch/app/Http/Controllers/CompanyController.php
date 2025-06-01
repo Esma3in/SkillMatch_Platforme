@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use auth;
+use Exception;
 use App\Models\Test;
 use App\Models\Skill;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Models\CompanyLegalDocuments;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
@@ -19,7 +24,7 @@ class CompanyController extends Controller
 
     public function GetCompany($id)
     {
-        $company = Company::with(['profile', 'skills', 'tests', 'ceo'])->find($id);
+        $company = Company::with([])->find($id);
         if ($company) {
             return response()->json($company, 200);
         } else {
@@ -69,7 +74,7 @@ class CompanyController extends Controller
 
     public function getProfile($company_id)
     {
-        $company = Company::with(['profile', 'skills', 'ceo', 'services', 'legaldocuments','user'])->find($company_id);
+        $company = Company::with(['profile', 'skills', 'ceo', 'services', 'legaldocuments', 'tests','user'])->find($company_id);
 
         if (!$company) {
             return response()->json(['message' => 'Company not found !!'], 404);
@@ -247,4 +252,169 @@ class CompanyController extends Controller
 
         return response()->json($data);
     }
+    public function getBio($id){
+        $company=Company::with('profile')->find($id);
+        if(!$company){
+            return response()->json('company not found ',404);
+        }
+
+        $bio = $company->profile->Bio;
+        return response()->json($bio);
+    }
+
+    public function updatebio(Request $request){
+    // Validate the request
+    $request->validate([
+        'company_id' => 'required|integer|exists:companies,id',
+        'bio' => 'required|string|max:1000', // Adjust max length as needed
+    ]);
+
+    try {
+        // Find the company
+        $company = Company::with('profile')->find($request->company_id);
+        
+        if (!$company) {
+            return response()->json(['message' => 'Company not found'], 404);
+        }
+
+        // Check if profile exists, create if it doesn't
+        if (!$company->profile) {
+            $company->profile()->create(['Bio' => $request->bio]);
+        } else {
+            // Update existing profile bio
+            $company->profile->update(['Bio' => $request->bio]);
+        }
+
+        return response()->json([
+            'message' => 'Bio updated successfully',
+            'bio' => $request->bio
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'An error occurred while updating the bio',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+public function updateProfile(Request $request)
+{
+    $request->validate([
+        'company_id' => 'required|integer|exists:companies,id',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'ceo' => 'nullable|string|max:255',
+        'address' => 'nullable|string|max:500',
+        'creation_date' => 'nullable|date',
+    ]);
+
+    try {
+        $company = Company::findOrFail($request->company_id);
+        
+        // Update company basic info
+        $company->update([
+            'name' => $request->name,
+        ]);
+
+        // Update user email if company has associated user
+        if ($company->user) {
+            $company->user->update([
+                'email' => $request->email,
+            ]);
+        }
+
+        // Update or create CEO if provided
+        if ($request->filled('ceo')) {
+            // Assuming you have a CEO model/relationship
+            if ($company->ceo) {
+                $company->ceo->update(['name' => $request->ceo]);
+            } else {
+                // Create new CEO record if it doesn't exist
+                $company->ceo()->create(['name' => $request->ceo]);
+            }
+        }
+
+        // Update or create company profile
+        $profileData = [];
+        if ($request->filled('address')) {
+            $profileData['address'] = $request->address;
+        }
+        if ($request->filled('creation_date')) {
+            $profileData['DateCreation'] = $request->creation_date;
+        }
+
+        if (!empty($profileData)) {
+            if ($company->profile) {
+                $company->profile->update($profileData);
+            } else {
+                $company->profile()->create($profileData);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Company profile updated successfully',
+            'data' => [
+                'company' => $company->load(['user', 'ceo', 'profile'])
+            ]
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to update company profile',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+public function storeLegaldocument(Request $request)
+{
+    try {
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'company_id'=>'required',
+            'title' => 'required|string|max:255',
+            'descriptions' => 'required|array'
+        ]);
+
+        // Handle file upload if present
+      
+
+        // Create the legal document
+        $legalDocument = CompanyLegalDocuments::create([
+            'company_id'=>$validatedData['company_id'],
+            'title' => $validatedData['title'],
+            'descriptions' => $validatedData['descriptions'],
+        ]);
+
+        // Log the activity
+       
+        return response()->json([
+            'success' => true,
+            'message' => 'Legal document created successfully',
+           
+        ], 201);
+
+    } catch (ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $e->errors()
+        ], 422);
+
+    } catch (Exception $e) {
+        // Log the error
+        Log::error('Legal document creation failed: ' . $e->getMessage(), [
+            'request_data' => $request->all()
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while creating the legal document',
+            'error' => config('app.debug') ? $e->getMessage() : 'Internal server error'
+        ], 500);
+    }
+}
 }

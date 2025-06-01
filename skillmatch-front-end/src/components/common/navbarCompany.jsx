@@ -5,13 +5,16 @@ import useLogout from '../../hooks/useLogout';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import logo from "../../assets/Logoo.png"
+import { api } from '../../api/api';
 
 
 const NavbarCompany = () => {
   const logout = useLogout();
+  const CompanyID = JSON.parse(localStorage.getItem('company_id'));
   const [isTestOpen, setIsTestOpen] = useState(false); // Renamed for clarity (was isTrainingOpen)
   const [isCandidateOpen, setIsCandidateOpen] = useState(false); // Renamed for clarity (was isCompanyOpen)
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [company, setCompany] = useState({});
 
   const testRef = useRef(null); // Ref for the "Tests" dropdown
   const candidateRef = useRef(null); // Ref for the "Candidate" dropdown
@@ -44,6 +47,16 @@ const NavbarCompany = () => {
       }
     };
 
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/api/company/profile/${CompanyID}`);
+        setCompany(response.data);
+      } catch (error) {
+        console.error("Error fetching company data:", error);
+      }
+    };
+
+    fetchData();
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -82,13 +95,13 @@ const NavbarCompany = () => {
       <div className="navbar">
         <div className="navbar-left">
           <nav className="navbar-nav">
-            <a href="/company/Session/:id" className="nav-item">
+            <a href={`/company/Session/${CompanyID}`} className="nav-item">
               <img src={logo} alt="Logo" className="h-11 w-auto" />
               <h2 className="text-lg font-extrabold bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
                 SkillMatch  
               </h2>
             </a>
-            <a className='nav-item' href='/../company/Session/:id'>Home </a>
+            <a className='nav-item' href={`/company/Session/${CompanyID}`}>Home </a>
             <div
               className="nav-item dropdown"
               ref={testRef}
@@ -139,26 +152,38 @@ const NavbarCompany = () => {
         </div>
         
         <div className="navbar-right">
-          
-          
           <div className="navbar-icons">
-            
-            
             <div className="profile-dropdown" ref={profileRef}>
               <button
                 className="profile-button"
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
               >
-                <img src={userAvatar} alt="User profile" className="avatar" />
+                <img 
+                  src={
+                    company?.logo 
+                      ? `http://localhost:8000/storage/${company.logo}` 
+                      : userAvatar
+                  } 
+                  alt="Company profile" 
+                  className="avatar rounded-full" 
+                />
               </button>
               
               {isProfileOpen && (
                 <div className="profile-menu">
                   <div className="profile-header">
-                    <img src={userAvatar} alt="User profile" className="profile-avatar" />
+                    <img 
+                      src={
+                        company?.logo 
+                          ? `http://localhost:8000/storage/${company.logo}` 
+                          : userAvatar
+                      } 
+                      alt="Company profile" 
+                      className="profile-avatar rounded-full" 
+                    />
                     <div className="profile-info">
-                      <h3>Olivia Rhye</h3>
-                      <p>olivia@untitledui.com</p>
+                      <h3>{company?.name || 'Company Name'}</h3>
+                      <p>{company?.user?.email || 'company@example.com'}</p>
                     </div>
                   </div>
                   <div className="profile-options">

@@ -9,6 +9,9 @@ import { twMerge } from "tailwind-merge";
 import { api } from "../api/api";
 import NavbarCompany from "../components/common/navbarCompany";
 import { useNavigate } from "react-router";
+import CompanyBio from "../components/modals/UpdateBiocompany";
+import CompanyProfileUpdateModal from "../components/modals/UpdateDataCompany";
+import AddLegalDocumentModal from "../components/modals/AddLegaldocument";
 
 function cn(...inputs) {
     return twMerge(clsx(inputs));
@@ -304,22 +307,22 @@ const OverlapGroupWrapperByAnima = ({ Bio }) => {
                 </Card>
 
                 {/* Bio Card - Added flex-grow to make it fill remaining space */}
-                <Card className="rounded-[25px] bg-[#f7f8f9] border-none flex-grow"> {/* <-- Added flex-grow here */}
+                <Card className="rounded-3xl bg-gray-50 border-none flex-grow shadow-sm">
                     <CardContent className="p-6">
-                        <div className="flex justify-between items-center">
-                            <h2 className="font-bold text-4xl font-['Inter',Helvetica]">
+                        <div className="flex justify-between items-start gap-4">
+                            <h2 className="font-bold text-3xl md:text-4xl text-gray-900 font-sans leading-tight">
                                 Bio
                             </h2>
-                            <img
-                                className="w-11 h-11 object-cover"
-                                alt="Profile"
-                                src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
-                            />
+                            <div className="flex-shrink-0">
+                                <CompanyBio />
+                            </div>
                         </div>
 
-                        <p className="mt-6 font-normal text-xl leading-8">
-                            {Bio}
-                        </p>
+                        <div className="mt-6">
+                            <p className="font-normal text-lg leading-relaxed text-gray-700 whitespace-pre-wrap break-words">
+                                {Bio || "No bio information available."}
+                            </p>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
@@ -331,47 +334,56 @@ const OverlapGroupWrapperByAnima = ({ Bio }) => {
 const OverlapWrapperByAnima = ({ companyData, techBadges }) => {
     return (
         <div className="w-full mx-auto">
-            <Card className="w-full bg-[#f7f8f9] rounded-[25px] p-6 relative">
+            <Card className="w-full bg-gray-50 rounded-3xl p-6 relative shadow-sm">
+                {/* Top Right Modal Button */}
+                <div className="absolute top-6 right-6">
+                    <CompanyProfileUpdateModal></CompanyProfileUpdateModal>
+                </div>
                 <CardContent className="p-0 flex flex-col md:flex-row items-start gap-6">
                     <div className="flex-shrink-0">
                         <img
-                            className="w-[157px] h-[157px] object-cover"
+                            className="w-40 h-40 object-cover rounded-2xl border border-gray-200"
                             alt={`${companyData.name || 'Company'} logo`}
                             src={companyData.logo || '/placeholder-logo.png'}
                         />
                     </div>
-
-                    <div className="flex flex-col">
-                        <h1 className="font-bold text-[40px] text-black font-sans mb-6">
+                    <div className="flex flex-col flex-1">
+                        <h1 className="font-bold text-3xl md:text-4xl text-gray-900 mb-6 leading-tight">
                             {companyData.name || 'Company Name'}
                         </h1>
 
-                        <div className="text-xl leading-8 text-black">
-                            <p className="font-light mb-2">Creation date: {companyData.creationDate || 'N/A'}</p>
-                            <p className="font-light mb-2">Email: {companyData.email || 'N/A'}</p>
-                            <p className="mb-2">
-                                <span className="font-light">CEO of the company: </span>
-                                <span className="font-bold">{companyData.ceo || 'N/A'}</span>
+                        <div className="text-lg leading-7 text-gray-700 space-y-2">
+                            <p className="font-medium">
+                                <span className="text-gray-600">Creation date:</span> {companyData.creationDate || 'N/A'}
                             </p>
-                            <p className="font-light">Address: {companyData.address || 'N/A'}</p>
+                            <p className="font-medium">
+                                <span className="text-gray-600">Email:</span> {companyData.email || 'N/A'}
+                            </p>
+                            <p className="font-medium">
+                                <span className="text-gray-600">CEO of the company:</span>
+                                <span className="font-bold text-gray-900"> {companyData.ceo || 'N/A'}</span>
+                            </p>
+                            <p className="font-medium">
+                                <span className="text-gray-600">Address:</span> {companyData.address || 'N/A'}
+                            </p>
                         </div>
                     </div>
                 </CardContent>
 
                 {/* Bottom Right Badges */}
-                <div className="absolute bottom-6 right-6 flex gap-2">
+                <div className="absolute bottom-6 right-6 flex items-center gap-2 flex-wrap">
                     {techBadges && techBadges.map((badge, index) => (
                         <Badge
                             key={index}
-                            className={`h-[33px] px-3 py-1.5 rounded-full ${badge.color} font-bold text-[10px]`}
+                            className={`h-8 px-3 py-1.5 rounded-full text-xs font-semibold border ${badge.color || 'bg-blue-100 text-blue-800 border-blue-200'}`}
                             variant="outline"
                         >
                             {badge.name}
                         </Badge>
                     ))}
 
-                    <div className="flex w-[31px] h-[29px] items-center justify-center p-1 bg-[#5bffa587] rounded-full">
-                        <PlusIcon className="w-3 h-3" />
+                    <div className="flex w-8 h-8 items-center justify-center p-1 bg-green-100 hover:bg-green-200 rounded-full transition-colors cursor-pointer">
+                        <PlusIcon className="w-4 h-4 text-green-600" />
                     </div>
                 </div>
             </Card>
@@ -380,12 +392,12 @@ const OverlapWrapperByAnima = ({ companyData, techBadges }) => {
 };
 
 
-
 export const CompanyProfile = () => {
     const companyId = localStorage.getItem('company_id');
     const [companyInfo, setCompanyInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Fixed useEffect with proper API call structure
     useEffect(() => {
@@ -405,6 +417,30 @@ export const CompanyProfile = () => {
         // Execute the fetchData function
         fetchData();
     }, [companyId]); // Properly depend on companyId
+    const handleAddDocument = async (documentData) => {
+        // Get company_id from localStorage
+        const company_id = JSON.parse(localStorage.getItem("company_id"));
+
+        try {
+            // Make API call to add the document
+            const response = await api.post("/api/legal-documents", {
+                    company_id: company_id,
+                    title: documentData.title,
+                    descriptions: documentData.descriptions
+        })
+            ;
+           
+
+            
+            console.log("Document added successfully:", response.data);
+
+            // Refresh the page or update your state
+            window.location.reload();
+        } catch (error) {
+            console.error("Error:", error);
+            throw error; // Re-throw to let the modal handle the error
+        }
+    };
     // Default icons for services
     const servicesIcons = [
         "https://c.animaapp.com/manu7kxgcmYZMO/img/icons8-licence-100.png",
@@ -494,11 +530,7 @@ export const CompanyProfile = () => {
                         <section className="w-full lg:w-2/3 flex-grow">
                             <div className="relative mb-8">
                                 <OverlapWrapperByAnima companyData={companyData} techBadges={techBadges} />
-                                <img
-                                    className="absolute w-11 h-11 top-6 right-6 object-cover"
-                                    alt="Company logo"
-                                    src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
-                                />
+
                             </div>
                             <GroupByAnima services={services} />
                         </section>
@@ -516,12 +548,21 @@ export const CompanyProfile = () => {
                             <CardContent className="p-0">
                                 <div className="flex justify-between items-start mb-8">
                                     <h2 className="text-4xl font-bold">Legal Documents</h2>
-                                    <img
-                                        className="w-11 h-11 object-cover"
-                                        alt="Company logo"
-                                        src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
-                                    />
+                                    <div className="p-8">
+                                        <img
+                                            className="w-11 h-11 object-cover hover:opacity-80 transition-opacity cursor-pointer"
+                                            alt="Add Legal Document"
+                                            src="https://c.animaapp.com/manu7kxgcmYZMO/img/e8f1e2c420b463d58afb4c92a8abaaf6-removebg-preview-1-1.png"
+                                            onClick={() => setIsModalOpen(true)}
+                                        />
+                                    </div>
                                 </div>
+
+                                <AddLegalDocumentModal
+                                    isOpen={isModalOpen}
+                                    onClose={() => setIsModalOpen(false)}
+                                    onSubmit={handleAddDocument}
+                                />
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                     {legalDocuments.map((documents, colIdx) => (

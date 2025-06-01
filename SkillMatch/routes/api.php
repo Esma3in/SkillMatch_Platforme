@@ -172,7 +172,10 @@ Route::get('/company/candidates/selected',[CandidateSelectedController::class,'g
 //profile company:
 Route::post('/company/store/profile',[ProfileCompanyController::class,'store']);
 Route::get('/company/profile/{company_id}',[CompanyController::class,'getProfile']);
-
+Route::get('/company/bio/{id}',[CompanyController::class,'getBio']);
+Route::put('/company/updatebio',[CompanyController::class,'updatebio']);
+Route::put('/company/updateprofile',[CompanyController::class,'updateProfile']);
+Route::post('/legal-documents',[CompanyController::class,'storeLegaldocument']);
 // get roadmap
 Route::get('/roadmaps/{roadmap_id}', [RoadmapController::class, 'getCompleteRoadmap']);
 
