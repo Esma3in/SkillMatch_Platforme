@@ -65,6 +65,8 @@ import EditLeetcodeProblem from './pages/manage/editLeetcodeProblem.jsx';
 import TestListShowCompany from './pages/TestListShowCompany.js';
 import DocumentsPage from './pages/manage/documentsPage.jsx';
 import CompanyDashboard from './pages/DashboardCompany.js';
+import ForgotPassword from './pages/ResetPassword/ForgetPassword.jsx';
+import ResetPassword from './pages/ResetPassword/ResetPassword.jsx';
 
 
 export default function App() {
@@ -75,6 +77,8 @@ export default function App() {
         Page d'authentification (SignIn / SignUp toggle) 
         <Route path="/" element={<EnhancedLandingPage/>} />
         {/* Espace candidat après inscription  */}
+        <Route path="/password-reset/:token" element={<ResetPassword />} />
+        <Route path='/foregt-password' element={<ForgotPassword/>}/>
         <Route path='/signIn' element={<SignPages isSignin={true}/>}/>
         <Route path='/signUp' element={<SignPages isSignin={false}/>}/>
         <Route path='/candidate/company/:id/profile' element={<ProtectedRoute><CompanyProfileForCandidate/></ProtectedRoute>}/>
