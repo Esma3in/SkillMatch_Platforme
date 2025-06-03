@@ -20,9 +20,37 @@ class CompanyController extends Controller
     {
         $companies = DB::table('companies as c')
             ->join('profile_companies as pc', 'pc.company_id', '=', 'c.id')
-            ->join('companies_skills as cs', 'cs.company_id', '=', 'c.id')
-            ->join('skills as s', 'cs.skill_id', '=', 's.id')
-            ->select('c.*', 'pc.*', 'cs.*', 's.*')
+            ->leftJoin('companies_skills as cs', 'cs.company_id', '=', 'c.id')
+            ->leftJoin('skills as s', 'cs.skill_id', '=', 's.id')
+            ->select(
+                'c.id as company_id',
+                'c.name as company_name',
+                'c.sector',
+                'c.file',
+                'c.logo',
+                'c.state',
+                'c.docstate',
+                'pc.websiteUrl',
+                'pc.address',
+                'pc.phone',
+                'pc.DateCreation',
+                'pc.Bio',
+                DB::raw('GROUP_CONCAT(s.name) as skills')
+            )
+            ->groupBy(
+                'c.id',
+                'c.name',
+                'c.sector',
+                'c.file',
+                'c.logo',
+                'c.state',
+                'c.docstate',
+                'pc.websiteUrl',
+                'pc.address',
+                'pc.phone',
+                'pc.DateCreation',
+                'pc.Bio'
+            )
             ->paginate(10);
 
         return response()->json($companies, 200);
