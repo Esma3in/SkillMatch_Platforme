@@ -18,47 +18,7 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = DB::table('companies as c')
-            ->join('profile_companies as pc', 'pc.company_id', '=', 'c.id')
-            ->leftJoin('companies_skills as cs', 'cs.company_id', '=', 'c.id')
-            ->leftJoin('skills as s', 'cs.skill_id', '=', 's.id')
-            ->select(
-                'c.id as company_id',
-                'c.name as company_name',
-                'c.sector',
-                'c.file',
-                'c.logo',
-                'c.state',
-                'c.docstate',
-                'pc.websiteUrl',
-                'pc.address',
-                'pc.phone',
-                'pc.DateCreation',
-                'pc.Bio',
-                DB::raw('JSON_ARRAYAGG(s.name) as skills')
-            )
-            ->groupBy(
-                'c.id',
-                'c.name',
-                'c.sector',
-                'c.file',
-                'c.logo',
-                'c.state',
-                'c.docstate',
-                'pc.websiteUrl',
-                'pc.address',
-                'pc.phone',
-                'pc.DateCreation',
-                'pc.Bio'
-            )
-            ->paginate(10);
-
-        // Ensure skills is decoded as an array for each company
-        $companies->getCollection()->transform(function ($company) {
-            $company->skills = json_decode($company->skills, true) ?? [];
-            return $company;
-        });
-
+        $companies = Company::with(['skills', 'profile'])->paginate(10);
         return response()->json($companies, 200);
     }
 

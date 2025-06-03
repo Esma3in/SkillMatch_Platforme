@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/api";
 import NavbarCandidate from "../components/common/navbarCandidate";
-import { PlusIcon, MapPinIcon, PhoneIcon, BriefcaseIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, MapPinIcon, MailIcon, BriefcaseIcon, UserIcon } from "@heroicons/react/24/solid";
 
 export default function CompanyProfileForCandidate() {
   const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
+  const [roadmap, setRoadmap] = useState({});
   const { id } = useParams();
-  const [companyInfo, setCompanyInfo] = useState(null);
-  const [candidateInfo, setCandidateInfo] = useState(null);
+  const [companyInfoFetched, setCompanyInfo] = useState({});
+  const [candidateInfo, setCandidateInfo] = useState({});
   const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({ fetchError: "" });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -17,80 +19,96 @@ export default function CompanyProfileForCandidate() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [companyResponse, candidateResponse] = await Promise.all([
-          api.get(`/api/candidate/companyInfo/${id}`),
-          api.get(`/api/candidate/${candidate_id}`),
-        ]);
-        setCompanyInfo(companyResponse.data);
-        setCandidateInfo(candidateResponse.data);
+        const response = await api.get(`/api/candidate/companyInfo/${id}`);
+        const response1 = await api.get(`/api/candidate/${candidate_id}`);
+        setCompanyInfo(response.data);
+        setCandidateInfo(response1.data);
         setLoading(false);
       } catch (err) {
-        setError(err.message || "Failed to fetch data");
+        console.log(err.message);
+        setErrors((prev) => ({ ...prev, fetchError: err.message }));
         setLoading(false);
       }
     };
 
-    if (id && candidate_id) {
+    if (id) {
       fetchData();
     }
   }, [candidate_id, id]);
 
-  const handleSelectCompany = async () => {
-    try {
-      setLoading(true);
-      setMessage("Processing your selection...");
-      await api.post(`/api/selected/company/${id}`, {
-        candidate_id,
-        company_id: id,
-        name: companyInfo?.company_name || "Unknown Company",
-      });
-      navigate("/companies/related");
-    } catch (error) {
-      setError("Failed to select company. Please try again.");
-      setMessage("");
-      setLoading(false);
+  useEffect(() => {
+    const createSelectedCompany = async () => {
+      try {
+        if (!companyInfoFetched || !companyInfoFetched.name) {
+          return;
+        }
+        setError(null);
+      } catch (err) {
+        setError(err.message || "Failed to create selected company");
+        console.error("Error creating selected company:", err);
+      }
+    };
+
+    if (id && candidate_id && companyInfoFetched && companyInfoFetched.name) {
+      createSelectedCompany();
     }
+  }, [id, candidate_id, companyInfoFetched]);
+
+  const companyInfo = {
+    name: companyInfoFetched?.name || "N/A",
+    logo: companyInfoFetched?.logo || "https://via.placeholder.com/100",
+    bio: companyInfoFetched?.profile?.Bio || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus, el.",
+    address: companyInfoFetched?.profile?.address || "N/A",
+    email: companyInfoFetched?.profile?.email || "N/A",
+    sector: companyInfoFetched?.sector || "N/A",
   };
 
-  // Styles for skill tags
+  const ceoInfo = {
+    name: companyInfoFetched?.ceo?.name || "N/A",
+    avatar: companyInfoFetched?.ceo?.avatar || "https://via.placeholder.com/50",
+    description: companyInfoFetched?.ceo?.description || "Leading with vision and innovation.",
+  };
+
   const Style = [
     { bgColor: "bg-indigo-100", textColor: "text-indigo-600" },
     { bgColor: "bg-violet-100", textColor: "text-violet-600" },
     { bgColor: "bg-gray-100", textColor: "text-gray-600" },
   ];
 
-  // Convert comma-separated skills string to an array of styled tags
-  const techTags = companyInfo?.skills
-    ? companyInfo.skills.split(",").map((skill) => {
-        const nb = Math.floor(Math.random() * Style.length);
-        return {
-          name: skill.trim(),
-          bgColor: Style[nb].bgColor,
-          textColor: Style[nb].textColor,
-        };
-      })
-    : [];
+  const techTags = companyInfoFetched?.skills?.map((skill) => {
+    const nb = Math.floor(Math.random() * Style.length);
+    return {
+      name: skill.name,
+      bgColor: Style[nb].bgColor,
+      textColor: Style[nb].textColor,
+    };
+  }) || [];
 
-  // Fallback company info
-  const company = {
-    name: companyInfo?.company_name || "N/A",
-    logo: companyInfo?.logo || "https://via.placeholder.com/100",
-    bio: companyInfo?.Bio || "No description available.",
-    address: companyInfo?.address || "N/A",
-    phone: companyInfo?.phone || "N/A",
-    sector: companyInfo?.sector || "N/A",
-    websiteUrl: companyInfo?.websiteUrl || "N/A",
-    dateCreation: companyInfo?.DateCreation || "N/A",
+  const handleSelectCompany = async () => {
+    try {
+      setLoading(true);
+      setMessage("Processing your selection...");
+      await api.post(`/api/selected/company/${id}`, {
+        candidate_id: candidate_id,
+        company_id: id,
+        name: companyInfoFetched?.name || "Unknown Company",
+      });
+      navigate("/companies/related");
+    } catch (error) {
+      console.error("Error selecting company:", error);
+      setError("Failed to select company. Please try again.");
+      setMessage("An error occurred while processing your selection.");
+      setLoading(false);
+    }
   };
 
-  // Company vision template (simplified, as CEO data is not available)
   const companyVision = `Subject: Join our team and help shape the future with us
 Hello ${candidateInfo?.name || "Candidate"},
-At ${company.name}, we believe that the future is built by passionate, curious, and bold minds. When we came across your profile on SkillMatch, we were genuinely impressed by your journey, your projects, and most of all, your ability to actively learn and innovate.
+At ${companyInfo?.name}, we believe that the future is built by passionate, curious, and bold minds. When we came across your profile on SkillMatch, we were genuinely impressed by your journey, your projects, and most of all, your ability to actively learn and innovate.
 
-We are currently looking for a collaborator capable of contributing to ${company.sector}, and we believe your profile aligns perfectly with this vision. Your skills in ${
-    techTags[0]?.name || "your field"
-  } and your drive to grow are exactly what we value.
+We are currently looking for a collaborator capable of contributing to ${companyInfo?.sector}, and we believe your profile aligns perfectly with this vision. Your approach to ${
+    companyInfoFetched?.skills?.[0]?.["name"] || "your skills"
+  }, along with your drive to grow, is exactly what we value.
 
 What We Offer:
 - A stimulating environment where every idea matters
@@ -103,8 +121,23 @@ Your potential deserves to be supported and nurtured. With us, you won't be just
 We would be thrilled to connect with you and share more about how this collaboration could benefit you.
 
 Looking forward to speaking with you,
-Team Lead at ${company.name}
-${company.websiteUrl} – ${company.phone}`;
+${companyInfoFetched?.ceo?.name || "Team Lead"}
+Team Lead at ${companyInfo?.name}
+${companyInfo?.email} – ${companyInfoFetched?.profile?.phone || "N/A"}`;
+
+  const testInfo = {
+    title: "Our Tests",
+    description: `Objective: At ${companyInfo?.name}, we believe that technical skills go beyond a CV. That's why we offer a series of short problem-solving tests to help us discover how you think, analyze, and approach real-world challenges.
+
+These exercises aren't just about finding the right answer — they're about creativity, logic, and clarity. Whether you're solving an algorithmic puzzle or optimizing a simple function, we value the way you think through problems and communicate your solutions.
+
+Each test is designed to be:
+- Short and focused (15–45 minutes)
+- Language-flexible English
+- Centered on real challenges from our team's daily work
+
+We encourage you to explore them when you're ready — take your time and have fun!`,
+  };
 
   if (loading) {
     return (
@@ -114,21 +147,17 @@ ${company.websiteUrl} – ${company.phone}`;
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-red-600 text-lg">{error}</div>
-      </div>
-    );
-  }
-
   return (
     <>
       <NavbarCandidate />
-      {/* Message Banner */}
-      {message && (
-        <div className="fixed top-16 left-0 right-0 mx-auto max-w-4xl p-4 rounded-lg shadow-md z-50 bg-indigo-50 text-indigo-800 border-indigo-200">
-          <span>{message}</span>
+      {/* Message/Error Banner */}
+      {(message || error) && (
+        <div
+          className={`fixed top-16 left-0 right-0 mx-auto max-w-4xl p-4 rounded-lg shadow-md z-50 ${
+            error ? "bg-red-50 text-red-800 border-red-200" : "bg-indigo-50 text-indigo-800 border-indigo-200"
+          }`}
+        >
+          <span>{error || message}</span>
         </div>
       )}
 
@@ -138,13 +167,13 @@ ${company.websiteUrl} – ${company.phone}`;
           <div className="bg-white rounded-2xl shadow-md p-8 mb-8 flex items-center space-x-6">
             <img
               className="w-20 h-20 object-cover rounded-full border-2 border-indigo-200"
-              src={company.logo}
-              alt={company.name}
-              aria-label={`${company.name} logo`}
+              src={companyInfo.logo}
+              alt={companyInfo.name}
+              aria-label={`${companyInfo.name} logo`}
             />
             <div>
-              <h1 className="text-3xl font-bold text-indigo-600">{company.name}</h1>
-              <p className="text-base text-gray-600 mt-1">{company.sector}</p>
+              <h1 className="text-3xl font-bold text-indigo-600">{companyInfo.name}</h1>
+              <p className="text-base text-gray-600 mt-1">{companyInfo.sector}</p>
             </div>
           </div>
 
@@ -164,9 +193,9 @@ ${company.websiteUrl} – ${company.phone}`;
                       {tag.name}
                     </span>
                   ))}
-                  {techTags.length === 0 && (
-                    <span className="text-sm text-gray-600">No skills listed</span>
-                  )}
+                  <div className="flex w-8 h-8 items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 transition-colors duration-300">
+                    <PlusIcon className="w-4 h-4 text-gray-600" aria-hidden="true" />
+                  </div>
                 </div>
               </div>
 
@@ -176,26 +205,26 @@ ${company.websiteUrl} – ${company.phone}`;
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Overview</h3>
-                    <p className="text-base text-gray-600">{company.bio}</p>
+                    <p className="text-base text-gray-600">{companyInfo.bio}</p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex items-start space-x-3">
                       <MapPinIcon className="w-5 h-5 text-violet-500 mt-1" aria-hidden="true" />
                       <div>
                         <h3 className="text-base font-semibold text-gray-800">Address</h3>
-                        <p className="text-base text-gray-600">{company.address}</p>
+                        <p className="text-base text-gray-600">{companyInfo.address}</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <PhoneIcon className="w-5 h-5 text-violet-500 mt-1" aria-hidden="true" />
                       <div>
-                        <h3 className="text-base font-semibold text-gray-800">Phone</h3>
+                        <h3 className="text-base font-semibold text-gray-800">Email</h3>   
+                            
                         <a
-                          href={`tel:${company.phone}`}
+                          href={`mailto:${companyInfo.email}`}
                           className="text-indigo-600 hover:underline"
-                          aria-label={`Phone ${company.name}`}
+                          aria-label={`Email ${companyInfo.name}`}
                         >
-                          {company.phone}
+                          {companyInfo.email}
                         </a>
                       </div>
                     </div>
@@ -203,24 +232,42 @@ ${company.websiteUrl} – ${company.phone}`;
                       <BriefcaseIcon className="w-5 h-5 text-violet-500 mt-1" aria-hidden="true" />
                       <div>
                         <h3 className="text-base font-semibold text-gray-800">Sector</h3>
-                        <p className="text-base text-gray-600">{company.sector}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <div>
-                        <h3 className="text-base font-semibold text-gray-800">Website</h3>
-                        <a
-                          href={company.websiteUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-indigo-600 hover:underline"
-                          aria-label={`Visit ${company.name} website`}
-                        >
-                          {company.websiteUrl}
-                        </a>
+                        <p className="text-base text-gray-600">{companyInfo.sector}</p>
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              {/* CEO Info */}
+              <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                <h2 className="text-xl font-bold text-indigo-600 mb-4">Meet the CEO</h2>
+                <div className="flex items-center space-x-4 mb-4">
+                  <img
+                    className="w-12 h-12 rounded-full object-cover border-2 border-violet-200"
+                    src={ceoInfo.avatar}
+                    alt={ceoInfo.name}
+                    aria-label={`${ceoInfo.name} avatar`}
+                  />
+                  <span className="text-base font-semibold text-gray-800">{ceoInfo.name}</span>
+                </div>
+                <p className="text-base text-gray-600">{ceoInfo.description}</p>
+              </div>
+
+              {/* Tests Info */}
+              <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                <h2 className="text-xl font-bold text-indigo-600 mb-4">{testInfo.title}</h2>
+                <div className="text-base text-gray-600 space-y-4">
+                  {testInfo.description.split("\n\n").map((paragraph, index) => (
+                    <p key={index}>
+                      {paragraph.split("\n").map((line, i) => (
+                        <span key={i} className={line.startsWith("-") ? "block ml-4" : ""}>
+                          {line.startsWith("-") ? `• ${line.slice(2)}` : line}
+                          {i < paragraph.split("\n").length - 1 && <br />}
+                        </span>
+                      ))}
+                    </p>
+                  ))}
                 </div>
               </div>
             </div>
