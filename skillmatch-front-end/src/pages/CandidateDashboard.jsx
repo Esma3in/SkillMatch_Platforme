@@ -1124,7 +1124,7 @@ export default function CandidateDashboard() {
               <div className="flex justify-center mt-4 text-sm text-gray-500">
                 <div className="flex items-center mr-4">
                   <span className="inline-block w-3 h-3 bg-blue-500 rounded-full mr-1"></span>
-                  <span>Skill Progress</span>
+                  <span>Problems Solved</span>
                 </div>
                 <div className="flex items-center mr-4">
                   <span className="inline-block w-3 h-3 bg-green-500 rounded-full mr-1"></span>
