@@ -108,8 +108,13 @@ export default function SignIn({ onToggle }) {
           navigate(`/candidate/Session/${response.data.candidate?.id}`)
           }
         }else if(response.data.role === 'company'){
+          if(response.data.company?.state==='banned'){
+              navigate(`/bannedPage/${formData.email}`);
+          }else if(response.data.company?.state==='waiting' || response.data.company?.state==='unactive'){
+            navigate(`/account-desactive/${formData.email}`)
+          }else{
           localStorage.setItem('company_id',response.data.company?.id)
-          navigate(`/company/Session/${response.data.company?.id}`)
+          navigate(`/company/Session/${response.data.company?.id}`)}
         }else {
           localStorage.setItem('admin_id',response.data.admin?.id)
           navigate(`/admin/Session/${response.data.admin?.id}`)
