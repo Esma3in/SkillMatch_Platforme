@@ -29,57 +29,51 @@ class CandidateController extends Controller
         }
     }
 
-
     public function CompaniesMatched($id)
-{
-    $companies = DB::table('companies as c')
-        ->join('profile_companies as pc', 'pc.company_id', '=', 'c.id')
-        ->leftJoin('companies_skills as cs', 'cs.company_id', '=', 'c.id')
-        ->leftJoin('skills as s', 'cs.skill_id', '=', 's.id')
-        ->leftJoin('candidates_skills as csk', function ($join) use ($id) {
-            $join->on('csk.skill_id', '=', 'cs.skill_id')
-                 ->where('csk.candidate_id', '=', $id);
-        })
-        ->select(
-            'c.id as company_id',
-            'c.name as company_name',
-            'c.sector',
-            'c.file',
-            'c.logo',
-            'c.state',
-            'c.docstate',
-            'pc.websiteUrl as website_url',
-            'pc.address',
-            'pc.phone',
-            'pc.DateCreation as date_creation',
-            'pc.Bio as bio',
-            DB::raw("COALESCE(JSON_ARRAYAGG(s.name), '[]') as skills")
-        )
-        ->whereNotNull('csk.skill_id')
-        ->groupBy(
-            'c.id',
-            'c.name',
-            'c.sector',
-            'c.file',
-            'c.logo',
-            'c.state',
-            'c.docstate',
-            'pc.websiteUrl',
-            'pc.address',
-            'pc.phone',
-            'pc.DateCreation',
-            'pc.Bio'
-        )
-        ->paginate(10);
-
-    $companies->getCollection()->transform(function ($company) {
-        $company->skills = json_decode($company->skills, true) ?? [];
-        return $company;
-    });
-
-    return response()->json($companies, 200);
-}
-
+    {
+        $companies = DB::table('companies as c')
+            ->join('profile_companies as pc', 'pc.company_id', '=', 'c.id')
+            ->join('companies_skills as cs', 'cs.company_id', '=', 'c.id')
+            ->join('skills as s', 'cs.skill_id', '=', 's.id')
+            ->select(
+                'c.id as company_id',
+                'c.name as company_name',
+                'c.sector',
+                'c.file',
+                'c.logo',
+                'c.state',
+                'c.docstate',
+                'pc.websiteUrl as website_url',
+                'pc.address',
+                'pc.phone',
+                'pc.DateCreation as date_creation',
+                'pc.Bio as bio',
+                DB::raw("COALESCE(JSON_ARRAYAGG(s.name), '[]') as skills")
+            )
+            ->where('c.id', '=', $id)
+            ->groupBy(
+                'c.id',
+                'c.name',
+                'c.sector',
+                'c.file',
+                'c.logo',
+                'c.state',
+                'c.docstate',
+                'pc.websiteUrl',
+                'pc.address',
+                'pc.phone',
+                'pc.DateCreation',
+                'pc.Bio'
+            )
+            ->get();
+    
+        $companies = $companies->map(function ($company) {
+            $company->skills = json_decode($company->skills, true) ?? [];
+            return $company;
+        });
+    
+        return response()->json($companies, 200);
+    }
 
 
 

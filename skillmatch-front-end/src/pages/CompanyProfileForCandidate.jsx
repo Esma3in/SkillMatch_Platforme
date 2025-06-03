@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/api";
 import NavbarCandidate from "../components/common/navbarCandidate";
-import { PlusIcon, MapPinIcon, MailIcon, BriefcaseIcon, UserIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, MapPinIcon, BriefcaseIcon } from "@heroicons/react/24/solid";
 
 export default function CompanyProfileForCandidate() {
   const candidate_id = JSON.parse(localStorage.getItem("candidate_id"));
-  const [roadmap, setRoadmap] = useState({});
-  const { id } = useParams();
   const [companyInfoFetched, setCompanyInfo] = useState({});
   const [candidateInfo, setCandidateInfo] = useState({});
   const [error, setError] = useState(null);
@@ -15,13 +13,16 @@ export default function CompanyProfileForCandidate() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(`/api/candidate/companyInfo/${id}`);
+        const response = await api.get(`/api/candidate/company/${id}/profile`);
         const response1 = await api.get(`/api/candidate/${candidate_id}`);
-        setCompanyInfo(response.data);
+        // Handle single object or array with one object
+        const companyData = Array.isArray(response.data) ? response.data[0] : response.data;
+        setCompanyInfo(companyData);
         setCandidateInfo(response1.data);
         setLoading(false);
       } catch (err) {
@@ -39,7 +40,7 @@ export default function CompanyProfileForCandidate() {
   useEffect(() => {
     const createSelectedCompany = async () => {
       try {
-        if (!companyInfoFetched || !companyInfoFetched.name) {
+        if (!companyInfoFetched || !companyInfoFetched.company_name) {
           return;
         }
         setError(null);
@@ -49,24 +50,18 @@ export default function CompanyProfileForCandidate() {
       }
     };
 
-    if (id && candidate_id && companyInfoFetched && companyInfoFetched.name) {
+    if (id && candidate_id && companyInfoFetched && companyInfoFetched.company_name) {
       createSelectedCompany();
     }
   }, [id, candidate_id, companyInfoFetched]);
 
   const companyInfo = {
-    name: companyInfoFetched?.name || "N/A",
+    name: companyInfoFetched?.company_name || "N/A",
     logo: companyInfoFetched?.logo || "https://via.placeholder.com/100",
-    bio: companyInfoFetched?.profile?.Bio || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus, el.",
-    address: companyInfoFetched?.profile?.address || "N/A",
-    email: companyInfoFetched?.profile?.email || "N/A",
+    bio: companyInfoFetched?.bio || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus, el.",
+    address: companyInfoFetched?.address || "N/A",
     sector: companyInfoFetched?.sector || "N/A",
-  };
-
-  const ceoInfo = {
-    name: companyInfoFetched?.ceo?.name || "N/A",
-    avatar: companyInfoFetched?.ceo?.avatar || "https://via.placeholder.com/50",
-    description: companyInfoFetched?.ceo?.description || "Leading with vision and innovation.",
+    phone: companyInfoFetched?.phone || "N/A",
   };
 
   const Style = [
@@ -75,14 +70,14 @@ export default function CompanyProfileForCandidate() {
     { bgColor: "bg-gray-100", textColor: "text-gray-600" },
   ];
 
-  const techTags = companyInfoFetched?.skills?.map((skill) => {
+  const techTags = (companyInfoFetched?.skills || []).map((skill) => {
     const nb = Math.floor(Math.random() * Style.length);
     return {
-      name: skill.name,
+      name: skill,
       bgColor: Style[nb].bgColor,
       textColor: Style[nb].textColor,
     };
-  }) || [];
+  });
 
   const handleSelectCompany = async () => {
     try {
@@ -91,7 +86,7 @@ export default function CompanyProfileForCandidate() {
       await api.post(`/api/selected/company/${id}`, {
         candidate_id: candidate_id,
         company_id: id,
-        name: companyInfoFetched?.name || "Unknown Company",
+        name: companyInfoFetched?.company_name || "Unknown Company",
       });
       navigate("/companies/related");
     } catch (error) {
@@ -107,7 +102,7 @@ Hello ${candidateInfo?.name || "Candidate"},
 At ${companyInfo?.name}, we believe that the future is built by passionate, curious, and bold minds. When we came across your profile on SkillMatch, we were genuinely impressed by your journey, your projects, and most of all, your ability to actively learn and innovate.
 
 We are currently looking for a collaborator capable of contributing to ${companyInfo?.sector}, and we believe your profile aligns perfectly with this vision. Your approach to ${
-    companyInfoFetched?.skills?.[0]?.["name"] || "your skills"
+    companyInfoFetched?.skills?.[0] || "your skills"
   }, along with your drive to grow, is exactly what we value.
 
 What We Offer:
@@ -121,9 +116,9 @@ Your potential deserves to be supported and nurtured. With us, you won't be just
 We would be thrilled to connect with you and share more about how this collaboration could benefit you.
 
 Looking forward to speaking with you,
-${companyInfoFetched?.ceo?.name || "Team Lead"}
+Team Lead
 Team Lead at ${companyInfo?.name}
-${companyInfo?.email} – ${companyInfoFetched?.profile?.phone || "N/A"}`;
+${companyInfo?.phone || "N/A"}`;
 
   const testInfo = {
     title: "Our Tests",
@@ -150,7 +145,6 @@ We encourage you to explore them when you're ready — take your time and have f
   return (
     <>
       <NavbarCandidate />
-      {/* Message/Error Banner */}
       {(message || error) && (
         <div
           className={`fixed top-16 left-0 right-0 mx-auto max-w-4xl p-4 rounded-lg shadow-md z-50 ${
@@ -216,42 +210,20 @@ We encourage you to explore them when you're ready — take your time and have f
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <div>
-                        <h3 className="text-base font-semibold text-gray-800">Email</h3>   
-                            
-                        <a
-                          href={`mailto:${companyInfo.email}`}
-                          className="text-indigo-600 hover:underline"
-                          aria-label={`Email ${companyInfo.name}`}
-                        >
-                          {companyInfo.email}
-                        </a>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
                       <BriefcaseIcon className="w-5 h-5 text-violet-500 mt-1" aria-hidden="true" />
                       <div>
                         <h3 className="text-base font-semibold text-gray-800">Sector</h3>
                         <p className="text-base text-gray-600">{companyInfo.sector}</p>
                       </div>
                     </div>
+                    <div className="flex items-start space-x-3">
+                      <div>
+                        <h3 className="text-base font-semibold text-gray-800">Phone</h3>
+                        <p className="text-base text-gray-600">{companyInfo.phone}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              {/* CEO Info */}
-              <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
-                <h2 className="text-xl font-bold text-indigo-600 mb-4">Meet the CEO</h2>
-                <div className="flex items-center space-x-4 mb-4">
-                  <img
-                    className="w-12 h-12 rounded-full object-cover border-2 border-violet-200"
-                    src={ceoInfo.avatar}
-                    alt={ceoInfo.name}
-                    aria-label={`${ceoInfo.name} avatar`}
-                  />
-                  <span className="text-base font-semibold text-gray-800">{ceoInfo.name}</span>
-                </div>
-                <p className="text-base text-gray-600">{ceoInfo.description}</p>
               </div>
 
               {/* Tests Info */}
