@@ -108,7 +108,7 @@ export default function App() {
         <Route path='/candidate/company/test/:companyId' element={<ProtectedCompanyRoute><CandidateTest/></ProtectedCompanyRoute>}/>
 
        <Route path='/candidate/Test/:TestId' element={<ProtectedCompanyRoute><CandidateTest/></ProtectedCompanyRoute>}/>
-        <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedCompanyRoute><TestsList/></ProtectedCompanyRoute>}/>
+        <Route path='/candidate/assessment/:companyId/tests' element={<ProtectedCandidateRoute><TestsList/></ProtectedCandidateRoute>}/>
         <Route path='/candidate/test/:TestId/result' element={<ProtectedCompanyRoute><ResultTest/></ProtectedCompanyRoute>}/>
         
 
