@@ -1,4 +1,4 @@
-export default function CompanyCard({ id, name, logo, profile, sector, skills }) {
+export default function CompanyCard({ id, name, logo, sector, website_url, address, phone, date_creation, bio, skills }) {
   return (
     <div className="flex justify-center p-2">
       <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-lg w-[250px] min-h-[320px] flex flex-col p-4 border border-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
@@ -9,45 +9,43 @@ export default function CompanyCard({ id, name, logo, profile, sector, skills })
           <p className="text-base font-bold text-gray-800 tracking-tight">{name}</p>
         </div>
         <div className="mt-1">
-          {profile ? (
-            <a href={profile.email} className="text-blue-700 hover:text-blue-900 text-xs font-medium transition-colors underline underline-offset-2">
-              {profile.email}
+          {website_url ? (
+            <a href={website_url} className="text-blue-700 hover:text-blue-900 text-xs font-medium transition-colors underline underline-offset-2">
+              Visit Website
             </a>
           ) : (
-            <a href={sector} className="text-blue-700 hover:text-blue-900 text-xs font-medium transition-colors underline underline-offset-2">
-              {sector}
-            </a>
+            <p className="text-xs text-gray-600">No website available</p>
           )}
         </div>
         <div className="mt-2 flex flex-wrap gap-1">
           {skills && skills.length > 0 ? (
             skills.map((skill, i) => (
               <div key={i} className="bg-gray-100 rounded-full px-2 py-0.5 border border-gray-200">
-                <p className="text-xs text-gray-700 font-medium">{skill.name}</p>
+                <p className="text-xs text-gray-700 font-medium">{skill}</p>
               </div>
             ))
           ) : (
             <div className="bg-gray-100 rounded-full px-2 py-0.5 border border-gray-200">
-              <p className="text-xs text-gray-700 font-medium">Has no skills for now</p>
+              <p className="text-xs text-gray-700 font-medium">No skills listed</p>
             </div>
           )}
         </div>
         <div className="mt-3 flex-1">
           <div className="space-y-1 text-gray-600 text-xs leading-tight">
-            {profile ? (
+            {address || bio ? (
               <p>
-                SerieNumber: {profile.serieNumber}
+                {address && `Address: ${address}`}
                 <br />
-                Address: {profile.address}
+                {bio && `Bio: ${bio}`}
               </p>
             ) : (
-              <p>We didn't create our profile yet</p>
+              <p>No profile details available</p>
             )}
             <p className="font-medium text-gray-800">Sector: {sector}</p>
           </div>
           <div className="mt-1">
             <div className="text-xs text-gray-600 font-medium">
-              {profile ? <p>+{profile.nbEmployers} Employees</p> : <p>0 Employees</p>}
+              <p>Phone: {phone || 'Not provided'}</p>
             </div>
           </div>
         </div>

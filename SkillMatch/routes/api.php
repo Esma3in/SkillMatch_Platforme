@@ -59,7 +59,7 @@ Route::options('/{any}', function () {
 })->where('any', '.*');
 
 Route::middleware(['web', 'api'])->group(function () {
-    
+
 });
 //
 Route::post('/signUp', [UserController::class, 'SignUp']);
@@ -76,7 +76,7 @@ Route::post('/sendAppeal',[UserController::class,'sendAppeal']);
 Route::get('/candidate/CV/{id}', [CandidateController::class, 'printCV']);
 
 Route::post('/profiles', [CandidateController::class, 'storeProfile']);
-Route::get('/candidate/suggestedcompanies/{id}', [CandidateController::class, 'CompaniesMatched']);
+Route::get('/candidate/company/{id}/profile', [CandidateController::class, 'CompaniesMatched']);
 Route::get('/candidate/companies/all', [CompanyController::class, 'index']);
 Route::get('/ProfileCandidate/{id}', [CandidateController::class, 'GetProfile']);
 Route::post('/candidate/NewLanguage', [LanguageController::class, 'store']);

@@ -32,23 +32,53 @@ class CandidateController extends Controller
 
     public function CompaniesMatched($id)
     {
-        $candidate = Candidate::with(['skills'])->findOrFail($id);
-        Log::info($candidate);
-        $candidateSkillIds = $candidate->skills->pluck('id')->toArray();
-        Log::info($candidateSkillIds);
-        $companies = Company::with(['skills', 'profile'])->get();
-        Log::info($companies);
-        $companiesSuggested = [];
+        $companies = DB::table('companies as c')
+            ->join('profile_companies as pc', 'pc.company_id', '=', 'c.id')
+            ->leftJoin('companies_skills as cs', 'cs.company_id', '=', 'c.id')
+            ->leftJoin('skills as s', 'cs.skill_id', '=', 's.id')
+            ->leftJoin('candidate_skills as csk', function ($join) use ($id) {
+                $join->on('csk.skill_id', '=', 'cs.skill_id')
+                    ->where('csk.candidate_id', '=', $id);
+            })
+            ->select(
+                'c.id as company_id',
+                'c.name as company_name',
+                'c.sector',
+                'c.file',
+                'c.logo',
+                'c.state',
+                'c.docstate',
+                'pc.website_url as website_url', // Adjusted to snake_case; verify column name
+                'pc.address',
+                'pc.phone',
+                'pc.date_creation as date_creation', // Adjusted to snake_case; verify column name
+                'pc.bio',
+                DB::raw('COALESCE(JSON_ARRAYAGG(s.name), JSON_ARRAY([])) as skills') // Ensure empty array if no skills
+            )
+            ->whereNotNull('csk.skill_id') // Ensure only companies with matching skills are returned
+            ->groupBy(
+                'c.id',
+                'c.name',
+                'c.sector',
+                'c.file',
+                'c.logo',
+                'c.state',
+                'c.docstate',
+                'pc.website_url',
+                'pc.address',
+                'pc.phone',
+                'pc.date_creation',
+                'pc.bio'
+            )
+            ->paginate(10);
 
-        foreach ($companies as $company) {
-            $companySkillIds = $company->skills->pluck('id')->toArray();
-            Log::info($companySkillIds);
-            if (count(array_intersect($candidateSkillIds, $companySkillIds)) > 0) {
-                $companiesSuggested[] = $company;
-            }
-        }
+        // Transform skills to array
+        $companies->getCollection()->transform(function ($company) {
+            $company->skills = json_decode($company->skills, true) ?? [];
+            return $company;
+        });
 
-        return response()->json($companiesSuggested, 200);
+        return response()->json($companies, 200);
     }
 
 
@@ -301,7 +331,7 @@ class CandidateController extends Controller
             ->header('Content-Disposition', 'attachment; filename="candidate_cv.pdf"');
 
     }
-    
+
     public function AllCandidates(){
         $candidates = Candidate::with('profile')
             ->whereIn('state', ['active', 'unactive','waiting'])
