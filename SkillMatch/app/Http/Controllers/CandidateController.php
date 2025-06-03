@@ -31,55 +31,55 @@ class CandidateController extends Controller
 
 
     public function CompaniesMatched($id)
-    {
-        $companies = DB::table('companies as c')
-            ->join('profile_companies as pc', 'pc.company_id', '=', 'c.id')
-            ->leftJoin('companies_skills as cs', 'cs.company_id', '=', 'c.id')
-            ->leftJoin('skills as s', 'cs.skill_id', '=', 's.id')
-            ->leftJoin('candidate_skills as csk', function ($join) use ($id) {
-                $join->on('csk.skill_id', '=', 'cs.skill_id')
-                    ->where('csk.candidate_id', '=', $id);
-            })
-            ->select(
-                'c.id as company_id',
-                'c.name as company_name',
-                'c.sector',
-                'c.file',
-                'c.logo',
-                'c.state',
-                'c.docstate',
-                'pc.website_url as website_url', // Adjusted to snake_case; verify column name
-                'pc.address',
-                'pc.phone',
-                'pc.date_creation as date_creation', // Adjusted to snake_case; verify column name
-                'pc.bio',
-                DB::raw('COALESCE(JSON_ARRAYAGG(s.name), JSON_ARRAY([])) as skills') // Ensure empty array if no skills
-            )
-            ->whereNotNull('csk.skill_id') // Ensure only companies with matching skills are returned
-            ->groupBy(
-                'c.id',
-                'c.name',
-                'c.sector',
-                'c.file',
-                'c.logo',
-                'c.state',
-                'c.docstate',
-                'pc.website_url',
-                'pc.address',
-                'pc.phone',
-                'pc.date_creation',
-                'pc.bio'
-            )
-            ->paginate(10);
+{
+    $companies = DB::table('companies as c')
+        ->join('profile_companies as pc', 'pc.company_id', '=', 'c.id')
+        ->leftJoin('companies_skills as cs', 'cs.company_id', '=', 'c.id')
+        ->leftJoin('skills as s', 'cs.skill_id', '=', 's.id')
+        ->leftJoin('candidates_skills as csk', function ($join) use ($id) {
+            $join->on('csk.skill_id', '=', 'cs.skill_id')
+                 ->where('csk.candidate_id', '=', $id);
+        })
+        ->select(
+            'c.id as company_id',
+            'c.name as company_name',
+            'c.sector',
+            'c.file',
+            'c.logo',
+            'c.state',
+            'c.docstate',
+            'pc.websiteUrl as website_url',
+            'pc.address',
+            'pc.phone',
+            'pc.DateCreation as date_creation',
+            'pc.Bio as bio',
+            DB::raw("COALESCE(JSON_ARRAYAGG(s.name), '[]') as skills")
+        )
+        ->whereNotNull('csk.skill_id')
+        ->groupBy(
+            'c.id',
+            'c.name',
+            'c.sector',
+            'c.file',
+            'c.logo',
+            'c.state',
+            'c.docstate',
+            'pc.websiteUrl',
+            'pc.address',
+            'pc.phone',
+            'pc.DateCreation',
+            'pc.Bio'
+        )
+        ->paginate(10);
 
-        // Transform skills to array
-        $companies->getCollection()->transform(function ($company) {
-            $company->skills = json_decode($company->skills, true) ?? [];
-            return $company;
-        });
+    $companies->getCollection()->transform(function ($company) {
+        $company->skills = json_decode($company->skills, true) ?? [];
+        return $company;
+    });
 
-        return response()->json($companies, 200);
-    }
+    return response()->json($companies, 200);
+}
+
 
 
 
