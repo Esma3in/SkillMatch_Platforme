@@ -35,7 +35,7 @@ class CompanyController extends Controller
                 'pc.phone',
                 'pc.DateCreation',
                 'pc.Bio',
-                DB::raw('GROUP_CONCAT(s.name) as skills')
+                DB::raw('JSON_ARRAYAGG(s.name) as skills')
             )
             ->groupBy(
                 'c.id',
@@ -52,6 +52,12 @@ class CompanyController extends Controller
                 'pc.Bio'
             )
             ->paginate(10);
+
+        // Ensure skills is decoded as an array for each company
+        $companies->getCollection()->transform(function ($company) {
+            $company->skills = json_decode($company->skills, true) ?? [];
+            return $company;
+        });
 
         return response()->json($companies, 200);
     }
