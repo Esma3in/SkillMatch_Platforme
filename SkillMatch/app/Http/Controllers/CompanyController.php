@@ -18,7 +18,13 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::with(['skills', 'profile'])->paginate(10);
+        $companies = DB::table('companies as c')
+            ->join('profile_companies as pc', 'pc.company_id', '=', 'c.id')
+            ->join('companies_skills as cs', 'cs.company_id', '=', 'c.id')
+            ->join('skills as s', 'cs.skill_id', '=', 's.id')
+            ->select('c.*', 'pc.*', 'cs.*', 's.*')
+            ->paginate(10);
+
         return response()->json($companies, 200);
     }
 
@@ -272,7 +278,7 @@ class CompanyController extends Controller
     try {
         // Find the company
         $company = Company::with('profile')->find($request->company_id);
-        
+
         if (!$company) {
             return response()->json(['message' => 'Company not found'], 404);
         }
@@ -311,7 +317,7 @@ public function updateProfile(Request $request)
 
     try {
         $company = Company::findOrFail($request->company_id);
-        
+
         // Update company basic info
         $company->update([
             'name' => $request->name,
@@ -380,7 +386,7 @@ public function storeLegaldocument(Request $request)
         ]);
 
         // Handle file upload if present
-      
+
 
         // Create the legal document
         $legalDocument = CompanyLegalDocuments::create([
@@ -390,11 +396,11 @@ public function storeLegaldocument(Request $request)
         ]);
 
         // Log the activity
-       
+
         return response()->json([
             'success' => true,
             'message' => 'Legal document created successfully',
-           
+
         ], 201);
 
     } catch (ValidationException $e) {
