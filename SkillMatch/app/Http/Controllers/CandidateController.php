@@ -72,6 +72,7 @@ class CandidateController extends Controller
         $companies = $companies->map(function ($company) {
             $company->skills = json_decode($company->skills, true) ?? [];
             return $company;
+            
         });
     
         return response()->json($companies, 200);
