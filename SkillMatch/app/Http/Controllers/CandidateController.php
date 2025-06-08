@@ -30,7 +30,7 @@ class CandidateController extends Controller
     }
 
 
-  
+
     public function CompaniesMatched($id)
     {
         $companies = DB::table('companies as c')
@@ -68,18 +68,37 @@ class CandidateController extends Controller
                 'pc.Bio'
             )
             ->get();
-    
+
         $companies = $companies->map(function ($company) {
             $company->skills = json_decode($company->skills, true) ?? [];
             return $company;
-            
+
         });
-    
+
         return response()->json($companies, 200);
     }
 
 
+    public function companiesSuggested($id)//Add commentMore actions
+    {
+        $candidate = Candidate::with(['skills'])->findOrFail($id);
+        Log::info($candidate);
+        $candidateSkillIds = $candidate->skills->pluck('id')->toArray();
+        Log::info($candidateSkillIds);
+        $companies = Company::with(['skills', 'profile'])->get();
+        Log::info($companies);
+        $companiesSuggested = [];
 
+        foreach ($companies as $company) {
+            $companySkillIds = $company->skills->pluck('id')->toArray();
+            Log::info($companySkillIds);
+            if (count(array_intersect($candidateSkillIds, $companySkillIds)) > 0) {
+                $companiesSuggested[] = $company;
+            }
+        }
+        return response()->json($companiesSuggested, 200);
+
+    }
 
 
 

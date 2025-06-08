@@ -188,6 +188,7 @@ Route::get('/roadmap-skills', [skillsRoadmapController::class, 'index']);
 //companies related
 Route::get('/selected/companies/{candidate_id}', [CompaniesSelectedController::class, 'getSelectedCompaniess']);
 
+Route::get('/candidate/suggestedcompanies/{id}', [CandidateController::class, 'companiesSuggested']);
 // skills of an companyId
 Route::get('/skills/company/{companyId}' , [CompaniesSelectedController::class , 'getSkillsByCompany']);
 // genrate roadmap
